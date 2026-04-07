@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-04-07T14:41:43.960987+00:00",
+  "from_date": "2026-04-07",
+  "to_date": "2026-04-14",
+  "games": [
+    {
+      "game_id": 2025021237,
+      "date": "2026-04-07",
+      "start_time_utc": "2026-04-07T23:00:00Z",
+      "opponent": "Carolina Hurricanes",
+      "opponent_abbrev": "CAR",
+      "home": false,
+      "status": "Scheduled",
+      "venue": "Lenovo Center"
+    },
+    {
+      "game_id": 2025021261,
+      "date": "2026-04-11",
+      "start_time_utc": "2026-04-11T16:30:00Z",
+      "opponent": "Tampa Bay Lightning",
+      "opponent_abbrev": "TBL",
+      "home": true,
+      "status": "Scheduled",
+      "venue": "TD Garden"
+    },
+    {
+      "game_id": 2025021278,
+      "date": "2026-04-12",
+      "start_time_utc": "2026-04-12T22:00:00Z",
+      "opponent": "Columbus Blue Jackets",
+      "opponent_abbrev": "CBJ",
+      "home": false,
+      "status": "Scheduled",
+      "venue": "Nationwide Arena"
+    },
+    {
+      "game_id": 2025021292,
+      "date": "2026-04-14",
+      "start_time_utc": "2026-04-14T23:00:00Z",
+      "opponent": "New Jersey Devils",
+      "opponent_abbrev": "NJD",
+      "home": true,
+      "status": "Scheduled",
+      "venue": "TD Garden"
+    }
+  ]
+}
