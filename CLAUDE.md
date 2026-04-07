@@ -59,6 +59,7 @@ fetch_nfl.py        → data/patriots_news.json  (offseason: headlines only)
     ↓
 update_store.py     → data/rolling_7day.json  (rolling 7-entry window)
 fetch_schedule.py   → data/upcoming_schedule.json  (merged, sorted)
+fetch_news.py       → data/latest_news.json  (merged, most-recent-first)
     ↓
 generate_rant.py    → data/raw_dan_output.json  (Gemini 1.5 Flash + grounding)
     ↓
@@ -83,6 +84,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/fetch_nfl.py` | ✅ Done | `patriots_news.json`, `patriots_boxscore.json`, `patriots_schedule.json` |
 | `scripts/update_store.py` | ✅ Done | `rolling_7day.json` (7-entry rolling window) |
 | `scripts/fetch_schedule.py` | ✅ Done | `upcoming_schedule.json` (merged, sorted) |
+| `scripts/fetch_news.py` | ✅ Done | `latest_news.json` (merged, most-recent-first) |
 | `scripts/generate_rant.py` | ⬜ Todo | `raw_dan_output.json` |
 | `scripts/safety_judge.py` | ⬜ Todo | PASS/FAIL + severity verdict |
 | `scripts/publish.py` | ⬜ Todo | `site/data/daily_output.json` |
@@ -199,6 +201,26 @@ Each team always has both `boxscore` and `news` keys (either may be absent if th
 ```
 Sorted chronologically. `time_et` is "TBD" when no game time has been announced.
 Sport-specific extras live in `notes` (NHL: `opponent_abbrev`; MLB: `day_night`, `doubleheader`, `game_number`).
+
+### `data/latest_news.json`
+```json
+{
+  "generated_at":  "2026-04-07T16:00:00+00:00",
+  "article_count": 12,
+  "articles": [
+    {
+      "team":        "patriots",
+      "sport":       "NFL",
+      "team_name":   "New England Patriots",
+      "headline":    "2026 NFL mock draft: Schrager projects 32 first-round picks",
+      "description": "...",
+      "published":   "2026-04-07T14:25:39+00:00",
+      "url":         "https://..."
+    }
+  ]
+}
+```
+Sorted newest-to-oldest by `published`. Up to 3 articles per team (inherited from each fetch script's `NEWS_TOP_N`).
 
 ### `site/data/daily_output.json` (Gemini output schema)
 ```json
