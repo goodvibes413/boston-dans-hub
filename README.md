@@ -1,2 +1,2 @@
 # boston-dans-hub
-Agentic Boston sports fan rant machine
+Fan engagement bot and rolling stats tracker for Boston Dan's community.
