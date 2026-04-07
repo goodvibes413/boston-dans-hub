@@ -33,12 +33,15 @@ DATA_DIR     = PROJECT_ROOT / "data"
 
 BOXSCORE_PATH = DATA_DIR / "redsox_boxscore.json"
 SCHEDULE_PATH = DATA_DIR / "redsox_schedule.json"
+NEWS_PATH     = DATA_DIR / "redsox_news.json"
 
 REDSOX_TEAM_ID   = 111
 REDSOX_TEAM_NAME = "Boston Red Sox"
 
 MLB_SCHEDULE_BASE = "https://statsapi.mlb.com/api/v1/schedule"
 MLB_BOXSCORE_BASE = "https://statsapi.mlb.com/api/v1/game"
+ESPN_NEWS         = "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news?team=bos"
+NEWS_TOP_N        = 3
 
 
 # ---------------------------------------------------------------------------
@@ -76,6 +79,55 @@ def fetch_json(url: str) -> dict:
         raise RuntimeError(f"Network error fetching {url}: {e.reason}") from e
     except json.JSONDecodeError as e:
         raise RuntimeError(f"Invalid JSON from {url}: {e}") from e
+
+
+def parse_pub_date(raw: str) -> str:
+    """Normalise an ESPN date string like '2026-04-07T18:32:00Z' to ISO 8601."""
+    if not raw:
+        return ""
+    try:
+        return datetime.fromisoformat(raw.replace("Z", "+00:00")).isoformat()
+    except ValueError:
+        return raw
+
+
+def fetch_news() -> None:
+    """
+    Fetch the top Red Sox news headlines from ESPN and write to
+    data/redsox_news.json.
+    """
+    now_utc = datetime.now(timezone.utc)
+    try:
+        print("  Fetching Red Sox news from ESPN...")
+        data     = fetch_json(ESPN_NEWS)
+        articles = data.get("articles", [])
+        headlines = []
+        for article in articles[:NEWS_TOP_N]:
+            links = article.get("links", {})
+            url   = (
+                links.get("web", {}).get("href", "")
+                or links.get("api", {}).get("news", {}).get("href", "")
+            )
+            headlines.append({
+                "headline":    article.get("headline",    "").strip(),
+                "description": article.get("description", "").strip(),
+                "published":   parse_pub_date(article.get("published", "")),
+                "url":         url,
+            })
+        print(f"  Captured {len(headlines)} headline(s).")
+        for i, h in enumerate(headlines, 1):
+            print(f"  {i}. {h['headline'][:72]}")
+        result = {"generated_at": now_utc.isoformat(), "headlines": headlines}
+        NEWS_PATH.write_text(json.dumps(result, indent=2))
+        print(f"  Saved to {NEWS_PATH}")
+    except Exception as e:
+        print(f"[ERROR] fetch_news failed: {e}")
+        err = {"generated_at": now_utc.isoformat(), "error": str(e), "headlines": []}
+        try:
+            NEWS_PATH.write_text(json.dumps(err, indent=2))
+        except Exception:
+            pass
+        sys.exit(1)
 
 
 def safe_float(val, default=0.0) -> float:
@@ -477,22 +529,26 @@ def fetch_schedule() -> None:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    """Run both fetchers in sequence."""
+    """Run all three fetchers in sequence."""
     print("=" * 52)
     print("  Boston Dan's Hub — MLB Red Sox Data Fetcher")
     print("=" * 52)
 
     DATA_DIR.mkdir(exist_ok=True)
 
-    print("\n[1/2] Yesterday's boxscore")
+    print("\n[1/3] Yesterday's boxscore")
     fetch_boxscore()
 
-    print("\n[2/2] Next 7-day schedule")
+    print("\n[2/3] Next 7-day schedule")
     fetch_schedule()
+
+    print("\n[3/3] Latest Red Sox news")
+    fetch_news()
 
     print("\nDone. Files written:")
     print(f"  {BOXSCORE_PATH}")
     print(f"  {SCHEDULE_PATH}")
+    print(f"  {NEWS_PATH}")
 
 
 if __name__ == "__main__":

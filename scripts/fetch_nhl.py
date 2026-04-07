@@ -29,6 +29,7 @@ DATA_DIR     = PROJECT_ROOT / "data"
 
 BOXSCORE_PATH = DATA_DIR / "bruins_boxscore.json"
 SCHEDULE_PATH = DATA_DIR / "bruins_schedule.json"
+NEWS_PATH     = DATA_DIR / "bruins_news.json"
 
 BRUINS_ABBREV = "BOS"
 BRUINS_ID     = 6
@@ -36,6 +37,8 @@ BRUINS_ID     = 6
 NHL_SCORE_BASE    = "https://api-web.nhle.com/v1/score"
 NHL_BOXSCORE_BASE = "https://api-web.nhle.com/v1/gamecenter"
 NHL_SCHEDULE_BASE = "https://api-web.nhle.com/v1/club-schedule-season"
+ESPN_NEWS         = "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/news?team=bos"
+NEWS_TOP_N        = 3
 
 # Period number → readable label
 PERIOD_LABELS = {1: "1st", 2: "2nd", 3: "3rd", 4: "OT", 5: "SO"}
@@ -139,6 +142,55 @@ def get_team_full_name(team: dict) -> str:
     if place and common:
         return f"{place} {common}"
     return get_team_name(team)
+
+
+def parse_pub_date(raw: str) -> str:
+    """Normalise an ESPN date string like '2026-04-07T18:32:00Z' to ISO 8601."""
+    if not raw:
+        return ""
+    try:
+        return datetime.fromisoformat(raw.replace("Z", "+00:00")).isoformat()
+    except ValueError:
+        return raw
+
+
+def fetch_news() -> None:
+    """
+    Fetch the top Bruins news headlines from ESPN and write to
+    data/bruins_news.json.
+    """
+    now_utc = datetime.now(timezone.utc)
+    try:
+        print("  Fetching Bruins news from ESPN...")
+        data     = fetch_json(ESPN_NEWS)
+        articles = data.get("articles", [])
+        headlines = []
+        for article in articles[:NEWS_TOP_N]:
+            links = article.get("links", {})
+            url   = (
+                links.get("web", {}).get("href", "")
+                or links.get("api", {}).get("news", {}).get("href", "")
+            )
+            headlines.append({
+                "headline":    article.get("headline",    "").strip(),
+                "description": article.get("description", "").strip(),
+                "published":   parse_pub_date(article.get("published", "")),
+                "url":         url,
+            })
+        print(f"  Captured {len(headlines)} headline(s).")
+        for i, h in enumerate(headlines, 1):
+            print(f"  {i}. {h['headline'][:72]}")
+        result = {"generated_at": now_utc.isoformat(), "headlines": headlines}
+        NEWS_PATH.write_text(json.dumps(result, indent=2))
+        print(f"  Saved to {NEWS_PATH}")
+    except Exception as e:
+        print(f"[ERROR] fetch_news failed: {e}")
+        err = {"generated_at": now_utc.isoformat(), "error": str(e), "headlines": []}
+        try:
+            NEWS_PATH.write_text(json.dumps(err, indent=2))
+        except Exception:
+            pass
+        sys.exit(1)
 
 
 def find_bruins_game(games: list):
@@ -427,22 +479,26 @@ def fetch_schedule() -> None:
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    """Run both fetchers in sequence."""
+    """Run all three fetchers in sequence."""
     print("=" * 52)
     print("  Boston Dan's Hub — NHL Bruins Data Fetcher")
     print("=" * 52)
 
     DATA_DIR.mkdir(exist_ok=True)
 
-    print("\n[1/2] Yesterday's boxscore")
+    print("\n[1/3] Yesterday's boxscore")
     fetch_boxscore()
 
-    print("\n[2/2] Next 7-day schedule")
+    print("\n[2/3] Next 7-day schedule")
     fetch_schedule()
+
+    print("\n[3/3] Latest Bruins news")
+    fetch_news()
 
     print("\nDone. Files written:")
     print(f"  {BOXSCORE_PATH}")
     print(f"  {SCHEDULE_PATH}")
+    print(f"  {NEWS_PATH}")
 
 
 if __name__ == "__main__":
