@@ -110,19 +110,28 @@ def parse_pub_date(raw: str) -> str:
         return raw
 
 
+def classify_nfl_season() -> str:
+    """
+    Return the current NFL season classification.
+
+    Returns: "offseason" (Mar–Aug), "preseason" (Aug–Sep early),
+             "regular" (Sep–Jan), or "playoff" (Jan–Feb).
+    """
+    month = date.today().month
+    if 3 <= month <= 7:
+        return "offseason"
+    if month == 8:
+        return "preseason"
+    if month in (9, 10, 11, 12, 1):
+        return "regular"
+    if month == 2:
+        return "playoff"
+    return "unknown"
+
+
 def is_nfl_offseason() -> bool:
-    """
-    Return True when today falls outside the NFL playing season.
-
-    NFL calendar:
-        Aug        — Preseason (no box scores tracked here)
-        Sep–Jan    — Regular season
-        Jan–Feb    — Playoffs + Super Bowl
-        Mar–Aug    — Offseason
-
-    We treat March through August as offseason (months 3–8).
-    """
-    return 3 <= date.today().month <= 8
+    """Backward compatibility: True if in offseason or preseason."""
+    return classify_nfl_season() in ("offseason", "preseason")
 
 
 def find_patriots_event(events: list):
@@ -303,12 +312,13 @@ def fetch_boxscore() -> None:
 
     try:
         # ── Offseason short-circuit ───────────────────────────────────────
-        if is_nfl_offseason():
-            print(f"  NFL offseason — no game data available for {game_date_iso}.")
+        season = classify_nfl_season()
+        if season in ("offseason", "preseason"):
+            print(f"  NFL {season} — no game data available for {game_date_iso}.")
             result = {
-                "game_date": game_date_iso,
-                "played":    False,
-                "offseason": True,
+                "game_date":   game_date_iso,
+                "played":      False,
+                "season_type": season,
             }
             BOXSCORE_PATH.write_text(json.dumps(result, indent=2))
             print(f"  Saved to {BOXSCORE_PATH}")
@@ -325,9 +335,9 @@ def fetch_boxscore() -> None:
         if pats_event is None:
             print(f"  No Patriots game found for {game_date_iso}.")
             result = {
-                "game_date": game_date_iso,
-                "played":    False,
-                "offseason": False,
+                "game_date":   game_date_iso,
+                "played":      False,
+                "season_type": classify_nfl_season(),
             }
             BOXSCORE_PATH.write_text(json.dumps(result, indent=2))
             print(f"  Saved to {BOXSCORE_PATH}")
@@ -380,7 +390,7 @@ def fetch_boxscore() -> None:
         result = {
             "game_date":      game_date_iso,
             "played":         True,
-            "offseason":      False,
+            "season_type":    classify_nfl_season(),
             "status":         status,
             "home":           pats_home,
             "patriots_score": pats_score,
@@ -461,12 +471,13 @@ def fetch_schedule() -> None:
             )
 
             games.append({
-                "game_id":  event.get("id", ""),
-                "date":     raw_date,
-                "opponent": opp_name,
-                "home":     pats_home,
-                "status":   status,
-                "venue":    venue,
+                "game_id":    event.get("id", ""),
+                "date":       raw_date,
+                "opponent":   opp_name,
+                "home":       pats_home,
+                "status":     status,
+                "venue":      venue,
+                "season_type": classify_nfl_season(),
             })
 
         print(f"  Found {len(games)} game(s) in the next 7 days.")

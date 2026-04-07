@@ -223,6 +223,18 @@ def build_status(game_state: str, period_type: str) -> str:
     return game_state
 
 
+def classify_nhl_game(game_type: int) -> str:
+    """
+    Map NHL API gameType to readable season classification.
+
+    Args:
+        game_type: Integer from NHL API (1=preseason, 2=regular, 3=playoff).
+
+    Returns: "preseason", "regular", "playoff", or "unknown".
+    """
+    return {1: "preseason", 2: "regular", 3: "playoff"}.get(game_type, "unknown")
+
+
 def parse_period_scores(goals: list) -> list:
     """
     Build a period-by-period scoring breakdown from the scoreboard goals list.
@@ -282,7 +294,11 @@ def fetch_boxscore() -> None:
 
         if bruins_game is None:
             print(f"  No Bruins game found for {game_date_iso}.")
-            result = {"game_date": game_date_iso, "played": False}
+            result = {
+                "game_date":   game_date_iso,
+                "played":      False,
+                "season_type": "unknown",
+            }
             BOXSCORE_PATH.write_text(json.dumps(result, indent=2))
             print(f"  Saved to {BOXSCORE_PATH}")
             return
@@ -360,6 +376,7 @@ def fetch_boxscore() -> None:
         result = {
             "game_date":      game_date_iso,
             "played":         True,
+            "season_type":    classify_nhl_game(bruins_game.get("gameType", 2)),
             "status":         status,
             "home":           bruins_home,
             "bruins_score":   bruins_score,
@@ -443,14 +460,15 @@ def fetch_schedule() -> None:
             status      = build_status(state, period_type)
 
             upcoming.append({
-                "game_id":       game.get("id"),
-                "date":          game_date_str,
+                "game_id":        game.get("id"),
+                "date":           game_date_str,
                 "start_time_utc": game.get("startTimeUTC", ""),
-                "opponent":      get_team_full_name(opp),
+                "opponent":       get_team_full_name(opp),
                 "opponent_abbrev": opp.get("abbrev", ""),
-                "home":          bruins_home,
-                "status":        status,
-                "venue":         game.get("venue", {}).get("default", ""),
+                "home":           bruins_home,
+                "status":         status,
+                "venue":          game.get("venue", {}).get("default", ""),
+                "season_type":    classify_nhl_game(game.get("gameType", 2)),
             })
 
         print(f"  Found {len(upcoming)} game(s) in the next 7 days.")

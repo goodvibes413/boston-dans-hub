@@ -114,6 +114,29 @@ def parse_fg_pct(fg_str: str):
 # Boxscore
 # ---------------------------------------------------------------------------
 
+def classify_nba_game(game_date: str) -> str:
+    """
+    Heuristic classification based on game date.
+
+    NBA regular season: Oct–Apr, Playoffs: May–Jun, Preseason: Sep.
+    game_date format: "2026-04-06" (ISO 8601).
+
+    Returns: "preseason", "regular", "playoff", or "unknown".
+    """
+    try:
+        dt = datetime.strptime(game_date, "%Y-%m-%d")
+        month = dt.month
+        if month == 9:
+            return "preseason"
+        if month in (5, 6):
+            return "playoff"
+        if month in (10, 11, 12, 1, 2, 3, 4):
+            return "regular"
+        return "unknown"
+    except ValueError:
+        return "unknown"
+
+
 def parse_pub_date(raw: str) -> str:
     """Normalise an ESPN date string like '2026-04-07T18:32:00Z' to ISO 8601."""
     if not raw:
@@ -201,7 +224,11 @@ def fetch_boxscore() -> None:
 
         if celtics_event is None:
             print(f"  No Celtics game found for {game_date_iso}.")
-            result = {"game_date": game_date_iso, "played": False}
+            result = {
+                "game_date":   game_date_iso,
+                "played":      False,
+                "season_type": classify_nba_game(game_date_iso),
+            }
             BOXSCORE_PATH.write_text(json.dumps(result, indent=2))
             print(f"  Saved to {BOXSCORE_PATH}")
             return
@@ -305,6 +332,7 @@ def fetch_boxscore() -> None:
         result = {
             "game_date":      game_date_iso,
             "played":         True,
+            "season_type":    classify_nba_game(game_date_iso),
             "status":         status,
             "home":           home,
             "celtics_score":  celtics_score,
@@ -386,6 +414,7 @@ def fetch_schedule() -> None:
             )
             venue = comp.get("venue", {}).get("fullName", "")
 
+            game_date_iso = game_dt.strftime("%Y-%m-%d")
             games.append({
                 "game_id":  event.get("id", ""),
                 "date":     raw_date,
@@ -393,6 +422,7 @@ def fetch_schedule() -> None:
                 "home":     home,
                 "status":   status_desc,
                 "venue":    venue,
+                "season_type": classify_nba_game(game_date_iso),
             })
 
         print(f"  Found {len(games)} game(s) in the next 7 days.")

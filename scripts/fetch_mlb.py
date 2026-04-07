@@ -146,6 +146,27 @@ def safe_int(val, default=0) -> int:
         return default
 
 
+def classify_mlb_game(game_date: str) -> str:
+    """
+    Heuristic classification based on game date.
+
+    MLB regular season: Late Mar–Sep, Playoffs: Oct–Nov.
+    game_date format: "2026-04-06" (ISO 8601).
+
+    Returns: "regular", "playoff", or "offseason".
+    """
+    try:
+        dt = datetime.strptime(game_date, "%Y-%m-%d")
+        month = dt.month
+        if 3 <= month <= 9:
+            return "regular"
+        if month in (10, 11):
+            return "playoff"
+        return "offseason"
+    except ValueError:
+        return "unknown"
+
+
 def pitcher_decision(pitching_stats: dict) -> str:
     """
     Extract the pitcher's decision from their game stats.
@@ -398,7 +419,11 @@ def fetch_boxscore() -> None:
         dates = schedule.get("dates", [])
         if not dates:
             print(f"  No Red Sox game found for {game_date_iso}.")
-            result = {"game_date": game_date_iso, "played": False}
+            result = {
+                "game_date": game_date_iso,
+                "played": False,
+                "season_type": classify_mlb_game(game_date_iso),
+            }
             BOXSCORE_PATH.write_text(json.dumps(result, indent=2))
             print(f"  Saved to {BOXSCORE_PATH}")
             return
@@ -415,7 +440,11 @@ def fetch_boxscore() -> None:
             print(
                 f"  Found {len(games_raw)} scheduled game(s) but none are Final yet."
             )
-            result = {"game_date": game_date_iso, "played": False}
+            result = {
+                "game_date": game_date_iso,
+                "played": False,
+                "season_type": classify_mlb_game(game_date_iso),
+            }
             BOXSCORE_PATH.write_text(json.dumps(result, indent=2))
             print(f"  Saved to {BOXSCORE_PATH}")
             return
@@ -435,6 +464,7 @@ def fetch_boxscore() -> None:
         result = {
             "game_date":    game_date_iso,
             "played":       True,
+            "season_type":  classify_mlb_game(game_date_iso),
             "doubleheader": is_doubleheader,
             "games":        parsed_games,
         }
@@ -490,10 +520,11 @@ def fetch_schedule() -> None:
                 state  = game.get("status", {}).get("abstractGameState", "Scheduled")
                 detail = game.get("status", {}).get("detailedState", state)
 
+                game_date = game.get("officialDate", "")
                 games.append({
                     "game_pk":      game["gamePk"],
                     "game_number":  safe_int(game.get("gameNumber", 1)),
-                    "date":         game.get("officialDate", ""),
+                    "date":         game_date,
                     "game_time_utc": game.get("gameDate", ""),
                     "opponent":     opp["team"]["name"],
                     "home":         redsox_home,
@@ -501,6 +532,7 @@ def fetch_schedule() -> None:
                     "venue":        game.get("venue", {}).get("name", ""),
                     "day_night":    game.get("dayNight", ""),
                     "doubleheader": game.get("doubleHeader", "N") != "N",
+                    "season_type":  classify_mlb_game(game_date),
                 })
 
         print(f"  Found {len(games)} game(s) in the next 7 days.")

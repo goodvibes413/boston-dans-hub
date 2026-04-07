@@ -107,6 +107,41 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 
 ## Key Data Schemas
 
+### Boxscore Schemas (all sports)
+
+Every boxscore output includes a `"season_type"` field:
+```json
+{
+  "game_date": "2025-04-06",
+  "played": true,
+  "season_type": "regular",
+  ...other fields...
+}
+```
+
+**Season type values:**
+- `"preseason"` — Practice games before regular season (Sep for NBA, Aug for NFL, etc.)
+- `"regular"` — Regular season play
+- `"playoff"` — Postseason play (May–Jun for NBA, Oct–Nov for MLB, Feb for NFL, etc.)
+- `"offseason"` — No games (typically Jan–Aug for NFL, Dec–Feb for MLB, etc.)
+- `"unknown"` — Unable to classify (should be rare)
+
+### Schedule Schemas (all sports)
+
+Every game in a schedule's `"games"` array includes `"season_type"`:
+```json
+{
+  "games": [
+    {
+      "date": "2025-04-14",
+      "opponent": "Charlotte Hornets",
+      "season_type": "regular",
+      ...other fields...
+    }
+  ]
+}
+```
+
 ### `data/rolling_7day.json`
 ```json
 {

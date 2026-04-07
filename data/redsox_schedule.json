@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-07T14:50:02.157907+00:00",
+  "generated_at": "2026-04-07T15:39:33.178797+00:00",
   "from_date": "2026-04-07",
   "to_date": "2026-04-14",
   "games": [
@@ -13,7 +13,8 @@
       "status": "Scheduled",
       "venue": "Fenway Park",
       "day_night": "night",
-      "doubleheader": false
+      "doubleheader": false,
+      "season_type": "regular"
     },
     {
       "game_pk": 824779,
@@ -25,7 +26,8 @@
       "status": "Scheduled",
       "venue": "Fenway Park",
       "day_night": "day",
-      "doubleheader": false
+      "doubleheader": false,
+      "season_type": "regular"
     },
     {
       "game_pk": 823076,
@@ -37,7 +39,8 @@
       "status": "Scheduled",
       "venue": "Busch Stadium",
       "day_night": "night",
-      "doubleheader": false
+      "doubleheader": false,
+      "season_type": "regular"
     },
     {
       "game_pk": 823074,
@@ -49,7 +52,8 @@
       "status": "Scheduled",
       "venue": "Busch Stadium",
       "day_night": "night",
-      "doubleheader": false
+      "doubleheader": false,
+      "season_type": "regular"
     },
     {
       "game_pk": 823075,
@@ -61,7 +65,8 @@
       "status": "Scheduled",
       "venue": "Busch Stadium",
       "day_night": "day",
-      "doubleheader": false
+      "doubleheader": false,
+      "season_type": "regular"
     },
     {
       "game_pk": 823725,
@@ -73,7 +78,8 @@
       "status": "Scheduled",
       "venue": "Target Field",
       "day_night": "night",
-      "doubleheader": false
+      "doubleheader": false,
+      "season_type": "regular"
     },
     {
       "game_pk": 823723,
@@ -85,7 +91,8 @@
       "status": "Scheduled",
       "venue": "Target Field",
       "day_night": "night",
-      "doubleheader": false
+      "doubleheader": false,
+      "season_type": "regular"
     }
   ]
 }

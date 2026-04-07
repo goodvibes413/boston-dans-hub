@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-07T14:41:43.960987+00:00",
+  "generated_at": "2026-04-07T15:39:31.836123+00:00",
   "from_date": "2026-04-07",
   "to_date": "2026-04-14",
   "games": [
@@ -11,7 +11,8 @@
       "opponent_abbrev": "CAR",
       "home": false,
       "status": "Scheduled",
-      "venue": "Lenovo Center"
+      "venue": "Lenovo Center",
+      "season_type": "regular"
     },
     {
       "game_id": 2025021261,
@@ -21,7 +22,8 @@
       "opponent_abbrev": "TBL",
       "home": true,
       "status": "Scheduled",
-      "venue": "TD Garden"
+      "venue": "TD Garden",
+      "season_type": "regular"
     },
     {
       "game_id": 2025021278,
@@ -31,7 +33,8 @@
       "opponent_abbrev": "CBJ",
       "home": false,
       "status": "Scheduled",
-      "venue": "Nationwide Arena"
+      "venue": "Nationwide Arena",
+      "season_type": "regular"
     },
     {
       "game_id": 2025021292,
@@ -41,7 +44,8 @@
       "opponent_abbrev": "NJD",
       "home": true,
       "status": "Scheduled",
-      "venue": "TD Garden"
+      "venue": "TD Garden",
+      "season_type": "regular"
     }
   ]
 }
