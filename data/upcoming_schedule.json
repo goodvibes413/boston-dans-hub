@@ -1,0 +1,269 @@
+{
+  "generated_at": "2026-04-07T20:56:11.703897+00:00",
+  "from_date": "2026-04-07",
+  "to_date": "2026-04-14",
+  "game_count": 15,
+  "games": [
+    {
+      "sport": "MLB",
+      "team": "redsox",
+      "game_id": "824780",
+      "date": "2026-04-07",
+      "time_et": "6:45 PM ET",
+      "datetime_utc": "2026-04-07T22:45:00+00:00",
+      "home_team": "Boston Red Sox",
+      "away_team": "Milwaukee Brewers",
+      "venue": "Fenway Park",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "day_night": "night",
+        "doubleheader": false,
+        "game_number": 1
+      }
+    },
+    {
+      "sport": "NHL",
+      "team": "bruins",
+      "game_id": "2025021237",
+      "date": "2026-04-07",
+      "time_et": "7:00 PM ET",
+      "datetime_utc": "2026-04-07T23:00:00+00:00",
+      "home_team": "Carolina Hurricanes",
+      "away_team": "Boston Bruins",
+      "venue": "Lenovo Center",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "opponent_abbrev": "CAR"
+      }
+    },
+    {
+      "sport": "NBA",
+      "team": "celtics",
+      "game_id": "401811004",
+      "date": "2026-04-07",
+      "time_et": "TBD",
+      "datetime_utc": "2026-04-08T00:00:00+00:00",
+      "home_team": "Boston Celtics",
+      "away_team": "Charlotte Hornets",
+      "venue": "TD Garden",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {}
+    },
+    {
+      "sport": "MLB",
+      "team": "redsox",
+      "game_id": "824779",
+      "date": "2026-04-08",
+      "time_et": "1:35 PM ET",
+      "datetime_utc": "2026-04-08T17:35:00+00:00",
+      "home_team": "Boston Red Sox",
+      "away_team": "Milwaukee Brewers",
+      "venue": "Fenway Park",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "day_night": "day",
+        "doubleheader": false,
+        "game_number": 1
+      }
+    },
+    {
+      "sport": "NBA",
+      "team": "celtics",
+      "game_id": "401811023",
+      "date": "2026-04-09",
+      "time_et": "7:30 PM ET",
+      "datetime_utc": "2026-04-09T23:30:00+00:00",
+      "home_team": "New York Knicks",
+      "away_team": "Boston Celtics",
+      "venue": "Madison Square Garden",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {}
+    },
+    {
+      "sport": "NBA",
+      "team": "celtics",
+      "game_id": "401811029",
+      "date": "2026-04-10",
+      "time_et": "7:30 PM ET",
+      "datetime_utc": "2026-04-10T23:30:00+00:00",
+      "home_team": "Boston Celtics",
+      "away_team": "New Orleans Pelicans",
+      "venue": "TD Garden",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {}
+    },
+    {
+      "sport": "MLB",
+      "team": "redsox",
+      "game_id": "823076",
+      "date": "2026-04-10",
+      "time_et": "8:15 PM ET",
+      "datetime_utc": "2026-04-11T00:15:00+00:00",
+      "home_team": "St. Louis Cardinals",
+      "away_team": "Boston Red Sox",
+      "venue": "Busch Stadium",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "day_night": "night",
+        "doubleheader": false,
+        "game_number": 1
+      }
+    },
+    {
+      "sport": "NHL",
+      "team": "bruins",
+      "game_id": "2025021261",
+      "date": "2026-04-11",
+      "time_et": "12:30 PM ET",
+      "datetime_utc": "2026-04-11T16:30:00+00:00",
+      "home_team": "Boston Bruins",
+      "away_team": "Tampa Bay Lightning",
+      "venue": "TD Garden",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "opponent_abbrev": "TBL"
+      }
+    },
+    {
+      "sport": "MLB",
+      "team": "redsox",
+      "game_id": "823074",
+      "date": "2026-04-11",
+      "time_et": "7:15 PM ET",
+      "datetime_utc": "2026-04-11T23:15:00+00:00",
+      "home_team": "St. Louis Cardinals",
+      "away_team": "Boston Red Sox",
+      "venue": "Busch Stadium",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "day_night": "night",
+        "doubleheader": false,
+        "game_number": 1
+      }
+    },
+    {
+      "sport": "MLB",
+      "team": "redsox",
+      "game_id": "823075",
+      "date": "2026-04-12",
+      "time_et": "2:15 PM ET",
+      "datetime_utc": "2026-04-12T18:15:00+00:00",
+      "home_team": "St. Louis Cardinals",
+      "away_team": "Boston Red Sox",
+      "venue": "Busch Stadium",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "day_night": "day",
+        "doubleheader": false,
+        "game_number": 1
+      }
+    },
+    {
+      "sport": "NBA",
+      "team": "celtics",
+      "game_id": "401811041",
+      "date": "2026-04-12",
+      "time_et": "6:00 PM ET",
+      "datetime_utc": "2026-04-12T22:00:00+00:00",
+      "home_team": "Boston Celtics",
+      "away_team": "Orlando Magic",
+      "venue": "TD Garden",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {}
+    },
+    {
+      "sport": "NHL",
+      "team": "bruins",
+      "game_id": "2025021278",
+      "date": "2026-04-12",
+      "time_et": "6:00 PM ET",
+      "datetime_utc": "2026-04-12T22:00:00+00:00",
+      "home_team": "Columbus Blue Jackets",
+      "away_team": "Boston Bruins",
+      "venue": "Nationwide Arena",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "opponent_abbrev": "CBJ"
+      }
+    },
+    {
+      "sport": "MLB",
+      "team": "redsox",
+      "game_id": "823725",
+      "date": "2026-04-13",
+      "time_et": "7:40 PM ET",
+      "datetime_utc": "2026-04-13T23:40:00+00:00",
+      "home_team": "Minnesota Twins",
+      "away_team": "Boston Red Sox",
+      "venue": "Target Field",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "day_night": "night",
+        "doubleheader": false,
+        "game_number": 1
+      }
+    },
+    {
+      "sport": "NHL",
+      "team": "bruins",
+      "game_id": "2025021292",
+      "date": "2026-04-14",
+      "time_et": "7:00 PM ET",
+      "datetime_utc": "2026-04-14T23:00:00+00:00",
+      "home_team": "Boston Bruins",
+      "away_team": "New Jersey Devils",
+      "venue": "TD Garden",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "opponent_abbrev": "NJD"
+      }
+    },
+    {
+      "sport": "MLB",
+      "team": "redsox",
+      "game_id": "823723",
+      "date": "2026-04-14",
+      "time_et": "7:40 PM ET",
+      "datetime_utc": "2026-04-14T23:40:00+00:00",
+      "home_team": "Minnesota Twins",
+      "away_team": "Boston Red Sox",
+      "venue": "Target Field",
+      "status": "Scheduled",
+      "season_type": "regular",
+      "broadcast": null,
+      "notes": {
+        "day_night": "night",
+        "doubleheader": false,
+        "game_number": 1
+      }
+    }
+  ]
+}

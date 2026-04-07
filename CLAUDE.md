@@ -82,7 +82,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/fetch_mlb.py` | ✅ Done | `redsox_boxscore.json`, `redsox_schedule.json`, `redsox_news.json` |
 | `scripts/fetch_nfl.py` | ✅ Done | `patriots_news.json`, `patriots_boxscore.json`, `patriots_schedule.json` |
 | `scripts/update_store.py` | ✅ Done | `rolling_7day.json` (7-entry rolling window) |
-| `scripts/fetch_schedule.py` | ⬜ Todo | `upcoming_schedule.json` (merged, sorted) |
+| `scripts/fetch_schedule.py` | ✅ Done | `upcoming_schedule.json` (merged, sorted) |
 | `scripts/generate_rant.py` | ⬜ Todo | `raw_dan_output.json` |
 | `scripts/safety_judge.py` | ⬜ Todo | PASS/FAIL + severity verdict |
 | `scripts/publish.py` | ⬜ Todo | `site/data/daily_output.json` |
@@ -170,6 +170,35 @@ Every game in a schedule's `"games"` array includes `"season_type"`:
 ```
 Max 7 entries. Oldest entry is dropped when a new day is appended.
 Each team always has both `boxscore` and `news` keys (either may be absent if the fetch script failed).
+
+### `data/upcoming_schedule.json`
+```json
+{
+  "generated_at": "2026-04-07T16:00:00+00:00",
+  "from_date":    "2026-04-07",
+  "to_date":      "2026-04-14",
+  "game_count":   15,
+  "games": [
+    {
+      "sport":        "NHL",
+      "team":         "bruins",
+      "game_id":      "2025021237",
+      "date":         "2026-04-07",
+      "time_et":      "7:00 PM ET",
+      "datetime_utc": "2026-04-07T23:00:00+00:00",
+      "home_team":    "Carolina Hurricanes",
+      "away_team":    "Boston Bruins",
+      "venue":        "Lenovo Center",
+      "status":       "Scheduled",
+      "season_type":  "regular",
+      "broadcast":    null,
+      "notes":        { "opponent_abbrev": "CAR" }
+    }
+  ]
+}
+```
+Sorted chronologically. `time_et` is "TBD" when no game time has been announced.
+Sport-specific extras live in `notes` (NHL: `opponent_abbrev`; MLB: `day_night`, `doubleheader`, `game_number`).
 
 ### `site/data/daily_output.json` (Gemini output schema)
 ```json
