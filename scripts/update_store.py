@@ -2,11 +2,11 @@
 """
 update_store.py — Aggregates today's sport data into the rolling 7-day store.
 
-Reads:
-    data/celtics_boxscore.json
-    data/bruins_boxscore.json
-    data/redsox_boxscore.json
-    data/patriots_news.json
+Reads (per team):
+    data/celtics_boxscore.json  + data/celtics_news.json
+    data/bruins_boxscore.json   + data/bruins_news.json
+    data/redsox_boxscore.json   + data/redsox_news.json
+    data/patriots_boxscore.json + data/patriots_news.json
 
 Writes:
     data/rolling_7day.json  — rolling window of the last 7 day entries
@@ -34,11 +34,24 @@ DATA_DIR     = PROJECT_ROOT / "data"
 STORE_PATH = DATA_DIR / "rolling_7day.json"
 STORE_MAX  = 7
 
+# Each team has both a boxscore and a news file.
 SPORT_FILES = {
-    "celtics":  DATA_DIR / "celtics_boxscore.json",
-    "bruins":   DATA_DIR / "bruins_boxscore.json",
-    "redsox":   DATA_DIR / "redsox_boxscore.json",
-    "patriots": DATA_DIR / "patriots_news.json",
+    "celtics": {
+        "boxscore": DATA_DIR / "celtics_boxscore.json",
+        "news":     DATA_DIR / "celtics_news.json",
+    },
+    "bruins": {
+        "boxscore": DATA_DIR / "bruins_boxscore.json",
+        "news":     DATA_DIR / "bruins_news.json",
+    },
+    "redsox": {
+        "boxscore": DATA_DIR / "redsox_boxscore.json",
+        "news":     DATA_DIR / "redsox_news.json",
+    },
+    "patriots": {
+        "boxscore": DATA_DIR / "patriots_boxscore.json",
+        "news":     DATA_DIR / "patriots_news.json",
+    },
 }
 
 
@@ -46,28 +59,28 @@ SPORT_FILES = {
 # Helpers
 # ---------------------------------------------------------------------------
 
-def load_sport_data(path: Path, sport_name: str):
+def load_sport_data(path: Path, label: str):
     """
-    Load and validate a sport data file.
+    Load and validate a single sport data file.
 
     Returns the parsed dict if the file exists, is valid JSON, and does not
     contain a top-level "error" key (the sentinel written by fetch scripts
     on failure).
 
     Returns None (with a printed warning) on any problem so the caller can
-    skip that sport rather than crash.
+    skip that file rather than crash.
     """
     if not path.exists():
-        print(f"  [WARN] {sport_name}: {path.name} not found — skipping.")
+        print(f"  [WARN] {label}: {path.name} not found — skipping.")
         return None
     try:
         data = json.loads(path.read_text())
     except json.JSONDecodeError as e:
-        print(f"  [WARN] {sport_name}: {path.name} is not valid JSON ({e}) — skipping.")
+        print(f"  [WARN] {label}: {path.name} is not valid JSON ({e}) — skipping.")
         return None
     if "error" in data:
         print(
-            f"  [WARN] {sport_name}: {path.name} contains an error sentinel "
+            f"  [WARN] {label}: {path.name} contains an error sentinel "
             f"({data['error']!r}) — skipping."
         )
         return None
@@ -101,17 +114,26 @@ def build_day_entry(today: str) -> dict:
     """
     Read all sport files and build a single day entry.
 
+    Each team gets a nested dict with "boxscore" and/or "news" keys.
+    A team is omitted entirely if both of its files fail to load.
+
     Args:
         today: ISO date string "YYYY-MM-DD" (UTC).
 
     Returns:
-        Dict with "date" plus one key per successfully loaded sport.
+        Dict with "date" plus one nested key per team that loaded any data.
     """
     entry = {"date": today}
-    for sport, path in SPORT_FILES.items():
-        data = load_sport_data(path, sport)
-        if data is not None:
-            entry[sport] = data
+    for team, files in SPORT_FILES.items():
+        team_data = {}
+        for file_type, path in files.items():
+            data = load_sport_data(path, f"{team}/{file_type}")
+            if data is not None:
+                team_data[file_type] = data
+        if team_data:
+            entry[team] = team_data
+        else:
+            print(f"  [WARN] {team}: all files failed — team omitted from today's entry.")
     return entry
 
 
@@ -151,13 +173,16 @@ def main() -> None:
     print("\n[1/3] Loading sport data files...")
     day_entry = build_day_entry(today_utc)
 
-    sports_loaded = [k for k in day_entry if k != "date"]
-    sports_missing = [s for s in SPORT_FILES if s not in day_entry]
-    print(f"  Loaded:  {sports_loaded}")
-    if sports_missing:
-        print(f"  Skipped: {sports_missing}")
+    teams_loaded = [k for k in day_entry if k != "date"]
+    teams_missing = [t for t in SPORT_FILES if t not in day_entry]
 
-    if not sports_loaded:
+    for team in teams_loaded:
+        file_types = list(day_entry[team].keys())
+        print(f"  {team}: {file_types}")
+    if teams_missing:
+        print(f"  Skipped teams: {teams_missing}")
+
+    if not teams_loaded:
         print("[ERROR] No sport data loaded — aborting without writing.")
         sys.exit(1)
 

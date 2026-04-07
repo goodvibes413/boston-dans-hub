@@ -148,15 +148,28 @@ Every game in a schedule's `"games"` array includes `"season_type"`:
   "days": [
     {
       "date": "2025-04-06",
-      "celtics": { ...celtics_boxscore.json contents... },
-      "bruins":  { ...bruins_boxscore.json contents... },
-      "redsox":  { ...redsox_boxscore.json contents... },
-      "patriots": { ...patriots_news.json contents... }
+      "celtics": {
+        "boxscore": { "game_date": "...", "played": false, "season_type": "regular" },
+        "news":     { "generated_at": "...", "headlines": [...] }
+      },
+      "bruins": {
+        "boxscore": { "game_date": "...", "played": false, "season_type": "unknown" },
+        "news":     { "generated_at": "...", "headlines": [...] }
+      },
+      "redsox": {
+        "boxscore": { "game_date": "...", "played": true, "season_type": "regular", "games": [...] },
+        "news":     { "generated_at": "...", "headlines": [...] }
+      },
+      "patriots": {
+        "boxscore": { "game_date": "...", "played": false, "season_type": "offseason" },
+        "news":     { "generated_at": "...", "headlines": [...] }
+      }
     }
   ]
 }
 ```
 Max 7 entries. Oldest entry is dropped when a new day is appended.
+Each team always has both `boxscore` and `news` keys (either may be absent if the fetch script failed).
 
 ### `site/data/daily_output.json` (Gemini output schema)
 ```json
