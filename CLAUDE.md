@@ -81,7 +81,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/fetch_nhl.py` | ✅ Done | `bruins_boxscore.json`, `bruins_schedule.json`, `bruins_news.json` |
 | `scripts/fetch_mlb.py` | ✅ Done | `redsox_boxscore.json`, `redsox_schedule.json`, `redsox_news.json` |
 | `scripts/fetch_nfl.py` | ✅ Done | `patriots_news.json`, `patriots_boxscore.json`, `patriots_schedule.json` |
-| `scripts/update_store.py` | ⬜ Todo | `rolling_7day.json` (7-entry rolling window) |
+| `scripts/update_store.py` | ✅ Done | `rolling_7day.json` (7-entry rolling window) |
 | `scripts/fetch_schedule.py` | ⬜ Todo | `upcoming_schedule.json` (merged, sorted) |
 | `scripts/generate_rant.py` | ⬜ Todo | `raw_dan_output.json` |
 | `scripts/safety_judge.py` | ⬜ Todo | PASS/FAIL + severity verdict |
