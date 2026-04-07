@@ -75,18 +75,18 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 
 ## Scripts Reference
 
-| Script | Status | Purpose |
+| Script | Status | Outputs |
 |---|---|---|
-| `scripts/fetch_nba.py` | ✅ Done | Celtics boxscore + 7-day schedule from ESPN |
-| `scripts/fetch_nhl.py` | ⬜ Todo | Bruins boxscore + schedule from NHL API |
-| `scripts/fetch_mlb.py` | ⬜ Todo | Red Sox boxscore + schedule from MLB Stats API |
-| `scripts/fetch_nfl.py` | ⬜ Todo | Patriots headlines from ESPN (offseason) |
-| `scripts/update_store.py` | ⬜ Todo | Merge daily data → rolling_7day.json (7-entry max) |
-| `scripts/fetch_schedule.py` | ⬜ Todo | Merge team schedules → upcoming_schedule.json |
-| `scripts/generate_rant.py` | ⬜ Todo | Call Gemini with rolling store → raw_dan_output.json |
-| `scripts/safety_judge.py` | ⬜ Todo | Audit raw output → PASS/FAIL + severity |
-| `scripts/publish.py` | ⬜ Todo | Safety gate → publish or fallback |
-| `scripts/healthcheck.py` | ⬜ Todo | Validate all JSON files are parseable |
+| `scripts/fetch_nba.py` | ✅ Done | `celtics_boxscore.json`, `celtics_schedule.json`, `celtics_news.json` |
+| `scripts/fetch_nhl.py` | ✅ Done | `bruins_boxscore.json`, `bruins_schedule.json`, `bruins_news.json` |
+| `scripts/fetch_mlb.py` | ✅ Done | `redsox_boxscore.json`, `redsox_schedule.json`, `redsox_news.json` |
+| `scripts/fetch_nfl.py` | ✅ Done | `patriots_news.json`, `patriots_boxscore.json`, `patriots_schedule.json` |
+| `scripts/update_store.py` | ⬜ Todo | `rolling_7day.json` (7-entry rolling window) |
+| `scripts/fetch_schedule.py` | ⬜ Todo | `upcoming_schedule.json` (merged, sorted) |
+| `scripts/generate_rant.py` | ⬜ Todo | `raw_dan_output.json` |
+| `scripts/safety_judge.py` | ⬜ Todo | PASS/FAIL + severity verdict |
+| `scripts/publish.py` | ⬜ Todo | `site/data/daily_output.json` |
+| `scripts/healthcheck.py` | ⬜ Todo | Validates all JSON files |
 
 ---
 
@@ -196,7 +196,7 @@ The pipeline must **never** publish unreviewed content. If in doubt, fallback.
 
 | Week | Focus | Status |
 |---|---|---|
-| Week 1 | Data Foundation | 🔄 In progress (Tasks 1.1 ✅, 1.2 ✅ — 1.3–1.8 remaining) |
+| Week 1 | Data Foundation | 🔄 In progress (Tasks 1.1–1.5 ✅ — 1.6–1.8 remaining) |
 | Week 2 | Persona & Generation | ⬜ Not started |
 | Week 3 | Safety Gate & Quality | ⬜ Not started |
 | Week 4 | Deployment & Automation | ⬜ Not started |
