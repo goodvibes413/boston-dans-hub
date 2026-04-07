@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-04-07T14:50:02.157907+00:00",
+  "from_date": "2026-04-07",
+  "to_date": "2026-04-14",
+  "games": [
+    {
+      "game_pk": 824780,
+      "game_number": 1,
+      "date": "2026-04-07",
+      "game_time_utc": "2026-04-07T22:45:00Z",
+      "opponent": "Milwaukee Brewers",
+      "home": true,
+      "status": "Scheduled",
+      "venue": "Fenway Park",
+      "day_night": "night",
+      "doubleheader": false
+    },
+    {
+      "game_pk": 824779,
+      "game_number": 1,
+      "date": "2026-04-08",
+      "game_time_utc": "2026-04-08T17:35:00Z",
+      "opponent": "Milwaukee Brewers",
+      "home": true,
+      "status": "Scheduled",
+      "venue": "Fenway Park",
+      "day_night": "day",
+      "doubleheader": false
+    },
+    {
+      "game_pk": 823076,
+      "game_number": 1,
+      "date": "2026-04-10",
+      "game_time_utc": "2026-04-11T00:15:00Z",
+      "opponent": "St. Louis Cardinals",
+      "home": false,
+      "status": "Scheduled",
+      "venue": "Busch Stadium",
+      "day_night": "night",
+      "doubleheader": false
+    },
+    {
+      "game_pk": 823074,
+      "game_number": 1,
+      "date": "2026-04-11",
+      "game_time_utc": "2026-04-11T23:15:00Z",
+      "opponent": "St. Louis Cardinals",
+      "home": false,
+      "status": "Scheduled",
+      "venue": "Busch Stadium",
+      "day_night": "night",
+      "doubleheader": false
+    },
+    {
+      "game_pk": 823075,
+      "game_number": 1,
+      "date": "2026-04-12",
+      "game_time_utc": "2026-04-12T18:15:00Z",
+      "opponent": "St. Louis Cardinals",
+      "home": false,
+      "status": "Scheduled",
+      "venue": "Busch Stadium",
+      "day_night": "day",
+      "doubleheader": false
+    },
+    {
+      "game_pk": 823725,
+      "game_number": 1,
+      "date": "2026-04-13",
+      "game_time_utc": "2026-04-13T23:40:00Z",
+      "opponent": "Minnesota Twins",
+      "home": false,
+      "status": "Scheduled",
+      "venue": "Target Field",
+      "day_night": "night",
+      "doubleheader": false
+    },
+    {
+      "game_pk": 823723,
+      "game_number": 1,
+      "date": "2026-04-14",
+      "game_time_utc": "2026-04-14T23:40:00Z",
+      "opponent": "Minnesota Twins",
+      "home": false,
+      "status": "Scheduled",
+      "venue": "Target Field",
+      "day_night": "night",
+      "doubleheader": false
+    }
+  ]
+}
