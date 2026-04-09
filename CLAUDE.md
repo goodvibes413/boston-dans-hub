@@ -21,7 +21,12 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 ```
 /
 ├── scripts/          # Python data fetchers and generation scripts
+├── prompts/          # Persona / system prompt source-of-truth (e.g. boston_dan_system.txt)
 ├── data/             # JSON data files (gitignored: .env)
+├── evals/
+│   ├── fixtures/     # Hand-crafted rolling_7day-shaped test inputs
+│   └── runs/         # Generated outputs for manual review (gitignored)
+├── linkedin/         # Build-in-public post drafts
 ├── site/             # Static website files (deployed via GitHub Pages)
 │   └── data/         # daily_output.json served to the frontend
 ├── docs/             # Internal documentation (e.g., SAFETY.md)
@@ -38,14 +43,14 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 | Layer | Tool | Notes |
 |---|---|---|
 | Data fetching | Python stdlib only (`urllib`, `json`) | No third-party HTTP libs |
-| LLM generation | Gemini 1.5 Flash via `google-generativeai` | Read key from `GEMINI_API_KEY` env var |
-| Safety judge | Gemini 1.5 Pro | Stricter model for auditing |
+| LLM generation | Gemini 2.5 Flash via `google-generativeai` | Read key from `GEMINI_API_KEY` env var; override via `GEMINI_MODEL` |
+| Safety judge | Gemini 2.5 Flash | Same model as generator; Pro has no free tier. Override via `JUDGE_MODEL` |
 | Static site | Vanilla HTML/CSS/JS | No build tools — `fetch()` loads JSON |
 | CI/CD | GitHub Actions | Cron at 06:00 ET daily |
 | Hosting | GitHub Pages | `/site` branch/folder |
 | Sports data | Public ESPN + NHL + MLB APIs | No auth keys required |
 
-**Never** add third-party Python packages beyond `google-generativeai` and `requests` without discussion. The goal is a minimal, auditable dependency footprint.
+**Never** add third-party Python packages beyond `google-genai` and `requests` without discussion. (`google-generativeai` is deprecated and no longer used.) The goal is a minimal, auditable dependency footprint.
 
 ---
 
@@ -85,8 +90,9 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/update_store.py` | ✅ Done | `rolling_7day.json` (7-entry rolling window) |
 | `scripts/fetch_schedule.py` | ✅ Done | `upcoming_schedule.json` (merged, sorted) |
 | `scripts/fetch_news.py` | ✅ Done | `latest_news.json` (merged, most-recent-first) |
-| `scripts/generate_rant.py` | ⬜ Todo | `raw_dan_output.json` |
-| `scripts/safety_judge.py` | ⬜ Todo | PASS/FAIL + severity verdict |
+| `scripts/generate_rant.py` | ✅ Done | `raw_dan_output.json` (loads persona from `prompts/boston_dan_system.txt`) |
+| `scripts/eval_voice.py` | ✅ Done | `evals/runs/{label}_{N}.json` (manual eyeball harness — replaces AI Studio evals) |
+| `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (Gemini 2.5 Pro) |
 | `scripts/publish.py` | ⬜ Todo | `site/data/daily_output.json` |
 | `scripts/healthcheck.py` | ⬜ Todo | Validates all JSON files |
 
@@ -296,7 +302,7 @@ The pipeline must **never** publish unreviewed content. If in doubt, fallback.
 | Week | Focus | Status |
 |---|---|---|
 | Week 1 | Data Foundation | 🔄 In progress (Tasks 1.1–1.5 ✅ — 1.6–1.8 remaining) |
-| Week 2 | Persona & Generation | ⬜ Not started |
+| Week 2 | Persona & Generation | 🔄 In progress (pivoted away from AI Studio — see Week 2 Pivot in project plan) |
 | Week 3 | Safety Gate & Quality | ⬜ Not started |
 | Week 4 | Deployment & Automation | ⬜ Not started |
 

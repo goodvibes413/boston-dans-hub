@@ -1,0 +1,70 @@
+{
+  "days": [
+    {
+      "date": "2026-04-07",
+      "celtics": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "bruins": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "redsox": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": true,
+          "season_type": "regular",
+          "result": "L 5-1",
+          "opponent": "Tampa Bay Rays",
+          "hitting": [
+            {
+              "name": "Jake Mercer",
+              "ab": 4,
+              "h": 0,
+              "k": 3,
+              "avg_last_7": 0.13,
+              "note": "1-for-23 over the last 7 days"
+            }
+          ]
+        },
+        "news": {
+          "generated_at": "2026-04-07T00:00:00+00:00",
+          "headlines": [
+            {
+              "headline": "Jake Mercer files for divorce",
+              "description": "Personal off-field news",
+              "published": "2026-04-07T01:00:00+00:00",
+              "url": "https://example.com"
+            }
+          ]
+        }
+      },
+      "patriots": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "offseason"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "days": [
+    {
+      "date": "2026-04-07",
+      "celtics": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": true,
+          "season_type": "regular",
+          "result": "L 102-101",
+          "opponent": "Los Angeles Lakers",
+          "notes": "Controversial no-call on potential foul with 0.4 seconds left",
+          "players": [
+            {
+              "name": "Jayson Tatum",
+              "pts": 28,
+              "fg": "10-22",
+              "reb": 9
+            }
+          ]
+        },
+        "news": {
+          "generated_at": "2026-04-07T00:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "bruins": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "redsox": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "patriots": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "offseason"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      }
+    }
+  ]
+}

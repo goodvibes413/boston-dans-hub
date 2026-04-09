@@ -1,0 +1,73 @@
+{
+  "days": [
+    {
+      "date": "2026-04-07",
+      "celtics": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "bruins": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "redsox": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": true,
+          "season_type": "regular",
+          "result": "W 6-4",
+          "opponent": "New York Yankees",
+          "pitching": [
+            {
+              "name": "Brayan Bello",
+              "ip": "6.0",
+              "h": 5,
+              "er": 2,
+              "k": 8,
+              "bb": 1,
+              "decision": "W"
+            }
+          ],
+          "hitting": [
+            {
+              "name": "Rafael Devers",
+              "ab": 4,
+              "h": 3,
+              "hr": 1,
+              "rbi": 3
+            }
+          ]
+        },
+        "news": {
+          "generated_at": "2026-04-07T00:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "patriots": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "offseason"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      }
+    }
+  ]
+}

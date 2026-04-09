@@ -1,0 +1,66 @@
+{
+  "days": [
+    {
+      "date": "2026-04-07",
+      "celtics": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": true,
+          "season_type": "regular",
+          "result": "W 112-104",
+          "opponent": "Miami Heat",
+          "players": [
+            {
+              "name": "Jayson Tatum",
+              "min": 38,
+              "pts": 22,
+              "fg": "8-21",
+              "fg_pct": 0.381,
+              "three": "2-8",
+              "three_pct": 0.25,
+              "reb": 7,
+              "ast": 5
+            }
+          ]
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "bruins": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "redsox": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "patriots": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "offseason"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      }
+    }
+  ]
+}
