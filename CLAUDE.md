@@ -11,7 +11,7 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 ## Repository
 
 - **GitHub repo**: `goodvibes413/boston-dans-hub`
-- **Local path**: `/Users/michaeldavey/Projects/fanbot-project/`
+- **Local path**: your local clone of `goodvibes413/boston-dans-hub`
 - **Live site** (when deployed): `https://goodvibes413.github.io/boston-dans-hub/`
 
 ---
@@ -311,7 +311,7 @@ The pipeline must **never** publish unreviewed content. If in doubt, fallback.
 ## How to Run the Pipeline Locally
 
 ```bash
-cd /Users/michaeldavey/Projects/fanbot-project
+cd boston-dans-hub
 
 # Run individual fetchers
 python3 scripts/fetch_nba.py
