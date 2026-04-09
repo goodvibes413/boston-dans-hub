@@ -21,12 +21,11 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 ```
 /
 ├── scripts/          # Python data fetchers and generation scripts
-├── prompts/          # Persona / system prompt source-of-truth (e.g. boston_dan_system.txt)
-├── data/             # JSON data files (gitignored: .env)
+├── prompts/          # Persona / system prompt source-of-truth (boston_dan_system.txt)
+├── data/             # JSON data files (gitignored — changes daily)
 ├── evals/
 │   ├── fixtures/     # Hand-crafted rolling_7day-shaped test inputs
 │   └── runs/         # Generated outputs for manual review (gitignored)
-├── linkedin/         # Build-in-public post drafts
 ├── site/             # Static website files (deployed via GitHub Pages)
 │   └── data/         # daily_output.json served to the frontend
 ├── docs/             # Internal documentation (e.g., SAFETY.md)
@@ -43,14 +42,16 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 | Layer | Tool | Notes |
 |---|---|---|
 | Data fetching | Python stdlib only (`urllib`, `json`) | No third-party HTTP libs |
-| LLM generation | Gemini 2.5 Flash via `google-generativeai` | Read key from `GEMINI_API_KEY` env var; override via `GEMINI_MODEL` |
-| Safety judge | Gemini 2.5 Flash | Same model as generator; Pro has no free tier. Override via `JUDGE_MODEL` |
+| LLM generation | Gemini 2.5 Flash via `google-genai` | Read key from `GEMINI_API_KEY` env var; override via `GEMINI_MODEL` |
+| Safety judge | Gemini 2.5 Flash | Pro has no free tier. Override via `JUDGE_MODEL` |
 | Static site | Vanilla HTML/CSS/JS | No build tools — `fetch()` loads JSON |
 | CI/CD | GitHub Actions | Cron at 06:00 ET daily |
 | Hosting | GitHub Pages | `/site` branch/folder |
 | Sports data | Public ESPN + NHL + MLB APIs | No auth keys required |
 
-**Never** add third-party Python packages beyond `google-genai` and `requests` without discussion. (`google-generativeai` is deprecated and no longer used.) The goal is a minimal, auditable dependency footprint.
+**SDK**: Use `google-genai` (`from google import genai; from google.genai import types`). The old `google-generativeai` package is fully deprecated — do not use it.
+
+**Never** add third-party Python packages beyond `google-genai` without discussion. The goal is a minimal, auditable dependency footprint.
 
 ---
 
@@ -66,9 +67,9 @@ update_store.py     → data/rolling_7day.json  (rolling 7-entry window)
 fetch_schedule.py   → data/upcoming_schedule.json  (merged, sorted)
 fetch_news.py       → data/latest_news.json  (merged, most-recent-first)
     ↓
-generate_rant.py    → data/raw_dan_output.json  (Gemini 1.5 Flash + grounding)
+generate_rant.py    → data/raw_dan_output.json  (Gemini 2.5 Flash + grounding)
     ↓
-safety_judge.py     → PASS / FAIL + severity  (Gemini 1.5 Pro)
+safety_judge.py     → PASS / FAIL + severity  (Gemini 2.5 Flash)
     ↓
 publish.py          → site/data/daily_output.json  (or safe fallback)
     ↓
@@ -91,10 +92,83 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/fetch_schedule.py` | ✅ Done | `upcoming_schedule.json` (merged, sorted) |
 | `scripts/fetch_news.py` | ✅ Done | `latest_news.json` (merged, most-recent-first) |
 | `scripts/generate_rant.py` | ✅ Done | `raw_dan_output.json` (loads persona from `prompts/boston_dan_system.txt`) |
-| `scripts/eval_voice.py` | ✅ Done | `evals/runs/{label}_{N}.json` (manual eyeball harness — replaces AI Studio evals) |
-| `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (Gemini 2.5 Pro) |
+| `scripts/eval_voice.py` | ✅ Done | `evals/runs/{label}_{N}.json` (manual eyeball harness) |
+| `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (Gemini 2.5 Flash) |
 | `scripts/publish.py` | ⬜ Todo | `site/data/daily_output.json` |
 | `scripts/healthcheck.py` | ⬜ Todo | Validates all JSON files |
+
+---
+
+## Gemini API Patterns
+
+### Client setup (new SDK)
+```python
+from google import genai
+from google.genai import types
+
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+resp = client.models.generate_content(
+    model=model_name,
+    contents=user_message,
+    config=types.GenerateContentConfig(
+        system_instruction=system_prompt,
+        temperature=0.9,
+    )
+)
+```
+
+### Grounding + JSON conflict
+`response_mime_type="application/json"` is incompatible with search grounding in the new SDK.
+**Two-attempt strategy**: first call with grounding ON (no mime type), retry with grounding OFF + `force_json=True` if JSON parse fails.
+
+### Retry logic (503/429)
+Both `generate_rant.py` and `safety_judge.py` use `call_with_retry()`:
+- 503 UNAVAILABLE: exponential backoff 2s → 5s → 10s (3 retries)
+- 429 QUOTA_EXCEEDED: parse `retryDelay` from error response and wait that duration
+- Other errors (400, 401): fail immediately, no retry
+- On exhaustion: exit with code 1, let next cron run retry
+
+### Free tier model availability
+- `gemini-2.5-flash`: ✅ free tier available
+- `gemini-2.5-pro`: ❌ no free tier (limit: 0) — do not use as default
+
+---
+
+## The Eval Workflow
+
+Fixtures are synthetic test cases — they don't need to match real game data. They're designed to test specific behaviors.
+
+```bash
+# Run a single fixture once
+python3 scripts/eval_voice.py --fixture evals/fixtures/accuracy_tatum_22pts.json --n 1
+
+# Run multiple times to check consistency
+python3 scripts/eval_voice.py --fixture evals/fixtures/voice_no_games.json --n 3
+```
+
+**Reading the summary output:**
+
+| Field | What to check | Red flag |
+|---|---|---|
+| `keys` | All 5 keys present? | Missing any of: morning_brew, trend_watch, news_digest, box_scores, schedule |
+| `brew_paragraphs` | Should be 3 | Anything other than 3 |
+| `brew_words` | 150–300 is healthy | Under 120 = too thin; over 400 = rambling |
+| `news_count` | ≥0; matches relevant headlines in fixture | 0 when fixture has relevant news = Dan missed it |
+| `news_headlines` | Cross-check against fixture | Personal news (divorce etc.) should NOT appear |
+| `stat_numbers` | Every number must exist in fixture data | Number present with no fixture match = hallucination |
+
+**Fixture design rules:**
+- Use fictional player names for any sensitive scenarios (conduct violations, off-field news)
+- Real player names only for stats/performance fixtures (accuracy, memory, voice)
+- Synthetic dates and scores are fine — fixtures test behavior, not real game data
+- Document pass/fail criteria in a `_fixture_notes` key
+
+**Taking action on eval results** — all persona changes go in `prompts/boston_dan_system.txt`:
+- Dan cites wrong stats → tighten Stats Discipline section
+- Dan mentions off-field personal news → add specific pattern to Safety section
+- Dan sounds generic → add specific Boston-isms or phrasings
+- Dan repeats catchphrases → add "vary your expressions" rule
+- Safety judge FAILs → read flags, trace to output line, tighten persona AND judge rubric
 
 ---
 
@@ -128,27 +202,11 @@ Every boxscore output includes a `"season_type"` field:
 ```
 
 **Season type values:**
-- `"preseason"` — Practice games before regular season (Sep for NBA, Aug for NFL, etc.)
+- `"preseason"` — Practice games before regular season
 - `"regular"` — Regular season play
-- `"playoff"` — Postseason play (May–Jun for NBA, Oct–Nov for MLB, Feb for NFL, etc.)
-- `"offseason"` — No games (typically Jan–Aug for NFL, Dec–Feb for MLB, etc.)
+- `"playoff"` — Postseason play
+- `"offseason"` — No games
 - `"unknown"` — Unable to classify (should be rare)
-
-### Schedule Schemas (all sports)
-
-Every game in a schedule's `"games"` array includes `"season_type"`:
-```json
-{
-  "games": [
-    {
-      "date": "2025-04-14",
-      "opponent": "Charlotte Hornets",
-      "season_type": "regular",
-      ...other fields...
-    }
-  ]
-}
-```
 
 ### `data/rolling_7day.json`
 ```json
@@ -160,91 +218,55 @@ Every game in a schedule's `"games"` array includes `"season_type"`:
         "boxscore": { "game_date": "...", "played": false, "season_type": "regular" },
         "news":     { "generated_at": "...", "headlines": [...] }
       },
-      "bruins": {
-        "boxscore": { "game_date": "...", "played": false, "season_type": "unknown" },
-        "news":     { "generated_at": "...", "headlines": [...] }
-      },
-      "redsox": {
-        "boxscore": { "game_date": "...", "played": true, "season_type": "regular", "games": [...] },
-        "news":     { "generated_at": "...", "headlines": [...] }
-      },
-      "patriots": {
-        "boxscore": { "game_date": "...", "played": false, "season_type": "offseason" },
-        "news":     { "generated_at": "...", "headlines": [...] }
-      }
+      "bruins":   { "boxscore": {...}, "news": {...} },
+      "redsox":   { "boxscore": {...}, "news": {...} },
+      "patriots": { "boxscore": {...}, "news": {...} }
     }
   ]
 }
 ```
-Max 7 entries. Oldest entry is dropped when a new day is appended.
-Each team always has both `boxscore` and `news` keys (either may be absent if the fetch script failed).
+Max 7 entries. Oldest entry dropped when a new day is appended.
 
 ### `data/upcoming_schedule.json`
 ```json
 {
   "generated_at": "2026-04-07T16:00:00+00:00",
-  "from_date":    "2026-04-07",
-  "to_date":      "2026-04-14",
-  "game_count":   15,
   "games": [
     {
-      "sport":        "NHL",
-      "team":         "bruins",
-      "game_id":      "2025021237",
-      "date":         "2026-04-07",
-      "time_et":      "7:00 PM ET",
-      "datetime_utc": "2026-04-07T23:00:00+00:00",
-      "home_team":    "Carolina Hurricanes",
-      "away_team":    "Boston Bruins",
-      "venue":        "Lenovo Center",
-      "status":       "Scheduled",
-      "season_type":  "regular",
-      "broadcast":    null,
-      "notes":        { "opponent_abbrev": "CAR" }
+      "sport": "NHL", "team": "bruins", "date": "2026-04-07",
+      "time_et": "7:00 PM ET", "home_team": "Carolina Hurricanes",
+      "away_team": "Boston Bruins", "season_type": "regular"
     }
   ]
 }
 ```
-Sorted chronologically. `time_et` is "TBD" when no game time has been announced.
-Sport-specific extras live in `notes` (NHL: `opponent_abbrev`; MLB: `day_night`, `doubleheader`, `game_number`).
-
-### `data/latest_news.json`
-```json
-{
-  "generated_at":  "2026-04-07T16:00:00+00:00",
-  "article_count": 12,
-  "articles": [
-    {
-      "team":        "patriots",
-      "sport":       "NFL",
-      "team_name":   "New England Patriots",
-      "headline":    "2026 NFL mock draft: Schrager projects 32 first-round picks",
-      "description": "...",
-      "published":   "2026-04-07T14:25:39+00:00",
-      "url":         "https://..."
-    }
-  ]
-}
-```
-Sorted newest-to-oldest by `published`. Up to 3 articles per team (inherited from each fetch script's `NEWS_TOP_N`).
 
 ### `site/data/daily_output.json` (Gemini output schema)
 ```json
 {
   "morning_brew": ["paragraph1", "paragraph2", "paragraph3"],
   "trend_watch": [
-    { "category": "Heater", "player": "Name", "trend": "...", "dans_take": "..." }
+    { "category": "Heater|Cold Snap|Bullpen Watch|Streak|Slump", "player": "...", "trend": "...", "dans_take": "..." }
   ],
-  "box_scores": { ...last night's stats by team... },
-  "schedule": [ ...next 3 days of games... ]
+  "news_digest": [
+    { "headline": "...", "url": "...", "dans_take": "one sentence in Dan's voice" }
+  ],
+  "box_scores": { "celtics": {...}, "bruins": {...}, "redsox": {...}, "patriots": {...} },
+  "schedule": [ { "date": "...", "matchup": "...", "time_et": "..." } ]
 }
 ```
+
+`news_digest` rules:
+- Only relevant Boston sports headlines — no pure personal news (divorce, relationships, family)
+- Conduct/legal headlines get a deferential dans_take; defer to league process
+- Empty list `[]` if no relevant headlines
 
 ### Safe fallback content (used when safety judge fails)
 ```json
 {
   "morning_brew": ["Dan's takin' the mornin' off. Check back tomorrow. In the meantime, go grab a Dunks."],
   "trend_watch": [],
+  "news_digest": [],
   "box_scores": {},
   "schedule": []
 }
@@ -254,28 +276,34 @@ Sorted newest-to-oldest by `published`. Up to 3 articles per team (inherited fro
 
 ## Boston Dan's Persona (summary)
 
-- **Voice**: High-energy Boston sports fan. Opinionated, cynical, salty — but radio-clean.
+Full persona lives in `prompts/boston_dan_system.txt` — that is the source of truth. This is a summary only.
+
+- **Voice**: High-energy Boston sports fan. Opinionated, cynical, salty — but radio-clean and never cruel.
 - **Slang**: wicked, pissah, the Garden, the Hub, Dunks, the Pike — natural, not overdone.
+- **Yawkey Way**: Dan calls it Yawkey Way. Always. He refuses to say Jersey Street and will grumble about the rename if it comes up.
 - **Takes**: Strong opinions on coaching, draft, rivals. No hedging.
 - **The Lookback Rule**: Dan always references the full 7-day window — streaks, slumps, notable events from days ago.
 - **Stats discipline**: Every cited number must exactly match the structured input data. Zero hallucination.
+- **Off-field conduct**: Dan uses a league-policy-based framework — not a blanket ban. Pure personal news (divorce, relationships) = silence. Conduct situations covered by league policy (NFL Personal Conduct Policy, NBA/MLB/NHL conduct rules) = brief human decency + defer to process + conditional "if" language for on-field impact. Never speculates on guilt or editorializes on character.
 
 ---
 
 ## Safety Rules (non-negotiable)
 
-The safety judge must **FAIL** any output containing:
-1. Profanity or curse words (including censored versions like s**t)
+The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest`. It must **FAIL** any output containing:
+
+1. Profanity or curse words (including censored versions like s**t, fr*ckin')
 2. Racist, sexist, anti-LGBTQ+, or antisemitic content
 3. Personal attacks on a player's character, family, or personal life
-4. Content promoting violence or hate
-5. Fabricated statistics not present in the source data
+4. Personal attacks on coaches, refs, or officials
+5. Pure personal news with no league conduct dimension (divorce, relationships, family). NOTE: brief deferential acknowledgment of a conduct situation under a league policy is PERMITTED if it expresses basic human decency, defers to process, and uses conditional "if" language for on-field impact
+6. Content promoting violence or hate
+7. Fabricated statistics not present in the source data
+8. `news_digest` dans_take containing personal attacks, guilt speculation, or character judgments
 
 **Severity logic:**
-- `low` → retry generation once with a tighter prompt → if retry passes, publish; if not, fallback
-- `high` → immediate fallback, no retry
-
-The pipeline must **never** publish unreviewed content. If in doubt, fallback.
+- `low` → borderline phrase; retry once with tighter prompt
+- `high` → clear violation; immediate fallback, no retry
 
 ---
 
@@ -283,17 +311,23 @@ The pipeline must **never** publish unreviewed content. If in doubt, fallback.
 
 | Variable | Used By | Notes |
 |---|---|---|
-| `GEMINI_API_KEY` | `generate_rant.py`, `safety_judge.py` | Set in `.env` locally; GitHub Actions secret in CI |
+| `GEMINI_API_KEY` | `generate_rant.py`, `safety_judge.py` | Set in `~/.zshrc` locally; GitHub Actions secret in CI |
+| `GEMINI_MODEL` | `generate_rant.py` | Default: `gemini-2.5-flash` |
+| `JUDGE_MODEL` | `safety_judge.py` | Default: `gemini-2.5-flash` |
+| `ROLLING_STORE_PATH` | `generate_rant.py` | Default: `data/rolling_7day.json`; override in evals to point at fixtures |
+| `OUTPUT_PATH` | `generate_rant.py` | Default: `data/raw_dan_output.json`; override in evals |
+| `INPUT_PATH` | `safety_judge.py` | Default: `data/raw_dan_output.json` |
 
 ---
 
 ## Error Handling Conventions
 
 - Every fetcher script must write an empty-but-valid JSON on failure so downstream scripts don't crash
-- `generate_rant.py` retries once on API failure before exiting with error
+- `generate_rant.py` uses exponential backoff retry (2s → 5s → 10s) on 503/429, then exits with code 1
+- `safety_judge.py` uses the same retry pattern
 - `publish.py` owns the safety gate and fallback logic — it is the final arbiter
 - All scripts print clear status messages: what they're doing, what they found, where they saved output
-- Exit code `0` = success, `1` = failure (especially important for `safety_judge.py`)
+- Exit code `0` = success, `1` = failure
 
 ---
 
@@ -301,9 +335,9 @@ The pipeline must **never** publish unreviewed content. If in doubt, fallback.
 
 | Week | Focus | Status |
 |---|---|---|
-| Week 1 | Data Foundation | 🔄 In progress (Tasks 1.1–1.5 ✅ — 1.6–1.8 remaining) |
-| Week 2 | Persona & Generation | 🔄 In progress (pivoted away from AI Studio — see Week 2 Pivot in project plan) |
-| Week 3 | Safety Gate & Quality | ⬜ Not started |
+| Week 1 | Data Foundation | ✅ Complete |
+| Week 2 | Persona & Generation | ✅ Complete (pivoted away from AI Studio — direct Gemini API) |
+| Week 3 | Publish & Automation | 🔄 In progress |
 | Week 4 | Deployment & Automation | ⬜ Not started |
 
 ---
@@ -322,13 +356,15 @@ python3 scripts/fetch_nfl.py
 # Build the store and schedule
 python3 scripts/update_store.py
 python3 scripts/fetch_schedule.py
+python3 scripts/fetch_news.py
 
-# Generate and publish
+# Generate and judge
 python3 scripts/generate_rant.py
-python3 scripts/publish.py
+python3 scripts/safety_judge.py
 
-# Validate everything
+# Publish and validate
+python3 scripts/publish.py
 python3 scripts/healthcheck.py
 ```
 
-Requires `GEMINI_API_KEY` in the environment (or a `.env` file — never commit `.env`).
+Requires `GEMINI_API_KEY` in the environment. Set once in `~/.zshrc` — never commit it.
