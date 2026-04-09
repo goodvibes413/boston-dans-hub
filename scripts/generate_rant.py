@@ -21,8 +21,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 PROMPT_PATH = REPO / "prompts" / "boston_dan_system.txt"
 DEFAULT_STORE = REPO / "data" / "rolling_7day.json"
-SCHEDULE_PATH = REPO / "data" / "upcoming_schedule.json"
-NEWS_PATH = REPO / "data" / "latest_news.json"
+DEFAULT_SCHEDULE = REPO / "data" / "upcoming_schedule.json"
+DEFAULT_NEWS = REPO / "data" / "latest_news.json"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
 DEFAULT_MODEL = "gemini-2.5-flash"
@@ -132,6 +132,8 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
 
 def main():
     store_path = Path(os.environ.get("ROLLING_STORE_PATH", DEFAULT_STORE))
+    schedule_path = Path(os.environ.get("SCHEDULE_PATH", DEFAULT_SCHEDULE))
+    news_path = Path(os.environ.get("NEWS_PATH", DEFAULT_NEWS))
     output_path = Path(os.environ.get("OUTPUT_PATH", DEFAULT_OUTPUT))
     model_name = os.environ.get("GEMINI_MODEL", DEFAULT_MODEL)
 
@@ -144,8 +146,8 @@ def main():
     system_prompt = PROMPT_PATH.read_text()
 
     rolling = load_json(store_path)
-    schedule = load_json(SCHEDULE_PATH)
-    news = load_json(NEWS_PATH)
+    schedule = load_json(schedule_path)
+    news = load_json(news_path)
 
     user_message = build_user_message(rolling, schedule, news)
 

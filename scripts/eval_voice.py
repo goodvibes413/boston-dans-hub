@@ -58,12 +58,21 @@ def main():
     label = args.label or fixture.stem
     RUNS_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Write empty stubs for schedule/news — fixtures are self-contained;
+    # these files don't exist when data/ is gitignored.
+    stub_schedule = RUNS_DIR / f"{label}_stub_schedule.json"
+    stub_news = RUNS_DIR / f"{label}_stub_news.json"
+    stub_schedule.write_text('{"games": []}')
+    stub_news.write_text('{"articles": []}')
+
     print(f"eval_voice: fixture={fixture.name} label={label} n={args.n}")
     summaries = []
     for i in range(1, args.n + 1):
         out_path = RUNS_DIR / f"{label}_{i}.json"
         env = os.environ.copy()
         env["ROLLING_STORE_PATH"] = str(fixture)
+        env["SCHEDULE_PATH"] = str(stub_schedule)
+        env["NEWS_PATH"] = str(stub_news)
         env["OUTPUT_PATH"] = str(out_path)
         print(f"  run {i}/{args.n} → {out_path.name}")
         result = subprocess.run(
