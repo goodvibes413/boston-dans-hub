@@ -1,0 +1,68 @@
+{
+  "days": [
+    {
+      "date": "2026-04-07",
+      "celtics": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": true,
+          "season_type": "regular",
+          "result": "L 105-98",
+          "opponent": "Philadelphia 76ers",
+          "players": [
+            {
+              "name": "Jayson Tatum",
+              "min": 12,
+              "pts": 8,
+              "note": "left game with ankle injury Q1"
+            }
+          ]
+        },
+        "news": {
+          "generated_at": "2026-04-07T00:00:00+00:00",
+          "headlines": [
+            {
+              "headline": "Tatum exits with sprained ankle",
+              "description": "X-rays negative, day-to-day",
+              "published": "2026-04-07T02:00:00+00:00",
+              "url": "https://example.com"
+            }
+          ]
+        }
+      },
+      "bruins": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "redsox": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "regular"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      },
+      "patriots": {
+        "boxscore": {
+          "game_date": "2026-04-06",
+          "played": false,
+          "season_type": "offseason"
+        },
+        "news": {
+          "generated_at": "2026-04-07T21:00:00+00:00",
+          "headlines": []
+        }
+      }
+    }
+  ]
+}

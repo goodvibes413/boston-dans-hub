@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""eval_voice.py — run generate_rant.py against a fixture N times for manual review.
+
+Usage:
+  python scripts/eval_voice.py --fixture evals/fixtures/accuracy_tatum_22pts.json --n 5
+
+Writes each output to evals/runs/{label}_{N}.json and prints a summary table.
+There is no automated scoring — read the JSON files yourself. That IS the eval.
+"""
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parent.parent
+RUNS_DIR = REPO / "evals" / "runs"
+
+
+def stat_numbers_from(text: str):
+    """Crude extraction of digit-strings for the accuracy eyeball check."""
+    import re
+    return re.findall(r"\d+(?:\.\d+)?%?", text)
+
+
+def summarize(path: Path):
+    try:
+        d = json.loads(path.read_text())
+    except Exception as e:
+        return {"error": str(e)}
+    brew = d.get("morning_brew", [])
+    brew_text = " ".join(brew) if isinstance(brew, list) else str(brew)
+    news_digest = d.get("news_digest", []) or []
+    return {
+        "keys": sorted(d.keys()),
+        "brew_paragraphs": len(brew) if isinstance(brew, list) else 0,
+        "brew_words": len(brew_text.split()),
+        "trend_count": len(d.get("trend_watch", []) or []),
+        "news_count": len(news_digest),
+        "news_headlines": [n.get("headline", "")[:60] for n in news_digest],
+        "stat_numbers": stat_numbers_from(brew_text)[:20],
+    }
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--fixture", required=True, help="Path to a rolling_7day-shaped fixture")
+    ap.add_argument("--n", type=int, default=5, help="Number of generations to run")
+    ap.add_argument("--label", help="Label for output filenames (default: fixture stem)")
+    args = ap.parse_args()
+
+    fixture = Path(args.fixture).resolve()
+    if not fixture.exists():
+        sys.exit(f"error: fixture not found: {fixture}")
+
+    label = args.label or fixture.stem
+    RUNS_DIR.mkdir(parents=True, exist_ok=True)
+
+    print(f"eval_voice: fixture={fixture.name} label={label} n={args.n}")
+    summaries = []
+    for i in range(1, args.n + 1):
+        out_path = RUNS_DIR / f"{label}_{i}.json"
+        env = os.environ.copy()
+        env["ROLLING_STORE_PATH"] = str(fixture)
+        env["OUTPUT_PATH"] = str(out_path)
+        print(f"  run {i}/{args.n} → {out_path.name}")
+        result = subprocess.run(
+            [sys.executable, str(REPO / "scripts" / "generate_rant.py")],
+            env=env,
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0:
+            print(f"    FAIL: {result.stderr.strip()}", file=sys.stderr)
+            summaries.append({"run": i, "error": result.stderr.strip()[:200]})
+            continue
+        summaries.append({"run": i, **summarize(out_path)})
+
+    print("\nSummary:")
+    for s in summaries:
+        print(f"  {s}")
+    print(f"\nOpen evals/runs/{label}_*.json in your editor to read the outputs.")
+
+
+if __name__ == "__main__":
+    main()
