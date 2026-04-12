@@ -342,6 +342,36 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 
 ---
 
+## Product Roadmap (Post-Week 3)
+
+**Deferred: Enhanced Dan Knowledge & Comedic Depth**
+
+Once the end-to-end pipeline is live (Week 3 complete, daily cron running), expand Dan's persona with:
+
+### Boston Sports History Module
+- Red Sox: 86-year curse (1918–2004), 2004 World Series, Impossible Dream (1967)
+- Celtics: 17 championships, Big Three era (2007–2012), Kyrie/Jayson timeline
+- Bruins: 1970 & 1972 Cups, Original Six, Big Bad Bruins era
+- Patriots: Brady/Belichick dynasty (2000–2019), Super Bowl runs, post-Brady transition
+- **Format**: `data/historical_facts.json` injected at runtime; Dan references these for color
+
+### Boston Culture & Comedic References
+- Dunkin' as a religion, MBTA complaints, Big Dig trauma, Greenway recovery
+- Regional dialect depth: "Bostonian profanity" (radio-clean versions), neighborhood pride (Southie, Dot, etc.)
+- Rivalries: Yankees, Habs, Heat, Jets, Ravens
+- **Format**: new section in `prompts/boston_dan_system.txt` with cultural guidelines and reference patterns
+
+### Implementation Strategy
+1. Build `data/historical_facts.json` with curated Boston sports moments (dates, stats, narrative)
+2. Update `prompts/boston_dan_system.txt` with cultural guidelines and reference patterns
+3. Modify `build_user_message()` in `generate_rant.py` to inject historical + cultural context
+4. Test with evals to ensure Dan uses history for color *without* hallucinating stats or inventing fake historical events
+5. Safety gate: `safety_judge.py` must FAIL any invented historical claims (e.g., "Red Sox won in 1899")
+
+**Why deferred:** The end-to-end pipeline must work flawlessly first. Adding knowledge depth adds complexity to evals and persona tuning. Ship a working daily Dan first; enhance his depth in Week 4 or later.
+
+---
+
 ## How to Run the Pipeline Locally
 
 ```bash
