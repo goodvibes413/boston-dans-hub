@@ -2,9 +2,10 @@ name: Morning Brew — Daily Dan Commentary
 
 on:
   schedule:
-    # 06:00 ET = 11:00 UTC (GitHub Actions uses UTC)
+    # 03:00 ET = 08:00 UTC (GitHub Actions uses UTC)
+    # Moved from 06:00 ET to avoid peak Gemini API demand times
     # Note: Actual run time may vary by a few minutes due to GitHub's queue
-    - cron: '0 11 * * *'
+    - cron: '0 8 * * *'
   # Allow manual trigger for testing
   workflow_dispatch:
 
