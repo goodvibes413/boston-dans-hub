@@ -1,0 +1,103 @@
+name: Morning Brew — Daily Dan Commentary
+
+on:
+  schedule:
+    # 06:00 ET = 11:00 UTC (GitHub Actions uses UTC)
+    # Note: Actual run time may vary by a few minutes due to GitHub's queue
+    - cron: '0 11 * * *'
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  daily_pipeline:
+    name: Generate and publish Boston Dan commentary
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install google-genai pydantic
+
+      - name: Fetch NBA games
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/fetch_nba.py
+
+      - name: Fetch NHL games
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/fetch_nhl.py
+
+      - name: Fetch MLB games
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/fetch_mlb.py
+
+      - name: Fetch NFL games
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/fetch_nfl.py
+
+      - name: Update scoreboard store
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/update_store.py
+
+      - name: Fetch game schedule
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/fetch_schedule.py
+
+      - name: Fetch latest news
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/fetch_news.py
+
+      - name: Generate Dan commentary
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/generate_rant.py
+
+      - name: Run safety judge
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/safety_judge.py
+
+      - name: Publish output
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/publish.py
+
+      - name: Health check
+        run: python3 scripts/healthcheck.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.email "github-actions@github.com"
+          git config user.name "GitHub Actions"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: daily Dan output for $(date +%Y-%m-%d)"
+          git push
+
+      - name: Summary
+        if: success()
+        run: |
+          echo "✅ Morning Brew pipeline completed successfully"
+          echo "📍 Published: site/data/daily_output.json"
+
+      - name: Failure summary
+        if: failure()
+        run: |
+          echo "❌ Morning Brew pipeline failed"
+          echo "📍 Check logs above for details"
+          exit 1
