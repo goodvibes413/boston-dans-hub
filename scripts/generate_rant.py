@@ -28,15 +28,15 @@ DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 DEFAULT_MODEL = "gemini-2.5-flash"
 
 
-def call_with_retry(fn, max_retries=3):
+def call_with_retry(fn, max_retries=4):
     """
     Call fn() with exponential backoff retry on 503/429 errors.
 
-    On 503 UNAVAILABLE: wait 2s, 5s, 10s
+    On 503 UNAVAILABLE: wait 5s, 15s, 30s, 60s (up to ~2 min — covers demand spikes)
     On 429 QUOTA_EXCEEDED: parse retryDelay from error, wait that duration
     On other errors: fail immediately
     """
-    backoff_delays = [2, 5, 10]
+    backoff_delays = [5, 15, 30, 60]
 
     for attempt in range(max_retries + 1):
         try:
