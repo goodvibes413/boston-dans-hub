@@ -1,0 +1,357 @@
+/* Boston Dan's Hub — CSS */
+
+:root {
+    --bg-primary: #0D0D0D;
+    --bg-surface: #1A1A1A;
+    --bg-hover: #2A2A2A;
+    --border: #2A2A2A;
+    --accent-primary: #00A651;
+    --accent-danger: #BD3039;
+    --text-primary: #F5F5F5;
+    --text-secondary: #999;
+    --text-muted: #666;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    border-bottom: 2px solid var(--accent-primary);
+    padding-bottom: 30px;
+    margin-bottom: 40px;
+}
+
+.title {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    color: var(--accent-primary);
+}
+
+.tagline {
+    font-size: 1.1em;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+.updated {
+    font-size: 0.85em;
+    color: var(--text-muted);
+}
+
+/* Fallback Banner */
+.fallback-banner {
+    background-color: var(--bg-surface);
+    border-left: 4px solid var(--accent-danger);
+    padding: 15px 20px;
+    margin-bottom: 30px;
+    border-radius: 4px;
+}
+
+.fallback-banner p {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Sections */
+.section {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: var(--accent-primary);
+}
+
+/* Morning Brew */
+.morning-brew {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.morning-brew p {
+    font-size: 1.05em;
+    line-height: 1.8;
+    color: var(--text-primary);
+    border-left: 3px solid var(--accent-primary);
+    padding-left: 15px;
+}
+
+/* Trend Watch */
+.trends {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.trend-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 15px;
+    transition: border-color 0.2s;
+}
+
+.trend-card:hover {
+    border-color: var(--accent-primary);
+}
+
+.trend-category {
+    display: inline-block;
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.trend-player {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+}
+
+.trend-text {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.trend-take {
+    font-size: 0.95em;
+    color: var(--accent-primary);
+    font-style: italic;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+/* News Digest */
+.news-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.news-item {
+    padding: 15px;
+    background-color: var(--bg-primary);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.news-item:hover {
+    background-color: var(--bg-hover);
+}
+
+.news-headline {
+    display: block;
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+}
+
+.news-headline:hover {
+    color: var(--accent-danger);
+}
+
+.news-take {
+    color: var(--text-secondary);
+    font-size: 0.95em;
+    font-style: italic;
+}
+
+/* Box Scores */
+.scores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.score-card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+}
+
+.score-sport {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.score-teams {
+    margin-bottom: 15px;
+}
+
+.score-team {
+    font-size: 0.95em;
+    color: var(--text-secondary);
+    margin: 5px 0;
+}
+
+.score-team.winner {
+    font-weight: bold;
+    color: var(--accent-primary);
+    font-size: 1.1em;
+}
+
+.score-final {
+    font-size: 0.8em;
+    color: var(--text-muted);
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+/* Schedule */
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background-color: var(--bg-primary);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 4px;
+}
+
+.schedule-date {
+    font-weight: bold;
+    color: var(--accent-primary);
+    min-width: 80px;
+}
+
+.schedule-matchup {
+    flex: 1;
+    margin: 0 20px;
+    color: var(--text-primary);
+}
+
+.schedule-time {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    text-align: right;
+    min-width: 70px;
+}
+
+/* Footer */
+.footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85em;
+}
+
+/* Loading State */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+/* Error State */
+.error {
+    background-color: var(--bg-surface);
+    border-left: 4px solid var(--accent-danger);
+    padding: 20px;
+    border-radius: 4px;
+    color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 1.8em;
+    }
+
+    .section {
+        padding: 20px;
+    }
+
+    .trends {
+        grid-template-columns: 1fr;
+    }
+
+    .scores-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .schedule-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .schedule-time {
+        text-align: left;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.5em;
+    }
+
+    .section-title {
+        font-size: 1.2em;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .section {
+        padding: 15px;
+    }
+}

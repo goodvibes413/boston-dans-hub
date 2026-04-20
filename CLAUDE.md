@@ -44,11 +44,10 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 | Data fetching | Python stdlib only (`urllib`, `json`) | No third-party HTTP libs |
 | LLM generation | Gemini 2.5 Flash via `google-genai` | Read key from `GEMINI_API_KEY` env var; override via `GEMINI_MODEL` |
 | Safety judge | Gemini 2.5 Flash | Pro has no free tier. Override via `JUDGE_MODEL` |
-| Static site | Vanilla HTML/CSS/JS | No build tools — `fetch()` loads JSON |
-| CI/CD | GitHub Actions | Cron at 06:00 ET daily |
-| Hosting | GitHub Pages / Vercel | `/site` branch/folder |
+| Frontend | Vanilla HTML/CSS/JS | No build tools — pure `fetch()` loads `daily_output.json`, renders dynamically |
+| CI/CD | GitHub Actions | Daily cron at 03:00 ET (08:00 UTC) — moved from 06:00 ET to avoid peak API demand |
+| Hosting | GitHub Pages | `/site` folder → https://goodvibes413.github.io/boston-dans-hub/ |
 | Sports data | Public ESPN + NHL + MLB APIs | No auth keys required |
-| Daily cron | GitHub Actions | 03:00 ET (08:00 UTC) — moved from 06:00 ET to avoid peak API demand |
 
 **SDK**: Use `google-genai` (`from google import genai; from google.genai import types`). The old `google-generativeai` package is fully deprecated — do not use it.
 
@@ -97,6 +96,19 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (Gemini 2.5 Flash) |
 | `scripts/publish.py` | ✅ Done | `site/data/daily_output.json` (or safe fallback on judge failure) |
 | `scripts/healthcheck.py` | ✅ Done | Validates `site/data/daily_output.json` is parseable + complete |
+
+---
+
+## Frontend Files (Week 4)
+
+| File | Purpose |
+|---|---|
+| `site/index.html` | Main page structure — sections for Morning Brew, Trends, News, Scores, Schedule |
+| `site/style.css` | Boston Dan aesthetic — dark theme, Celtics green (#00A651), Red Sox red (#BD3039), Anton font for headings |
+| `site/app.js` | Fetch `data/daily_output.json`, render sections, fallback detection, XSS protection |
+| `site/data/daily_output.json` | Published Dan output (generated daily by GitHub Actions cron) |
+
+**Deployment**: GitHub Pages auto-deploys from `/site` folder on every `git push` to `main`.
 
 ---
 
