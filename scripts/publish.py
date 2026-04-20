@@ -2,7 +2,7 @@
 """
 publish.py — Safety gate and fallback arbiter.
 
-Reads raw Dan output, checks safety judge verdict, and publishes to site/data/daily_output.json.
+Reads raw Dan output, checks safety judge verdict, and publishes to docs/data/daily_output.json.
 - If safety_judge.py exits 0 (PASS): publish raw output
 - If safety_judge.py exits 1 (FAIL): publish SAFE_FALLBACK
 - If raw output is missing/unparseable: publish SAFE_FALLBACK
@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Constants
 RAW_OUTPUT_PATH = Path("data/raw_dan_output.json")
-PUBLISHED_OUTPUT_PATH = Path("site/data/daily_output.json")
+PUBLISHED_OUTPUT_PATH = Path("docs/data/daily_output.json")
 
 SAFE_FALLBACK = {
     "morning_brew": [
@@ -58,7 +58,7 @@ def write_json(path: Path, data: dict, label: str = "published") -> bool:
 def main():
     """Run the publishing pipeline."""
     print("=" * 60)
-    print("publish.py: Safety gate & publication")
+    print("publish.py: Safety gate → docs/data/daily_output.json")
     print("=" * 60)
 
     # Step 1: Read raw output
