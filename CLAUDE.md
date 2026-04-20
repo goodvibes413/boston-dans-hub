@@ -46,8 +46,9 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 | Safety judge | Gemini 2.5 Flash | Pro has no free tier. Override via `JUDGE_MODEL` |
 | Static site | Vanilla HTML/CSS/JS | No build tools — `fetch()` loads JSON |
 | CI/CD | GitHub Actions | Cron at 06:00 ET daily |
-| Hosting | GitHub Pages | `/site` branch/folder |
+| Hosting | GitHub Pages / Vercel | `/site` branch/folder |
 | Sports data | Public ESPN + NHL + MLB APIs | No auth keys required |
+| Daily cron | GitHub Actions | 03:00 ET (08:00 UTC) — moved from 06:00 ET to avoid peak API demand |
 
 **SDK**: Use `google-genai` (`from google import genai; from google.genai import types`). The old `google-generativeai` package is fully deprecated — do not use it.
 
@@ -94,8 +95,8 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/generate_rant.py` | ✅ Done | `raw_dan_output.json` (loads persona from `prompts/boston_dan_system.txt`) |
 | `scripts/eval_voice.py` | ✅ Done | `evals/runs/{label}_{N}.json` (manual eyeball harness) |
 | `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (Gemini 2.5 Flash) |
-| `scripts/publish.py` | ⬜ Todo | `site/data/daily_output.json` |
-| `scripts/healthcheck.py` | ⬜ Todo | Validates all JSON files |
+| `scripts/publish.py` | ✅ Done | `site/data/daily_output.json` (or safe fallback on judge failure) |
+| `scripts/healthcheck.py` | ✅ Done | Validates `site/data/daily_output.json` is parseable + complete |
 
 ---
 
@@ -283,6 +284,7 @@ Full persona lives in `prompts/boston_dan_system.txt` — that is the source of 
 - **Yawkey Way**: Dan calls it Yawkey Way. Always. He refuses to say Jersey Street and will grumble about the rename if it comes up.
 - **Takes**: Strong opinions on coaching, draft, rivals. No hedging.
 - **The Lookback Rule**: Dan always references the full 7-day window — streaks, slumps, notable events from days ago.
+- **Season Memory** (deferred to Week 4+): Dan is aware of current season context (record, playoff position, key injuries) and past season trends (rebuilds, streaks, notable trades). This gives his takes historical grounding beyond the 7-day window.
 - **Stats discipline**: Every cited number must exactly match the structured input data. Zero hallucination.
 - **Off-field conduct**: Dan uses a league-policy-based framework — not a blanket ban. Pure personal news (divorce, relationships) = silence. Conduct situations covered by league policy (NFL Personal Conduct Policy, NBA/MLB/NHL conduct rules) = brief human decency + defer to process + conditional "if" language for on-field impact. Never speculates on guilt or editorializes on character.
 
@@ -331,14 +333,81 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 
 ---
 
+## Week 3: Publish & Health Check Infrastructure
+
+### `publish.py` — Safety Gate & Fallback Arbiter
+
+**Responsibility**: Final decision gate. Reads `data/raw_dan_output.json`, runs `safety_judge.py`, and either publishes the output or writes a safe fallback.
+
+**Flow**:
+1. Check if `data/raw_dan_output.json` exists and is parseable
+   - If missing/unparseable → write SAFE_FALLBACK, exit 1
+2. Run `safety_judge.py` and capture exit code
+3. If exit code 0 (PASS):
+   - Validate JSON again
+   - Write to `site/data/daily_output.json`
+   - Exit 0
+4. If exit code 1 (FAIL):
+   - Write SAFE_FALLBACK to `site/data/daily_output.json`
+   - Exit 1
+
+**Error handling**:
+- Creates `site/data/` directory if missing (using `Path.mkdir(parents=True)`)
+- Gracefully handles malformed JSON with clear error messages
+- All output goes to stdout (visible in GitHub Actions logs)
+- Always returns an exit code: 0 (success) or 1 (failure)
+
+### `healthcheck.py` — Final Validation
+
+**Responsibility**: Last gate before the cron is considered successful. Validates that `site/data/daily_output.json` is well-formed and complete.
+
+**Checks**:
+1. File exists
+2. Valid JSON
+3. All required keys present: `morning_brew`, `trend_watch`, `news_digest`, `box_scores`, `schedule`
+4. Detects fallback content and prints warning (but still exits 0 — fallback is valid)
+
+**Output**:
+- Exit code 0 = success (even if fallback detected)
+- Exit code 1 = validation failed
+- Clear status messages in stdout
+
+### `.github/workflows/morning_brew.yml` — Daily Cron
+
+**Trigger**: `0 8 * * *` (03:00 ET = 08:00 UTC) — moved from 06:00 ET to reduce Gemini API contention
+
+**Pipeline** (runs all steps in order):
+```
+fetch_nba.py
+fetch_nhl.py
+fetch_mlb.py
+fetch_nfl.py
+update_store.py
+fetch_schedule.py
+fetch_news.py
+generate_rant.py
+safety_judge.py
+publish.py
+healthcheck.py
+```
+
+**Success criteria**: `healthcheck.py` exits 0
+
+**On failure**: 
+- Workflow exits 1 (shows red ❌ in GitHub)
+- Logs visible for debugging
+- Next day's run will retry
+
+---
+
 ## Build Progress
 
 | Week | Focus | Status |
 |---|---|---|
 | Week 1 | Data Foundation | ✅ Complete |
 | Week 2 | Persona & Generation | ✅ Complete (pivoted away from AI Studio — direct Gemini API) |
-| Week 3 | Publish & Automation | 🔄 In progress |
-| Week 4 | Deployment & Automation | ⬜ Not started |
+| Week 3 | Publish & Health Check | ✅ Complete (publish.py, healthcheck.py, morning_brew.yml workflow) |
+| Week 4 | Frontend & Deployment | 🔄 In progress (static site, GitHub Pages) |
 
 ---
 
@@ -347,6 +416,13 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 **Deferred: Enhanced Dan Knowledge & Comedic Depth**
 
 Once the end-to-end pipeline is live (Week 3 complete, daily cron running), expand Dan's persona with:
+
+### Season Memory Module (Priority)
+- **Current Season Context**: Wins/losses, playoff positioning, key injuries, rebuild vs. contention status for each team
+- **Past Seasons Context**: Last 5 seasons' records, draft picks, notable trades, streaks (e.g., "3rd straight losing season")
+- **Format**: `data/season_memory.json` with structure: `{ "celtics": { "current_season": {...}, "past_seasons": [...] }, ... }`
+- **Usage**: Dan uses current season context to frame games ("Celtics are 40-20, fighting for the 1 seed") and past seasons to comment on trends ("3rd straight year of first-round exits")
+- **Benefit**: Rants feel historically grounded and team-aware, not just game-to-game reactions
 
 ### Boston Sports History Module
 - Red Sox: 86-year curse (1918–2004), 2004 World Series, Impossible Dream (1967)
