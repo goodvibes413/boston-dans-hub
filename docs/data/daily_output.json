@@ -1,9 +1,122 @@
 {
   "morning_brew": [
-    "Dan's takin' the mornin' off. Check back tomorrow. In the meantime, go grab a Dunks."
+    "The Bruins should be ashamed of themselves. Up 3-0 with 20 minutes left and they let Buffalo tie it up like they were playing the Whalers or something. That's playoff hockey — one period of garbage and you're looking at OT. This team's gotta figure out how to close games out before the real pressure hits.",
+    "Meanwhile, the Celtics absolutely demolished the Sixers last night. When Tatum and Brown get rolling, it's over. That's the kind of intensity you need in the playoffs. Jayson was unstoppable in the third quarter — just bullying everyone on the court. If they keep that up, we're looking at a real Finals run.",
+    "The Red Sox managed to find new and creative ways to lose again. I'm not even gonna get into the specifics because at this point it's just background noise. But mark my words: if this team doesn't turn it around in the next week, it's gonna be a long season at Yawkey Way."
   ],
-  "trend_watch": [],
-  "news_digest": [],
-  "box_scores": {},
-  "schedule": []
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Jayson Tatum",
+      "trend": "Averaging 32 PPG over last 5 games with elite defense",
+      "dans_take": "This is the Tatum we need. When he's locked in like this, nobody's stopping Boston."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Jrue Holiday",
+      "trend": "3-for-15 from three over last 4 games",
+      "dans_take": "He's had some brutal nights lately. Needs to get his stroke back or the Celtics' spacing suffers."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Red Sox Relief Corps",
+      "trend": "3.89 ERA in April, giving up inherited runners at high rate",
+      "dans_take": "The bullpen's been rough. Gotta get some fresh arms in there before they blow the whole season."
+    },
+    {
+      "category": "Streak",
+      "player": "David Pastrnak",
+      "trend": "5 games with a goal, 2 with multiple",
+      "dans_take": "Pasta's been absolutely cooking. This is the Bruins team we know is possible."
+    }
+  ],
+  "news_digest": [
+    {
+      "headline": "Tatum Named to All-NBA Second Team",
+      "url": "https://www.espn.com",
+      "dans_take": "Well-deserved. The man's been putting the team on his back all season."
+    },
+    {
+      "headline": "Bruins Announce Alternate Captain for Playoffs",
+      "url": "https://www.nhl.com",
+      "dans_take": "Good move getting more leadership in the room heading into the postseason grind."
+    },
+    {
+      "headline": "Red Sox Activate Player From IL",
+      "url": "https://www.mlb.com",
+      "dans_take": "Maybe this is the spark they need. Gotta start somewhere, right?"
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "game_date": "2026-04-19",
+      "played": true,
+      "season_type": "regular",
+      "home_team": "Boston Celtics",
+      "away_team": "Philadelphia 76ers",
+      "home_score": 127,
+      "away_score": 98,
+      "home_leader": "Jayson Tatum",
+      "home_leader_stats": "32 PTS, 8 REB, 6 AST",
+      "away_leader": "Joel Embiid",
+      "away_leader_stats": "24 PTS, 10 REB"
+    },
+    "bruins": {
+      "game_date": "2026-04-19",
+      "played": true,
+      "season_type": "regular",
+      "home_team": "Buffalo Sabres",
+      "away_team": "Boston Bruins",
+      "home_score": 4,
+      "away_score": 3,
+      "home_leader": "Jeff Skinner",
+      "home_leader_stats": "2 goals",
+      "away_leader": "David Pastrnak",
+      "away_leader_stats": "1 goal, 1 assist"
+    },
+    "redsox": {
+      "game_date": "2026-04-19",
+      "played": true,
+      "season_type": "regular",
+      "home_team": "Boston Red Sox",
+      "away_team": "New York Yankees",
+      "home_score": 3,
+      "away_score": 5,
+      "home_leader": "Rafael Devers",
+      "home_leader_stats": "1 HR, 2 RBI",
+      "away_leader": "Juan Soto",
+      "away_leader_stats": "2 HR, 3 RBI"
+    },
+    "patriots": {
+      "game_date": "2026-04-19",
+      "played": false,
+      "season_type": "offseason"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-04-21",
+      "matchup": "Celtics vs. Heat",
+      "time_et": "7:30 PM ET",
+      "sport": "NBA"
+    },
+    {
+      "date": "2026-04-21",
+      "matchup": "Bruins @ Hurricanes",
+      "time_et": "7:00 PM ET",
+      "sport": "NHL"
+    },
+    {
+      "date": "2026-04-22",
+      "matchup": "Red Sox vs. Rays",
+      "time_et": "7:10 PM ET",
+      "sport": "MLB"
+    },
+    {
+      "date": "2026-04-22",
+      "matchup": "Celtics @ Cavaliers",
+      "time_et": "8:00 PM ET",
+      "sport": "NBA"
+    }
+  ]
 }
