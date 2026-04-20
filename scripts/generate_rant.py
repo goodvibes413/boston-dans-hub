@@ -151,14 +151,20 @@ def main():
 
     user_message = build_user_message(rolling, schedule, news)
 
-    # First attempt: grounding ON so Dan can pull live storylines
-    raw = call_gemini(system_prompt, user_message, model_name, use_grounding=True)
-
+    # Attempt 1: grounding ON so Dan can pull live storylines
+    # If grounding fails (503 exhausted) or returns bad JSON → fall back to attempt 2
+    parsed = None
     try:
-        parsed = json.loads(raw)
-    except json.JSONDecodeError:
-        # Retry: drop grounding, enforce JSON mime type
-        print("  warn: first response was not valid JSON, retrying without grounding", file=sys.stderr)
+        raw = call_gemini(system_prompt, user_message, model_name, use_grounding=True)
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError:
+            print("  warn: grounding response was not valid JSON, retrying without grounding", file=sys.stderr)
+    except Exception as e:
+        print(f"  warn: grounding call failed ({type(e).__name__}), retrying without grounding", file=sys.stderr)
+
+    # Attempt 2: grounding OFF, force JSON mime type
+    if parsed is None:
         raw = call_gemini(
             system_prompt,
             user_message + "\n\nReturn ONLY a valid JSON object. No markdown, no prose.",
