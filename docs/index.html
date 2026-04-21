@@ -635,63 +635,26 @@
 
       .hero { margin-bottom: 20px; }
       .hero-headline { font-size: clamp(1.875rem, 7vw, 2.5rem); }
-
       .morning-brew p { font-size: 1rem; }
 
-      .rail-col { display: none; }
-      .mobile-strip {
-        display: block;
-        margin-bottom: 24px;
-        margin-left: -16px;
-        margin-right: -16px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-      }
-      .mobile-strip::-webkit-scrollbar { display: none; }
-      .mobile-strip-inner {
-        display: flex;
-        gap: 10px;
-        padding: 0 16px;
-        min-width: min-content;
-      }
-      .mobile-score-card {
-        flex: 0 0 auto;
-        min-width: 160px;
-        background: var(--surface-low);
-        border-radius: 8px;
-        padding: 12px 14px;
+      /* Flatten fold-grid into a single vertical flex stack */
+      .fold-grid {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 24px;
       }
-      .mobile-score-card .msc-sport {
-        font-size: 0.625rem;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: var(--on-surface-muted);
-        font-weight: 700;
-      }
-      .mobile-score-card .msc-match {
-        font-family: var(--font-display);
-        font-weight: 700;
-        font-size: 0.875rem;
-        color: var(--on-surface);
-      }
-      .mobile-score-card .msc-match .win  { color: var(--primary); }
-      .mobile-score-card .msc-match .loss { color: var(--danger); }
-      .mobile-score-card .msc-status {
-        font-size: 0.625rem;
-        color: var(--on-surface-muted);
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-      }
+      .main-col { display: contents; }
+      .rail-col  { display: contents; }
 
-      .section { margin-bottom: 32px; }
-      .trend-grid { grid-template-columns: 1fr; gap: 12px; }
-      .news-grid  { grid-template-columns: 1fr; gap: 18px; }
+      /* Mobile order: rant → scores → trends → schedule → news */
+      .morning-brew      { order: 1; }
+      .widget.scoreboard { order: 2; }
+      .widget.pulse      { order: 3; }
+      .schedule-section  { order: 4; margin-top: 0; padding-top: 0; border-top: none; }
+      .widget#news       { order: 5; }
+
+      /* Hide mobile strip — scoreboard widget handles scores */
+      .mobile-strip { display: none; }
 
       .stat-splash { padding: 20px; }
     }
