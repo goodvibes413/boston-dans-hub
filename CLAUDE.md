@@ -134,11 +134,15 @@ The UI uses a cohesive design system with a Boston sports color palette, clean t
 
 | Role | Font | Weight | Size (desktop) | Size (mobile) | Usage |
 |---|---|---|---|---|---|
-| **Headline** | Space Grotesk | 700 (bold) | — | — | Page titles, section headers, major beats |
+| **Headline** | Anton | 400 (regular, bold by design) | 3.25rem | 2.5rem | Page titles, headlines, major beats — all-caps or title-case |
 | **Body** | Inter | 400 (regular) | 1rem (16px) | 0.875rem (14px) | Paragraphs, descriptions, news text |
 | **Label** | Inter | 500 (medium) | 0.75rem (12px) | 0.6875rem (11px) | Widget headers, category tags, metadata |
 
-**Line Height**: 1.6 for body text (readability); 1.2 for headlines (compact, punchy).
+**Line Height**: 1.6 for body text (readability); 1.05–1.2 for headlines (compact, bold presence).
+
+**Font Notes**:
+- **Anton** is a bold sans-serif with strong geometric letterforms — requires minimal weight to feel impactful
+- **Inter** is a clean, readable sans-serif optimized for body and UI text
 
 ### Component Patterns
 
