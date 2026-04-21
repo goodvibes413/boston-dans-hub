@@ -311,6 +311,7 @@
     .score-row {
       display: grid;
       grid-template-columns: 24px 1fr auto;
+      white-space: nowrap;
       align-items: center;
       gap: 10px;
       background: var(--surface-highest);
@@ -705,8 +706,8 @@
 
   <script>
     const SPORT_MAP = { celtics: 'NBA', bruins: 'NHL', redsox: 'MLB', patriots: 'NFL' };
-    const BOSTON_CODE = { celtics: 'BOS', bruins: 'BOS', redsox: 'BOS', patriots: 'NE' };
-    const BOSTON_DISPLAY_NAME = { celtics: 'CELTICS', bruins: 'BRUINS', redsox: 'RED SOX', patriots: 'PATRIOTS' };
+    const BOSTON_CODE = { celtics: 'CEL', bruins: 'BRU', redsox: 'SOX', patriots: 'NE' };
+    const BOSTON_DISPLAY_NAME = { celtics: 'Celtics', bruins: 'Bruins', redsox: 'Red Sox', patriots: 'Patriots' };
     const SPORT_EMOJI = { NBA: '🏀', NHL: '🏒', MLB: '⚾', NFL: '🏈' };
     const OPP_CODE = {
       'detroit tigers': 'DET', 'new york yankees': 'NYY', 'philadelphia 76ers': 'PHI',
@@ -763,16 +764,16 @@
       if (!boxScores) return '';
       const keys = ['celtics','bruins','redsox','patriots'];
       const rows = keys.map(k => {
-        const team = boxScores[k]; if (!team) return ''; const g = extractGame(k, team); const emoji = SPORT_EMOJI[g.sport] || '•'; const bostonCode = BOSTON_CODE[k];
-        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) return `<div class="score-row dim"><span class="score-sport-emoji">${emoji}</span><div class="score-matchup"><span class="team-code">${bostonCode}</span></div><span class="score-status">Offseason</span></div>`;
+        const team = boxScores[k]; if (!team) return ''; const g = extractGame(k, team); const emoji = SPORT_EMOJI[g.sport] || '•'; const bostonName = BOSTON_DISPLAY_NAME[k];
+        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) return `<div class="score-row dim"><span class="score-sport-emoji">${emoji}</span><div class="score-matchup"><span class="team-code">${bostonName}</span></div><span class="score-status">Offseason</span></div>`;
         if (g.played && g.bostonScore != null && g.oppScore != null) {
           const won = g.bostonScore > g.oppScore; const oppCodeStr = oppCode(g.opponent); const connector = g.bostonHome ? 'vs' : '@';
-          const leftCode = g.bostonHome ? bostonCode : oppCodeStr; const leftScore = g.bostonHome ? g.bostonScore : g.oppScore; const rightCode = g.bostonHome ? oppCodeStr : bostonCode; const rightScore = g.bostonHome ? g.oppScore : g.bostonScore;
+          const leftName = g.bostonHome ? bostonName : oppCodeStr; const leftScore = g.bostonHome ? g.bostonScore : g.oppScore; const rightName = g.bostonHome ? oppCodeStr : bostonName; const rightScore = g.bostonHome ? g.oppScore : g.bostonScore;
           const leftWinCls = (g.bostonHome && won) ? 'win' : (!g.bostonHome && !won) ? 'loss' : ''; const rightWinCls = (!g.bostonHome && won) ? 'win' : (g.bostonHome && !won) ? 'loss' : '';
-          return `<div class="score-row"><span class="score-sport-emoji">${emoji}</span><div class="score-matchup"><span class="team-code ${leftWinCls}">${escapeHtml(leftCode)}</span><span class="team-score">${escapeHtml(leftScore)}</span><span class="vs">${connector}</span><span class="team-score">${escapeHtml(rightScore)}</span><span class="team-code ${rightWinCls}">${escapeHtml(rightCode)}</span></div><span class="score-status">Final</span></div>`;
+          return `<div class="score-row"><span class="score-sport-emoji">${emoji}</span><div class="score-matchup"><span class="team-code ${leftWinCls}">${escapeHtml(leftName)}</span><span class="team-score">${escapeHtml(leftScore)}</span><span class="vs">${connector}</span><span class="team-score">${escapeHtml(rightScore)}</span><span class="team-code ${rightWinCls}">${escapeHtml(rightName)}</span></div><span class="score-status">Final</span></div>`;
         }
         const oppStr = g.opponent ? oppCode(g.opponent) : '—'; const connector = g.bostonHome ? 'vs' : (g.opponent ? '@' : '');
-        return `<div class="score-row dim"><span class="score-sport-emoji">${emoji}</span><div class="score-matchup"><span class="team-code">${bostonCode}</span>${connector ? `<span class="vs">${connector}</span>` : ''}${g.opponent ? `<span class="team-code">${escapeHtml(oppStr)}</span>` : ''}</div><span class="score-status">—</span></div>`;
+        return `<div class="score-row dim"><span class="score-sport-emoji">${emoji}</span><div class="score-matchup"><span class="team-code">${bostonName}</span>${connector ? `<span class="vs">${connector}</span>` : ''}${g.opponent ? `<span class="team-code">${escapeHtml(oppStr)}</span>` : ''}</div><span class="score-status">—</span></div>`;
       }).join('');
       return `<section class="widget scoreboard"><header class="widget-header"><span>Last Night</span></header><div class="score-rows">${rows}</div></section>`;
     }
@@ -781,11 +782,11 @@
       if (!boxScores) return '';
       const keys = ['celtics','bruins','redsox','patriots'];
       const cards = keys.map(k => {
-        const team = boxScores[k]; if (!team) return ''; const g = extractGame(k, team); const bostonCode = BOSTON_CODE[k]; const sportLabel = g.sport || '';
-        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel} · ${bostonCode}</span><span class="msc-match">Offseason</span><span class="msc-status">—</span></div>`;
-        if (g.played && g.bostonScore != null && g.oppScore != null) { const won = g.bostonScore > g.oppScore; const oppCodeStr = oppCode(g.opponent); const bostonCls = won ? 'win' : 'loss'; const connector = g.bostonHome ? 'vs' : '@'; return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel}</span><span class="msc-match"><span class="${bostonCls}">${bostonCode}</span> ${g.bostonScore} ${connector} ${oppCodeStr} ${g.oppScore}</span><span class="msc-status">Final · ${won ? 'WIN' : 'LOSS'}</span></div>`; }
+        const team = boxScores[k]; if (!team) return ''; const g = extractGame(k, team); const bostonName = BOSTON_DISPLAY_NAME[k]; const sportLabel = g.sport || '';
+        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel} · ${bostonName}</span><span class="msc-match">Offseason</span><span class="msc-status">—</span></div>`;
+        if (g.played && g.bostonScore != null && g.oppScore != null) { const won = g.bostonScore > g.oppScore; const oppCodeStr = oppCode(g.opponent); const bostonCls = won ? 'win' : 'loss'; const connector = g.bostonHome ? 'vs' : '@'; return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel}</span><span class="msc-match"><span class="${bostonCls}">${bostonName}</span> ${g.bostonScore} ${connector} ${oppCodeStr} ${g.oppScore}</span><span class="msc-status">Final · ${won ? 'WIN' : 'LOSS'}</span></div>`; }
         const oppStr = g.opponent ? oppCode(g.opponent) : 'TBD'; const connector = g.bostonHome ? 'vs' : (g.opponent ? '@' : '');
-        return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel}</span><span class="msc-match">${bostonCode} ${connector} ${oppStr}</span><span class="msc-status">Scheduled</span></div>`;
+        return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel}</span><span class="msc-match">${bostonName} ${connector} ${oppStr}</span><span class="msc-status">Scheduled</span></div>`;
       }).join('');
       return `<div class="mobile-strip"><div class="mobile-strip-inner">${cards}</div></div>`;
     }
