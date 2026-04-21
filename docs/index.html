@@ -833,7 +833,7 @@
       const brew = data.morning_brew || []; const para0 = brew[0] || ''; const para1 = brew[1] || ''; const para2 = brew[2] || '';
       const headlineSource = data.headline || trimHeadlineFromBody(para0);
       const heroHtml = buildHeroHeadline(headlineSource); const statSplash = buildStatSplash(data.box_scores);
-      const bodyHtml = `<div class="morning-brew" id="brew">${para0 ? `<p>${escapeHtml(para0)}</p>` : ''}${statSplash}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<blockquote class="featured-quote"><p>${escapeHtml(para2)}</p></blockquote>` : ''}</div>`;
+      const bodyHtml = `<div class="morning-brew" id="brew">${para0 ? `<p>${escapeHtml(para0)}</p>` : ''}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<p>${escapeHtml(para2)}</p>` : ''}</div>`;
       const mobileStripHtml = buildMobileStrip(data.box_scores); const scoreboardHtml = buildScoreboardWidget(data.box_scores); const pulseHtml = buildTrendPulseWidget(data.trend_watch); const newsPulseHtml = buildNewsPulseWidget(data.news_digest); const scheduleHtml = buildScheduleSection(data.schedule);
       const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
       const app = document.getElementById('app');
