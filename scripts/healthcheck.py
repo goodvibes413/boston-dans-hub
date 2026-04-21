@@ -2,7 +2,7 @@
 """
 healthcheck.py — Final validation of published output.
 
-Checks that site/data/daily_output.json exists, is valid JSON, and has all required keys.
+Checks that docs/data/daily_output.json exists, is valid JSON, and has all required keys.
 - If fallback content is detected, prints warning but exits 0 (fallback is valid)
 - Exits 0 on all validations pass, 1 on any failure
 
@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 # Constants
-PUBLISHED_OUTPUT_PATH = Path("site/data/daily_output.json")
+PUBLISHED_OUTPUT_PATH = Path("docs/data/daily_output.json")
 REQUIRED_KEYS = {"morning_brew", "trend_watch", "news_digest", "box_scores", "schedule"}
 FALLBACK_MARKER = "Dan's takin' the mornin' off"
 
