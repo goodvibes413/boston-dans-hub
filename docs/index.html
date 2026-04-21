@@ -72,53 +72,27 @@
     }
 
     .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .nav-brand-logo {
+      height: 38px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .nav-brand-text {
       font-family: var(--font-display);
       font-style: italic;
       font-weight: 700;
       font-size: 1.125rem;
       color: var(--primary);
       white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .nav-date-strip {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex: 1;
-      justify-content: center;
-    }
-
-    .date-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: var(--font-body);
-      font-weight: 500;
-      color: var(--on-surface-muted);
-      line-height: 1;
-      white-space: nowrap;
-      gap: 4px;
-      min-height: 44px;
-      justify-content: center;
-      padding: 0 6px;
-    }
-
-    .date-item.today {
-      color: var(--primary);
-      font-weight: 700;
-      border-bottom: 2px solid var(--primary);
-    }
-
-    .date-item .day-label {
-      font-size: 0.625rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .date-item .day-num {
-      font-size: 0.8125rem;
-      font-weight: 700;
     }
 
     .nav-links {
@@ -608,7 +582,6 @@
     @media (max-width: 767px) {
       .nav { padding: 0 16px; gap: 10px; }
       .nav-links { display: none; }
-      .nav-date-strip { gap: 14px; }
 
       .page { padding: 20px 16px 32px; }
 
@@ -675,19 +648,16 @@
       .stat-splash { padding: 20px; }
     }
 
-    @media (max-width: 440px) {
-      .nav-date-strip { gap: 10px; }
-      .date-item .day-label { font-size: 0.5625rem; }
-      .date-item .day-num { font-size: 0.75rem; }
-    }
   </style>
 </head>
 <body>
 
   <!-- NAV -->
   <nav class="nav" role="navigation" aria-label="Main navigation">
-    <span class="nav-brand">Boston Dan's Morning Brew</span>
-    <div class="nav-date-strip" id="nav-date-strip" aria-label="Week navigation"></div>
+    <a class="nav-brand" href="#">
+      <img class="nav-brand-logo" src="logo.png" alt="Boston Dan's Morning Brew logo">
+      <span class="nav-brand-text">Boston Dan's Morning Brew</span>
+    </a>
     <nav class="nav-links" aria-label="Section links">
       <a href="#brew">Today's Rant</a>
       <a href="#trends">Trends</a>
@@ -816,13 +786,6 @@
       return `<section class="section" id="news"><h2 class="section-header">News Digest</h2><div class="news-grid">${items}</div></section>`;
     }
 
-    function buildNavDateStrip() {
-      const today = new Date(); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-      const out = [];
-      for (let offset = -2; offset <= 2; offset++) { const d = new Date(today); d.setDate(today.getDate() + offset); const isToday = offset === 0; const label = days[d.getDay()]; const numStr = isToday ? `${months[d.getMonth()]} ${d.getDate()}` : `${d.getDate()}`; out.push(`<div class="date-item ${isToday ? 'today' : ''}" ${isToday ? 'aria-current="date"' : ''}><span class="day-label">${label}</span><span class="day-num">${numStr}</span></div>`); }
-      document.getElementById('nav-date-strip').innerHTML = out.join('');
-    }
-
     function render(data) {
       const brew = data.morning_brew || []; const para0 = brew[0] || ''; const para1 = brew[1] || ''; const para2 = brew[2] || '';
       const heroHtml = buildHeroHeadline(para0); const statSplash = buildStatSplash(data.box_scores);
@@ -836,7 +799,6 @@
     function renderError(message) { const app = document.getElementById('app'); app.innerHTML = `<div class="page"><div class="error-state"><h2 class="error-title">Couldn't load today's take</h2><p class="error-message">${escapeHtml(message)}</p></div></div>`; }
 
     (async function init() {
-      buildNavDateStrip();
       try {
         const res = await fetch('./data/daily_output.json');
         if (!res.ok) throw new Error(`HTTP ${res.status} — ${res.statusText}`);
