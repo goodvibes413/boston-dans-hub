@@ -1,94 +1,262 @@
 {
   "morning_brew": [
-    "The Bruins should be ashamed of themselves. Up 3-0 with 20 minutes left and they let Buffalo tie it up like they were playing the Whalers or something. That's playoff hockey — one period of garbage and you're looking at OT. This team's gotta figure out how to close games out before the real pressure hits.",
-    "Meanwhile, the Celtics absolutely demolished the Sixers last night. When Tatum and Brown get rolling, it's over. That's the kind of intensity you need in the playoffs. Jayson was unstoppable in the third quarter — just bullying everyone on the court. If they keep that up, we're looking at a real Finals run.",
-    "The Red Sox managed to find new and creative ways to lose again. I'm not even gonna get into the specifics because at this point it's just background noise. But mark my words: if this team doesn't turn it around in the next week, it's gonna be a long season at Yawkey Way."
+    "Alright, wicked mornin' to ya, Boston! We had a real Patriots' Day barn burner down on Yawkey Way yesterday, huh? The Red Sox pulled out an 8-6 win against the Tigers, and frankly, we needed that one bad. After what's been a tough start, seeing some offense come alive was a sight for sore eyes. Now, we gotta carry that momentum forward, especially with the Pinstripes rollin' into town tonight.",
+    "Speaking of offense, Yoshida's still swingin' a hot stick, sittin' pretty with a .324 average and an .889 OPS. That's a heater, kid! But let's be honest, the pitching was a bit of a disastah. Gray only lasted 2.2 innings, and then the bullpen came in and made it a little too interesting. Watson gave up three earned runs in just 1.1 innings. We can't be doin' that in the playoffs, fellas, let alone against the Tigers.",
+    "And speaking of playoffs, the Celtics and Bruins are officially in it! The schedule's out, and we've got both teams kickin' off their runs tonight. It's time to buckle up, folks, this is where it really counts. Over in Foxborough, the chatter about A.J. Brown comin' to the Patriots after June 1 is certainly somethin' to keep an eye on. Could be a game-changer if it pans out, but I'll believe it when I see it."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Jayson Tatum",
-      "trend": "Averaging 32 PPG over last 5 games with elite defense",
-      "dans_take": "This is the Tatum we need. When he's locked in like this, nobody's stopping Boston."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Jrue Holiday",
-      "trend": "3-for-15 from three over last 4 games",
-      "dans_take": "He's had some brutal nights lately. Needs to get his stroke back or the Celtics' spacing suffers."
+      "player": "Yoshida",
+      "trend": "Hitting .324 with an .889 OPS.",
+      "dans_take": "This kid is still scorchin' hot at the plate! He's puttin' up numbers and we need more of that if this team is gonna turn it around."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Red Sox Relief Corps",
-      "trend": "3.89 ERA in April, giving up inherited runners at high rate",
-      "dans_take": "The bullpen's been rough. Gotta get some fresh arms in there before they blow the whole season."
+      "player": "Watson, R",
+      "trend": "Gave up 3 earned runs on 4 hits in 1.1 innings in the last outing.",
+      "dans_take": "Are you kiddin' me? Three earned runs in barely an inning? That's not gonna cut it when the games really matter. We gotta tighten that up, pronto."
     },
     {
-      "category": "Streak",
-      "player": "David Pastrnak",
-      "trend": "5 games with a goal, 2 with multiple",
-      "dans_take": "Pasta's been absolutely cooking. This is the Bruins team we know is possible."
+      "category": "Slump",
+      "player": "Gray, S",
+      "trend": "Pitched only 2.2 innings, giving up 1 earned run on 3 hits and 1 walk.",
+      "dans_take": "Our starters need to go deeper than that! Two and two-thirds innings is absolutely brutal and puts way too much pressure on the bullpen. Get it together, pal!"
     }
   ],
   "news_digest": [
     {
-      "headline": "Tatum Named to All-NBA Second Team",
-      "url": "https://www.espn.com",
-      "dans_take": "Well-deserved. The man's been putting the team on his back all season."
+      "headline": "Red Sox play the Yankees in first of 3-game series",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815031",
+      "dans_take": "Here we go, the Yankees are comin' to town tonight, let's see if we can keep that Patriots' Day energy rollin'!"
     },
     {
-      "headline": "Bruins Announce Alternate Captain for Playoffs",
-      "url": "https://www.nhl.com",
-      "dans_take": "Good move getting more leadership in the room heading into the postseason grind."
+      "headline": "2026 NBA playoffs: Eastern Conference first-round takeaways",
+      "url": "https://www.espn.com/nba/story/_/id/48506456/2026-nba-playoffs-eastern-conference-round-one-takeaways",
+      "dans_take": "The playoffs are here, time for the Celtics to show everyone what they're made of in the Eastern Conference!"
     },
     {
-      "headline": "Red Sox Activate Player From IL",
-      "url": "https://www.mlb.com",
-      "dans_take": "Maybe this is the spark they need. Gotta start somewhere, right?"
+      "headline": "2026 NBA playoffs: Schedule, scores, news and highlights",
+      "url": "https://www.espn.com/nba/story/_/id/48419498/nba-playoffs-2026-play-finals-schedule-scores-news-highlights-bracket-dates",
+      "dans_take": "Playoff schedules are set, no more excuses, it's championship or bust for the Celtics!"
+    },
+    {
+      "headline": "Stanley Cup playoffs 2026: Bracket, schedule, scores, news",
+      "url": "https://www.espn.com/nhl/story/_/id/48485622/nhl-playoffs-2026-stanley-cup-bracket-schedule-teams-players-preview",
+      "dans_take": "The Stanley Cup playoffs are here, let's get ready for some physical hockey, Bruins, show 'em what Boston's all about!"
+    },
+    {
+      "headline": "2026 NBA draft order: Pre-lottery picks for first, second rounds",
+      "url": "https://www.espn.com/nba/story/_/id/48467844/2026-nba-draft-complete-order-picks-first-second-rounds",
+      "dans_take": "Draft talk already? Focus on the playoffs, fellas, that's what really matters right now for the Celtics!"
+    },
+    {
+      "headline": "Ceddanne Rafaela's tiebreaking two-run single helps Red Sox to 8-6 Patriots' Day win over Tigers",
+      "url": "http://www.espn.com/mlb/recap?gameId=401815018",
+      "dans_take": "A Patriots' Day victory, that's what I like to see! Rafaela comin' up clutch, that's Boston baseball, baby!"
+    },
+    {
+      "headline": "'It makes no sense!' Stephen A. has no idea what's going on with Eagles",
+      "url": "https://www.espn.com/video/clip?id=48541497",
+      "dans_take": "Stephen A. is as confused as I am, but if A.J. Brown is comin' to Foxborough, I'll take it!"
+    },
+    {
+      "headline": "Schefter: A.J. Brown likely to be traded to the Patriots post-June 1",
+      "url": "https://www.espn.com/video/clip?id=48540297",
+      "dans_take": "A.J. Brown to the Patriots? Now that would be a wicked good get for the offense, but I'm not holdin' my breath until it's official."
     }
   ],
   "box_scores": {
     "celtics": {
-      "game_date": "2026-04-19",
-      "played": true,
-      "season_type": "regular",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": 127,
-      "away_score": 98,
-      "home_leader": "Jayson Tatum",
-      "home_leader_stats": "32 PTS, 8 REB, 6 AST",
-      "away_leader": "Joel Embiid",
-      "away_leader_stats": "24 PTS, 10 REB"
+      "game_date": "2026-04-20",
+      "played": false,
+      "season_type": "regular"
     },
     "bruins": {
-      "game_date": "2026-04-19",
-      "played": true,
-      "season_type": "regular",
-      "home_team": "Buffalo Sabres",
-      "away_team": "Boston Bruins",
-      "home_score": 4,
-      "away_score": 3,
-      "home_leader": "Jeff Skinner",
-      "home_leader_stats": "2 goals",
-      "away_leader": "David Pastrnak",
-      "away_leader_stats": "1 goal, 1 assist"
+      "game_date": "2026-04-20",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
-      "game_date": "2026-04-19",
+      "game_date": "2026-04-20",
       "played": true,
       "season_type": "regular",
-      "home_team": "Boston Red Sox",
-      "away_team": "New York Yankees",
-      "home_score": 3,
-      "away_score": 5,
-      "home_leader": "Rafael Devers",
-      "home_leader_stats": "1 HR, 2 RBI",
-      "away_leader": "Juan Soto",
-      "away_leader_stats": "2 HR, 3 RBI"
+      "doubleheader": false,
+      "games": [
+        {
+          "game_pk": 824776,
+          "game_number": 1,
+          "status": "Final",
+          "innings_played": 9,
+          "extra_innings": false,
+          "home": true,
+          "redsox_score": 8,
+          "opponent": "Detroit Tigers",
+          "opponent_score": 6,
+          "redsox_hits": 12,
+          "redsox_errors": 0,
+          "linescore": [
+            {
+              "inning": 1,
+              "label": "1st",
+              "redsox": 0,
+              "opponent": 0
+            },
+            {
+              "inning": 2,
+              "label": "2nd",
+              "redsox": 2,
+              "opponent": 0
+            },
+            {
+              "inning": 3,
+              "label": "3rd",
+              "redsox": 0,
+              "opponent": 1
+            },
+            {
+              "inning": 4,
+              "label": "4th",
+              "redsox": 0,
+              "opponent": 1
+            },
+            {
+              "inning": 5,
+              "label": "5th",
+              "redsox": 0,
+              "opponent": 0
+            },
+            {
+              "inning": 6,
+              "label": "6th",
+              "redsox": 1,
+              "opponent": 1
+            },
+            {
+              "inning": 7,
+              "label": "7th",
+              "redsox": 3,
+              "opponent": 0
+            },
+            {
+              "inning": 8,
+              "label": "8th",
+              "redsox": 2,
+              "opponent": 0
+            },
+            {
+              "inning": 9,
+              "label": "9th",
+              "redsox": 0,
+              "opponent": 3
+            }
+          ],
+          "starting_pitcher": {
+            "name": "Gray, S",
+            "innings_pitched": "2.2",
+            "hits": 3,
+            "earned_runs": 1,
+            "runs": 1,
+            "strikeouts": 2,
+            "walks": 1,
+            "decision": ""
+          },
+          "bullpen": [
+            {
+              "name": "Coulombe",
+              "innings_pitched": "0.7",
+              "hits": 0,
+              "earned_runs": 1,
+              "runs": 1,
+              "strikeouts": 0,
+              "walks": 1,
+              "decision": ""
+            },
+            {
+              "name": "Kelly, Z",
+              "innings_pitched": "1.7",
+              "hits": 1,
+              "earned_runs": 0,
+              "runs": 0,
+              "strikeouts": 1,
+              "walks": 0,
+              "decision": "BS"
+            },
+            {
+              "name": "Weissert",
+              "innings_pitched": "1.0",
+              "hits": 0,
+              "earned_runs": 0,
+              "runs": 0,
+              "strikeouts": 3,
+              "walks": 0,
+              "decision": ""
+            },
+            {
+              "name": "Whitlock",
+              "innings_pitched": "1.0",
+              "hits": 0,
+              "earned_runs": 0,
+              "runs": 0,
+              "strikeouts": 0,
+              "walks": 0,
+              "decision": "W"
+            },
+            {
+              "name": "Watson, R",
+              "innings_pitched": "1.1",
+              "hits": 4,
+              "earned_runs": 3,
+              "runs": 3,
+              "strikeouts": 0,
+              "walks": 0,
+              "decision": "H"
+            },
+            {
+              "name": "Chapman",
+              "innings_pitched": "0.7",
+              "hits": 1,
+              "earned_runs": 0,
+              "runs": 0,
+              "strikeouts": 1,
+              "walks": 0,
+              "decision": "S"
+            }
+          ],
+          "top_hitters": [
+            {
+              "name": "Yoshida",
+              "ab": 4,
+              "hits": 2,
+              "hr": 0,
+              "rbi": 0,
+              "season_avg": ".324",
+              "season_ops": ".889"
+            },
+            {
+              "name": "Contreras, Wn",
+              "ab": 5,
+              "hits": 1,
+              "hr": 0,
+              "rbi": 0,
+              "season_avg": ".274",
+              "season_ops": ".870"
+            },
+            {
+              "name": "Abreu, W",
+              "ab": 4,
+              "hits": 0,
+              "hr": 0,
+              "rbi": 1,
+              "season_avg": ".296",
+              "season_ops": ".833"
+            }
+          ]
+        }
+      ]
     },
     "patriots": {
-      "game_date": "2026-04-19",
+      "game_date": "2026-04-20",
       "played": false,
       "season_type": "offseason"
     }
@@ -96,27 +264,33 @@
   "schedule": [
     {
       "date": "2026-04-21",
-      "matchup": "Celtics vs. Heat",
-      "time_et": "7:30 PM ET",
-      "sport": "NBA"
+      "matchup": "Boston Red Sox vs. New York Yankees",
+      "time_et": "6:45 PM ET"
     },
     {
       "date": "2026-04-21",
-      "matchup": "Bruins @ Hurricanes",
-      "time_et": "7:00 PM ET",
-      "sport": "NHL"
+      "matchup": "Boston Celtics vs. Philadelphia 76ers",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-04-21",
+      "matchup": "Buffalo Sabres vs. Boston Bruins",
+      "time_et": "7:30 PM ET"
     },
     {
       "date": "2026-04-22",
-      "matchup": "Red Sox vs. Rays",
-      "time_et": "7:10 PM ET",
-      "sport": "MLB"
+      "matchup": "Boston Red Sox vs. New York Yankees",
+      "time_et": "6:45 PM ET"
     },
     {
-      "date": "2026-04-22",
-      "matchup": "Celtics @ Cavaliers",
-      "time_et": "8:00 PM ET",
-      "sport": "NBA"
+      "date": "2026-04-23",
+      "matchup": "Boston Red Sox vs. New York Yankees",
+      "time_et": "6:10 PM ET"
+    },
+    {
+      "date": "2026-04-23",
+      "matchup": "Boston Bruins vs. Buffalo Sabres",
+      "time_et": "7:00 PM ET"
     }
   ]
 }
