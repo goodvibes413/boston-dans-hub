@@ -1,15 +1,33 @@
-/* Boston Dan's Hub — CSS */
+/* Boston Dan's Hub — The Varsity Press Design System */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    --bg-primary: #0D0D0D;
-    --bg-surface: #1A1A1A;
-    --bg-hover: #2A2A2A;
-    --border: #2A2A2A;
-    --accent-primary: #00A651;
-    --accent-danger: #BD3039;
-    --text-primary: #F5F5F5;
-    --text-secondary: #999;
-    --text-muted: #666;
+    /* Surface Hierarchy */
+    --surface-base: #131313;
+    --surface-lowest: #0E0E0E;
+    --surface-low: #1B1B1C;
+    --surface: #202020;
+    --surface-high: #2A2A2A;
+    --surface-highest: #353535;
+    --surface-variant: #353535;
+
+    /* Primary Accent (Electric Green) */
+    --primary: #43ED9E;
+    --primary-container: #00D084;
+    --on-primary: #003920;
+
+    /* Danger/Emphasis (Red Sox Red) */
+    --danger: #BD3039;
+
+    /* Text Colors */
+    --on-surface: #F5F5F5;
+    --on-surface-variant: #D5D5D5;
+    --on-surface-muted: #999999;
+    --on-surface-dim: #666666;
+
+    /* Outlines */
+    --outline-variant: #3C4A40;
 }
 
 * {
@@ -23,335 +41,531 @@ html {
 }
 
 body {
-    font-family: system-ui, -apple-system, sans-serif;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background-color: var(--surface-base);
+    color: var(--on-surface);
     line-height: 1.6;
 }
 
 .container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 40px 20px;
 }
 
-/* Header */
+/* ============================================================================
+   HEADER
+   ============================================================================ */
+
 .header {
-    border-bottom: 2px solid var(--accent-primary);
-    padding-bottom: 30px;
-    margin-bottom: 40px;
+    padding-bottom: 40px;
+    margin-bottom: 60px;
+    /* No border — use background shift to surface-low */
+    border-bottom: none;
+}
+
+.header-content {
+    position: relative;
 }
 
 .title {
-    font-family: 'Anton', sans-serif;
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    letter-spacing: -1px;
-    color: var(--accent-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    color: var(--primary);
+    line-height: 1.1;
+    /* Intentional asymmetry: allow slight bleed */
 }
 
 .tagline {
-    font-size: 1.1em;
-    color: var(--text-secondary);
-    margin-bottom: 15px;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--on-surface-variant);
+    margin-bottom: 20px;
+    letter-spacing: -0.005em;
 }
 
 .updated {
-    font-size: 0.85em;
-    color: var(--text-muted);
+    font-size: 0.8125rem;
+    color: var(--on-surface-muted);
+    font-weight: 500;
 }
 
-/* Fallback Banner */
+/* ============================================================================
+   FALLBACK BANNER
+   ============================================================================ */
+
 .fallback-banner {
-    background-color: var(--bg-surface);
-    border-left: 4px solid var(--accent-danger);
-    padding: 15px 20px;
-    margin-bottom: 30px;
-    border-radius: 4px;
+    background: linear-gradient(135deg, var(--danger) 0%, #9A1F25 100%);
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    border-radius: 0.75rem;
+    /* Ghost border fallback (optional, subtle) */
+    border: 1px solid var(--outline-variant) opacity(0.15);
+    box-shadow: 0 40px 60px rgba(0, 0, 0, 0.3);
 }
 
 .fallback-banner p {
-    color: var(--text-secondary);
-    font-style: italic;
+    color: var(--on-surface);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.6;
 }
 
-/* Sections */
+/* ============================================================================
+   SECTIONS
+   ============================================================================ */
+
 .section {
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 30px;
-    margin-bottom: 30px;
+    background-color: var(--surface-low);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 40px;
+    margin-bottom: 40px;
+    /* Ambient shadow for soft lift */
+    box-shadow: 0 40px 60px rgba(229, 226, 225, 0.04);
 }
 
 .section-title {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.5em;
-    margin-bottom: 20px;
-    color: var(--accent-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    color: var(--primary);
+    line-height: 1.2;
 }
 
-/* Morning Brew */
+/* ============================================================================
+   MORNING BREW
+   ============================================================================ */
+
 .morning-brew {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 28px;
 }
 
 .morning-brew p {
-    font-size: 1.05em;
+    font-size: 1.0625rem;
     line-height: 1.8;
-    color: var(--text-primary);
-    border-left: 3px solid var(--accent-primary);
-    padding-left: 15px;
+    color: var(--on-surface);
+    font-weight: 400;
+    /* Left accent using background shift (no border) */
+    padding: 24px;
+    padding-left: 28px;
+    background-color: var(--surface);
+    border-left: 3px solid var(--primary);
+    border-radius: 0.375rem;
+    position: relative;
 }
 
-/* Trend Watch */
+/* ============================================================================
+   TREND WATCH
+   ============================================================================ */
+
 .trends {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
 }
 
 .trend-card {
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 15px;
-    transition: border-color 0.2s;
+    background-color: var(--surface);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 24px;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    /* No border — layering creates definition */
 }
 
 .trend-card:hover {
-    border-color: var(--accent-primary);
+    background-color: var(--surface-highest);
+    box-shadow: 0 40px 60px rgba(229, 226, 225, 0.06);
 }
 
 .trend-category {
     display: inline-block;
-    background-color: var(--accent-primary);
-    color: var(--bg-primary);
-    padding: 4px 10px;
-    border-radius: 3px;
-    font-size: 0.75em;
-    font-weight: bold;
-    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+    color: var(--on-primary);
+    padding: 6px 12px;
+    border-radius: 0.25rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    display: block;
 }
 
 .trend-player {
-    font-size: 1.1em;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    color: var(--on-surface);
 }
 
 .trend-text {
-    font-size: 0.9em;
-    color: var(--text-secondary);
-    margin-bottom: 10px;
+    font-size: 0.9375rem;
+    color: var(--on-surface-variant);
+    margin-bottom: 16px;
+    line-height: 1.6;
 }
 
 .trend-take {
-    font-size: 0.95em;
-    color: var(--accent-primary);
+    font-size: 0.9375rem;
+    color: var(--primary);
     font-style: italic;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
+    font-weight: 500;
+    padding-top: 16px;
+    /* No divider line — use vertical whitespace */
+    border: none;
+    margin-top: 8px;
 }
 
-/* News Digest */
+/* ============================================================================
+   NEWS DIGEST
+   ============================================================================ */
+
 .news-items {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .news-item {
-    padding: 15px;
-    background-color: var(--bg-primary);
-    border-left: 3px solid var(--accent-primary);
-    border-radius: 4px;
-    transition: background-color 0.2s;
+    padding: 24px;
+    background-color: var(--surface);
+    border: none;
+    border-left: 3px solid var(--primary);
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .news-item:hover {
-    background-color: var(--bg-hover);
+    background-color: var(--surface-high);
+    box-shadow: 0 40px 60px rgba(229, 226, 225, 0.04);
 }
 
 .news-headline {
     display: block;
-    color: var(--accent-primary);
+    color: var(--primary);
     text-decoration: none;
-    font-weight: bold;
-    margin-bottom: 8px;
-    transition: color 0.2s;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    margin-bottom: 12px;
+    transition: color 0.2s ease;
+    letter-spacing: -0.005em;
+    line-height: 1.4;
 }
 
 .news-headline:hover {
-    color: var(--accent-danger);
+    color: var(--danger);
 }
 
 .news-take {
-    color: var(--text-secondary);
-    font-size: 0.95em;
+    color: var(--on-surface-variant);
+    font-size: 0.9375rem;
     font-style: italic;
+    font-weight: 500;
+    line-height: 1.6;
 }
 
-/* Box Scores */
+/* ============================================================================
+   BOX SCORES
+   ============================================================================ */
+
 .scores-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
 }
 
 .score-card {
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 20px;
+    background-color: var(--surface);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 28px;
     text-align: center;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.score-card:hover {
+    background-color: var(--surface-highest);
+    box-shadow: 0 40px 60px rgba(229, 226, 225, 0.06);
 }
 
 .score-sport {
-    font-size: 0.75em;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--text-muted);
-    margin-bottom: 10px;
+    color: var(--on-surface-muted);
+    margin-bottom: 16px;
+    display: block;
 }
 
 .score-teams {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .score-team {
-    font-size: 0.95em;
-    color: var(--text-secondary);
-    margin: 5px 0;
+    font-size: 0.9375rem;
+    color: var(--on-surface-variant);
+    margin: 8px 0;
+    font-weight: 500;
 }
 
 .score-team.winner {
-    font-weight: bold;
-    color: var(--accent-primary);
-    font-size: 1.1em;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.125rem;
+    letter-spacing: -0.01em;
 }
 
 .score-final {
-    font-size: 0.8em;
-    color: var(--text-muted);
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
+    font-size: 0.8125rem;
+    color: var(--on-surface-muted);
+    margin-top: 16px;
+    padding-top: 16px;
+    /* Ghost border fallback */
+    border-top: 1px solid var(--outline-variant);
+    opacity: 0.15;
+    font-weight: 500;
 }
 
-/* Schedule */
+/* ============================================================================
+   SCHEDULE
+   ============================================================================ */
+
 .schedule-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
 .schedule-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
-    background-color: var(--bg-primary);
-    border-left: 3px solid var(--accent-primary);
-    border-radius: 4px;
+    padding: 20px 24px;
+    background-color: var(--surface);
+    border: none;
+    border-left: 3px solid var(--primary);
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.schedule-item:hover {
+    background-color: var(--surface-high);
+    box-shadow: 0 40px 60px rgba(229, 226, 225, 0.04);
 }
 
 .schedule-date {
-    font-weight: bold;
-    color: var(--accent-primary);
-    min-width: 80px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 100px;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
 }
 
 .schedule-matchup {
     flex: 1;
-    margin: 0 20px;
-    color: var(--text-primary);
+    margin: 0 24px;
+    color: var(--on-surface);
+    font-weight: 600;
+    font-size: 1rem;
 }
 
 .schedule-time {
-    color: var(--text-secondary);
-    font-size: 0.9em;
+    color: var(--on-surface-muted);
+    font-size: 0.875rem;
     text-align: right;
-    min-width: 70px;
+    min-width: 90px;
+    font-weight: 500;
 }
 
-/* Footer */
+/* ============================================================================
+   FOOTER
+   ============================================================================ */
+
 .footer {
-    margin-top: 60px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
+    margin-top: 80px;
+    padding-top: 32px;
+    /* Ghost border fallback */
+    border-top: 1px solid var(--outline-variant);
+    opacity: 0.15;
     text-align: center;
-    color: var(--text-muted);
-    font-size: 0.85em;
+    color: var(--on-surface-dim);
+    font-size: 0.8125rem;
+    font-weight: 500;
 }
 
-/* Loading State */
+/* ============================================================================
+   LOADING & ERROR STATES
+   ============================================================================ */
+
 .loading {
     text-align: center;
-    padding: 40px;
-    color: var(--text-secondary);
+    padding: 60px 20px;
+    color: var(--on-surface-variant);
+    font-size: 1rem;
 }
 
-/* Error State */
 .error {
-    background-color: var(--bg-surface);
-    border-left: 4px solid var(--accent-danger);
-    padding: 20px;
-    border-radius: 4px;
-    color: var(--text-secondary);
+    background: linear-gradient(135deg, var(--danger) 0%, #9A1F25 100%);
+    padding: 28px;
+    border-radius: 0.75rem;
+    color: var(--on-surface);
+    font-weight: 500;
+    box-shadow: 0 40px 60px rgba(189, 48, 57, 0.2);
 }
 
-/* Responsive */
+/* ============================================================================
+   RESPONSIVE DESIGN — TABLET
+   ============================================================================ */
+
 @media (max-width: 768px) {
     .container {
-        padding: 15px;
+        padding: 28px 16px;
     }
 
     .title {
-        font-size: 1.8em;
+        font-size: 2.5rem;
     }
 
     .section {
-        padding: 20px;
+        padding: 28px;
+        margin-bottom: 32px;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+        margin-bottom: 24px;
     }
 
     .trends {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
 
     .scores-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
 
     .schedule-item {
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+        gap: 12px;
     }
 
     .schedule-time {
         text-align: left;
         width: 100%;
     }
+
+    .score-card {
+        padding: 24px;
+    }
 }
 
+/* ============================================================================
+   RESPONSIVE DESIGN — MOBILE
+   ============================================================================ */
+
 @media (max-width: 480px) {
-    .title {
-        font-size: 1.5em;
-    }
-
-    .section-title {
-        font-size: 1.2em;
-    }
-
     .container {
-        padding: 10px;
+        padding: 20px 12px;
+    }
+
+    .title {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .tagline {
+        font-size: 1rem;
+        margin-bottom: 16px;
     }
 
     .section {
-        padding: 15px;
+        padding: 20px;
+        margin-bottom: 24px;
+        border-radius: 0.5rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .morning-brew {
+        gap: 20px;
+    }
+
+    .morning-brew p {
+        font-size: 1rem;
+        padding: 18px;
+        padding-left: 20px;
+    }
+
+    .trends {
+        gap: 16px;
+    }
+
+    .trend-card {
+        padding: 18px;
+    }
+
+    .trend-player {
+        font-size: 1.125rem;
+    }
+
+    .news-items {
+        gap: 16px;
+    }
+
+    .news-item {
+        padding: 18px;
+    }
+
+    .news-headline {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .scores-grid {
+        gap: 16px;
+    }
+
+    .score-card {
+        padding: 20px;
+    }
+
+    .schedule-item {
+        padding: 16px 18px;
+        gap: 10px;
+    }
+
+    .schedule-date,
+    .schedule-matchup,
+    .schedule-time {
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .footer {
+        margin-top: 40px;
+        padding-top: 20px;
+        font-size: 0.75rem;
     }
 }
