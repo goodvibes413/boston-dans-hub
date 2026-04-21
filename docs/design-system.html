@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System — Boston Dan's Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:ital,wght@0,400;0,500;0,700;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Design Tokens */
+    :root {
+      --primary:         #00D084;
+      --primary-container: #008456;
+      --secondary:       #008456;
+      --tertiary:        #4A5568;
+      --neutral:         #1E1E1E;
+
+      --surface-base:    #131313;
+      --surface-lowest:  #0E0E0E;
+      --surface-low:     #1B1B1C;
+      --surface:         #202020;
+      --surface-high:    #2A2A2A;
+      --surface-highest: #353535;
+
+      --on-primary:      #003920;
+      --on-surface:      #F5F5F5;
+      --on-surface-variant: #D5D5D5;
+      --on-surface-muted:   #999999;
+      --on-surface-dim:     #666666;
+
+      --danger:          #BD3039;
+
+      --shadow-ambient:  0 40px 60px rgba(229, 226, 225, 0.04);
+
+      --font-display:    'Space Grotesk', sans-serif;
+      --font-body:       'Inter', sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--surface-base);
+      color: var(--on-surface-variant);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--surface-low), var(--surface));
+      padding: 60px 32px;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      font-style: italic;
+      color: var(--on-surface);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      font-size: 0.9375rem;
+      color: var(--on-surface-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Main container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px 64px;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 64px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      font-size: 1.375rem;
+    }
+
+    /* Color Palette */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .color-swatch {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow-ambient);
+      transition: transform 0.2s ease;
+    }
+
+    .color-swatch:hover {
+      transform: translateY(-4px);
+    }
+
+    .color-sample {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .color-info {
+      background: var(--surface-highest);
+      padding: 12px 16px;
+      font-size: 0.8125rem;
+    }
+
+    .color-name {
+      font-weight: 700;
+      color: var(--on-surface);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .color-hex {
+      color: var(--on-surface-muted);
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+    }
+
+    /* Typography */
+    .typography-section {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .type-sample {
+      background: var(--surface-low);
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-high);
+    }
+
+    .type-label {
+      font-family: var(--font-body);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--on-surface-muted);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .type-sample.headline {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--on-surface);
+      line-height: 1.1;
+    }
+
+    .type-sample.body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--on-surface-variant);
+      line-height: 1.6;
+    }
+
+    .type-sample.label {
+      font-family: var(--font-body);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--on-surface-muted);
+    }
+
+    /* Components */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .component {
+      background: var(--surface-low);
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-high);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: background 0.2s ease;
+    }
+
+    .component:hover {
+      background: var(--surface);
+    }
+
+    .component-name {
+      font-family: var(--font-display);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-container);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: var(--on-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .btn-outlined {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-outlined:hover {
+      background: rgba(0, 208, 132, 0.1);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface-highest);
+      border-radius: 8px;
+      padding: 16px;
+      border: 1px solid var(--surface-high);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      margin-bottom: 8px;
+    }
+
+    .card-text {
+      font-size: 0.8125rem;
+      color: var(--on-surface-muted);
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary-container), var(--primary));
+      color: var(--on-primary);
+      padding: 5px 12px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Spacing Scale */
+    .spacing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .spacing-item {
+      background: var(--surface-low);
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-high);
+    }
+
+    .spacing-label {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--on-surface-muted);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .spacing-visual {
+      background: linear-gradient(135deg, var(--primary-container), var(--primary));
+      border-radius: 4px;
+      min-height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--on-primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 32px;
+      border-top: 1px solid var(--surface-high);
+      margin-top: 64px;
+      color: var(--on-surface-dim);
+      font-size: 0.75rem;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header {
+        padding: 40px 16px;
+        margin-bottom: 32px;
+      }
+
+      .header h1 {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+      }
+
+      .container {
+        padding: 0 16px 48px;
+      }
+
+      .section-title {
+        font-size: 1.25rem;
+      }
+
+      .color-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+
+      .type-sample.headline {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <h1>The Garden Slate</h1>
+    <p>Design System for Boston Dan's Hub. A cohesive visual language built on bold color, clean typography, and consistent spacing.</p>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Color Palette -->
+    <section class="section">
+      <h2 class="section-title">Color Palette</h2>
+      <div class="color-grid">
+        <!-- Primary -->
+        <div class="color-swatch">
+          <div class="color-sample" style="background-color: #00D084;">Primary</div>
+          <div class="color-info">
+            <span class="color-name">Primary</span>
+            <span class="color-hex">#00D084</span>
+          </div>
+        </div>
+
+        <!-- Secondary -->
+        <div class="color-swatch">
+          <div class="color-sample" style="background-color: #008456;">Secondary</div>
+          <div class="color-info">
+            <span class="color-name">Secondary</span>
+            <span class="color-hex">#008456</span>
+          </div>
+        </div>
+
+        <!-- Tertiary -->
+        <div class="color-swatch">
+          <div class="color-sample" style="background-color: #4A5568;">Tertiary</div>
+          <div class="color-info">
+            <span class="color-name">Tertiary</span>
+            <span class="color-hex">#4A5568</span>
+          </div>
+        </div>
+
+        <!-- Danger -->
+        <div class="color-swatch">
+          <div class="color-sample" style="background-color: #BD3039;">Danger</div>
+          <div class="color-info">
+            <span class="color-name">Danger</span>
+            <span class="color-hex">#BD3039</span>
+          </div>
+        </div>
+
+        <!-- Surfaces -->
+        <div class="color-swatch">
+          <div class="color-sample" style="background-color: #1B1B1C; border-right: 1px solid #353535;">
+            <span style="display: flex; align-items: center; gap: 12px; font-size: 0.625rem;">
+              Low<br/>High
+            </span>
+          </div>
+          <div class="color-info">
+            <span class="color-name">Surfaces</span>
+            <span class="color-hex">#1B1B1C - #353535</span>
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="color-swatch">
+          <div class="color-sample" style="background-color: #2A2A2A;">
+            <span style="display: flex; align-items: center; gap: 12px; font-size: 0.625rem; flex-direction: column;">
+              <span style="color: #F5F5F5;">Primary</span>
+              <span style="color: #999999;">Muted</span>
+            </span>
+          </div>
+          <div class="color-info">
+            <span class="color-name">Text Colors</span>
+            <span class="color-hex">Light & Muted</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typography -->
+    <section class="section">
+      <h2 class="section-title">Typography</h2>
+      <div class="typography-section">
+        <div>
+          <span class="type-label">Headline — Space Grotesk Bold Italic</span>
+          <div class="type-sample headline">The Bold Celtics Stage a Fourth Quarter Comeback</div>
+        </div>
+
+        <div>
+          <span class="type-label">Body — Inter Regular</span>
+          <div class="type-sample body">
+            The Celtics showed real grit down the stretch, overcoming a 12-point third-quarter deficit with a barrage of three-pointers. Jayson Tatum led the charge with 28 points, hitting clutch shots when it mattered most. This is the kind of performance that wins playoff games.
+          </div>
+        </div>
+
+        <div>
+          <span class="type-label">Label — Inter Bold Uppercase</span>
+          <div class="type-sample label">
+            Upcoming · NBA · Boston Celtics vs. Philadelphia 76ers
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buttons -->
+    <section class="section">
+      <h2 class="section-title">Components</h2>
+
+      <div style="margin-bottom: 48px;">
+        <h3 style="font-family: var(--font-display); font-size: 1.125rem; color: var(--on-surface); margin-bottom: 16px;">Buttons</h3>
+        <div class="component-grid">
+          <div class="component">
+            <span class="component-name">Primary</span>
+            <div class="button-group">
+              <button class="btn btn-primary">Send Feedback</button>
+              <button class="btn btn-primary" style="opacity: 0.6; cursor: not-allowed;">Disabled</button>
+            </div>
+          </div>
+
+          <div class="component">
+            <span class="component-name">Secondary</span>
+            <div class="button-group">
+              <button class="btn btn-secondary">View More</button>
+              <button class="btn btn-secondary" style="opacity: 0.6; cursor: not-allowed;">Disabled</button>
+            </div>
+          </div>
+
+          <div class="component">
+            <span class="component-name">Outlined</span>
+            <div class="button-group">
+              <button class="btn btn-outlined">Learn More</button>
+              <button class="btn btn-outlined" style="opacity: 0.6; cursor: not-allowed;">Disabled</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards & Badges -->
+      <div style="margin-bottom: 48px;">
+        <h3 style="font-family: var(--font-display); font-size: 1.125rem; color: var(--on-surface); margin-bottom: 16px;">Cards & Badges</h3>
+        <div class="component-grid">
+          <div class="component">
+            <span class="component-name">Card</span>
+            <div class="card">
+              <div class="card-title">Jayson Tatum</div>
+              <div class="card-text">28 points, 7 rebounds, 4 assists in tonight's win over the 76ers. Dominant performance in the clutch.</div>
+            </div>
+          </div>
+
+          <div class="component">
+            <span class="component-name">Badge</span>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <span class="badge">Heater</span>
+              <span class="badge">Cold Snap</span>
+              <span class="badge">Streak</span>
+            </div>
+          </div>
+
+          <div class="component">
+            <span class="component-name">Score Row</span>
+            <div style="background: var(--surface-highest); padding: 12px 14px; border-radius: 6px; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;">
+              <div style="font-weight: 600; color: var(--on-surface);">🏀 CEL 108 vs PHI 102</div>
+              <div style="font-size: 0.625rem; text-transform: uppercase; color: var(--on-surface-muted);">Final</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spacing Scale -->
+    <section class="section">
+      <h2 class="section-title">Spacing Scale</h2>
+      <div class="spacing-grid">
+        <div class="spacing-item">
+          <span class="spacing-label">Extra Small</span>
+          <div class="spacing-visual" style="width: 4px;">4px</div>
+        </div>
+        <div class="spacing-item">
+          <span class="spacing-label">Small</span>
+          <div class="spacing-visual" style="width: 24px;">6px</div>
+        </div>
+        <div class="spacing-item">
+          <span class="spacing-label">Small</span>
+          <div class="spacing-visual" style="width: 32px;">8px</div>
+        </div>
+        <div class="spacing-item">
+          <span class="spacing-label">Small</span>
+          <div class="spacing-visual" style="width: 40px;">10px</div>
+        </div>
+        <div class="spacing-item">
+          <span class="spacing-label">Small</span>
+          <div class="spacing-visual" style="width: 48px;">12px</div>
+        </div>
+        <div class="spacing-item">
+          <span class="spacing-label">Medium</span>
+          <div class="spacing-visual" style="width: 64px;">16px</div>
+        </div>
+        <div class="spacing-item">
+          <span class="spacing-label">Large</span>
+          <div class="spacing-visual" style="width: 80px;">20px</div>
+        </div>
+        <div class="spacing-item">
+          <span class="spacing-label">Large</span>
+          <div class="spacing-visual" style="width: 96px;">24px</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Design Principles -->
+    <section class="section">
+      <h2 class="section-title">Design Principles</h2>
+      <div class="component-grid">
+        <div class="card">
+          <div class="card-title">Hierarchy Through Color</div>
+          <div class="card-text">Primary green is the only bright color. Use it sparingly for actions and highlights. Everything else is dark and muted.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Dark Theme</div>
+          <div class="card-text">All surfaces are dark; text is light. High contrast ensures readability and reduces eye strain.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Consistency</div>
+          <div class="card-text">Every interactive element uses the same button/card treatment. No one-offs. Predictable, trustworthy interactions.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Density</div>
+          <div class="card-text">Tight spacing on mobile, generous on desktop. Respect screen real estate constraints while maintaining breathing room.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Boston Aesthetic</div>
+          <div class="card-text">The green echoes Boston sports heritage. Paired with dark backgrounds, it feels modern, bold, and distinctly Boston.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Accessibility</div>
+          <div class="card-text">High contrast text, clear hierarchy, and intuitive interactions ensure everyone can use and enjoy Boston Dan's Hub.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Design System Documentation for <a href="/">Boston Dan's Hub</a> — Last updated April 2026</p>
+  </div>
+</body>
+</html>

@@ -112,6 +112,93 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 
 ---
 
+## Design System: "The Garden Slate"
+
+The UI uses a cohesive design system with a Boston sports color palette, clean typography, and component hierarchy.
+
+### Color Palette
+
+| Role | Token | Hex | Usage |
+|---|---|---|---|
+| **Primary** | `--primary` | `#00D084` | Accent color, active states, CTAs, success states |
+| **Secondary** | `--secondary` | `#008456` | Secondary accents, muted interactions |
+| **Tertiary** | `--tertiary` | `#4A5568` | Borders, dividers, subtle UI elements |
+| **Neutral** | `--neutral` | `#1E1E1E` | Dark backgrounds, high contrast text |
+| **Surface Highest** | `--surface-highest` | — | Widget card backgrounds (slightly elevated) |
+| **Surface High** | `--surface-high` | — | Subtle dividers, second-level surfaces |
+| **On Surface Muted** | `--on-surface-muted` | — | Muted text, labels, secondary content |
+
+**Dark Theme**: All UI is dark-theme optimized. Primary green (#00D084) provides the only bright accent.
+
+### Typography
+
+| Role | Font | Weight | Size (desktop) | Size (mobile) | Usage |
+|---|---|---|---|---|---|
+| **Headline** | Space Grotesk | 700 (bold) | — | — | Page titles, section headers, major beats |
+| **Body** | Inter | 400 (regular) | 1rem (16px) | 0.875rem (14px) | Paragraphs, descriptions, news text |
+| **Label** | Inter | 500 (medium) | 0.75rem (12px) | 0.6875rem (11px) | Widget headers, category tags, metadata |
+
+**Line Height**: 1.6 for body text (readability); 1.2 for headlines (compact, punchy).
+
+### Component Patterns
+
+#### Buttons
+- **Primary**: Solid background (`--primary`), white/dark text, 6px border-radius
+- **Secondary**: Solid background (`--secondary`), white/dark text, 6px border-radius
+- **Outlined**: Transparent background, `--primary` border (2px), `--primary` text, 6px border-radius
+- **Inverted**: Light background on dark theme, high contrast text
+
+#### Cards & Widgets
+- Background: `--surface-highest` with subtle elevation
+- Border radius: 6px
+- Padding: 16px internal, 12px between rows
+- Dividers: 1px `--surface-high` color
+- Hover state: Slight brightening of background or primary accent on interactive elements
+
+#### Text Hierarchy
+- **Primary text** (on-surface): High contrast, legible
+- **Muted text** (on-surface-muted): Secondary information, metadata, timestamps
+
+#### Spacing Scale
+Use these consistent intervals for padding, margins, and gaps:
+- 4px, 6px, 8px, 10px, 12px, 16px, 20px, 24px, 32px
+
+### Implementation in docs/index.html
+
+The CSS variables are defined in the `<style>` block and consumed throughout:
+
+```css
+:root {
+  --primary: #00D084;
+  --secondary: #008456;
+  --tertiary: #4A5568;
+  --neutral: #1E1E1E;
+  --surface-highest: /* dark gray, slightly lighter than bg */;
+  --surface-high: /* medium gray, used for dividers */;
+  --on-surface-muted: /* light gray, used for muted text */;
+}
+```
+
+**Always use CSS variables, never hardcode hex colors.** This ensures consistency and makes theme changes (e.g., light mode) trivial.
+
+### Responsive Design Tiers
+
+- **Mobile** (≤767px): Compact spacing (8–12px), reduced font sizes, simplified component layouts
+- **Tablet** (768–1023px): Medium spacing (12–16px), moderate font sizes
+- **Desktop** (≥1024px): Full spacing (16–24px), full-size fonts, rich layouts
+
+Override tokens inside `@media` queries as needed. **Keep mobile-first**: define base styles for mobile, then use `@media (min-width: ...)` to enhance for larger screens.
+
+### Design Principles
+
+1. **Hierarchy Through Color**: Primary green is the *only* bright color. Use it sparingly for actions and highlights.
+2. **Dark Theme**: All surfaces are dark; text is light. High contrast ensures readability.
+3. **Consistency**: Every interactive element uses the same button/card treatment. No one-offs.
+4. **Density**: Tight spacing on mobile, generous spacing on desktop — respect screen real estate constraints.
+5. **Boston Aesthetic**: The green (#00D084) echoes Boston sports (Celtics green). Paired with dark backgrounds, it feels modern and bold.
+
+---
+
 ## Gemini API Patterns
 
 ### Client setup (new SDK)

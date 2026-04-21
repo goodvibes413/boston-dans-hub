@@ -10,24 +10,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:ital,wght@0,400;0,500;0,700;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* =============================================
-       DESIGN TOKENS
+       DESIGN TOKENS — The Garden Slate System
     ============================================= */
     :root {
-      --surface-base:    #131313;
-      --surface-lowest:  #0E0E0E;
-      --surface-low:     #1B1B1C;
-      --surface:         #202020;
-      --surface-high:    #2A2A2A;
-      --surface-highest: #353535;
-      --primary:         #43ED9E;
-      --primary-container: #00D084;
-      --on-primary:      #003920;
-      --danger:          #BD3039;
-      --on-surface:      #F5F5F5;
-      --on-surface-variant: #D5D5D5;
-      --on-surface-muted:   #999999;
-      --on-surface-dim:     #666666;
+      /* Color Palette */
+      --primary:         #00D084;      /* Primary green accent — headlines, CTAs, active states */
+      --primary-container: #008456;    /* Secondary green — darker shade for gradients, muted accents */
+      --secondary:       #008456;      /* Alias for secondary green */
+      --tertiary:        #4A5568;      /* Blue-gray — borders, dividers, subtle UI */
+      --neutral:         #1E1E1E;      /* Dark background */
+
+      /* Surfaces */
+      --surface-base:    #131313;      /* Main background */
+      --surface-lowest:  #0E0E0E;      /* Darkest surface */
+      --surface-low:     #1B1B1C;      /* Low-elevation cards */
+      --surface:         #202020;      /* Mid-level surface */
+      --surface-high:    #2A2A2A;      /* High-elevation surface, dividers */
+      --surface-highest: #353535;      /* Highest-elevation surface, hover states */
+
+      /* Text Colors */
+      --on-primary:      #003920;      /* Text on primary (dark) */
+      --on-surface:      #F5F5F5;      /* Primary text (light) */
+      --on-surface-variant: #D5D5D5;   /* Secondary text */
+      --on-surface-muted:   #999999;   /* Muted text, labels */
+      --on-surface-dim:     #666666;   /* Dim text, footer */
+
+      /* Semantic */
+      --danger:          #BD3039;      /* Alert, loss states (Red Sox red) */
+
+      /* Shadows & Effects */
       --shadow-ambient:  0 40px 60px rgba(229, 226, 225, 0.04);
+
+      /* Typography */
       --font-display:    'Space Grotesk', sans-serif;
       --font-body:       'Inter', sans-serif;
     }
