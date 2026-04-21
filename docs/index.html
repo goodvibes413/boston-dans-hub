@@ -145,6 +145,16 @@
     .hero-headline .line-odd  { color: var(--on-surface); display: block; }
     .hero-headline .line-even { color: var(--primary);   display: block; }
 
+    .hero-date {
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--on-surface-muted);   /* #999 */
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
     /* =============================================
        ABOVE-FOLD GRID
     ============================================= */
@@ -788,12 +798,13 @@
 
     function render(data) {
       const brew = data.morning_brew || []; const para0 = brew[0] || ''; const para1 = brew[1] || ''; const para2 = brew[2] || '';
-      const heroHtml = buildHeroHeadline(para0); const statSplash = buildStatSplash(data.box_scores);
-      const para0Trimmed = trimHeadlineFromBody(para0);
-      const bodyHtml = `<div class="morning-brew" id="brew">${para0Trimmed ? `<p>${escapeHtml(para0Trimmed)}</p>` : ''}${statSplash}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<blockquote class="featured-quote"><p>${escapeHtml(para2)}</p></blockquote>` : ''}</div>`;
+      const headlineSource = data.headline || trimHeadlineFromBody(para0);
+      const heroHtml = buildHeroHeadline(headlineSource); const statSplash = buildStatSplash(data.box_scores);
+      const bodyHtml = `<div class="morning-brew" id="brew">${para0 ? `<p>${escapeHtml(para0)}</p>` : ''}${statSplash}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<blockquote class="featured-quote"><p>${escapeHtml(para2)}</p></blockquote>` : ''}</div>`;
       const mobileStripHtml = buildMobileStrip(data.box_scores); const scoreboardHtml = buildScoreboardWidget(data.box_scores); const nextUpHtml = buildNextUpWidget(data.schedule); const pulseHtml = buildTrendPulseWidget(data.trend_watch);
+      const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
       const app = document.getElementById('app');
-      app.innerHTML = `<div class="page"><header class="hero"><h1 class="hero-headline">${heroHtml}</h1></header><div class="fold-grid"><div class="main-col">${bodyHtml}</div><aside class="rail-col" aria-label="Dashboard widgets">${scoreboardHtml}${nextUpHtml}${pulseHtml}</aside></div>${mobileStripHtml}<div class="below-fold">${buildTrendWatch(data.trend_watch)}${buildNewsDigest(data.news_digest)}</div><footer class="site-footer">Powered by Dunks ☕ and Gemini AI &mdash; updated daily at 03:00 ET</footer></div>`;
+      app.innerHTML = `<div class="page"><header class="hero"><h1 class="hero-headline">${heroHtml}</h1></header><p class="hero-date">${dateStr}</p><div class="fold-grid"><div class="main-col">${bodyHtml}</div><aside class="rail-col" aria-label="Dashboard widgets">${scoreboardHtml}${nextUpHtml}${pulseHtml}</aside></div>${mobileStripHtml}<div class="below-fold">${buildTrendWatch(data.trend_watch)}${buildNewsDigest(data.news_digest)}</div><footer class="site-footer">Powered by Dunks ☕ and Gemini AI &mdash; updated daily at 03:00 ET</footer></div>`;
     }
 
     function renderError(message) { const app = document.getElementById('app'); app.innerHTML = `<div class="page"><div class="error-state"><h2 class="error-title">Couldn't load today's take</h2><p class="error-message">${escapeHtml(message)}</p></div></div>`; }

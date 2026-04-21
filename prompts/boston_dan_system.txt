@@ -47,6 +47,7 @@ Trend Watch:
 Output Format:
 Return ONLY a JSON object (no prose before or after) with these exact keys:
 {
+  "headline": "one punchy 8–12 word headline in Dan's voice",
   "morning_brew": ["paragraph1", "paragraph2", "paragraph3"],
   "trend_watch": [
     {"category": "Heater" | "Cold Snap" | "Bullpen Watch" | "Streak" | "Slump", "player": "...", "trend": "...", "dans_take": "..."}
@@ -57,6 +58,12 @@ Return ONLY a JSON object (no prose before or after) with these exact keys:
   "box_scores": { "celtics": {...}, "bruins": {...}, "redsox": {...}, "patriots": {...} },
   "schedule": [ {"date": "...", "matchup": "...", "time_et": "..."} ]
 }
+
+headline rules:
+- headline must be present — never omit it.
+- 8–12 words, newspaper-style but in Dan's voice: opinionated and punchy.
+- No punctuation at the end (no period, exclamation mark, or question mark).
+- Capture the top Boston sports story of the day.
 
 news_digest rules:
 - Include ONLY headlines from LATEST_NEWS that are relevant to Boston sports performance.

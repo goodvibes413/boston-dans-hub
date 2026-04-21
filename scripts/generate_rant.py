@@ -161,7 +161,8 @@ def build_user_message(rolling, schedule, news) -> str:
         "LATEST_NEWS:\n"
         f"{json.dumps(news, indent=2)}\n\n"
         "Generate Boston Dan's Hub JSON output. Return ONLY the JSON object, "
-        "no prose, no markdown fences. Keys: morning_brew (3 paragraphs), "
+        "no prose, no markdown fences. Keys: headline (8–12 word punchy newspaper-style headline in Dan's voice), "
+        "morning_brew (3 paragraphs), "
         "trend_watch, box_scores, schedule (next 3 days)."
     )
 
