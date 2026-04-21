@@ -83,6 +83,73 @@ def load_json(path: Path):
         return {}
 
 
+def normalize_box_scores(data: dict) -> dict:
+    """
+    Normalize box_scores to a consistent schema across all sports.
+
+    Input formats (from fetchers):
+    - Celtics/Bruins/Red Sox may have nested games arrays or simple score objects
+    - Patriots may have different structure during offseason
+
+    Output format (for frontend):
+    {
+      "sport": "NBA|NHL|MLB|NFL",
+      "home_team": "...",
+      "away_team": "...",
+      "home_score": int,
+      "away_score": int,
+      "game_date": "YYYY-MM-DD",
+      "played": bool,
+      "season_type": "regular|playoff|preseason|offseason"
+    }
+    """
+    if "box_scores" not in data or not data["box_scores"]:
+        return data
+
+    normalized = {}
+    sport_map = {
+        "celtics": "NBA",
+        "bruins": "NHL",
+        "redsox": "MLB",
+        "patriots": "NFL",
+    }
+
+    for team_key, team_data in data["box_scores"].items():
+        if not team_data:
+            continue
+
+        sport = sport_map.get(team_key, "Unknown")
+
+        # If the team has a nested games array (Red Sox format), take the first game
+        if isinstance(team_data.get("games"), list) and len(team_data["games"]) > 0:
+            game = team_data["games"][0]
+            normalized[team_key] = {
+                "sport": sport,
+                "home_team": "Boston Red Sox" if game.get("home") else game.get("opponent", "Unknown"),
+                "away_team": game.get("opponent", "Unknown") if game.get("home") else "Boston Red Sox",
+                "home_score": game.get("redsox_score") if game.get("home") else game.get("opponent_score"),
+                "away_score": game.get("opponent_score") if game.get("home") else game.get("redsox_score"),
+                "game_date": team_data.get("game_date", ""),
+                "played": team_data.get("played", False),
+                "season_type": team_data.get("season_type", "unknown"),
+            }
+        else:
+            # Simple score format (Celtics/Bruins)
+            normalized[team_key] = {
+                "sport": sport,
+                "home_team": team_data.get("home_team", ""),
+                "away_team": team_data.get("away_team", ""),
+                "home_score": team_data.get("home_score"),
+                "away_score": team_data.get("away_score"),
+                "game_date": team_data.get("game_date", ""),
+                "played": team_data.get("played", False),
+                "season_type": team_data.get("season_type", "unknown"),
+            }
+
+    data["box_scores"] = normalized
+    return data
+
+
 def build_user_message(rolling, schedule, news) -> str:
     return (
         "Here is the structured data for the last 7 days of Boston sports.\n"
@@ -173,6 +240,9 @@ def main():
             force_json=True,
         )
         parsed = json.loads(raw)
+
+    # Normalize box_scores schema for consistent frontend rendering
+    parsed = normalize_box_scores(parsed)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(parsed, indent=2))
