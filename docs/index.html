@@ -379,6 +379,26 @@
       font-size: 0.75rem;
     }
 
+    .schedule-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--surface-high);
+      font-size: 0.8125rem;
+      gap: 10px;
+    }
+
+    .schedule-date-label {
+      font-family: var(--font-display);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--on-surface-muted);
+      padding: 10px 0 4px;
+    }
+
     .nextup-date {
       font-family: var(--font-display);
       font-weight: 700;
@@ -656,6 +676,16 @@
       /* Hide mobile strip — scoreboard widget handles scores */
       .mobile-strip { display: none; }
 
+      /* Layered density: tighten secondary + hide tertiary details */
+      .widget.pulse .pulse-player { font-size: 1rem; }
+      .pulse-card--sep { margin-top: 10px; padding-top: 10px; }
+
+      .widget#news .pulse-take { display: none; }
+      .widget#news .pulse-card:nth-child(n+6) { display: none; }
+      .widget#news .pulse-news-headline { font-size: 0.875rem; }
+
+      .nextup-row { background: transparent; border-radius: 0; min-height: auto; padding: 0; }
+
       .stat-splash { padding: 20px; }
     }
 
@@ -776,8 +806,13 @@
 
     function buildScheduleSection(schedule) {
       if (!schedule || !schedule.length) return '';
-      const rows = schedule.map(item => `<div class="nextup-row"><span class="nextup-date">${escapeHtml(shortDate(item.date))}</span><span class="nextup-matchup">${escapeHtml(item.matchup || '')}</span><span class="nextup-time">${escapeHtml(item.time_et || 'TBD')}</span></div>`).join('');
-      return `<section class="schedule-section"><header class="widget-header" style="margin-bottom:12px"><span>Upcoming</span></header><div class="nextup-rows">${rows}</div></section>`;
+      const grouped = {}; schedule.forEach(item => { const d = item.date; if (!grouped[d]) grouped[d] = []; grouped[d].push(item); });
+      const html = Object.keys(grouped).map(date => {
+        const label = grouped[date][0] ? shortDate(date).toUpperCase() : '';
+        const rows = grouped[date].map(item => `<div class="schedule-row"><span class="schedule-matchup">${escapeHtml(item.matchup || '')}</span><span class="schedule-time">${escapeHtml(item.time_et || 'TBD')}</span></div>`).join('');
+        return `<div class="schedule-date-label">${label}</div>${rows}`;
+      }).join('');
+      return `<section class="schedule-section"><header class="widget-header" style="margin-bottom:12px"><span>Upcoming</span></header><div class="nextup-rows">${html}</div></section>`;
     }
 
     function buildTrendPulseWidget(trends) {
