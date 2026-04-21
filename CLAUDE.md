@@ -458,6 +458,14 @@ Once the end-to-end pipeline is live (Week 3 complete, daily cron running), expa
 
 **Why deferred:** The end-to-end pipeline must work flawlessly first. Adding knowledge depth adds complexity to evals and persona tuning. Ship a working daily Dan first; enhance his depth in Week 4 or later.
 
+### Email Newsletter (Deferred)
+- **Goal**: Allow readers to subscribe and receive daily Dan commentary via email
+- **Tech**: Integrate with email service (SendGrid, Mailgun, or Substack API)
+- **Frontend**: Add email input + "Subscribe" button to v4 design (currently stubbed out in hero CTA section)
+- **Backend**: Store emails, trigger daily send via GitHub Actions after publish.py completes
+- **Safety**: Ensure unsubscribe links work; comply with CAN-SPAM
+- **Why deferred**: Current focus is on perfecting the daily generation pipeline and frontend design. Newsletter infrastructure (database, email service, compliance) can come later once the core product is stable and gaining traction.
+
 ---
 
 ## How to Run the Pipeline Locally

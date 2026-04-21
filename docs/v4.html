@@ -158,6 +158,16 @@
       max-width: 780px;
     }
 
+    .article-kicker {
+      font-family: var(--font-body);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--primary);
+      margin-bottom: 14px;
+    }
+
     .hero-headline {
       font-family: var(--font-display);
       font-style: italic;
@@ -169,6 +179,41 @@
     }
     .hero-headline .line-odd  { color: var(--on-surface); display: block; }
     .hero-headline .line-even { color: var(--primary);   display: block; }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .meta-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--surface-highest);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .meta-info { display: flex; flex-direction: column; gap: 1px; }
+
+    .meta-author {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.875rem;
+      color: var(--on-surface);
+    }
+    .meta-byline {
+      font-size: 0.75rem;
+      color: var(--on-surface-muted);
+    }
 
     /* =============================================
        ABOVE-FOLD GRID
@@ -283,6 +328,41 @@
       color: var(--on-surface) !important;
       margin-bottom: 0 !important;
     }
+    blockquote.featured-quote p::first-letter {
+      font-size: 1.0625rem !important;
+      float: none !important;
+      line-height: inherit !important;
+      margin: 0 !important;
+      color: var(--on-surface) !important;
+      font-family: var(--font-body) !important;
+    }
+
+    /* =============================================
+       TAG CHIPS
+    ============================================= */
+    .tag-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+    }
+    .tag-chip {
+      background: var(--surface);
+      color: var(--primary);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 10px 14px;
+      border-radius: 100px;
+      cursor: pointer;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      transition: background 0.2s ease;
+    }
+    .tag-chip:hover { background: var(--surface-high); }
 
     /* =============================================
        RAIL WIDGETS
@@ -302,6 +382,9 @@
       text-transform: uppercase;
       color: var(--on-surface-muted);
       margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     /* Scoreboard rows */
@@ -536,6 +619,7 @@
       line-height: 1.5;
     }
 
+
     /* Footer */
     .site-footer {
       text-align: center;
@@ -614,7 +698,13 @@
       .hero-headline { font-size: clamp(1.875rem, 7vw, 2.5rem); }
 
       .morning-brew p { font-size: 1rem; }
+      .morning-brew p:first-child::first-letter {
+        font-size: 3rem;
+        margin-right: 8px;
+      }
 
+      /* Replace sticky rail with horizontal scroll strip of scores
+         shown *before* the morning brew body */
       .rail-col { display: none; }
       .mobile-strip {
         display: block;
@@ -671,6 +761,8 @@
       .news-grid  { grid-template-columns: 1fr; gap: 18px; }
 
       .stat-splash { padding: 20px; }
+      .subscribe-cta { padding: 32px 20px; }
+      .subscribe-input { width: 100%; max-width: 280px; }
     }
 
     @media (max-width: 440px) {
@@ -703,135 +795,548 @@
   </div>
 
   <script>
-    const SPORT_MAP = { celtics: 'NBA', bruins: 'NHL', redsox: 'MLB', patriots: 'NFL' };
-    const BOSTON_CODE = { celtics: 'BOS', bruins: 'BOS', redsox: 'BOS', patriots: 'NE' };
-    const BOSTON_DISPLAY_NAME = { celtics: 'CELTICS', bruins: 'BRUINS', redsox: 'RED SOX', patriots: 'PATRIOTS' };
-    const SPORT_EMOJI = { NBA: '🏀', NHL: '🏒', MLB: '⚾', NFL: '🏈' };
-    const OPP_CODE = {
-      'detroit tigers': 'DET', 'new york yankees': 'NYY', 'philadelphia 76ers': 'PHI',
-      'philadelphia flyers': 'PHI', 'buffalo sabres': 'BUF', 'boston celtics': 'BOS',
-      'boston bruins': 'BOS', 'boston red sox': 'BOS', 'new england patriots': 'NE',
+    /* =============================================
+       CONSTANTS
+    ============================================= */
+    const SPORT_MAP = {
+      celtics:  'NBA',
+      bruins:   'NHL',
+      redsox:   'MLB',
+      patriots: 'NFL',
+    };
+    const BOSTON_CODE = {
+      celtics:  'BOS',
+      bruins:   'BOS',
+      redsox:   'BOS',
+      patriots: 'NE',
+    };
+    const BOSTON_DISPLAY_NAME = {
+      celtics:  'CELTICS',
+      bruins:   'BRUINS',
+      redsox:   'RED SOX',
+      patriots: 'PATRIOTS',
+    };
+    const SPORT_EMOJI = {
+      NBA: '🏀', NHL: '🏒', MLB: '⚾', NFL: '🏈'
     };
 
-    function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
-    function oppCode(name) { if (!name) return 'OPP'; const key = String(name).toLowerCase(); if (OPP_CODE[key]) return OPP_CODE[key]; const words = String(name).trim().split(/\s+/); const last = words[words.length - 1] || 'OPP'; return last.slice(0, 3).toUpperCase(); }
-    function shortDate(dateStr) { if (!dateStr) return ''; const parts = dateStr.split('-'); if (parts.length < 3) return dateStr; const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; return `${days[d.getDay()]} ${d.getDate()}`; }
+    /* Team → 3-letter code lookup for opponents */
+    const OPP_CODE = {
+      'detroit tigers': 'DET',
+      'new york yankees': 'NYY',
+      'philadelphia 76ers': 'PHI',
+      'philadelphia flyers': 'PHI',
+      'buffalo sabres': 'BUF',
+      'boston celtics': 'BOS',
+      'boston bruins': 'BOS',
+      'boston red sox': 'BOS',
+      'new england patriots': 'NE',
+    };
 
-    function buildHeroHeadline(text) { const words = (text || '').trim().split(/\s+/).slice(0, 12); const chunks = []; for (let i = 0; i < words.length; i += 4) chunks.push(words.slice(i, i + 4).join(' ')); return chunks.map((chunk, idx) => { const cls = (idx % 2 === 0) ? 'line-odd' : 'line-even'; return `<span class="${cls}">${escapeHtml(chunk)}</span>`; }).join(''); }
-    function trimHeadlineFromBody(text) { const words = (text || '').trim().split(/\s+/); return words.slice(12).join(' '); }
+    /* =============================================
+       UTILITIES
+    ============================================= */
+    function escapeHtml(t) {
+      const d = document.createElement('div');
+      d.textContent = t == null ? '' : String(t);
+      return d.innerHTML;
+    }
 
+    function oppCode(name) {
+      if (!name) return 'OPP';
+      const key = String(name).toLowerCase();
+      if (OPP_CODE[key]) return OPP_CODE[key];
+      // Fallback: take last word, first 3 letters
+      const words = String(name).trim().split(/\s+/);
+      const last = words[words.length - 1] || 'OPP';
+      return last.slice(0, 3).toUpperCase();
+    }
+
+    function formatScheduleDate(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length < 3) return dateStr;
+      const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+      const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      return `${days[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()}`;
+    }
+
+    function shortDate(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length < 3) return dateStr;
+      const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+      const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+      return `${days[d.getDay()]} ${d.getDate()}`;
+    }
+
+    /* =============================================
+       DATA EXTRACTION — handles both shapes
+       (nested `games[0]` or flat)
+    ============================================= */
     function extractGame(teamKey, team) {
       if (!team) return null;
       const sport = team.sport || SPORT_MAP[teamKey];
       const seasonType = team.season_type || 'unknown';
+
+      // Nested shape (Red Sox raw)
       if (Array.isArray(team.games) && team.games[0]) {
         const g = team.games[0];
         const bostonHome = !!g.home;
-        return { teamKey, sport, seasonType, played: !!team.played, bostonScore: g.redsox_score ?? g.boston_score, oppScore: g.opponent_score, opponent: g.opponent || '', bostonHome };
+        return {
+          teamKey,
+          sport,
+          seasonType,
+          played: !!team.played,
+          bostonScore: g.redsox_score ?? g.boston_score,
+          oppScore:    g.opponent_score,
+          opponent:    g.opponent || '',
+          bostonHome,
+        };
       }
+
+      // Flat shape (post-normalize)
       if (team.home_team || team.away_team) {
         const homeLower = (team.home_team || '').toLowerCase();
         const BOSTON_FULL = ['boston celtics','boston bruins','boston red sox','new england patriots'];
         const bostonHome = BOSTON_FULL.includes(homeLower);
-        return { teamKey, sport, seasonType, played: !!team.played, bostonScore: bostonHome ? team.home_score : team.away_score, oppScore: bostonHome ? team.away_score : team.home_score, opponent: bostonHome ? team.away_team : team.home_team, bostonHome };
+        return {
+          teamKey,
+          sport,
+          seasonType,
+          played: !!team.played,
+          bostonScore: bostonHome ? team.home_score : team.away_score,
+          oppScore:    bostonHome ? team.away_score : team.home_score,
+          opponent:    bostonHome ? team.away_team   : team.home_team,
+          bostonHome,
+        };
       }
-      return { teamKey, sport, seasonType, played: !!team.played, bostonScore: null, oppScore: null, opponent: '', bostonHome: null };
+
+      // Empty / unplayed
+      return {
+        teamKey,
+        sport,
+        seasonType,
+        played: !!team.played,
+        bostonScore: null,
+        oppScore: null,
+        opponent: '',
+        bostonHome: null,
+      };
     }
 
+    /* =============================================
+       HERO HEADLINE
+    ============================================= */
+    function buildHeroHeadline(text) {
+      const words = (text || '').trim().split(/\s+/).slice(0, 12);
+      const chunks = [];
+      for (let i = 0; i < words.length; i += 4) chunks.push(words.slice(i, i + 4).join(' '));
+      return chunks.map((chunk, idx) => {
+        const cls = (idx % 2 === 0) ? 'line-odd' : 'line-even';
+        return `<span class="${cls}">${escapeHtml(chunk)}</span>`;
+      }).join('');
+    }
+
+    function trimHeadlineFromBody(text) {
+      // Remove the first 12 words (same as headline) so body continues smoothly
+      const words = (text || '').trim().split(/\s+/);
+      return words.slice(12).join(' ');
+    }
+
+    /* =============================================
+       STAT SPLASH (inside morning brew)
+       Picks first played Boston game.
+    ============================================= */
     function buildStatSplash(boxScores) {
       if (!boxScores) return '';
       const keys = ['celtics','bruins','redsox','patriots'];
       let game = null, raw = null;
       for (const k of keys) {
         const g = extractGame(k, boxScores[k]);
-        if (g && g.played && g.bostonScore != null && g.oppScore != null) { game = g; raw = boxScores[k]; break; }
+        if (g && g.played && g.bostonScore != null && g.oppScore != null) {
+          game = g;
+          raw = boxScores[k];
+          break;
+        }
       }
       if (!game) return '';
+
       const won = game.bostonScore > game.oppScore;
       const bostonName = BOSTON_DISPLAY_NAME[game.teamKey] || 'BOSTON';
       const resultLabel = won ? `${bostonName} WIN` : `${bostonName} LOSS`;
       const scoreDisplay = `${game.bostonScore}–${game.oppScore}`;
-      const subtitleMap = { celtics: won ? 'DOMINANT FOURTH QUARTER' : 'TOUGH NIGHT IN THE GARDEN', bruins: won ? 'SOLID ROAD WIN' : 'LATE COLLAPSE COSTS THEM', redsox: won ? 'YAWKEY WAY WINS' : 'ANOTHER ROUGH NIGHT AT FENWAY', patriots: won ? 'PATRIOTS TAKE IT' : 'LONG ROAD HOME' };
+
+      const subtitleMap = {
+        celtics:  won ? 'DOMINANT FOURTH QUARTER' : 'TOUGH NIGHT IN THE GARDEN',
+        bruins:   won ? 'SOLID ROAD WIN'           : 'LATE COLLAPSE COSTS THEM',
+        redsox:   won ? 'YAWKEY WAY WINS'          : 'ANOTHER ROUGH NIGHT AT FENWAY',
+        patriots: won ? 'PATRIOTS TAKE IT'         : 'LONG ROAD HOME',
+      };
       const subtitle = subtitleMap[game.teamKey] || (won ? 'BOSTON WINS' : 'BOSTON LOSES');
+
+      // Leader info — pull from raw since extractGame doesn't carry it
       let leadersHtml = '';
-      if (raw && Array.isArray(raw.games) && raw.games[0]) { const g = raw.games[0]; const topHitter = (g.top_hitters || [])[0]; if (topHitter) leadersHtml += `<div class="stat-splash-leader-item"><span class="stat-splash-leader-tag">${escapeHtml(bostonName)} LEADER</span><span class="stat-splash-leader-name">${escapeHtml(topHitter.name)}</span><span class="stat-splash-leader-stats">${escapeHtml(`${topHitter.hits}-for-${topHitter.ab} · ${topHitter.season_avg} avg`)}</span></div>`; }
-      return `<div class="stat-splash"><div class="stat-splash-number">${escapeHtml(scoreDisplay)}</div><div class="stat-splash-label">${escapeHtml(resultLabel)}</div><div class="stat-splash-subtitle">${escapeHtml(subtitle)}</div>${leadersHtml ? `<div class="stat-splash-leader">${leadersHtml}</div>` : ''}</div>`;
+      if (raw && Array.isArray(raw.games) && raw.games[0]) {
+        const g = raw.games[0];
+        const topHitter = (g.top_hitters || [])[0];
+        if (topHitter) {
+          leadersHtml += `
+            <div class="stat-splash-leader-item">
+              <span class="stat-splash-leader-tag">${escapeHtml(bostonName)} LEADER</span>
+              <span class="stat-splash-leader-name">${escapeHtml(topHitter.name)}</span>
+              <span class="stat-splash-leader-stats">${escapeHtml(`${topHitter.hits}-for-${topHitter.ab} · ${topHitter.season_avg} avg`)}</span>
+            </div>
+          `;
+        }
+      } else if (raw) {
+        const bLeader = game.bostonHome ? raw.home_leader : raw.away_leader;
+        const bStats  = game.bostonHome ? raw.home_leader_stats : raw.away_leader_stats;
+        if (bLeader) {
+          leadersHtml += `
+            <div class="stat-splash-leader-item">
+              <span class="stat-splash-leader-tag">${escapeHtml(bostonName)} LEADER</span>
+              <span class="stat-splash-leader-name">${escapeHtml(bLeader)}</span>
+              <span class="stat-splash-leader-stats">${escapeHtml(bStats || '')}</span>
+            </div>
+          `;
+        }
+      }
+
+      return `
+        <div class="stat-splash">
+          <div class="stat-splash-number">${escapeHtml(scoreDisplay)}</div>
+          <div class="stat-splash-label">${escapeHtml(resultLabel)}</div>
+          <div class="stat-splash-subtitle">${escapeHtml(subtitle)}</div>
+          ${leadersHtml ? `<div class="stat-splash-leader">${leadersHtml}</div>` : ''}
+        </div>
+      `;
     }
 
+    /* =============================================
+       SCOREBOARD WIDGET (rail)
+    ============================================= */
     function buildScoreboardWidget(boxScores) {
       if (!boxScores) return '';
       const keys = ['celtics','bruins','redsox','patriots'];
       const rows = keys.map(k => {
-        const team = boxScores[k]; if (!team) return ''; const g = extractGame(k, team); const emoji = SPORT_EMOJI[g.sport] || '•'; const bostonCode = BOSTON_CODE[k];
-        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) return `<div class="score-row dim"><span class="score-sport-emoji">${emoji}</span><div class="score-matchup"><span class="team-code">${bostonCode}</span></div><span class="score-status">Offseason</span></div>`;
-        if (g.played && g.bostonScore != null && g.oppScore != null) {
-          const won = g.bostonScore > g.oppScore; const oppCodeStr = oppCode(g.opponent); const connector = g.bostonHome ? 'vs' : '@';
-          const leftCode = g.bostonHome ? bostonCode : oppCodeStr; const leftScore = g.bostonHome ? g.bostonScore : g.oppScore; const rightCode = g.bostonHome ? oppCodeStr : bostonCode; const rightScore = g.bostonHome ? g.oppScore : g.bostonScore;
-          const leftWinCls = (g.bostonHome && won) ? 'win' : (!g.bostonHome && !won) ? 'loss' : ''; const rightWinCls = (!g.bostonHome && won) ? 'win' : (g.bostonHome && !won) ? 'loss' : '';
-          return `<div class="score-row"><span class="score-sport-emoji">${emoji}</span><div class="score-matchup"><span class="team-code ${leftWinCls}">${escapeHtml(leftCode)}</span><span class="team-score">${escapeHtml(leftScore)}</span><span class="vs">${connector}</span><span class="team-score">${escapeHtml(rightScore)}</span><span class="team-code ${rightWinCls}">${escapeHtml(rightCode)}</span></div><span class="score-status">Final</span></div>`;
+        const team = boxScores[k];
+        if (!team) return '';
+        const g = extractGame(k, team);
+        const emoji = SPORT_EMOJI[g.sport] || '•';
+        const bostonCode = BOSTON_CODE[k];
+
+        // Offseason
+        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) {
+          return `
+            <div class="score-row dim">
+              <span class="score-sport-emoji">${emoji}</span>
+              <div class="score-matchup">
+                <span class="team-code">${bostonCode}</span>
+              </div>
+              <span class="score-status">Offseason</span>
+            </div>
+          `;
         }
-        const oppStr = g.opponent ? oppCode(g.opponent) : '—'; const connector = g.bostonHome ? 'vs' : (g.opponent ? '@' : '');
-        return `<div class="score-row dim"><span class="score-sport-emoji">${emoji}</span><div class="score-matchup"><span class="team-code">${bostonCode}</span>${connector ? `<span class="vs">${connector}</span>` : ''}${g.opponent ? `<span class="team-code">${escapeHtml(oppStr)}</span>` : ''}</div><span class="score-status">—</span></div>`;
+
+        // Played
+        if (g.played && g.bostonScore != null && g.oppScore != null) {
+          const won = g.bostonScore > g.oppScore;
+          const oppCodeStr = oppCode(g.opponent);
+          const connector = g.bostonHome ? 'vs' : '@';
+          // Score order: home team first if Boston home, else opp first
+          const leftCode  = g.bostonHome ? bostonCode   : oppCodeStr;
+          const leftScore = g.bostonHome ? g.bostonScore : g.oppScore;
+          const rightCode = g.bostonHome ? oppCodeStr   : bostonCode;
+          const rightScore= g.bostonHome ? g.oppScore    : g.bostonScore;
+          const leftWinCls  = (g.bostonHome && won) ? 'win' : (!g.bostonHome && !won) ? 'loss' : '';
+          const rightWinCls = (!g.bostonHome && won) ? 'win' : (g.bostonHome && !won) ? 'loss' : '';
+          return `
+            <div class="score-row">
+              <span class="score-sport-emoji">${emoji}</span>
+              <div class="score-matchup">
+                <span class="team-code ${leftWinCls}">${escapeHtml(leftCode)}</span>
+                <span class="team-score">${escapeHtml(leftScore)}</span>
+                <span class="vs">${connector}</span>
+                <span class="team-score">${escapeHtml(rightScore)}</span>
+                <span class="team-code ${rightWinCls}">${escapeHtml(rightCode)}</span>
+              </div>
+              <span class="score-status">Final</span>
+            </div>
+          `;
+        }
+
+        // Scheduled / not played
+        const oppStr = g.opponent ? oppCode(g.opponent) : '—';
+        const connector = g.bostonHome ? 'vs' : (g.opponent ? '@' : '');
+        return `
+          <div class="score-row dim">
+            <span class="score-sport-emoji">${emoji}</span>
+            <div class="score-matchup">
+              <span class="team-code">${bostonCode}</span>
+              ${connector ? `<span class="vs">${connector}</span>` : ''}
+              ${g.opponent ? `<span class="team-code">${escapeHtml(oppStr)}</span>` : ''}
+            </div>
+            <span class="score-status">—</span>
+          </div>
+        `;
       }).join('');
-      return `<section class="widget scoreboard"><header class="widget-header"><span>Last Night</span></header><div class="score-rows">${rows}</div></section>`;
+
+      return `
+        <section class="widget scoreboard">
+          <header class="widget-header"><span>Last Night</span></header>
+          <div class="score-rows">${rows}</div>
+        </section>
+      `;
     }
 
+    /* =============================================
+       MOBILE SCORE STRIP
+    ============================================= */
     function buildMobileStrip(boxScores) {
       if (!boxScores) return '';
       const keys = ['celtics','bruins','redsox','patriots'];
       const cards = keys.map(k => {
-        const team = boxScores[k]; if (!team) return ''; const g = extractGame(k, team); const bostonCode = BOSTON_CODE[k]; const sportLabel = g.sport || '';
-        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel} · ${bostonCode}</span><span class="msc-match">Offseason</span><span class="msc-status">—</span></div>`;
-        if (g.played && g.bostonScore != null && g.oppScore != null) { const won = g.bostonScore > g.oppScore; const oppCodeStr = oppCode(g.opponent); const bostonCls = won ? 'win' : 'loss'; const connector = g.bostonHome ? 'vs' : '@'; return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel}</span><span class="msc-match"><span class="${bostonCls}">${bostonCode}</span> ${g.bostonScore} ${connector} ${oppCodeStr} ${g.oppScore}</span><span class="msc-status">Final · ${won ? 'WIN' : 'LOSS'}</span></div>`; }
-        const oppStr = g.opponent ? oppCode(g.opponent) : 'TBD'; const connector = g.bostonHome ? 'vs' : (g.opponent ? '@' : '');
-        return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel}</span><span class="msc-match">${bostonCode} ${connector} ${oppStr}</span><span class="msc-status">Scheduled</span></div>`;
+        const team = boxScores[k];
+        if (!team) return '';
+        const g = extractGame(k, team);
+        const bostonCode = BOSTON_CODE[k];
+        const sportLabel = g.sport || '';
+
+        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) {
+          return `
+            <div class="mobile-score-card">
+              <span class="msc-sport">${sportLabel} · ${bostonCode}</span>
+              <span class="msc-match">Offseason</span>
+              <span class="msc-status">—</span>
+            </div>
+          `;
+        }
+
+        if (g.played && g.bostonScore != null && g.oppScore != null) {
+          const won = g.bostonScore > g.oppScore;
+          const oppCodeStr = oppCode(g.opponent);
+          const bostonCls = won ? 'win' : 'loss';
+          const connector = g.bostonHome ? 'vs' : '@';
+          return `
+            <div class="mobile-score-card">
+              <span class="msc-sport">${sportLabel}</span>
+              <span class="msc-match">
+                <span class="${bostonCls}">${bostonCode}</span> ${g.bostonScore} ${connector} ${oppCodeStr} ${g.oppScore}
+              </span>
+              <span class="msc-status">Final · ${won ? 'WIN' : 'LOSS'}</span>
+            </div>
+          `;
+        }
+
+        const oppStr = g.opponent ? oppCode(g.opponent) : 'TBD';
+        const connector = g.bostonHome ? 'vs' : (g.opponent ? '@' : '');
+        return `
+          <div class="mobile-score-card">
+            <span class="msc-sport">${sportLabel}</span>
+            <span class="msc-match">${bostonCode} ${connector} ${oppStr}</span>
+            <span class="msc-status">Scheduled</span>
+          </div>
+        `;
       }).join('');
-      return `<div class="mobile-strip"><div class="mobile-strip-inner">${cards}</div></div>`;
+
+      return `
+        <div class="mobile-strip">
+          <div class="mobile-strip-inner">${cards}</div>
+        </div>
+      `;
     }
 
+    /* =============================================
+       NEXT UP WIDGET
+    ============================================= */
     function buildNextUpWidget(schedule) {
       if (!schedule || !schedule.length) return '';
-      const rows = schedule.slice(0, 3).map(item => `<div class="nextup-row"><span class="nextup-date">${escapeHtml(shortDate(item.date))}</span><span class="nextup-matchup">${escapeHtml(item.matchup || '')}</span><span class="nextup-time">${escapeHtml(item.time_et || 'TBD')}</span></div>`).join('');
-      return `<section class="widget nextup"><header class="widget-header"><span>Next Up</span></header><div class="nextup-rows">${rows}</div></section>`;
+      const rows = schedule.slice(0, 3).map(item => `
+        <div class="nextup-row">
+          <span class="nextup-date">${escapeHtml(shortDate(item.date))}</span>
+          <span class="nextup-matchup">${escapeHtml(item.matchup || '')}</span>
+          <span class="nextup-time">${escapeHtml(item.time_et || 'TBD')}</span>
+        </div>
+      `).join('');
+      return `
+        <section class="widget nextup">
+          <header class="widget-header"><span>Next Up</span></header>
+          <div class="nextup-rows">${rows}</div>
+        </section>
+      `;
     }
 
+    /* =============================================
+       TREND PULSE WIDGET (top trend)
+    ============================================= */
     function buildTrendPulseWidget(trends) {
       if (!trends || !trends.length) return '';
       const t = trends[0];
-      return `<section class="widget pulse"><header class="widget-header"><span>Trend Pulse</span></header><span class="pulse-category">${escapeHtml(t.category || 'Trend')}</span><div class="pulse-player">${escapeHtml(t.player || '')}</div><p class="pulse-trend">${escapeHtml(t.trend || '')}</p>${t.dans_take ? `<p class="pulse-take">"${escapeHtml(t.dans_take)}"</p>` : ''}</section>`;
+      return `
+        <section class="widget pulse">
+          <header class="widget-header"><span>Trend Pulse</span></header>
+          <span class="pulse-category">${escapeHtml(t.category || 'Trend')}</span>
+          <div class="pulse-player">${escapeHtml(t.player || '')}</div>
+          <p class="pulse-trend">${escapeHtml(t.trend || '')}</p>
+          ${t.dans_take ? `<p class="pulse-take">"${escapeHtml(t.dans_take)}"</p>` : ''}
+        </section>
+      `;
     }
 
+    /* =============================================
+       TREND WATCH (below-fold)
+    ============================================= */
     function buildTrendWatch(trends) {
       if (!trends || !trends.length) return '';
-      const cards = trends.map(t => `<div class="trend-card"><span class="trend-category-badge">${escapeHtml(t.category || 'Trend')}</span><div class="trend-player">${escapeHtml(t.player || '')}</div><p class="trend-text">${escapeHtml(t.trend || '')}</p>${t.dans_take ? `<p class="trend-take">"${escapeHtml(t.dans_take)}"</p>` : ''}</div>`).join('');
-      return `<section class="section" id="trends"><h2 class="section-header">Trend Watch</h2><div class="trend-grid">${cards}</div></section>`;
+      const cards = trends.map(t => `
+        <div class="trend-card">
+          <span class="trend-category-badge">${escapeHtml(t.category || 'Trend')}</span>
+          <div class="trend-player">${escapeHtml(t.player || '')}</div>
+          <p class="trend-text">${escapeHtml(t.trend || '')}</p>
+          ${t.dans_take ? `<p class="trend-take">"${escapeHtml(t.dans_take)}"</p>` : ''}
+        </div>
+      `).join('');
+      return `
+        <section class="section" id="trends">
+          <h2 class="section-header">Trend Watch</h2>
+          <div class="trend-grid">${cards}</div>
+        </section>
+      `;
     }
 
+    /* =============================================
+       NEWS DIGEST (below-fold)
+    ============================================= */
     function buildNewsDigest(news) {
       if (!news || !news.length) return '';
-      const items = news.map(item => `<div class="news-item"><a class="news-headline" href="${escapeHtml(item.url || '#')}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.headline || '')}</a>${item.dans_take ? `<p class="news-take">${escapeHtml(item.dans_take)}</p>` : ''}</div>`).join('');
-      return `<section class="section" id="digest"><h2 class="section-header">News Digest</h2><div class="news-grid">${items}</div></section>`;
+      const items = news.map(item => `
+        <div class="news-item">
+          <a class="news-headline" href="${escapeHtml(item.url || '#')}" target="_blank" rel="noopener noreferrer">
+            ${escapeHtml(item.headline || '')}
+          </a>
+          ${item.dans_take ? `<p class="news-take">${escapeHtml(item.dans_take)}</p>` : ''}
+        </div>
+      `).join('');
+      return `
+        <section class="section" id="digest">
+          <h2 class="section-header">News Digest</h2>
+          <div class="news-grid">${items}</div>
+        </section>
+      `;
     }
 
+    /* =============================================
+       SUBSCRIBE CTA
+    ============================================= */
+
+    /* =============================================
+       NAV DATE STRIP (dynamic, today-centered)
+    ============================================= */
     function buildNavDateStrip() {
-      const today = new Date(); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      const today = new Date();
+      const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
       const out = [];
-      for (let offset = -2; offset <= 2; offset++) { const d = new Date(today); d.setDate(today.getDate() + offset); const isToday = offset === 0; const label = days[d.getDay()]; const numStr = isToday ? `${months[d.getMonth()]} ${d.getDate()}` : `${d.getDate()}`; out.push(`<div class="date-item ${isToday ? 'today' : ''}" ${isToday ? 'aria-current="date"' : ''}><span class="day-label">${label}</span><span class="day-num">${numStr}</span></div>`); }
+      for (let offset = -2; offset <= 2; offset++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + offset);
+        const isToday = offset === 0;
+        const label = days[d.getDay()];
+        const numStr = isToday ? `${months[d.getMonth()]} ${d.getDate()}` : `${d.getDate()}`;
+        out.push(`
+          <div class="date-item ${isToday ? 'today' : ''}" ${isToday ? 'aria-current="date"' : ''}>
+            <span class="day-label">${label}</span>
+            <span class="day-num">${numStr}</span>
+          </div>
+        `);
+      }
       document.getElementById('nav-date-strip').innerHTML = out.join('');
     }
 
+    /* =============================================
+       MAIN RENDER
+    ============================================= */
     function render(data) {
-      const brew = data.morning_brew || []; const para0 = brew[0] || ''; const para1 = brew[1] || ''; const para2 = brew[2] || '';
-      const heroHtml = buildHeroHeadline(para0); const statSplash = buildStatSplash(data.box_scores);
+      const brew = data.morning_brew || [];
+      const para0 = brew[0] || '';
+      const para1 = brew[1] || '';
+      const para2 = brew[2] || '';
+
+      const heroHtml   = buildHeroHeadline(para0);
+      const statSplash = buildStatSplash(data.box_scores);
+
+      // Body: p0 (trimmed to continue from headline) → stat splash → p1 → blockquote(p2)
       const para0Trimmed = trimHeadlineFromBody(para0);
-      const bodyHtml = `<div class="morning-brew" id="brew">${para0Trimmed ? `<p>${escapeHtml(para0Trimmed)}</p>` : ''}${statSplash}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<blockquote class="featured-quote"><p>${escapeHtml(para2)}</p></blockquote>` : ''}</div>`;
-      const mobileStripHtml = buildMobileStrip(data.box_scores); const scoreboardHtml = buildScoreboardWidget(data.box_scores); const nextUpHtml = buildNextUpWidget(data.schedule); const pulseHtml = buildTrendPulseWidget(data.trend_watch);
+      const bodyHtml = `
+        <div class="morning-brew" id="brew">
+          ${para0Trimmed ? `<p>${escapeHtml(para0Trimmed)}</p>` : ''}
+          ${statSplash}
+          ${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}
+          ${para2 ? `
+            <blockquote class="featured-quote"><p>${escapeHtml(para2)}</p></blockquote>
+          ` : ''}
+        </div>
+      `;
+
+      const mobileStripHtml = buildMobileStrip(data.box_scores);
+      const scoreboardHtml = buildScoreboardWidget(data.box_scores);
+      const nextUpHtml     = buildNextUpWidget(data.schedule);
+      const pulseHtml      = buildTrendPulseWidget(data.trend_watch);
+
       const app = document.getElementById('app');
-      app.innerHTML = `<div class="page"><header class="hero"><h1 class="hero-headline">${heroHtml}</h1></header>${mobileStripHtml}<div class="fold-grid"><div class="main-col">${bodyHtml}</div><aside class="rail-col" aria-label="Dashboard widgets">${scoreboardHtml}${nextUpHtml}${pulseHtml}</aside></div><div class="below-fold">${buildTrendWatch(data.trend_watch)}${buildNewsDigest(data.news_digest)}</div><footer class="site-footer">Powered by Dunks ☕ and Gemini AI &mdash; updated daily at 03:00 ET</footer></div>`;
+      app.innerHTML = `
+        <div class="page">
+
+          <!-- HERO -->
+          <header class="hero">
+            <h1 class="hero-headline">${heroHtml}</h1>
+          </header>
+
+          <!-- Mobile horizontal score strip -->
+          ${mobileStripHtml}
+
+          <!-- ABOVE-FOLD TWO-COLUMN -->
+          <div class="fold-grid">
+            <div class="main-col">
+              ${bodyHtml}
+            </div>
+            <aside class="rail-col" aria-label="Dashboard widgets">
+              ${scoreboardHtml}
+              ${nextUpHtml}
+              ${pulseHtml}
+            </aside>
+          </div>
+
+          <!-- BELOW-FOLD SECTIONS -->
+          <div class="below-fold">
+            ${buildTrendWatch(data.trend_watch)}
+            ${buildNewsDigest(data.news_digest)}
+          </div>
+
+          <footer class="site-footer">
+            Powered by Dunks ☕ and Gemini AI &mdash; updated daily at 03:00 ET
+          </footer>
+        </div>
+      `;
     }
 
-    function renderError(message) { const app = document.getElementById('app'); app.innerHTML = `<div class="page"><div class="error-state"><h2 class="error-title">Couldn't load today's take</h2><p class="error-message">${escapeHtml(message)}</p></div></div>`; }
+    function renderError(message) {
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <div class="page">
+          <div class="error-state">
+            <h2 class="error-title">Couldn't load today's take</h2>
+            <p class="error-message">${escapeHtml(message)}</p>
+          </div>
+        </div>
+      `;
+    }
 
+    /* =============================================
+       INIT
+    ============================================= */
     (async function init() {
       buildNavDateStrip();
       try {
@@ -840,7 +1345,7 @@
         const data = await res.json();
         render(data);
       } catch (err) {
-        console.error('[Boston Dans Hub] Failed to load data:', err);
+        console.error('[v4] Failed to load data:', err);
         renderError(err.message || 'Unknown error. Try refreshing.');
       }
     })();
