@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boston Dan's Hub — The Broadsheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Reset & Root ──────────────────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --surface-base:    #131313;
+      --surface-lowest:  #0E0E0E;
+      --surface-low:     #1B1B1C;
+      --surface:         #202020;
+      --surface-high:    #2A2A2A;
+      --surface-highest: #353535;
+      --primary:         #43ED9E;
+      --primary-container: #00D084;
+      --on-primary:      #003920;
+      --danger:          #BD3039;
+      --on-surface:      #F5F5F5;
+      --on-surface-variant: #D5D5D5;
+      --on-surface-muted:   #999999;
+      --ambient-shadow:  0 40px 60px rgba(229,226,225,0.04);
+      --nav-height:      56px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--surface-base);
+      color: var(--on-surface);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ─── Typography helpers ────────────────────────────────────────────────── */
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .label-caps {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ─── Top Navigation Bar ────────────────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      background: rgba(19, 19, 19, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: var(--ambient-shadow);
+    }
+
+    .nav__brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      color: var(--on-surface);
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .nav__brand span {
+      color: var(--primary);
+    }
+
+    .nav__teams {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav__team-link {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      color: var(--on-surface-muted);
+      cursor: default;
+      text-decoration: none;
+      transition: color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .nav__team-link:hover {
+      color: var(--on-surface-variant);
+    }
+
+    .nav__separator {
+      color: var(--surface-high);
+      font-size: 0.6rem;
+    }
+
+    .nav__date {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    /* ─── Body Layout ───────────────────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      min-height: calc(100vh - var(--nav-height));
+      padding-top: 0;
+    }
+
+    /* ─── Left Sidebar ──────────────────────────────────────────────────────── */
+    .sidebar-left {
+      width: 200px;
+      flex: 0 0 200px;
+      background: var(--surface-lowest);
+      position: sticky;
+      top: var(--nav-height);
+      height: calc(100vh - var(--nav-height));
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--ambient-shadow);
+    }
+
+    .sidebar-left__inner {
+      flex: 1;
+      padding: 28px 20px 0;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .sidebar-left__inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sidebar-left__label-group {
+      margin-bottom: 28px;
+    }
+
+    .sidebar-left__label-primary {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .sidebar-left__label-secondary {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.625rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+    }
+
+    .sidebar-left__nav {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar-left__nav-item {
+      position: relative;
+    }
+
+    .sidebar-left__nav-link {
+      display: block;
+      padding: 10px 12px 10px 15px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.8125rem;
+      color: var(--on-surface-muted);
+      text-decoration: none;
+      cursor: default;
+      border-radius: 3px;
+      transition: color 0.15s ease, background 0.15s ease;
+      letter-spacing: 0.01em;
+    }
+
+    .sidebar-left__nav-link:hover {
+      color: var(--on-surface);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .sidebar-left__nav-item.is-active .sidebar-left__nav-link {
+      color: var(--primary);
+      background: rgba(67, 237, 158, 0.1);
+      border-left: 3px solid var(--primary);
+      padding-left: 12px;
+    }
+
+    .sidebar-left__nav-item.is-active .sidebar-left__nav-link::before {
+      display: none;
+    }
+
+    .sidebar-left__footer {
+      padding: 20px;
+      flex: 0 0 auto;
+    }
+
+    .subscribe-btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #43ED9E, #00D084);
+      color: #003920;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 12px 20px;
+      border: none;
+      cursor: default;
+      border-radius: 4px;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(67, 237, 158, 0.2);
+      transition: box-shadow 0.2s ease, transform 0.1s ease;
+    }
+
+    .subscribe-btn:hover {
+      box-shadow: 0 6px 28px rgba(67, 237, 158, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* ─── Main Content Column ───────────────────────────────────────────────── */
+    .main {
+      flex: 1;
+      min-width: 0;
+      background: var(--surface-base);
+      padding: 48px 48px 80px;
+      overflow-x: hidden;
+    }
+
+    /* ─── Morning Brew Section ──────────────────────────────────────────────── */
+    .brew-kicker {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brew-kicker::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(67, 237, 158, 0.15);
+    }
+
+    .hero-headline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 3.5rem;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 0;
+      word-break: break-word;
+    }
+
+    .hero-headline span {
+      display: inline;
+    }
+
+    .brew-paragraphs {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-top: 32px;
+    }
+
+    .brew-paragraph {
+      background: var(--surface);
+      padding: 20px;
+      border-radius: 4px;
+      border-left: 3px solid var(--primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.8;
+      color: var(--on-surface-variant);
+      box-shadow: var(--ambient-shadow);
+    }
+
+    .brew-paragraph-first {
+      background: var(--surface);
+      padding: 20px;
+      border-radius: 4px;
+      border-left: 3px solid var(--primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.8;
+      color: var(--on-surface-variant);
+      box-shadow: var(--ambient-shadow);
+    }
+
+    .brew-paragraph-first .hero-rest {
+      color: var(--on-surface-variant);
+    }
+
+    /* ─── Section Divider ───────────────────────────────────────────────────── */
+    .section-divider {
+      height: 1px;
+      background: var(--surface-high);
+      margin: 48px 0;
+      border: none;
+    }
+
+    /* ─── Section Header ────────────────────────────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.125rem;
+      letter-spacing: -0.01em;
+      color: var(--on-surface);
+    }
+
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+    }
+
+    /* ─── Trend Watch Grid ──────────────────────────────────────────────────── */
+    .trend-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 0;
+    }
+
+    .trend-card {
+      background: var(--surface-highest);
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: var(--ambient-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .trend-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 48px 72px rgba(229,226,225,0.07);
+    }
+
+    .trend-card__badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 3px;
+      background: linear-gradient(135deg, #43ED9E, #00D084);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.625rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #003920;
+      width: fit-content;
+    }
+
+    .trend-card__player {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.125rem;
+      letter-spacing: -0.01em;
+      color: var(--on-surface);
+      line-height: 1.2;
+    }
+
+    .trend-card__trend {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--on-surface-muted);
+      line-height: 1.5;
+    }
+
+    .trend-card__take {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--primary);
+      font-style: italic;
+      line-height: 1.5;
+      padding-top: 6px;
+      border-top: 1px solid rgba(67,237,158,0.1);
+    }
+
+    .trend-card__take::before {
+      content: '"';
+    }
+
+    .trend-card__take::after {
+      content: '"';
+    }
+
+    /* ─── News Digest ───────────────────────────────────────────────────────── */
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .news-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .news-item__headline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: color 0.15s ease;
+    }
+
+    .news-item__headline:hover {
+      color: var(--on-surface);
+    }
+
+    .news-item__take {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--on-surface-muted);
+      font-style: italic;
+      line-height: 1.55;
+    }
+
+    .news-item__take::before {
+      content: '— ';
+      color: var(--surface-highest);
+    }
+
+    /* ─── Right Sidebar ─────────────────────────────────────────────────────── */
+    .sidebar-right {
+      width: 280px;
+      flex: 0 0 280px;
+      background: var(--surface-low);
+      position: sticky;
+      top: var(--nav-height);
+      height: calc(100vh - var(--nav-height));
+      overflow-y: auto;
+      scrollbar-width: none;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      box-shadow: var(--ambient-shadow);
+    }
+
+    .sidebar-right::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ─── Sidebar Widgets ───────────────────────────────────────────────────── */
+    .widget {}
+
+    .widget__label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .widget__label-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: pulse 2s ease-in-out infinite;
+      flex: 0 0 auto;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .widget__status {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.625rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    /* ─── Score rows ────────────────────────────────────────────────────────── */
+    .score-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      background: transparent;
+    }
+
+    .score-row + .score-row {
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .score-row__team {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+    }
+
+    .score-row__sport {
+      font-size: 0.9375rem;
+      flex: 0 0 auto;
+    }
+
+    .score-row__abbrev {
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .score-row__score {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      min-width: 24px;
+      text-align: right;
+    }
+
+    .score-row__vs {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6875rem;
+      color: var(--on-surface-muted);
+      font-weight: 600;
+      letter-spacing: 1px;
+      flex: 0 0 auto;
+    }
+
+    .text-winner {
+      color: var(--on-surface);
+    }
+
+    .text-loser {
+      color: var(--on-surface-muted);
+    }
+
+    /* ─── Schedule rows ─────────────────────────────────────────────────────── */
+    .schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .schedule-item {}
+
+    .schedule-item__date {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.6875rem;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .schedule-item__matchup {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+      line-height: 1.3;
+    }
+
+    .schedule-item__time {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8125rem;
+      color: var(--on-surface-muted);
+      margin-top: 1px;
+    }
+
+    /* ─── Right sidebar trend rows ──────────────────────────────────────────── */
+    .sidebar-trend-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar-trend-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .sidebar-trend-row__player {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--on-surface);
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar-trend-row__badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 3px;
+      background: linear-gradient(135deg, #43ED9E, #00D084);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.5625rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #003920;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    /* ─── Loading / Error states ────────────────────────────────────────────── */
+    .loading-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      gap: 16px;
+    }
+
+    .loading-spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--surface-high);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--on-surface-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ─── Skeleton shimmer ──────────────────────────────────────────────────── */
+    @keyframes shimmer {
+      0% { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+
+    .skeleton {
+      background: linear-gradient(
+        90deg,
+        var(--surface-high) 25%,
+        var(--surface-highest) 50%,
+        var(--surface-high) 75%
+      );
+      background-size: 400px 100%;
+      animation: shimmer 1.4s ease infinite;
+      border-radius: 4px;
+      height: 1em;
+    }
+
+    /* ─── Hero accent line ──────────────────────────────────────────────────── */
+    .hero-accent {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-container));
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+
+    /* ─── Content fade-in ───────────────────────────────────────────────────── */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.4s ease forwards;
+    }
+
+    .fade-in-delay-1 { animation-delay: 0.05s; opacity: 0; }
+    .fade-in-delay-2 { animation-delay: 0.1s;  opacity: 0; }
+    .fade-in-delay-3 { animation-delay: 0.15s; opacity: 0; }
+    .fade-in-delay-4 { animation-delay: 0.2s;  opacity: 0; }
+    .fade-in-delay-5 { animation-delay: 0.25s; opacity: 0; }
+
+    /* ─── Scrollable main area ──────────────────────────────────────────────── */
+    .main-scroll-wrapper {
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+      height: calc(100vh - var(--nav-height));
+    }
+
+    /* ─── No-results placeholder ────────────────────────────────────────────── */
+    .no-data {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      color: var(--on-surface-muted);
+      font-style: italic;
+      padding: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       NAV BAR
+       ════════════════════════════════════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="nav__brand">
+      BOSTON <span>DAN'S</span> HUB
+    </div>
+
+    <div class="nav__teams">
+      <span class="nav__team-link">RED SOX</span>
+      <span class="nav__separator">·</span>
+      <span class="nav__team-link">PATRIOTS</span>
+      <span class="nav__separator">·</span>
+      <span class="nav__team-link">CELTICS</span>
+      <span class="nav__separator">·</span>
+      <span class="nav__team-link">BRUINS</span>
+    </div>
+
+    <div class="nav__date" id="nav-date">APR 20</div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════════════════
+       THREE-COLUMN LAYOUT
+       ════════════════════════════════════════════════════════════════════════ -->
+  <div class="layout">
+
+    <!-- ── Left Sidebar ──────────────────────────────────────────────────── -->
+    <aside class="sidebar-left">
+      <div class="sidebar-left__inner">
+        <div class="sidebar-left__label-group">
+          <div class="sidebar-left__label-primary">Daily Rant</div>
+          <div class="sidebar-left__label-secondary">Locker Room Grit</div>
+        </div>
+
+        <ul class="sidebar-left__nav">
+          <li class="sidebar-left__nav-item is-active">
+            <a class="sidebar-left__nav-link" href="#">Morning Brew</a>
+          </li>
+          <li class="sidebar-left__nav-item">
+            <a class="sidebar-left__nav-link" href="#">Trend Watch</a>
+          </li>
+          <li class="sidebar-left__nav-item">
+            <a class="sidebar-left__nav-link" href="#">News Digest</a>
+          </li>
+          <li class="sidebar-left__nav-item">
+            <a class="sidebar-left__nav-link" href="#">Box Scores</a>
+          </li>
+          <li class="sidebar-left__nav-item">
+            <a class="sidebar-left__nav-link" href="#">Schedule</a>
+          </li>
+          <li class="sidebar-left__nav-item">
+            <a class="sidebar-left__nav-link" href="#">Red Sox</a>
+          </li>
+          <li class="sidebar-left__nav-item">
+            <a class="sidebar-left__nav-link" href="#">Patriots</a>
+          </li>
+          <li class="sidebar-left__nav-item">
+            <a class="sidebar-left__nav-link" href="#">Celtics</a>
+          </li>
+          <li class="sidebar-left__nav-item">
+            <a class="sidebar-left__nav-link" href="#">Bruins</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-left__footer">
+        <a class="subscribe-btn" href="#">Subscribe</a>
+      </div>
+    </aside>
+
+    <!-- ── Main Content ───────────────────────────────────────────────────── -->
+    <div class="main-scroll-wrapper">
+      <main class="main" id="main-content">
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Loading the broadsheet…</div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ── Right Sidebar ──────────────────────────────────────────────────── -->
+    <aside class="sidebar-right" id="sidebar-right">
+      <!-- Scores Widget -->
+      <div class="widget" id="widget-scores">
+        <div class="widget__label">
+          <span>Last Night's Scores</span>
+          <span class="widget__label-dot"></span>
+          <span class="widget__status">Final</span>
+        </div>
+        <div class="loading-state" style="height: 120px;">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+
+      <!-- Schedule Widget -->
+      <div class="widget" id="widget-schedule">
+        <div class="widget__label">Upcoming Schedule</div>
+        <div class="loading-state" style="height: 80px;">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+
+      <!-- Trend Watch Mini Widget -->
+      <div class="widget" id="widget-trends">
+        <div class="widget__label">Trend Watch</div>
+        <div class="loading-state" style="height: 60px;">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </aside>
+
+  </div><!-- /.layout -->
+
+  <script>
+    /* ─── Utilities ──────────────────────────────────────────────────────────── */
+    function escapeHtml(t) {
+      const d = document.createElement('div');
+      d.textContent = t;
+      return d.innerHTML;
+    }
+
+    function formatDate(dateStr) {
+      // dateStr: "2026-04-21"
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      const [, m, d] = dateStr.split('-').map(Number);
+      return `${months[m - 1]} ${d}`;
+    }
+
+    function todayFormatted() {
+      const now = new Date();
+      const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      return `${months[now.getMonth()]} ${now.getDate()}`;
+    }
+
+    const SPORT_EMOJI = {
+      celtics:  '🏀',
+      bruins:   '🏒',
+      redsox:   '⚾',
+      patriots: '🏈'
+    };
+
+    const TEAM_ABBREV = {
+      'Boston Celtics':      'CEL',
+      'Philadelphia 76ers':  'PHI',
+      'Buffalo Sabres':      'BUF',
+      'Boston Bruins':       'BOS',
+      'Boston Red Sox':      'BOS',
+      'New York Yankees':    'NYY'
+    };
+
+    function abbrev(name) {
+      return TEAM_ABBREV[name] || name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 3);
+    }
+
+    /* ─── Date header ────────────────────────────────────────────────────────── */
+    document.getElementById('nav-date').textContent = todayFormatted();
+
+    /* ─── Render main content ────────────────────────────────────────────────── */
+    function renderMain(data) {
+      const main = document.getElementById('main-content');
+
+      // Hero headline logic
+      const words = data.morning_brew[0].split(' ');
+      const headlineWords = words.slice(0, 8);
+      const rest = words.slice(8).join(' ');
+      const headlineHtml = headlineWords.map((w, i) =>
+        `<span style="color:${i % 2 === 0 ? '#F5F5F5' : '#43ED9E'}">${escapeHtml(w)}</span>`
+      ).join(' ');
+
+      // Remaining brew paragraphs (2nd and 3rd)
+      const extraParas = data.morning_brew.slice(1).map(p =>
+        `<div class="brew-paragraph fade-in fade-in-delay-3">${escapeHtml(p)}</div>`
+      ).join('');
+
+      // Trend Watch grid
+      const trendCards = data.trend_watch.map((t, i) => `
+        <div class="trend-card fade-in fade-in-delay-${Math.min(i + 2, 5)}">
+          <div class="trend-card__badge">${escapeHtml(t.category)}</div>
+          <div class="trend-card__player">${escapeHtml(t.player)}</div>
+          <div class="trend-card__trend">${escapeHtml(t.trend)}</div>
+          <div class="trend-card__take">${escapeHtml(t.dans_take)}</div>
+        </div>
+      `).join('');
+
+      // News Digest
+      const newsItems = data.news_digest.map(n => `
+        <div class="news-item">
+          <a class="news-item__headline" href="${escapeHtml(n.url)}" target="_blank" rel="noopener">
+            ${escapeHtml(n.headline)}
+          </a>
+          <div class="news-item__take">${escapeHtml(n.dans_take)}</div>
+        </div>
+      `).join('');
+
+      main.innerHTML = `
+        <!-- Morning Brew -->
+        <div class="brew-kicker fade-in">
+          MORNING BREW // ${todayFormatted()}
+        </div>
+
+        <div class="hero-accent fade-in fade-in-delay-1"></div>
+
+        <div class="hero-headline fade-in fade-in-delay-1">
+          ${headlineHtml}
+        </div>
+
+        <div class="brew-paragraphs">
+          <div class="brew-paragraph-first brew-paragraph fade-in fade-in-delay-2">
+            <span class="hero-rest">${escapeHtml(rest)}</span>
+          </div>
+          ${extraParas}
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Trend Watch -->
+        <div class="section-header fade-in">
+          <div class="section-title">Trend Watch</div>
+          <div class="section-label">Player Tracking</div>
+        </div>
+
+        <div class="trend-grid">
+          ${trendCards}
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- News Digest -->
+        <div class="section-header fade-in">
+          <div class="section-title">News Digest</div>
+          <div class="section-label">Dan's Roundup</div>
+        </div>
+
+        <div class="news-list fade-in fade-in-delay-2">
+          ${newsItems}
+        </div>
+      `;
+    }
+
+    /* ─── Render scores widget ───────────────────────────────────────────────── */
+    function renderScores(data) {
+      const widget = document.getElementById('widget-scores');
+      const scores = data.box_scores;
+      const played = Object.entries(scores).filter(([, g]) => g.played);
+
+      if (!played.length) {
+        widget.querySelector('.loading-state') &&
+          widget.querySelector('.loading-state').remove();
+        widget.insertAdjacentHTML('beforeend', '<div class="no-data">No games last night.</div>');
+        return;
+      }
+
+      const rows = played.map(([sport, g]) => {
+        const emoji = SPORT_EMOJI[sport] || '🏟';
+        const homeAbbr = abbrev(g.home_team);
+        const awayAbbr = abbrev(g.away_team);
+        const homeWin = g.home_score > g.away_score;
+
+        return `
+          <div class="score-row">
+            <div class="score-row__team">
+              <span class="score-row__sport">${emoji}</span>
+              <span class="score-row__abbrev ${homeWin ? 'text-winner' : 'text-loser'}">${homeAbbr}</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="score-row__score ${homeWin ? 'text-winner' : 'text-loser'}">${g.home_score}</span>
+              <span class="score-row__vs">—</span>
+              <span class="score-row__score ${!homeWin ? 'text-winner' : 'text-loser'}">${g.away_score}</span>
+            </div>
+            <div class="score-row__team" style="justify-content:flex-end;">
+              <span class="score-row__abbrev ${!homeWin ? 'text-winner' : 'text-loser'}">${awayAbbr}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      widget.innerHTML = `
+        <div class="widget__label">
+          <span>Last Night's Scores</span>
+          <span class="widget__label-dot"></span>
+          <span class="widget__status">Final</span>
+        </div>
+        ${rows}
+      `;
+    }
+
+    /* ─── Render schedule widget ─────────────────────────────────────────────── */
+    function renderSchedule(data) {
+      const widget = document.getElementById('widget-schedule');
+
+      if (!data.schedule || !data.schedule.length) {
+        widget.innerHTML = `<div class="widget__label">Upcoming Schedule</div><div class="no-data">No upcoming games.</div>`;
+        return;
+      }
+
+      const items = data.schedule.map(g => `
+        <div class="schedule-item">
+          <div class="schedule-item__date">${formatDate(g.date)} · ${escapeHtml(g.sport)}</div>
+          <div class="schedule-item__matchup">${escapeHtml(g.matchup)}</div>
+          <div class="schedule-item__time">${escapeHtml(g.time_et)}</div>
+        </div>
+      `).join('');
+
+      widget.innerHTML = `
+        <div class="widget__label">Upcoming Schedule</div>
+        <div class="schedule-list">${items}</div>
+      `;
+    }
+
+    /* ─── Render sidebar trend widget ────────────────────────────────────────── */
+    function renderSidebarTrends(data) {
+      const widget = document.getElementById('widget-trends');
+      const first2 = data.trend_watch.slice(0, 2);
+
+      const rows = first2.map(t => `
+        <div class="sidebar-trend-row">
+          <span class="sidebar-trend-row__player">${escapeHtml(t.player)}</span>
+          <span class="sidebar-trend-row__badge">${escapeHtml(t.category)}</span>
+        </div>
+      `).join('');
+
+      widget.innerHTML = `
+        <div class="widget__label">Trend Watch</div>
+        <div class="sidebar-trend-list">${rows}</div>
+      `;
+    }
+
+    /* ─── Fetch & Bootstrap ──────────────────────────────────────────────────── */
+    async function bootstrap() {
+      try {
+        const res = await fetch('./data/daily_output.json');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        renderMain(data);
+        renderScores(data);
+        renderSchedule(data);
+        renderSidebarTrends(data);
+
+      } catch (err) {
+        console.error('Failed to load broadsheet data:', err);
+        document.getElementById('main-content').innerHTML = `
+          <div style="padding: 48px; text-align: center;">
+            <div style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; color: var(--danger); margin-bottom: 16px;">
+              Data Unavailable
+            </div>
+            <div style="font-family: 'Inter', sans-serif; color: var(--on-surface-muted); font-size: 0.9375rem; line-height: 1.7;">
+              Could not load <code style="background: var(--surface); padding: 2px 6px; border-radius: 3px; font-size: 0.875rem;">./data/daily_output.json</code><br>
+              Make sure the data file is present and the page is served over HTTP.
+            </div>
+          </div>
+        `;
+        ['widget-scores','widget-schedule','widget-trends'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = `<div class="no-data">Unavailable</div>`;
+        });
+      }
+    }
+
+    bootstrap();
+  </script>
+</body>
+</html>

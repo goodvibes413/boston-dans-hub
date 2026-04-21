@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boston Dan's Hub — The Columnist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:ital,wght@0,400;0,500;0,700;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       DESIGN TOKENS
+    ============================================= */
+    :root {
+      --surface-base:    #131313;
+      --surface-lowest:  #0E0E0E;
+      --surface-low:     #1B1B1C;
+      --surface:         #202020;
+      --surface-high:    #2A2A2A;
+      --surface-highest: #353535;
+      --primary:         #43ED9E;
+      --primary-container: #00D084;
+      --on-primary:      #003920;
+      --danger:          #BD3039;
+      --on-surface:      #F5F5F5;
+      --on-surface-variant: #D5D5D5;
+      --on-surface-muted:   #999999;
+      --shadow-ambient:  0 40px 60px rgba(229, 226, 225, 0.04);
+      --font-display:    'Space Grotesk', sans-serif;
+      --font-body:       'Inter', sans-serif;
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--surface-base);
+      color: var(--on-surface-variant);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =============================================
+       STICKY NAV
+    ============================================= */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(19, 19, 19, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 0 40px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-brand {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--primary);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-date-strip {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .date-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--on-surface-muted);
+      letter-spacing: 0.5px;
+      line-height: 1;
+      white-space: nowrap;
+      gap: 4px;
+    }
+
+    .date-item.today {
+      color: var(--primary);
+      font-weight: 700;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 2px;
+    }
+
+    .date-item .day-label {
+      font-size: 0.625rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .date-item .day-num {
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    .date-item.today .day-num {
+      font-size: 0.875rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-shrink: 0;
+    }
+
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--on-surface-muted);
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--on-surface);
+    }
+
+    /* =============================================
+       MAIN COLUMN
+    ============================================= */
+    .main-column {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    /* =============================================
+       ARTICLE HEADER
+    ============================================= */
+    .article-kicker {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 0;
+    }
+
+    .hero-headline .line-odd {
+      color: #F5F5F5;
+      display: block;
+    }
+
+    .hero-headline .line-even {
+      color: #43ED9E;
+      display: block;
+    }
+
+    /* =============================================
+       ARTICLE META
+    ============================================= */
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: none;
+      background: none;
+    }
+
+    .meta-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--surface-highest);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .meta-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .meta-author {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+    }
+
+    .meta-byline {
+      font-size: 0.8125rem;
+      color: var(--on-surface-muted);
+    }
+
+    /* =============================================
+       ARTICLE BODY
+    ============================================= */
+    .morning-brew-body {
+      margin-top: 48px;
+    }
+
+    .morning-brew-body p {
+      font-family: var(--font-body);
+      font-size: 1.125rem;
+      line-height: 1.85;
+      color: var(--on-surface-variant);
+      margin-bottom: 32px;
+    }
+
+    .morning-brew-body p:first-child::first-letter {
+      font-family: var(--font-display);
+      font-size: 4.5rem;
+      font-weight: 700;
+      float: left;
+      line-height: 0.85;
+      margin-right: 12px;
+      margin-top: 8px;
+      color: #43ED9E;
+    }
+
+    /* =============================================
+       STAT SPLASH
+    ============================================= */
+    .stat-splash {
+      background: var(--surface-highest);
+      border-radius: 8px;
+      padding: 32px 40px;
+      margin: 40px 0;
+      box-shadow: var(--shadow-ambient);
+    }
+
+    .stat-splash-number {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .stat-splash-label {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--on-surface-muted);
+      margin-top: 8px;
+    }
+
+    .stat-splash-subtitle {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      color: var(--on-surface-muted);
+      margin-top: 6px;
+    }
+
+    .stat-splash-leader {
+      margin-top: 20px;
+      padding-top: 20px;
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat-splash-leader-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-splash-leader-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+    }
+
+    .stat-splash-leader-stats {
+      font-size: 0.8125rem;
+      color: var(--on-surface-muted);
+    }
+
+    .stat-splash-leader-tag {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-bottom: 2px;
+    }
+
+    /* =============================================
+       BLOCK QUOTE
+    ============================================= */
+    blockquote.featured-quote {
+      background: transparent;
+      border-left: 3px solid var(--primary);
+      padding: 8px 0 8px 24px;
+      margin: 40px 0;
+    }
+
+    blockquote.featured-quote p {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-weight: 500;
+      font-size: 1.25rem !important;
+      line-height: 1.7 !important;
+      color: #F5F5F5 !important;
+      margin-bottom: 0 !important;
+    }
+
+    blockquote.featured-quote p::first-letter {
+      font-size: 1.25rem !important;
+      float: none !important;
+      line-height: inherit !important;
+      margin: 0 !important;
+      color: #F5F5F5 !important;
+      font-family: var(--font-body) !important;
+    }
+
+    /* =============================================
+       TAG CHIPS
+    ============================================= */
+    .tag-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 40px;
+      margin-bottom: 64px;
+    }
+
+    .tag-chip {
+      background: var(--surface);
+      color: var(--primary);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 8px 16px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .tag-chip:hover {
+      background: var(--surface-high);
+    }
+
+    /* =============================================
+       SECTION HEADERS
+    ============================================= */
+    .section-header {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    /* =============================================
+       TREND WATCH
+    ============================================= */
+    .trend-watch-section {
+      margin-bottom: 72px;
+    }
+
+    .trend-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 560px) {
+      .trend-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .trend-card {
+      background: var(--surface-low);
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: var(--shadow-ambient);
+      transition: background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .trend-card:hover {
+      background: var(--surface-highest);
+    }
+
+    .trend-category-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary-container), var(--primary));
+      color: var(--on-primary);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 6px 14px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    .trend-player {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .trend-text {
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--on-surface-muted);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    .trend-dans-take {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.9375rem;
+      color: var(--primary);
+      line-height: 1.55;
+      margin-top: 16px;
+    }
+
+    /* =============================================
+       NEWS DIGEST
+    ============================================= */
+    .news-digest-section {
+      margin-bottom: 72px;
+    }
+
+    .news-digest-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .news-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .news-item-headline {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.3;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .news-item-headline:hover {
+      color: var(--danger);
+    }
+
+    .news-item-take {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.9375rem;
+      color: var(--on-surface-muted);
+      line-height: 1.55;
+    }
+
+    /* =============================================
+       SCHEDULE
+    ============================================= */
+    .schedule-section {
+      margin-bottom: 72px;
+    }
+
+    .schedule-grid {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .schedule-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 120px;
+      align-items: center;
+      padding: 14px 16px;
+      border-radius: 6px;
+    }
+
+    .schedule-row:nth-child(even) {
+      background: var(--surface);
+    }
+
+    .schedule-row:nth-child(odd) {
+      background: transparent;
+    }
+
+    .schedule-date {
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .schedule-matchup {
+      font-family: var(--font-display);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--on-surface);
+    }
+
+    .schedule-sport-tag {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--on-surface-muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .schedule-time {
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      color: var(--on-surface-muted);
+      text-align: right;
+    }
+
+    /* =============================================
+       SUBSCRIBE CTA
+    ============================================= */
+    .subscribe-cta {
+      background: var(--surface-low);
+      border-radius: 12px;
+      padding: 60px 40px;
+      text-align: center;
+      margin-bottom: 64px;
+      box-shadow: var(--shadow-ambient);
+    }
+
+    .subscribe-headline {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--on-surface);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .subscribe-subtext {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--on-surface-muted);
+      line-height: 1.65;
+      max-width: 420px;
+      margin: 0 auto 32px;
+    }
+
+    .subscribe-form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .subscribe-input {
+      background: var(--surface-lowest);
+      color: var(--on-surface);
+      border: none;
+      outline: none;
+      padding: 14px 20px;
+      border-radius: 4px;
+      width: 280px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: white;
+    }
+
+    .subscribe-input::placeholder {
+      color: var(--on-surface-muted);
+    }
+
+    .subscribe-btn {
+      background: linear-gradient(135deg, var(--primary-container), var(--primary));
+      color: var(--on-primary);
+      border: none;
+      padding: 14px 28px;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.1s ease;
+    }
+
+    .subscribe-btn:hover {
+      opacity: 0.9;
+    }
+
+    .subscribe-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    .site-footer {
+      text-align: center;
+      padding: 32px 24px 48px;
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      color: var(--on-surface-muted);
+      line-height: 1.6;
+    }
+
+    /* =============================================
+       LOADING STATE
+    ============================================= */
+    .loading-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 16px;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--surface-highest);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--on-surface-muted);
+    }
+
+    /* =============================================
+       ERROR STATE
+    ============================================= */
+    .error-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 12px;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .error-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--danger);
+    }
+
+    .error-message {
+      font-size: 0.9375rem;
+      color: var(--on-surface-muted);
+    }
+
+    /* =============================================
+       UTILITY
+    ============================================= */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 700px) {
+      .nav {
+        padding: 0 16px;
+        gap: 12px;
+      }
+
+      .nav-date-strip {
+        gap: 12px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .stat-splash {
+        padding: 24px 20px;
+      }
+
+      .subscribe-cta {
+        padding: 40px 24px;
+      }
+
+      .subscribe-input {
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .schedule-row {
+        grid-template-columns: 90px 1fr 90px;
+        padding: 12px 8px;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .nav-date-strip {
+        gap: 8px;
+      }
+
+      .date-item .day-label {
+        font-size: 0.5625rem;
+      }
+
+      .date-item .day-num {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <span class="nav-brand">The Varsity Press</span>
+
+    <div class="nav-date-strip" aria-label="Week navigation">
+      <div class="date-item">
+        <span class="day-label">SAT</span>
+        <span class="day-num">18</span>
+      </div>
+      <div class="date-item">
+        <span class="day-label">SUN</span>
+        <span class="day-num">19</span>
+      </div>
+      <div class="date-item today" aria-current="date">
+        <span class="day-label">MON</span>
+        <span class="day-num">APR 20</span>
+      </div>
+      <div class="date-item">
+        <span class="day-label">TUE</span>
+        <span class="day-num">21</span>
+      </div>
+      <div class="date-item">
+        <span class="day-label">WED</span>
+        <span class="day-num">22</span>
+      </div>
+    </div>
+
+    <nav class="nav-links" aria-label="Section links">
+      <a href="#brew">Today's Rant</a>
+      <a href="#trends">Archive</a>
+      <a href="#schedule">Locker Room</a>
+    </nav>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div id="app">
+    <div class="main-column">
+      <div class="loading-state" id="loading">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading today's take...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =============================================
+       UTILITIES
+    ============================================= */
+    function escapeHtml(t) {
+      const d = document.createElement('div');
+      d.textContent = t;
+      return d.innerHTML;
+    }
+
+    function formatScheduleDate(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length < 3) return dateStr;
+      const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+      const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+      const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+      return `${days[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()}`;
+    }
+
+    /* =============================================
+       HERO HEADLINE BUILDER
+       First 12 words of morning_brew[0], split into
+       3 chunks of 4 words, alternating odd/even color.
+    ============================================= */
+    function buildHeroHeadline(text) {
+      const words = text.trim().split(/\s+/).slice(0, 12);
+
+      // Chunk into groups of 4
+      const chunks = [];
+      for (let i = 0; i < words.length; i += 4) {
+        chunks.push(words.slice(i, i + 4).join(' '));
+      }
+
+      // Alternate colors: odd lines (1, 3) = white, even lines (2) = green
+      const lines = chunks.map((chunk, idx) => {
+        const lineClass = (idx % 2 === 0) ? 'line-odd' : 'line-even';
+        return `<span class="${lineClass}">${escapeHtml(chunk)}</span>`;
+      });
+
+      return lines.join('');
+    }
+
+    /* =============================================
+       STAT SPLASH BUILDER
+       Find first played Boston game in box_scores.
+    ============================================= */
+    function buildStatSplash(boxScores) {
+      if (!boxScores) return '';
+
+      const BOSTON_TEAMS = [
+        'boston celtics', 'boston bruins', 'boston red sox', 'new england patriots'
+      ];
+
+      const bostonTeamNames = {
+        celtics:  'CELTICS',
+        bruins:   'BRUINS',
+        redsox:   'RED SOX',
+        patriots: 'PATRIOTS',
+      };
+
+      // Find first played game
+      const keys = ['celtics', 'bruins', 'redsox', 'patriots'];
+      let game = null;
+      let teamKey = null;
+
+      for (const key of keys) {
+        const g = boxScores[key];
+        if (g && g.played) {
+          game = g;
+          teamKey = key;
+          break;
+        }
+      }
+
+      if (!game) return '';
+
+      // Determine Boston team, score, and result
+      const homeIsBoston = BOSTON_TEAMS.includes((game.home_team || '').toLowerCase());
+      const bostonScore  = homeIsBoston ? game.home_score : game.away_score;
+      const oppScore     = homeIsBoston ? game.away_score : game.home_score;
+      const bostonName   = bostonTeamNames[teamKey] || 'BOSTON';
+
+      const bostonWon = bostonScore > oppScore;
+      const resultLabel = bostonWon ? `${bostonName} WIN` : `${bostonName} LOSS`;
+
+      // Score display: always Boston first
+      const scoreDisplay = `${bostonScore}–${oppScore}`;
+
+      // Subtitle from context
+      const subtitleMap = {
+        celtics:  bostonWon ? 'DOMINANT FOURTH QUARTER' : 'TOUGH NIGHT IN THE GARDEN',
+        bruins:   bostonWon ? 'SOLID ROAD WIN' : 'LATE COLLAPSE COSTS THEM',
+        redsox:   bostonWon ? 'YAWKEY WAY WINS' : 'ANOTHER ROUGH NIGHT AT FENWAY',
+        patriots: bostonWon ? 'PATRIOTS TAKE IT' : 'LONG ROAD HOME',
+      };
+      const subtitle = subtitleMap[teamKey] || (bostonWon ? 'BOSTON WINS' : 'BOSTON LOSES');
+
+      // Leader info
+      const bostonLeader      = homeIsBoston ? game.home_leader      : game.away_leader;
+      const bostonLeaderStats = homeIsBoston ? game.home_leader_stats : game.away_leader_stats;
+      const oppLeader         = homeIsBoston ? game.away_leader       : game.home_leader;
+      const oppLeaderStats    = homeIsBoston ? game.away_leader_stats  : game.home_leader_stats;
+
+      let leadersHtml = '';
+      if (bostonLeader) {
+        leadersHtml += `
+          <div class="stat-splash-leader-item">
+            <span class="stat-splash-leader-tag">${escapeHtml(bostonName)} LEADER</span>
+            <span class="stat-splash-leader-name">${escapeHtml(bostonLeader)}</span>
+            <span class="stat-splash-leader-stats">${escapeHtml(bostonLeaderStats || '')}</span>
+          </div>`;
+      }
+      if (oppLeader) {
+        const oppName = homeIsBoston
+          ? (game.away_team || 'OPP').toUpperCase()
+          : (game.home_team || 'OPP').toUpperCase();
+        leadersHtml += `
+          <div class="stat-splash-leader-item">
+            <span class="stat-splash-leader-tag">${escapeHtml(oppName)} LEADER</span>
+            <span class="stat-splash-leader-name">${escapeHtml(oppLeader)}</span>
+            <span class="stat-splash-leader-stats">${escapeHtml(oppLeaderStats || '')}</span>
+          </div>`;
+      }
+
+      return `
+        <div class="stat-splash">
+          <div class="stat-splash-number">${escapeHtml(scoreDisplay)}</div>
+          <div class="stat-splash-label">${escapeHtml(resultLabel)}</div>
+          <div class="stat-splash-subtitle">${escapeHtml(subtitle)}</div>
+          ${leadersHtml ? `<div class="stat-splash-leader">${leadersHtml}</div>` : ''}
+        </div>
+      `;
+    }
+
+    /* =============================================
+       TREND WATCH BUILDER
+    ============================================= */
+    function buildTrendWatch(trends) {
+      if (!trends || !trends.length) return '';
+
+      const cards = trends.map(t => `
+        <div class="trend-card">
+          <span class="trend-category-badge">${escapeHtml(t.category || 'Trend')}</span>
+          <div class="trend-player">${escapeHtml(t.player || '')}</div>
+          <p class="trend-text">${escapeHtml(t.trend || '')}</p>
+          ${t.dans_take ? `<p class="trend-dans-take">"${escapeHtml(t.dans_take)}"</p>` : ''}
+        </div>
+      `).join('');
+
+      return `
+        <section class="trend-watch-section" id="trends">
+          <h2 class="section-header">Trend Watch</h2>
+          <div class="trend-grid">
+            ${cards}
+          </div>
+        </section>
+      `;
+    }
+
+    /* =============================================
+       NEWS DIGEST BUILDER
+    ============================================= */
+    function buildNewsDigest(news) {
+      if (!news || !news.length) return '';
+
+      const items = news.map(item => `
+        <div class="news-item">
+          <a class="news-item-headline" href="${escapeHtml(item.url || '#')}" target="_blank" rel="noopener noreferrer">
+            ${escapeHtml(item.headline || '')}
+          </a>
+          ${item.dans_take ? `<p class="news-item-take">${escapeHtml(item.dans_take)}</p>` : ''}
+        </div>
+      `).join('');
+
+      return `
+        <section class="news-digest-section" id="digest">
+          <h2 class="section-header">News Digest</h2>
+          <div class="news-digest-list">
+            ${items}
+          </div>
+        </section>
+      `;
+    }
+
+    /* =============================================
+       SCHEDULE BUILDER
+    ============================================= */
+    function buildSchedule(schedule) {
+      if (!schedule || !schedule.length) return '';
+
+      const rows = schedule.map(item => `
+        <div class="schedule-row">
+          <span class="schedule-date">${escapeHtml(formatScheduleDate(item.date))}</span>
+          <span class="schedule-matchup">
+            ${escapeHtml(item.matchup || '')}
+            <span class="schedule-sport-tag">${escapeHtml(item.sport || '')}</span>
+          </span>
+          <span class="schedule-time">${escapeHtml(item.time_et || 'TBD')}</span>
+        </div>
+      `).join('');
+
+      return `
+        <section class="schedule-section" id="schedule">
+          <h2 class="section-header">Schedule</h2>
+          <div class="schedule-grid">
+            ${rows}
+          </div>
+        </section>
+      `;
+    }
+
+    /* =============================================
+       SUBSCRIBE CTA
+    ============================================= */
+    function buildSubscribeCta() {
+      return `
+        <section class="subscribe-cta">
+          <h2 class="subscribe-headline">WANT MORE OF THIS?</h2>
+          <p class="subscribe-subtext">The daily rant. No fluff. No stats padding. Just Dan from Southie telling it like it is.</p>
+          <div class="subscribe-form">
+            <input
+              class="subscribe-input"
+              type="email"
+              placeholder="your@email.com"
+              aria-label="Email address"
+            />
+            <button class="subscribe-btn" type="button" onclick="return false;">JOIN THE CLUB</button>
+          </div>
+        </section>
+      `;
+    }
+
+    /* =============================================
+       MAIN RENDER
+    ============================================= */
+    function render(data) {
+      const brew = data.morning_brew || [];
+      const para0 = brew[0] || '';
+      const para1 = brew[1] || '';
+      const para2 = brew[2] || '';
+
+      // Hero headline from first paragraph
+      const heroHtml = buildHeroHeadline(para0);
+
+      // Stat splash (celtics first since they're the only Boston win tonight)
+      const statSplash = buildStatSplash(data.box_scores);
+
+      // Body paragraphs
+      const bodyParas = brew.map((text, idx) => {
+        // Skip quote paragraph being used as blockquote (index 2)
+        if (idx === 2) return '';
+        return `<p>${escapeHtml(text)}</p>`;
+      });
+
+      // Build body: p0 -> stat splash -> p1 -> blockquote(p2) -> rest
+      const bodyHtml = `
+        <div class="morning-brew-body" id="brew">
+          ${bodyParas[0] || ''}
+          ${statSplash}
+          ${bodyParas[1] || ''}
+          ${para2 ? `
+            <blockquote class="featured-quote">
+              <p>${escapeHtml(para2)}</p>
+            </blockquote>
+          ` : ''}
+        </div>
+      `;
+
+      // Tags
+      const tagsHtml = `
+        <div class="tag-chips">
+          <span class="tag-chip">#BruinsWatch</span>
+          <span class="tag-chip">#CelticsSZN</span>
+          <span class="tag-chip">#YawkeyWay</span>
+          <span class="tag-chip">#RedSoxProblems</span>
+        </div>
+      `;
+
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <div class="main-column">
+
+          <!-- ARTICLE HEADER -->
+          <header>
+            <p class="article-kicker">LIVE WIRE / APR 20</p>
+            <h1 class="hero-headline">
+              ${heroHtml}
+            </h1>
+            <div class="article-meta">
+              <div class="meta-avatar" aria-hidden="true">D</div>
+              <div class="meta-info">
+                <span class="meta-author">Dan from Southie</span>
+                <span class="meta-byline">Monday, April 20, 2026 &mdash; Updated 3:00 AM ET</span>
+              </div>
+            </div>
+          </header>
+
+          <!-- ARTICLE BODY -->
+          ${bodyHtml}
+
+          <!-- TAGS -->
+          ${tagsHtml}
+
+          <!-- TREND WATCH -->
+          ${buildTrendWatch(data.trend_watch)}
+
+          <!-- NEWS DIGEST -->
+          ${buildNewsDigest(data.news_digest)}
+
+          <!-- SCHEDULE -->
+          ${buildSchedule(data.schedule)}
+
+          <!-- SUBSCRIBE CTA -->
+          ${buildSubscribeCta()}
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="site-footer">
+          Powered by Dunks ☕ and Gemini AI &mdash; updated daily at 03:00 ET
+        </footer>
+      `;
+    }
+
+    /* =============================================
+       ERROR RENDER
+    ============================================= */
+    function renderError(message) {
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <div class="main-column">
+          <div class="error-state">
+            <h2 class="error-title">Couldn't load today's take</h2>
+            <p class="error-message">${escapeHtml(message)}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    /* =============================================
+       INIT — FETCH DATA
+    ============================================= */
+    (async function init() {
+      try {
+        const res = await fetch('./data/daily_output.json');
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status} — ${res.statusText}`);
+        }
+        const data = await res.json();
+        render(data);
+      } catch (err) {
+        console.error('[The Columnist] Failed to load data:', err);
+        renderError(err.message || 'Unknown error. Try refreshing.');
+      }
+    })();
+  </script>
+</body>
+</html>
