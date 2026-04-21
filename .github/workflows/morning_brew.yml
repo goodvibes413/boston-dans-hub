@@ -14,6 +14,8 @@ jobs:
     name: Generate and publish Boston Dan commentary
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repo
@@ -94,7 +96,7 @@ jobs:
         if: success()
         run: |
           echo "✅ Morning Brew pipeline completed successfully"
-          echo "📍 Published: site/data/daily_output.json"
+          echo "📍 Published: docs/data/daily_output.json"
 
       - name: Failure summary
         if: failure()
