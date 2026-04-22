@@ -749,8 +749,8 @@
     function oppCode(name) { if (!name) return 'OPP'; const key = String(name).toLowerCase(); if (OPP_CODE[key]) return OPP_CODE[key]; const words = String(name).trim().split(/\s+/); const last = words[words.length - 1] || 'OPP'; return last.slice(0, 3).toUpperCase(); }
     function shortDate(dateStr) { if (!dateStr) return ''; const parts = dateStr.split('-'); if (parts.length < 3) return dateStr; const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; return `${days[d.getDay()]} ${d.getDate()}`; }
 
-    function buildHeroHeadline(text) { const words = (text || '').trim().split(/\s+/).slice(0, 12); const chunks = []; for (let i = 0; i < words.length; i += 4) chunks.push(words.slice(i, i + 4).join(' ')); return chunks.map((chunk, idx) => { const cls = (idx % 2 === 0) ? 'line-odd' : 'line-even'; return `<span class="${cls}">${escapeHtml(chunk)}</span>`; }).join(''); }
-    function trimHeadlineFromBody(text) { const words = (text || '').trim().split(/\s+/); return words.slice(12).join(' '); }
+    function buildHeroHeadline(text) { const words = (text || '').trim().split(/\s+/).slice(0, 20); const chunks = []; for (let i = 0; i < words.length; i += 4) chunks.push(words.slice(i, i + 4).join(' ')); return chunks.map((chunk, idx) => { const cls = (idx % 2 === 0) ? 'line-odd' : 'line-even'; return `<span class="${cls}">${escapeHtml(chunk)}</span>`; }).join(''); }
+    function trimHeadlineFromBody(text) { const words = (text || '').trim().split(/\s+/); return words.slice(20).join(' '); }
 
     function extractGame(teamKey, team) {
       if (!team) return null;

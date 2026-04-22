@@ -220,7 +220,7 @@ def build_user_message(rolling, schedule, news, season_memory) -> str:
         "SEASON_MEMORY:\n"
         f"{json.dumps(season_memory, indent=2)}\n\n"
         "Generate Boston Dan's Hub JSON output. Return ONLY the JSON object, "
-        "no prose, no markdown fences. Keys: headline (8–12 word punchy newspaper-style headline in Dan's voice), "
+        "no prose, no markdown fences. Keys: headline (punchy newspaper-style headline in Dan's voice — complete thought, no cut-off phrases, 10–16 words max), "
         "morning_brew (3 paragraphs), "
         "trend_watch, box_scores, schedule (next 3 days)."
     )
