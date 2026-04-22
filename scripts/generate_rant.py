@@ -364,6 +364,40 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
     return resp.text
 
 
+def build_schedule_from_fetcher(schedule_path: Path) -> list:
+    """
+    Build the schedule list directly from upcoming_schedule.json instead of
+    relying on Gemini, which selectively omits teams (e.g. Celtics in playoffs).
+
+    Returns a list of {date, matchup, time_et} dicts for the next 5 days,
+    sorted chronologically. Falls back to [] if the file is missing/broken.
+    """
+    try:
+        data = json.loads(schedule_path.read_text()) if schedule_path.exists() else {}
+        games = data.get("games", [])
+        if not games:
+            return []
+
+        result = []
+        for g in games:
+            home = g.get("home_team", "")
+            away = g.get("away_team", "")
+            if not home and not away:
+                continue
+            matchup = f"{away} at {home}" if away and home else (home or away)
+            result.append({
+                "date":     g.get("date", ""),
+                "matchup":  matchup,
+                "time_et":  g.get("time_et", "TBD"),
+            })
+
+        # Already sorted by upcoming_schedule.json; just return all games
+        return result
+    except Exception as e:
+        print(f"  warn: could not build schedule from fetcher ({e})", file=sys.stderr)
+        return []
+
+
 def main():
     store_path = Path(os.environ.get("ROLLING_STORE_PATH", DEFAULT_STORE))
     schedule_path = Path(os.environ.get("SCHEDULE_PATH", DEFAULT_SCHEDULE))
@@ -419,6 +453,10 @@ def main():
     parsed = normalize_box_scores(parsed)
     # Repair any entries where Gemini left played:false despite fetcher data showing a real game
     parsed = repair_box_scores_from_fetchers(parsed)
+    # Always overwrite Gemini's schedule with data directly from upcoming_schedule.json.
+    # Gemini selectively drops teams (e.g. Celtics during playoffs) — the fetcher data
+    # is authoritative and complete, so we never let Gemini own this field.
+    parsed["schedule"] = build_schedule_from_fetcher(schedule_path)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(parsed, indent=2))
