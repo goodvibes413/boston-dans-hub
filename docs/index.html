@@ -743,19 +743,15 @@
       /* Hide mobile strip — scoreboard widget handles scores */
       .mobile-strip { display: none; }
 
-      /* Consistent card padding across all widgets */
-      .widget { padding: 14px; }
-
-      /* Layered density: tighten secondary details */
+      /* Layered density: tighten secondary + hide tertiary details */
       .widget.pulse .pulse-player { font-size: 1rem; }
       .pulse-card--sep { margin-top: 10px; padding-top: 10px; }
 
+      .widget#news .pulse-take { display: none; }
       .widget#news .pulse-card:nth-child(n+6) { display: none; }
       .widget#news .pulse-news-headline { font-size: 0.875rem; }
 
-      /* Schedule inner rows: narrow date col, allow matchup to wrap */
-      .nextup-row { grid-template-columns: 52px 1fr auto; min-height: 42px; }
-      .nextup-matchup { white-space: normal; overflow: visible; text-overflow: clip; }
+      .nextup-row { background: transparent; border-radius: 0; min-height: auto; padding: 0; }
 
       .stat-splash { padding: 20px; }
     }
@@ -879,12 +875,13 @@
 
     function buildScheduleSection(schedule) {
       if (!schedule || !schedule.length) return '';
-      const rows = schedule.map((item, idx) => {
-        const showDate = idx === 0 || schedule[idx - 1].date !== item.date;
-        const d = showDate ? shortDate(item.date).toUpperCase() : '';
-        return `<div class="nextup-row"><span class="nextup-date">${d}</span><span class="nextup-matchup">${escapeHtml(item.matchup || '')}</span><span class="nextup-time">${escapeHtml(item.time_et || 'TBD')}</span></div>`;
+      const grouped = {}; schedule.forEach(item => { const d = item.date; if (!grouped[d]) grouped[d] = []; grouped[d].push(item); });
+      const html = Object.keys(grouped).map(date => {
+        const label = grouped[date][0] ? shortDate(date).toUpperCase() : '';
+        const rows = grouped[date].map(item => `<div class="schedule-row"><span class="schedule-matchup">${escapeHtml(item.matchup || '')}</span><span class="schedule-time">${escapeHtml(item.time_et || 'TBD')}</span></div>`).join('');
+        return `<div class="schedule-date-label">${label}</div>${rows}`;
       }).join('');
-      return `<section class="widget schedule-section" id="schedule"><header class="widget-header"><span class="ms">calendar_month</span><span>Upcoming</span></header><div class="nextup-rows">${rows}</div></section>`;
+      return `<section class="widget schedule-section" id="schedule"><header class="widget-header"><span class="ms">calendar_month</span><span>Upcoming</span></header><div class="nextup-rows">${html}</div></section>`;
     }
 
     function buildTrendPulseWidget(trends) {
