@@ -170,12 +170,15 @@
       font-style: italic;
       font-weight: 700;
       font-size: clamp(2rem, 4.5vw, 3.25rem);
-      line-height: 1.05;
+      line-height: 1.15;
       letter-spacing: -0.02em;
       margin: 0;
+      width: 100%;
+      overflow: visible;
+      word-wrap: break-word;
     }
-    .hero-headline .line-odd  { color: var(--on-surface); display: block; }
-    .hero-headline .line-even { color: var(--primary);   display: block; }
+    .hero-headline .line-odd  { color: var(--on-surface); display: block; width: 100%; }
+    .hero-headline .line-even { color: var(--primary);   display: block; width: 100%; }
 
     .hero-date {
       font-family: var(--font-body);
