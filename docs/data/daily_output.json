@@ -1,58 +1,45 @@
 {
+  "headline": "Bruins Bounce Back In Buffalo While Sox Get Shut Out By New York",
   "morning_brew": [
-    "Alright, so the Red Sox actually pulled out a wicked win on Patriots' Day yesterday, beating the Tigers 8-6 at Yawkey Way! They finally got somethin' goin' with 12 hits, and Ceddanne Rafaela came through in the clutch with a two-run single in the seventh. Our starter, Gray, S, only lasted 2.2 innings, giving up 1 earned run, but the bullpen, despite Watson, R giving up 3 earned runs in 1.1 innings, managed to close it out. Now they gotta face the Yankees in the first of a three-game series, and with the Sox at 9-13 and the Yanks at 13-9, it's gonna be a tough one. Let's see if they can keep that momentum going, or if it was just a holiday fluke.",
-    "Meanwhile, the Celtics and Bruins are both gearing up for the postseason. Neither team played yesterday, but the playoff brackets are set for both the NBA and NHL. The C's are ready for their first-round matchups, and the B's are kicking off their Stanley Cup run against the Sabres tonight. This is where it really counts, folks. No more regular season nonsense, it's time to bring the intensity and show everyone what Boston hockey and basketball are all about. Anything less is just a waste of time.",
-    "And then you got the Patriots, always somethin' cookin' in the offseason, huh? Saw some talk from Schefter about A.J. Brown likely being traded to the Pats after June 1. Are you kiddin' me? If we actually land a talent like that, that'd be a wicked boost to the offense! But it's all speculation right now. Stephen A. Smith is even scratching his head about what the Eagles are doing. I'll believe it when I see him on the field in Foxborough, but it's good to hear some positive buzz for once."
+    "Jeremy Swayman was an absolute wall in Buffalo, stoppin' 34 shots to keep the B's alive and movin'. After missin' the postseason last year, seein' Viktor Arvidsson net two goals and the boys show some grit on the road is exactly what the doctor ordered. We've seen this team struggle in the first round before, so gettin' a 4-2 win to keep pace in this series is huge. Swayman's .944 save percentage tells you everythin' you need to know about who kept us in it.",
+    "As for the C's, that was an absolute disastah at the Garden. You can't drop a playoff game 111-97 to Philly and expect to coast to the Finals. Jaylen Brown showed up with 36 points, but Jayson Tatum goin' 8-for-19 with just 19 points is brutal for a guy we need to be a superstar every night. We're the 2 seed with 56 wins for a reason, but that bench plus-minus was a total nightmare. If we don't fix the defensive rotations, it's gonna be a short spring.",
+    "Over on Yawkey Way, the Sox are breakin' my heart. A 4-0 shutout loss to the Yankees? Are you kiddin' me? Early gave 'em five-plus innings and only three earned runs, which should be enough to keep you in a ballgame, but the bats were non-existent with only four hits the entire afternoon. We're 9-14 and sinkin' fast in the East. I'm lookin' at these Pats draft mocks just to feel somethin', because this baseball season is lookin' wicked grim already."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Yoshida",
-      "trend": "Hitting .324 with an .889 OPS this season.",
-      "dans_take": "Yoshida's been a bright spot, hitting .324 this season. That's a solid bat in the lineup, we need more of that consistency."
+      "player": "Viktor Arvidsson",
+      "trend": "Two goals in the 4-2 playoff win over Buffalo",
+      "dans_take": "The guy was huntin' the puck all night and finished his chances, exactly the spark we needed on the road."
     },
     {
-      "category": "Cold Snap",
-      "player": "Watson, R",
-      "trend": "Gave up 3 earned runs in 1.1 innings pitched yesterday.",
-      "dans_take": "What a disastah! Watson, R gave up 3 earned runs in just 1.1 innings yesterday. That's absolutely brutal from the bullpen, gotta tighten that up."
+      "category": "Slump",
+      "player": "Jayson Tatum",
+      "trend": "19 points on 8-for-19 shooting and 2-for-8 from deep",
+      "dans_take": "JT has gotta be the alpha out there, plain and simple\u2014settlin' for jumpers isn't gonna cut it in the playoffs."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "T Samaniego",
+      "trend": "1.2 innings with 3 strikeouts and zero runs allowed",
+      "dans_take": "One of the only guys who actually did his job in that miserable shutout loss to the Pinstripes."
     }
   ],
   "news_digest": [
     {
-      "headline": "Red Sox play the Yankees in first of 3-game series",
-      "url": "http://www.espn.com/mlb/preview?gameId=401815031",
-      "dans_take": "Alright, here we go, the Yankees coming to Yawkey Way. This is where you see what the Sox are made of."
-    },
-    {
       "headline": "2026 NBA playoffs: Eastern Conference first-round takeaways",
       "url": "https://www.espn.com/nba/story/_/id/48506456/2026-nba-playoffs-eastern-conference-round-one-takeaways",
-      "dans_take": "Playoffs are here for the C's, let's hope they come out strong. No more messing around."
+      "dans_take": "The experts are seein' what we're seein'\u2014the East is a gauntlet and the C's can't afford to sleepwalk."
     },
     {
-      "headline": "2026 NBA playoffs: Schedule, scores, news and highlights",
-      "url": "https://www.espn.com/nba/story/_/id/48419498/nba-playoffs-2026-play-finals-schedule-scores-news-highlights-bracket-dates",
-      "dans_take": "The playoffs are all set, time for the Celtics to show up when it matters most."
+      "headline": "2026 NFL mock draft: Schrager projects 32 first-round picks",
+      "url": "https://www.espn.com/nfl/draft2026/story/_/id/48550650/2026-nfl-mock-draft-peter-schrager-insider-intel-final-first-round-picks-predictions",
+      "dans_take": "Mock drafts are fine for talkin' points, but let's see who's actually left on the board when the Pats are on the clock."
     },
     {
-      "headline": "Stanley Cup playoffs 2026: Bracket, schedule, scores, news",
-      "url": "https://www.espn.com/nhl/story/_/id/48485622/nhl-playoffs-2026-stanley-cup-bracket-schedule-teams-players-preview",
-      "dans_take": "The B's playoff bracket is out, no more excuses, gotta go out there and win."
-    },
-    {
-      "headline": "Ceddanne Rafaela's tiebreaking two-run single helps Red Sox to 8-6 Patriots' Day win over Tigers",
-      "url": "http://www.espn.com/mlb/recap?gameId=401815018",
-      "dans_take": "Rafaela stepping up when it counted on Patriots' Day, that's what we need more of."
-    },
-    {
-      "headline": "'It makes no sense!' Stephen A. has no idea what's going on with Eagles",
-      "url": "https://www.espn.com/video/clip?id=48541497",
-      "dans_take": "Stephen A. is as confused as I am about this Eagles situation, but if it means Brown comes here, I'm all for it."
-    },
-    {
-      "headline": "Schefter: A.J. Brown likely to be traded to the Patriots post-June 1",
-      "url": "https://www.espn.com/video/clip?id=48540297",
-      "dans_take": "A.J. Brown to the Pats? I'll believe it when I see him in a uniform, but it'd be a wicked boost if it happens."
+      "headline": "MLB 2026: Early-season stats and numbers we're watching",
+      "url": "https://www.espn.com/mlb/story/_/id/48553796/mlb-2026-early-season-stats-walk-rate-average-miller-astros-mets-red-sox",
+      "dans_take": "They're lookin' at the numbers, but the only number I care about is that 9-14 record that's got us in the cellar."
     }
   ],
   "box_scores": {
@@ -62,9 +49,9 @@
       "away_team": "",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-04-20",
+      "game_date": "2026-04-21",
       "played": false,
-      "season_type": "regular"
+      "season_type": "unknown"
     },
     "bruins": {
       "sport": "NHL",
@@ -72,60 +59,35 @@
       "away_team": "",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-04-20",
+      "game_date": "2026-04-21",
       "played": false,
       "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Detroit Tigers",
-      "home_score": 8,
-      "away_score": 6,
-      "game_date": "2026-04-20",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
       "home_team": "",
       "away_team": "",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-04-20",
+      "game_date": "2026-04-21",
       "played": false,
-      "season_type": "offseason"
+      "season_type": "unknown"
     }
   },
   "schedule": [
     {
-      "date": "2026-04-21",
-      "matchup": "New York Yankees at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-04-21",
-      "matchup": "Philadelphia 76ers at Boston Celtics",
-      "time_et": "7:00 PM ET"
-    },
-    {
-      "date": "2026-04-21",
-      "matchup": "Boston Bruins at Buffalo Sabres",
-      "time_et": "7:30 PM ET"
-    },
-    {
       "date": "2026-04-22",
-      "matchup": "New York Yankees at Boston Red Sox",
+      "matchup": "New York Yankees vs. Boston Red Sox",
       "time_et": "6:45 PM ET"
     },
     {
       "date": "2026-04-23",
-      "matchup": "New York Yankees at Boston Red Sox",
+      "matchup": "New York Yankees vs. Boston Red Sox",
       "time_et": "6:10 PM ET"
     },
     {
       "date": "2026-04-23",
-      "matchup": "Buffalo Sabres at Boston Bruins",
+      "matchup": "Buffalo Sabres vs. Boston Bruins",
       "time_et": "7:00 PM ET"
     }
   ]
