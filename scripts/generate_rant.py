@@ -33,7 +33,7 @@ DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
 TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
 
-DEFAULT_MODEL = "gemini-1.5-flash"
+DEFAULT_MODEL = "gemini-flash-latest"
 
 
 def call_with_retry(fn, max_retries=7):
