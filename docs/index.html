@@ -539,8 +539,6 @@
 
     .schedule-section {
       margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid var(--surface-high);
     }
 
     .pulse-take {
@@ -739,7 +737,7 @@
       .morning-brew      { order: 1; }
       .widget.scoreboard { order: 2; }
       .widget.pulse      { order: 3; }
-      .schedule-section  { order: 4; margin-top: 0; padding-top: 0; border-top: none; }
+      .schedule-section  { order: 4; margin-top: 0; }
       .widget#news       { order: 5; }
 
       /* Hide mobile strip — scoreboard widget handles scores */
@@ -883,7 +881,7 @@
         const rows = grouped[date].map(item => `<div class="schedule-row"><span class="schedule-matchup">${escapeHtml(item.matchup || '')}</span><span class="schedule-time">${escapeHtml(item.time_et || 'TBD')}</span></div>`).join('');
         return `<div class="schedule-date-label">${label}</div>${rows}`;
       }).join('');
-      return `<section class="schedule-section"><header class="widget-header" style="margin-bottom:12px"><span class="ms">calendar_month</span><span>Upcoming</span></header><div class="nextup-rows">${html}</div></section>`;
+      return `<section class="widget schedule-section" id="schedule"><header class="widget-header"><span class="ms">calendar_month</span><span>Upcoming</span></header><div class="nextup-rows">${html}</div></section>`;
     }
 
     function buildTrendPulseWidget(trends) {
