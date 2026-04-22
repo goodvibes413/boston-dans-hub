@@ -24,12 +24,16 @@
       user-select: none;
       vertical-align: middle;
       color: var(--on-surface-muted);
+      /* Force outlined (not filled) style */
       font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
     }
-    .ms.sport-nba  { color: #C9632A; }
-    .ms.sport-nhl  { color: #B5C4D7; }
-    .ms.sport-mlb  { color: #BD3039; }
-    .ms.sport-nfl  { color: #8B7355; }
+    /* Sport icon colors */
+    .ms.sport-nba  { color: #C9632A; }   /* NBA orange */
+    .ms.sport-nhl  { color: #B5C4D7; }   /* NHL steel blue */
+    .ms.sport-mlb  { color: #BD3039; }   /* MLB red */
+    .ms.sport-nfl  { color: #8B7355; }   /* NFL tan */
+
+    /* Widget header icon */
     .widget-header .ms {
       font-size: 0.9rem;
       width: 16px;
@@ -373,7 +377,7 @@
     }
     .score-row.dim { opacity: 0.5; }
 
-    .score-sport-emoji { font-size: 1rem; line-height: 1; }
+    .score-sport-emoji { font-size: 1rem; line-height: 1; display: flex; align-items: center; justify-content: center; }
 
     .score-matchup {
       display: flex;
