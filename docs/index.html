@@ -179,6 +179,26 @@
     }
     .nav-feedback-btn:hover { background: var(--primary-container); opacity: 1; color: var(--on-primary) !important; }
 
+    .feedback-button {
+      display: inline-flex;
+      align-items: center;
+      height: 34px;
+      padding: 0 16px;
+      background: var(--primary);
+      color: var(--on-primary) !important;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background 0.2s ease, opacity 0.2s ease;
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+    .feedback-button:hover { background: var(--primary-container); opacity: 1; color: var(--on-primary) !important; }
+
     /* =============================================
        CONTAINER
     ============================================= */
@@ -715,7 +735,7 @@
       .main-col { display: contents; }
       .rail-col  { display: contents; }
 
-      /* Mobile order: rant → scores → trends → schedule → news */
+      /* Mobile order: rant → scores → feedback → trends → schedule → news */
       .morning-brew      { order: 1; }
       .widget.scoreboard { order: 2; }
       .widget.pulse      { order: 3; }
@@ -752,7 +772,6 @@
       <a href="#brew">Today's Rant</a>
       <a href="#trends">Trends</a>
       <a href="#news">News</a>
-      <a href="https://forms.gle/mtXe54Kwa2HqCtpc6" target="_blank" rel="noopener noreferrer" class="nav-feedback-btn">Send Feedback</a>
     </nav>
   </nav>
 
@@ -883,7 +902,7 @@
       const brew = data.morning_brew || []; const para0 = brew[0] || ''; const para1 = brew[1] || ''; const para2 = brew[2] || '';
       const headlineSource = data.headline || trimHeadlineFromBody(para0);
       const heroHtml = buildHeroHeadline(headlineSource); const statSplash = buildStatSplash(data.box_scores);
-      const bodyHtml = `<div class="morning-brew" id="brew">${para0 ? `<p>${escapeHtml(para0)}</p>` : ''}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<p>${escapeHtml(para2)}</p>` : ''}</div>`;
+      const bodyHtml = `<div class="morning-brew" id="brew">${para0 ? `<p>${escapeHtml(para0)}</p>` : ''}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<p>${escapeHtml(para2)}</p>` : ''}<a href="https://forms.gle/mtXe54Kwa2HqCtpc6" target="_blank" rel="noopener noreferrer" class="feedback-button">Send Feedback</a></div>`;
       const mobileStripHtml = buildMobileStrip(data.box_scores); const scoreboardHtml = buildScoreboardWidget(data.box_scores); const pulseHtml = buildTrendPulseWidget(data.trend_watch); const newsPulseHtml = buildNewsPulseWidget(data.news_digest); const scheduleHtml = buildScheduleSection(data.schedule);
       const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
       const app = document.getElementById('app');
