@@ -114,15 +114,25 @@ def parse_fg_pct(fg_str: str):
 # Boxscore
 # ---------------------------------------------------------------------------
 
-def classify_nba_game(game_date: str) -> str:
+def classify_nba_game(game_date: str, season_type_id: int = 2) -> str:
     """
-    Heuristic classification based on game date.
+    Classify an NBA game using the ESPN seasonType id when available,
+    falling back to a date heuristic.
 
-    NBA regular season: Oct–Apr, Playoffs: May–Jun, Preseason: Sep.
+    ESPN seasonType ids: 1=preseason, 2=regular, 3=playoffs, 4=offseason.
+    NBA playoffs run mid-April through June; regular season ends mid-April.
     game_date format: "2026-04-06" (ISO 8601).
 
     Returns: "preseason", "regular", "playoff", or "unknown".
     """
+    # Prefer the explicit ESPN season type id
+    if season_type_id == 3:
+        return "playoff"
+    if season_type_id == 1:
+        return "preseason"
+    if season_type_id == 4:
+        return "offseason"
+    # season_type_id == 2 or unknown → fall back to month heuristic
     try:
         dt = datetime.strptime(game_date, "%Y-%m-%d")
         month = dt.month
@@ -374,57 +384,75 @@ def fetch_schedule() -> None:
 
     try:
         print(f"  Fetching Celtics schedule ({from_date_str} → {to_date_str})...")
-        data   = fetch_json(ESPN_SCHEDULE)
-        events = data.get("events", [])
 
+        # Fetch both regular season (seasontype=2) and playoffs (seasontype=3).
+        # The team schedule endpoint only returns one season type at a time, so
+        # we query both and merge. Dedup by game_id in case of overlap.
+        seen_ids = set()
         games = []
-        for event in events:
-            raw_date = event.get("date", "")
-            if not raw_date:
-                continue
 
-            # Python ≤ 3.10 fromisoformat() doesn't accept bare "Z" — replace it.
+        for seasontype in (2, 3):
+            url = f"{ESPN_SCHEDULE}?seasontype={seasontype}"
             try:
-                game_dt = datetime.fromisoformat(raw_date.replace("Z", "+00:00"))
-            except ValueError:
-                print(f"  Warning: could not parse date '{raw_date}', skipping.")
+                data   = fetch_json(url)
+            except Exception as e:
+                print(f"  Warning: could not fetch seasontype={seasontype}: {e}")
                 continue
+            events = data.get("events", [])
 
-            # Inclusive window: from today 00:00 UTC through end of day today+7
-            if not (from_dt <= game_dt < to_dt + timedelta(days=1)):
-                continue
+            for event in events:
+                raw_date = event.get("date", "")
+                if not raw_date:
+                    continue
 
-            competitions = event.get("competitions", [])
-            comp         = competitions[0] if competitions else {}
-            competitors  = comp.get("competitors", [])
+                # Python ≤ 3.10 fromisoformat() doesn't accept bare "Z" — replace it.
+                try:
+                    game_dt = datetime.fromisoformat(raw_date.replace("Z", "+00:00"))
+                except ValueError:
+                    print(f"  Warning: could not parse date '{raw_date}', skipping.")
+                    continue
 
-            opponent_name = "Unknown"
-            home          = True
-            for competitor in competitors:
-                team = competitor.get("team", {})
-                if team.get("id") == CELTICS_TEAM_ID:
-                    home = (competitor.get("homeAway", "home") == "home")
-                else:
-                    opponent_name = team.get("displayName", "Unknown")
+                # Inclusive window: from today 00:00 UTC through end of day today+7
+                if not (from_dt <= game_dt < to_dt + timedelta(days=1)):
+                    continue
 
-            status_desc = (
-                comp.get("status", {})
-                    .get("type", {})
-                    .get("description", "Scheduled")
-            )
-            venue = comp.get("venue", {}).get("fullName", "")
+                game_id = str(event.get("id", ""))
+                if game_id in seen_ids:
+                    continue
+                seen_ids.add(game_id)
 
-            game_date_iso = game_dt.strftime("%Y-%m-%d")
-            games.append({
-                "game_id":  event.get("id", ""),
-                "date":     raw_date,
-                "opponent": opponent_name,
-                "home":     home,
-                "status":   status_desc,
-                "venue":    venue,
-                "season_type": classify_nba_game(game_date_iso),
-            })
+                competitions = event.get("competitions", [])
+                comp         = competitions[0] if competitions else {}
+                competitors  = comp.get("competitors", [])
 
+                opponent_name = "Unknown"
+                home          = True
+                for competitor in competitors:
+                    team = competitor.get("team", {})
+                    if team.get("id") == CELTICS_TEAM_ID:
+                        home = (competitor.get("homeAway", "home") == "home")
+                    else:
+                        opponent_name = team.get("displayName", "Unknown")
+
+                status_desc = (
+                    comp.get("status", {})
+                        .get("type", {})
+                        .get("description", "Scheduled")
+                )
+                venue = comp.get("venue", {}).get("fullName", "")
+
+                game_date_iso = game_dt.strftime("%Y-%m-%d")
+                games.append({
+                    "game_id":  game_id,
+                    "date":     raw_date,
+                    "opponent": opponent_name,
+                    "home":     home,
+                    "status":   status_desc,
+                    "venue":    venue,
+                    "season_type": classify_nba_game(game_date_iso, seasontype),
+                })
+
+        games.sort(key=lambda g: g["date"])
         print(f"  Found {len(games)} game(s) in the next 7 days.")
 
         result = {
