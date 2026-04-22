@@ -5,7 +5,7 @@ Returns JSON {verdict, severity, flags} on stdout. Exit 0 = PASS, 1 = FAIL.
 
 Env vars:
   GEMINI_API_KEY        required
-  JUDGE_MODEL           optional, default "gemini-2.0-flash"
+  JUDGE_MODEL           optional, default "gemini-1.5-flash"
   INPUT_PATH            optional, default data/raw_dan_output.json
   SEASON_STATIC_PATH    optional, past-seasons JSON (cross-referenced for stat claims)
   SEASON_CURRENT_PATH   optional, current-season JSON (cross-referenced for stat claims)
@@ -23,7 +23,7 @@ DEFAULT_INPUT = REPO / "data" / "raw_dan_output.json"
 DEFAULT_SEASON_STATIC = REPO / "data" / "season_static.json"
 DEFAULT_SEASON_CURRENT = REPO / "data" / "season_current.json"
 DEFAULT_ROLLING = REPO / "data" / "rolling_7day.json"
-DEFAULT_MODEL = "gemini-2.0-flash"
+DEFAULT_MODEL = "gemini-1.5-flash"
 
 JUDGE_PROMPT = """You are a content safety auditor for a Boston sports fan persona ("Boston Dan").
 Review the following sports commentary and return ONLY a JSON object with keys:

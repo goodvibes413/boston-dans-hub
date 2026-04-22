@@ -7,7 +7,7 @@ back, writes data/raw_dan_output.json.
 
 Env vars:
   GEMINI_API_KEY        required
-  GEMINI_MODEL          optional, default "gemini-2.0-flash"
+  GEMINI_MODEL          optional, default "gemini-1.5-flash"
   ROLLING_STORE_PATH    optional, lets eval_voice.py swap in a fixture
   SCHEDULE_PATH         optional
   NEWS_PATH             optional
@@ -33,7 +33,7 @@ DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
 TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
 
-DEFAULT_MODEL = "gemini-2.0-flash"
+DEFAULT_MODEL = "gemini-1.5-flash"
 
 
 def call_with_retry(fn, max_retries=7):
