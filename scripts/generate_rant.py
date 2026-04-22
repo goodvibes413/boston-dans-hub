@@ -36,15 +36,15 @@ TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
 DEFAULT_MODEL = "gemini-2.5-flash"
 
 
-def call_with_retry(fn, max_retries=4):
+def call_with_retry(fn, max_retries=7):
     """
     Call fn() with exponential backoff retry on 503/429 errors.
 
-    On 503 UNAVAILABLE: wait 5s, 15s, 30s, 60s (up to ~2 min — covers demand spikes)
+    On 503 UNAVAILABLE: wait 5s, 15s, 30s, 60s, 90s, 120s, 180s (up to ~8 min)
     On 429 QUOTA_EXCEEDED: parse retryDelay from error, wait that duration
     On other errors: fail immediately
     """
-    backoff_delays = [5, 15, 30, 60]
+    backoff_delays = [5, 15, 30, 60, 90, 120, 180]
 
     for attempt in range(max_retries + 1):
         try:

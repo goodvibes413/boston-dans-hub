@@ -13,7 +13,7 @@ jobs:
   daily_pipeline:
     name: Generate and publish Boston Dan commentary
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25
     permissions:
       contents: write
 
