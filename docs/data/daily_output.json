@@ -1,45 +1,45 @@
 {
-  "headline": "Bruins Show Some Life While The Celtics and Red Sox Provide Absolute Disasters",
+  "headline": "Red Sox Get Blanked At Fenway While Celtics Falter Against The Sixers",
   "morning_brew": [
-    "The B's actually showed up in Buffalo, thank heavens. Viktor Arvidsson nets two and Jeremy Swayman stands on his head with 34 saves to secure the 4-2 win. After that mess to start the series, seeing the boys put up three goals in the second period was exactly what the doctor ordered. We\u2019re heading back to the Garden with some actual momentum for once, though being tied 1-1 with the Sabres wasn't exactly the plan.",
-    "Meanwhile, what on earth was that at the Garden for the C's? A 111-97 loss to Philly in the playoffs? Jayson Tatum finishes 8-of-19 for 19 points\u2014are you kiddin' me? Jaylen Brown drops 36 and the rest of the roster basically watches him do it. You can't let the Sixers walk into your building and shoot the lights out like that when you're the two seed. Absolutely brutal performance from top to bottom.",
-    "And don't even get me started on the Sox. Shut out 4-0 by the Yankees at Yawkey Way. Four hits total. The bats are completely frozen, and now we\u2019re sitting at 9-14 at the bottom of the division. It\u2019s early, but we\u2019ve seen this movie before the last few years, and I\u2019m already sick of the reruns. Get it together or it's gonna be a long, miserable summer on the Pike."
+    "Are you kiddin' me with this? The Yankees come into Fenway Park and shut us out on four hits? Absolute disastah. I'm standing there on Yawkey Way before the game thinking we might actually show some life, but instead, we get zero runs and another loss. We're 9-14 now and sitting in the basement of the AL East. It's wicked frustrating watching this lineup go cold the second the pinstripes show up in our house. We need a spark, and we need it yesterday.",
+    "Then you look at the C's. Jaylen Brown drops 36 points and plays his heart out, but the rest of the squad decides to take the night off? 97 points in a playoff game is brutal. Jayson Tatum had 19, which is fine for the boards and assists, but we need him to be the killer we know he is. Losing by 14 to Philly at home in the playoffs is just unacceptable. This team is too talented to be sleepwalking through the first round like this.",
+    "The only bright spot was the B's over at the Garden\u2014well, they were on the road, but you know what I mean. Viktor Arvidsson was a beast with two goals and Jeremy Swayman stood on his head with 33 saves. Buffalo is a tough out this year, but we took care of business to grab that 4-2 win. That's the kind of grit we need from every team in this town right now. At least someone remembers how to win a playoff game."
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "Viktor Arvidsson",
-      "trend": "Scored 2 goals on 2 shots in the win over Buffalo.",
-      "dans_take": "The guy was a machine in the third period, exactly the kind of secondary scoring we need if Pasta isn't lighting the lamp."
+      "trend": "Scored two goals in the 4-2 playoff win over the Sabres.",
+      "dans_take": "This kid is playing out of his mind right now and exactly what we need in a physical series."
     },
     {
-      "category": "Cold Snap",
-      "player": "Jayson Tatum",
-      "trend": "Shot 8-19 from the field and 2-8 from deep in a playoff loss.",
-      "dans_take": "Nineteen points in 39 minutes isn't gonna cut it when you're supposed to be the superstar\u2014simple as that."
+      "category": "Heater",
+      "player": "Jaylen Brown",
+      "trend": "Put up 36 points on 11-of-24 shooting in the loss to Philly.",
+      "dans_take": "He was the only one who looked like he wanted to be there last night\u2014the rest of the team needs to wake up."
     },
     {
       "category": "Bullpen Watch",
       "player": "Trevor Samaniego",
-      "trend": "Threw 1.2 innings of scoreless relief with 3 strikeouts.",
-      "dans_take": "At least someone in the pen knows how to find the strike zone, though it doesn't matter much when the offense gives you zero runs."
+      "trend": "Tossed 1.2 scoreless innings with 3 strikeouts against the Yankees.",
+      "dans_take": "One of the few guys in a Sox uniform who didn't look scared of the moment yesterday."
     }
   ],
   "news_digest": [
     {
       "headline": "2026 NBA playoffs: Eastern Conference first-round takeaways",
       "url": "https://www.espn.com/nba/story/_/id/48506456/2026-nba-playoffs-eastern-conference-round-one-takeaways",
-      "dans_take": "The takeaway is we look soft right now and Philly knows it."
-    },
-    {
-      "headline": "2026 NFL mock draft: Schrager projects 32 first-round picks",
-      "url": "https://www.espn.com/nfl/draft2026/story/_/id/48550650/2026-nfl-mock-draft-peter-schrager-insider-intel-final-first-round-picks-predictions",
-      "dans_take": "The draft buzz is deafening, let's see if we actually get a playmaker for the offense."
+      "dans_take": "The takeaway is simple: if we don't start hitting shots, this is gonna be a short spring."
     },
     {
       "headline": "MLB 2026: Early-season stats and numbers we're watching",
       "url": "https://www.espn.com/mlb/story/_/id/48553796/mlb-2026-early-season-stats-walk-rate-average-miller-astros-mets-red-sox",
-      "dans_take": "The numbers don't lie, and right now our win percentage is a total disastah."
+      "dans_take": "The only stat I'm watching is the 'L' column and it's getting way too crowded."
+    },
+    {
+      "headline": "2026 NFL mock draft: Schrager projects 32 first-round picks",
+      "url": "https://www.espn.com/nfl/draft2026/story/_/id/48550650/2026-nfl-mock-draft-peter-schrager-insider-intel-final-first-round-picks-predictions",
+      "dans_take": "The draft is right around the corner and we better hope for some help on the roster."
     }
   ],
   "box_scores": {
@@ -51,7 +51,7 @@
       "away_score": 111,
       "game_date": "2026-04-21",
       "played": true,
-      "season_type": "regular"
+      "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
@@ -75,8 +75,8 @@
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "N/A",
+      "home_team": null,
+      "away_team": null,
       "home_score": null,
       "away_score": null,
       "game_date": "2026-04-21",
@@ -87,17 +87,17 @@
   "schedule": [
     {
       "date": "2026-04-22",
-      "matchup": "New York Yankees vs. Boston Red Sox",
+      "matchup": "New York Yankees at Boston Red Sox",
       "time_et": "6:45 PM ET"
     },
     {
       "date": "2026-04-23",
-      "matchup": "New York Yankees vs. Boston Red Sox",
+      "matchup": "New York Yankees at Boston Red Sox",
       "time_et": "6:10 PM ET"
     },
     {
       "date": "2026-04-23",
-      "matchup": "Buffalo Sabres vs. Boston Bruins",
+      "matchup": "Buffalo Sabres at Boston Bruins",
       "time_et": "7:00 PM ET"
     }
   ]
