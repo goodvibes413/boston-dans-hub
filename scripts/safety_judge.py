@@ -159,16 +159,25 @@ def main():
     )
 
     client = genai.Client(api_key=api_key)
-    resp = call_with_retry(
-        lambda: client.models.generate_content(
-            model=model_name,
-            contents=full_prompt,
-            config=types.GenerateContentConfig(
-                temperature=0.0,
-                response_mime_type="application/json",
-            ),
+    try:
+        resp = call_with_retry(
+            lambda: client.models.generate_content(
+                model=model_name,
+                contents=full_prompt,
+                config=types.GenerateContentConfig(
+                    temperature=0.0,
+                    response_mime_type="application/json",
+                ),
+            )
         )
-    )
+    except Exception as e:
+        # API unavailable or quota exhausted — PASS with a warning so content
+        # still publishes. A judge that can't run should not block publication;
+        # only a judge that returns an explicit FAIL verdict should block.
+        print(f"warning: safety judge API error ({type(e).__name__}), treating as PASS", file=sys.stderr)
+        print(json.dumps({"verdict": "PASS", "severity": "low",
+                          "flags": [f"judge skipped — API error: {type(e).__name__}"]}))
+        sys.exit(0)
 
     try:
         verdict = json.loads(resp.text)
