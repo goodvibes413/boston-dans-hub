@@ -189,6 +189,112 @@ def normalize_box_scores(data: dict) -> dict:
     return data
 
 
+def repair_box_scores_from_fetchers(data: dict) -> dict:
+    """
+    After normalize_box_scores runs, Gemini may have emitted played:false with empty
+    teams/scores even though the fetcher JSONs contain real game results.  This happens
+    when grounding is ON but Gemini still doesn't reliably populate the box_scores object
+    (it writes the narrative correctly in morning_brew but leaves box_scores blank).
+
+    This function reads the raw fetcher output files and, for any team whose normalized
+    entry has played:false + null scores, overwrites it with the real fetcher data
+    (if the fetcher says played:true).
+
+    Fetcher schemas:
+      celtics_boxscore.json : { played, home (bool), celtics_score, opponent, opponent_score, game_date, season_type }
+      bruins_boxscore.json  : { played, home (bool), bruins_score,  opponent, opponent_score, game_date, season_type }
+      redsox_boxscore.json  : { played, home (bool), redsox_score,  opponent, opponent_score, game_date, season_type }
+                              OR { games: [{ played, home, redsox_score, opponent, opponent_score, ... }] }
+      patriots_boxscore.json: { played, home (bool), patriots_score, opponent, opponent_score, game_date, season_type }
+    """
+    if "box_scores" not in data:
+        return data
+
+    fetcher_files = {
+        "celtics":  REPO / "data" / "celtics_boxscore.json",
+        "bruins":   REPO / "data" / "bruins_boxscore.json",
+        "redsox":   REPO / "data" / "redsox_boxscore.json",
+        "patriots": REPO / "data" / "patriots_boxscore.json",
+    }
+    boston_score_keys = {
+        "celtics":  "celtics_score",
+        "bruins":   "bruins_score",
+        "redsox":   "redsox_score",
+        "patriots": "patriots_score",
+    }
+    boston_full_names = {
+        "celtics":  "Boston Celtics",
+        "bruins":   "Boston Bruins",
+        "redsox":   "Boston Red Sox",
+        "patriots": "New England Patriots",
+    }
+    sport_map = {
+        "celtics":  "NBA",
+        "bruins":   "NHL",
+        "redsox":   "MLB",
+        "patriots": "NFL",
+    }
+
+    for team_key, fetcher_path in fetcher_files.items():
+        # Only repair entries where Gemini failed to populate scores
+        existing = data["box_scores"].get(team_key, {})
+        already_has_scores = (
+            existing.get("played") and
+            existing.get("home_score") is not None and
+            existing.get("away_score") is not None
+        )
+        if already_has_scores:
+            continue  # Gemini got it right — leave it alone
+
+        raw = load_json(fetcher_path)
+        if not raw or raw.get("error"):
+            continue  # Fetcher also failed — nothing to repair from
+
+        # Red Sox may wrap in a games array
+        game = raw
+        if isinstance(raw.get("games"), list) and raw["games"]:
+            game = raw["games"][0]
+
+        if not game.get("played"):
+            continue  # Fetcher also says no game — respect that
+
+        boston_score_key = boston_score_keys[team_key]
+        boston_full_name = boston_full_names[team_key]
+        sport = sport_map[team_key]
+        is_home = game.get("home")
+        boston_score = game.get(boston_score_key)
+        opp_score = game.get("opponent_score")
+        opponent = game.get("opponent", "")
+        game_date = game.get("game_date") or raw.get("game_date", "")
+        season_type = game.get("season_type") or raw.get("season_type", "unknown")
+
+        if is_home is not None:
+            home_team  = boston_full_name if is_home else opponent
+            away_team  = opponent if is_home else boston_full_name
+            home_score = boston_score if is_home else opp_score
+            away_score = opp_score if is_home else boston_score
+        else:
+            home_team  = boston_full_name
+            away_team  = opponent
+            home_score = boston_score
+            away_score = opp_score
+
+        repaired = {
+            "sport":      sport,
+            "home_team":  home_team,
+            "away_team":  away_team,
+            "home_score": home_score,
+            "away_score": away_score,
+            "game_date":  game_date,
+            "played":     True,
+            "season_type": season_type,
+        }
+        data["box_scores"][team_key] = repaired
+        print(f"  repaired box_score for {team_key}: {home_team} {home_score}–{away_score} {away_team}", file=sys.stderr)
+
+    return data
+
+
 def build_season_memory(static_data: dict, current_data: dict) -> dict:
     """
     Merge hand-curated past seasons (season_static.json) with daily-fetched
@@ -222,7 +328,8 @@ def build_user_message(rolling, schedule, news, season_memory) -> str:
         "Generate Boston Dan's Hub JSON output. Return ONLY the JSON object, "
         "no prose, no markdown fences. Keys: headline (punchy newspaper-style headline in Dan's voice — complete thought, no cut-off phrases, 10–16 words max), "
         "morning_brew (3 paragraphs), "
-        "trend_watch, box_scores, schedule (next 3 days)."
+        "trend_watch (array of objects with category, player — always use FULL first and last name, never initials or abbreviations, trend, dans_take), "
+        "box_scores, schedule (next 3 days)."
     )
 
 
@@ -310,6 +417,8 @@ def main():
 
     # Normalize box_scores schema for consistent frontend rendering
     parsed = normalize_box_scores(parsed)
+    # Repair any entries where Gemini left played:false despite fetcher data showing a real game
+    parsed = repair_box_scores_from_fetchers(parsed)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(parsed, indent=2))
