@@ -63,9 +63,10 @@ fetch_nhl.py        → data/bruins_boxscore.json  + data/bruins_schedule.json
 fetch_mlb.py        → data/redsox_boxscore.json  + data/redsox_schedule.json
 fetch_nfl.py        → data/patriots_news.json  (offseason: headlines only)
     ↓
-update_store.py     → data/rolling_7day.json  (rolling 7-entry window)
-fetch_schedule.py   → data/upcoming_schedule.json  (merged, sorted)
-fetch_news.py       → data/latest_news.json  (merged, most-recent-first)
+update_store.py            → data/rolling_7day.json  (rolling 7-entry window)
+fetch_schedule.py          → data/upcoming_schedule.json  (merged, sorted)
+fetch_news.py              → data/latest_news.json  (merged, most-recent-first)
+fetch_season_memory.py     → data/season_current.json  (current records/seeds/status)
     ↓
 generate_rant.py    → data/raw_dan_output.json  (Gemini 2.5 Flash + grounding)
     ↓
@@ -91,6 +92,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/update_store.py` | ✅ Done | `rolling_7day.json` (7-entry rolling window) |
 | `scripts/fetch_schedule.py` | ✅ Done | `upcoming_schedule.json` (merged, sorted) |
 | `scripts/fetch_news.py` | ✅ Done | `latest_news.json` (merged, most-recent-first) |
+| `scripts/fetch_season_memory.py` | ✅ Done | `season_current.json` (current records/seeds/status from ESPN) |
 | `scripts/generate_rant.py` | ✅ Done | `raw_dan_output.json` (loads persona from `prompts/boston_dan_system.txt`) |
 | `scripts/eval_voice.py` | ✅ Done | `evals/runs/{label}_{N}.json` (manual eyeball harness) |
 | `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (Gemini 2.5 Flash) |
@@ -345,6 +347,46 @@ Max 7 entries. Oldest entry dropped when a new day is appended.
 }
 ```
 
+### `data/season_static.json` (in git — hand-curated past seasons)
+```json
+{
+  "updated": "2026-04-21",
+  "celtics": {
+    "past_seasons": [
+      { "year": 2024, "wins": 64, "losses": 18, "result": "NBA Champions — beat Mavericks 4-1 in Finals" }
+    ]
+  },
+  "bruins":   { "past_seasons": [ { "year": 2024, "record": "47-20-15", "result": "Lost Round 2 vs Panthers 4-2" } ] },
+  "redsox":   { "past_seasons": [ { "year": 2024, "wins": 81, "losses": 81, "result": "Missed playoffs" } ] },
+  "patriots": { "past_seasons": [ { "year": 2024, "wins": 4, "losses": 13, "result": "Missed playoffs" } ] }
+}
+```
+**Year convention**: end-year of the season (e.g. 2024 = 2023–24 NBA/NHL season, or 2024 MLB/NFL season).
+**Versioning**: checked into git via a `!data/season_static.json` exception in `.gitignore`.
+**Rollover procedure**: once per year after a season concludes, edit this file to prepend the just-finished season and drop the oldest entry (keep 5 seasons), bump `updated`, commit with message `chore: rollover season_static after {sport} {year}`.
+
+### `data/season_current.json` (gitignored — fetched daily)
+Shape is status-conditional. `fetch_season_memory.py` writes one entry per team plus a `generated_at` timestamp.
+
+**Regular season**:
+```json
+{ "status": "regular_season", "wins": 40, "losses": 20, "win_pct": 0.667, "playoff_seed": 1, "conference": "Eastern Conference", "division": "Atlantic Division", "streak": "W4" }
+```
+**In playoffs**:
+```json
+{ "status": "in_playoffs", "regular_season_wins": 52, "regular_season_losses": 30, "regular_season_summary": "52-30", "playoff_seed": 1 }
+```
+**Offseason**:
+```json
+{ "status": "offseason", "last_season_wins": 7, "last_season_losses": 10, "last_season_summary": "7-10" }
+```
+
+**Runtime merge**: `generate_rant.py` loads both files via `build_season_memory()` and injects a `SEASON_MEMORY` block into the prompt:
+```json
+{ "celtics": { "current_season": {...}, "past_seasons": [...] }, ... }
+```
+The safety judge also loads both files as `source_data` — any stat Dan cites must appear in `rolling_7day` OR `season_memory`, otherwise it's flagged as a fabricated stat (HIGH severity).
+
 ### `site/data/daily_output.json` (Gemini output schema)
 ```json
 {
@@ -422,6 +464,8 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `ROLLING_STORE_PATH` | `generate_rant.py` | Default: `data/rolling_7day.json`; override in evals to point at fixtures |
 | `OUTPUT_PATH` | `generate_rant.py` | Default: `data/raw_dan_output.json`; override in evals |
 | `INPUT_PATH` | `safety_judge.py` | Default: `data/raw_dan_output.json` |
+| `SEASON_STATIC_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/season_static.json`; override in evals |
+| `SEASON_CURRENT_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/season_current.json`; override in evals |
 
 ---
 
@@ -511,6 +555,7 @@ healthcheck.py
 | Week 2 | Persona & Generation | ✅ Complete (pivoted away from AI Studio — direct Gemini API) |
 | Week 3 | Publish & Health Check | ✅ Complete (publish.py, healthcheck.py, morning_brew.yml workflow) |
 | Week 4 | Frontend & Deployment | 🔄 In progress (static site, GitHub Pages) |
+| Week 4+ | Season Memory Module | ✅ Phase 1 complete (season_static.json + fetch_season_memory.py, judge + evals wired in) |
 
 ---
 

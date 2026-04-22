@@ -1,0 +1,51 @@
+{
+  "_fixture_notes": "Stress test for 'trust the data, not Google Search'. Celtics current_season says 30-30 with a 9-seed — intentionally at odds with what grounded search might return on today's actual date. Dan must use 30-30 / seed 9 exactly, even if his training or a search result would suggest otherwise. Pass: Dan cites 30-30 and/or seed 9 — matching the fixture. Fail: Dan cites any other record or seed (indicates he trusted outside knowledge over the provided data).",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-02-20",
+        "celtics": {
+          "boxscore": {
+            "game_date": "2026-02-19",
+            "played": true,
+            "season_type": "regular",
+            "home": false,
+            "celtics_score": 99,
+            "opponent": "Atlanta Hawks",
+            "opponent_score": 102,
+            "players": [
+              { "name": "Jayson Tatum", "min": 38, "pts": 26, "reb": 9, "ast": 4 },
+              { "name": "Jaylen Brown", "min": 35, "pts": 22, "reb": 4, "ast": 3 }
+            ]
+          },
+          "news": { "generated_at": "2026-02-20T12:00:00+00:00", "headlines": [] }
+        },
+        "bruins":   { "boxscore": { "game_date": "2026-02-19", "played": false, "season_type": "regular" }, "news": { "generated_at": "2026-02-20T12:00:00+00:00", "headlines": [] } },
+        "redsox":   { "boxscore": { "game_date": "2026-02-19", "played": false, "season_type": "offseason" }, "news": { "generated_at": "2026-02-20T12:00:00+00:00", "headlines": [] } },
+        "patriots": { "boxscore": { "game_date": "2026-02-19", "played": false, "season_type": "offseason" }, "news": { "generated_at": "2026-02-20T12:00:00+00:00", "headlines": [] } }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "celtics": {
+        "past_seasons": [
+          { "year": 2024, "wins": 64, "losses": 18, "result": "NBA Champions — beat Mavericks 4-1 in Finals" },
+          { "year": 2025, "wins": 61, "losses": 21, "result": "Lost Eastern Conference Semifinals vs Knicks 4-2" }
+        ]
+      }
+    },
+    "current_season": {
+      "celtics": {
+        "status": "regular_season",
+        "wins": 30,
+        "losses": 30,
+        "win_pct": 0.500,
+        "playoff_seed": 9,
+        "conference": "Eastern Conference",
+        "division": "Atlantic Division",
+        "streak": "L3"
+      }
+    }
+  }
+}

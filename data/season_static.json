@@ -1,0 +1,40 @@
+{
+  "_notes": "Hand-curated past 5 seasons per team. Update once per year after a season concludes. Year = end-year of the season (e.g. 2024 = 2023-24 NBA/NHL season, or 2024 MLB/NFL season). Sources: ESPN, Basketball-Reference, Hockey-Reference, Baseball-Reference, Pro-Football-Reference.",
+  "updated": "2026-04-21",
+  "celtics": {
+    "past_seasons": [
+      { "year": 2021, "wins": 36, "losses": 36, "result": "First round exit vs Nets 4-1" },
+      { "year": 2022, "wins": 51, "losses": 31, "result": "Lost NBA Finals to Warriors 4-2" },
+      { "year": 2023, "wins": 57, "losses": 25, "result": "Lost Eastern Conference Finals to Heat 4-3" },
+      { "year": 2024, "wins": 64, "losses": 18, "result": "NBA Champions — beat Mavericks 4-1 in Finals" },
+      { "year": 2025, "wins": 61, "losses": 21, "result": "Lost Eastern Conference Semifinals vs Knicks 4-2" }
+    ]
+  },
+  "bruins": {
+    "past_seasons": [
+      { "year": 2021, "record": "33-16-7", "result": "Lost Round 2 vs Islanders 4-2" },
+      { "year": 2022, "record": "51-26-5", "result": "Lost Round 1 vs Hurricanes 4-3" },
+      { "year": 2023, "record": "65-12-5", "result": "Historic regular season, stunning Round 1 exit vs Panthers 4-3" },
+      { "year": 2024, "record": "47-20-15", "result": "Lost Round 2 vs Panthers 4-2" },
+      { "year": 2025, "record": "33-39-10", "result": "Missed playoffs — first time in 7 years" }
+    ]
+  },
+  "redsox": {
+    "past_seasons": [
+      { "year": 2021, "wins": 92, "losses": 70, "result": "Lost ALCS to Astros 4-2" },
+      { "year": 2022, "wins": 78, "losses": 84, "result": "Missed playoffs — last in AL East" },
+      { "year": 2023, "wins": 78, "losses": 84, "result": "Missed playoffs — last in AL East" },
+      { "year": 2024, "wins": 81, "losses": 81, "result": "Missed playoffs — third-place AL East" },
+      { "year": 2025, "wins": 89, "losses": 73, "result": "Lost AL Wild Card to Yankees 2-1" }
+    ]
+  },
+  "patriots": {
+    "past_seasons": [
+      { "year": 2021, "wins": 10, "losses": 7, "result": "Lost Wild Card to Bills 47-17" },
+      { "year": 2022, "wins": 8, "losses": 9, "result": "Missed playoffs — Mac Jones sophomore slump" },
+      { "year": 2023, "wins": 4, "losses": 13, "result": "Missed playoffs — Belichick's final season" },
+      { "year": 2024, "wins": 4, "losses": 13, "result": "Missed playoffs — Mayo fired after one year" },
+      { "year": 2025, "wins": 8, "losses": 9, "result": "Missed playoffs — Vrabel's rebuild year, Drake Maye Year 2" }
+    ]
+  }
+}

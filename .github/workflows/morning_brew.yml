@@ -66,6 +66,11 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_news.py
 
+      - name: Fetch season memory (current-season standings)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/fetch_season_memory.py
+
       - name: Generate Dan commentary
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

@@ -6,6 +6,12 @@ Usage:
 
 Writes each output to evals/runs/{label}_{N}.json and prints a summary table.
 There is no automated scoring — read the JSON files yourself. That IS the eval.
+
+Fixture schemas supported:
+  Legacy: the fixture IS the rolling_7day payload (a dict with a "days" key or similar)
+  New:    {"rolling_7day": {...}, "season_memory": {"past_seasons": {...},
+                                                    "current_season": {...}},
+           "_fixture_notes": "..."}
 """
 
 import argparse
@@ -44,9 +50,26 @@ def summarize(path: Path):
     }
 
 
+def split_fixture(fixture_data: dict):
+    """
+    Detect fixture shape and return (rolling_7day, season_static, season_current).
+
+    New shape: has explicit "rolling_7day" key → split into sections.
+    Legacy shape: whole fixture IS the rolling_7day payload; season files blank.
+    """
+    if isinstance(fixture_data, dict) and "rolling_7day" in fixture_data:
+        rolling = fixture_data.get("rolling_7day", {}) or {}
+        season_memory = fixture_data.get("season_memory", {}) or {}
+        past = season_memory.get("past_seasons", {}) or {}
+        current = season_memory.get("current_season", {}) or {}
+        return rolling, past, current
+    # Legacy: the fixture IS the rolling_7day payload
+    return fixture_data, {}, {}
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--fixture", required=True, help="Path to a rolling_7day-shaped fixture")
+    ap.add_argument("--fixture", required=True, help="Path to a fixture JSON")
     ap.add_argument("--n", type=int, default=5, help="Number of generations to run")
     ap.add_argument("--label", help="Label for output filenames (default: fixture stem)")
     args = ap.parse_args()
@@ -57,6 +80,21 @@ def main():
 
     label = args.label or fixture.stem
     RUNS_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Parse and split the fixture into its sections
+    try:
+        fixture_data = json.loads(fixture.read_text())
+    except json.JSONDecodeError as e:
+        sys.exit(f"error: fixture not valid JSON: {e}")
+    rolling, season_past, season_current = split_fixture(fixture_data)
+
+    # Write split sections to tmp files so generate_rant.py can read them via env vars
+    tmp_rolling = RUNS_DIR / f"{label}_tmp_rolling.json"
+    tmp_static = RUNS_DIR / f"{label}_tmp_season_static.json"
+    tmp_current = RUNS_DIR / f"{label}_tmp_season_current.json"
+    tmp_rolling.write_text(json.dumps(rolling, indent=2))
+    tmp_static.write_text(json.dumps(season_past, indent=2))
+    tmp_current.write_text(json.dumps(season_current, indent=2))
 
     # Write empty stubs for schedule/news — fixtures are self-contained;
     # these files don't exist when data/ is gitignored.
@@ -70,9 +108,11 @@ def main():
     for i in range(1, args.n + 1):
         out_path = RUNS_DIR / f"{label}_{i}.json"
         env = os.environ.copy()
-        env["ROLLING_STORE_PATH"] = str(fixture)
+        env["ROLLING_STORE_PATH"] = str(tmp_rolling)
         env["SCHEDULE_PATH"] = str(stub_schedule)
         env["NEWS_PATH"] = str(stub_news)
+        env["SEASON_STATIC_PATH"] = str(tmp_static)
+        env["SEASON_CURRENT_PATH"] = str(tmp_current)
         env["OUTPUT_PATH"] = str(out_path)
         print(f"  run {i}/{args.n} → {out_path.name}")
         result = subprocess.run(

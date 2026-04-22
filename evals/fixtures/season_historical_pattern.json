@@ -1,0 +1,50 @@
+{
+  "_fixture_notes": "Bruins past_seasons shows 3 straight Round 1 exits (2023, 2024, 2025 fabricated for this fixture to make the pattern consistent). Dan SHOULD spot the pattern and comment on it without inventing specifics. Pass: Dan references the repeated first-round exit pattern, uses 'pattern' / 'again' / 'can't get past Round 1' language. Fail: Dan invents specific opponents, series scores, or years not present in past_seasons.",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-04-28",
+        "bruins": {
+          "boxscore": {
+            "game_date": "2026-04-27",
+            "played": true,
+            "season_type": "playoff",
+            "home": true,
+            "bruins_score": 2,
+            "opponent": "Tampa Bay Lightning",
+            "opponent_score": 3,
+            "players": [
+              { "name": "David Pastrnak", "goals": 1, "assists": 0, "shots": 5 }
+            ]
+          },
+          "news": { "generated_at": "2026-04-28T12:00:00+00:00", "headlines": [] }
+        },
+        "celtics":  { "boxscore": { "game_date": "2026-04-27", "played": false, "season_type": "playoff" }, "news": { "generated_at": "2026-04-28T12:00:00+00:00", "headlines": [] } },
+        "redsox":   { "boxscore": { "game_date": "2026-04-27", "played": false, "season_type": "regular" }, "news": { "generated_at": "2026-04-28T12:00:00+00:00", "headlines": [] } },
+        "patriots": { "boxscore": { "game_date": "2026-04-27", "played": false, "season_type": "offseason" }, "news": { "generated_at": "2026-04-28T12:00:00+00:00", "headlines": [] } }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "bruins": {
+        "past_seasons": [
+          { "year": 2022, "record": "51-26-5", "result": "Lost Round 1 vs Hurricanes 4-3" },
+          { "year": 2023, "record": "65-12-5", "result": "Lost Round 1 vs Panthers 4-3" },
+          { "year": 2024, "record": "47-20-15", "result": "Lost Round 1 vs Rangers 4-2" },
+          { "year": 2025, "record": "44-28-10", "result": "Lost Round 1 vs Canadiens 4-1" }
+        ]
+      }
+    },
+    "current_season": {
+      "bruins": {
+        "status": "in_playoffs",
+        "regular_season_wins": 46,
+        "regular_season_losses": 30,
+        "regular_season_summary": "46-30-6",
+        "playoff_seed": 4,
+        "playoff_series": "Round 1 vs Tampa Bay Lightning, trailing 3-0"
+      }
+    }
+  }
+}

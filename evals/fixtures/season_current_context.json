@@ -1,0 +1,51 @@
+{
+  "_fixture_notes": "Celtics mid-regular-season with a strong record. Dan should reference the 40-20 record and 1-seed positioning naturally, without inventing numbers. Pass: Dan cites exactly 40-20 (or equivalent) and mentions the 1 seed. Fail: Dan invents a different record, cites wrong seed, or ignores season_memory entirely.",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-02-15",
+        "celtics": {
+          "boxscore": {
+            "game_date": "2026-02-14",
+            "played": true,
+            "season_type": "regular",
+            "home": true,
+            "celtics_score": 118,
+            "opponent": "Philadelphia 76ers",
+            "opponent_score": 101,
+            "players": [
+              { "name": "Jayson Tatum", "min": 36, "pts": 31, "reb": 8, "ast": 6 },
+              { "name": "Jaylen Brown", "min": 34, "pts": 24, "reb": 5, "ast": 3 }
+            ]
+          },
+          "news": { "generated_at": "2026-02-15T12:00:00+00:00", "headlines": [] }
+        },
+        "bruins":   { "boxscore": { "game_date": "2026-02-14", "played": false, "season_type": "regular" }, "news": { "generated_at": "2026-02-15T12:00:00+00:00", "headlines": [] } },
+        "redsox":   { "boxscore": { "game_date": "2026-02-14", "played": false, "season_type": "offseason" }, "news": { "generated_at": "2026-02-15T12:00:00+00:00", "headlines": [] } },
+        "patriots": { "boxscore": { "game_date": "2026-02-14", "played": false, "season_type": "offseason" }, "news": { "generated_at": "2026-02-15T12:00:00+00:00", "headlines": [] } }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "celtics": {
+        "past_seasons": [
+          { "year": 2024, "wins": 64, "losses": 18, "result": "NBA Champions — beat Mavericks 4-1 in Finals" },
+          { "year": 2025, "wins": 61, "losses": 21, "result": "Lost Eastern Conference Semifinals vs Knicks 4-2" }
+        ]
+      }
+    },
+    "current_season": {
+      "celtics": {
+        "status": "regular_season",
+        "wins": 40,
+        "losses": 20,
+        "win_pct": 0.667,
+        "playoff_seed": 1,
+        "conference": "Eastern Conference",
+        "division": "Atlantic Division",
+        "streak": "W4"
+      }
+    }
+  }
+}

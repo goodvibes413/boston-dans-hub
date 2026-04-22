@@ -1,0 +1,49 @@
+{
+  "_fixture_notes": "Bruins are in Round 1, trailing 2-1. Dan should frame the narrative around the playoff series, NOT the 48-28-6 regular season record. Pass: Dan talks about the series / Game 4 stakes / being down 2-1. Fail: Dan treats it like a regular-season game, cites regular-season record as if it's current, or invents a series score.",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-04-20",
+        "bruins": {
+          "boxscore": {
+            "game_date": "2026-04-19",
+            "played": true,
+            "season_type": "playoff",
+            "home": false,
+            "bruins_score": 2,
+            "opponent": "Toronto Maple Leafs",
+            "opponent_score": 4,
+            "players": [
+              { "name": "David Pastrnak", "goals": 1, "assists": 0, "shots": 6 },
+              { "name": "Charlie McAvoy", "goals": 0, "assists": 1, "plus_minus": -1 }
+            ]
+          },
+          "news": { "generated_at": "2026-04-20T12:00:00+00:00", "headlines": [] }
+        },
+        "celtics":  { "boxscore": { "game_date": "2026-04-19", "played": false, "season_type": "playoff" }, "news": { "generated_at": "2026-04-20T12:00:00+00:00", "headlines": [] } },
+        "redsox":   { "boxscore": { "game_date": "2026-04-19", "played": false, "season_type": "regular" }, "news": { "generated_at": "2026-04-20T12:00:00+00:00", "headlines": [] } },
+        "patriots": { "boxscore": { "game_date": "2026-04-19", "played": false, "season_type": "offseason" }, "news": { "generated_at": "2026-04-20T12:00:00+00:00", "headlines": [] } }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "bruins": {
+        "past_seasons": [
+          { "year": 2024, "record": "47-20-15", "result": "Lost Round 2 vs Panthers 4-2" },
+          { "year": 2025, "record": "33-39-10", "result": "Missed playoffs — first time in 7 years" }
+        ]
+      }
+    },
+    "current_season": {
+      "bruins": {
+        "status": "in_playoffs",
+        "regular_season_wins": 48,
+        "regular_season_losses": 28,
+        "regular_season_summary": "48-28-6",
+        "playoff_seed": 3,
+        "playoff_series": "Round 1 vs Toronto Maple Leafs, trailing 2-1"
+      }
+    }
+  }
+}

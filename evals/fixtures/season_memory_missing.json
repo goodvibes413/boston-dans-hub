@@ -1,0 +1,31 @@
+{
+  "_fixture_notes": "season_memory is EMPTY for every team. Dan must degrade to qualitative speech ('solid year so far', 'tough stretch') rather than invent records, seeds, or historical events. Pass: Dan's output contains NO specific win-loss records, seeds, or past-season references. Fail: Dan invents any numeric record, playoff seed, or specific historical outcome.",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-05-10",
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-05-09",
+            "played": true,
+            "season_type": "regular",
+            "result": "W 5-3",
+            "opponent": "New York Yankees",
+            "players": [
+              { "name": "Rafael Devers", "at_bats": 4, "hits": 2, "home_runs": 1, "rbi": 3 },
+              { "name": "Brayan Bello", "innings_pitched": 6.0, "strikeouts": 7, "earned_runs": 2 }
+            ]
+          },
+          "news": { "generated_at": "2026-05-10T12:00:00+00:00", "headlines": [] }
+        },
+        "celtics":  { "boxscore": { "game_date": "2026-05-09", "played": false, "season_type": "playoff" }, "news": { "generated_at": "2026-05-10T12:00:00+00:00", "headlines": [] } },
+        "bruins":   { "boxscore": { "game_date": "2026-05-09", "played": false, "season_type": "offseason" }, "news": { "generated_at": "2026-05-10T12:00:00+00:00", "headlines": [] } },
+        "patriots": { "boxscore": { "game_date": "2026-05-09", "played": false, "season_type": "offseason" }, "news": { "generated_at": "2026-05-10T12:00:00+00:00", "headlines": [] } }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {},
+    "current_season": {}
+  }
+}
