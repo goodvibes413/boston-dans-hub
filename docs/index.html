@@ -749,9 +749,17 @@
 
       .widget#news .pulse-take { display: none; }
       .widget#news .pulse-card:nth-child(n+6) { display: none; }
-      .widget#news .pulse-news-headline { font-size: 0.875rem; }
+      /* News headline: smooth proportional scale instead of a hard size jump */
+      .widget#news .pulse-news-headline { font-size: clamp(0.8125rem, 2.8vw, 0.9375rem); }
 
       .nextup-row { background: transparent; border-radius: 0; min-height: auto; padding: 0; }
+
+      /* Scoreboard: allow reflow at very narrow widths */
+      .score-row { white-space: normal; }
+
+      /* Schedule: matchup shrinks proportionally, time stays fixed */
+      .schedule-matchup { flex: 1 1 0; min-width: 0; }
+      .schedule-time    { flex-shrink: 0; white-space: nowrap; }
 
       .stat-splash { padding: 20px; }
     }
