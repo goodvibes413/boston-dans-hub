@@ -440,14 +440,19 @@ def main():
 
     # Attempt 2: grounding OFF, force JSON mime type
     if parsed is None:
-        raw = call_gemini(
-            system_prompt,
-            user_message + "\n\nReturn ONLY a valid JSON object. No markdown, no prose.",
-            model_name,
-            use_grounding=False,
-            force_json=True,
-        )
-        parsed = json.loads(raw)
+        try:
+            raw = call_gemini(
+                system_prompt,
+                user_message + "\n\nReturn ONLY a valid JSON object. No markdown, no prose.",
+                model_name,
+                use_grounding=False,
+                force_json=True,
+            )
+            parsed = json.loads(raw)
+        except (json.JSONDecodeError, Exception) as e:
+            print(f"error: attempt 2 failed ({type(e).__name__}: {str(e)[:100]})", file=sys.stderr)
+            print("error: Gemini could not produce valid JSON after 2 attempts; exiting with code 1", file=sys.stderr)
+            sys.exit(1)
 
     # Normalize box_scores schema for consistent frontend rendering
     parsed = normalize_box_scores(parsed)
