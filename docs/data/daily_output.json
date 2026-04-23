@@ -1,45 +1,45 @@
 {
-  "headline": "Red Sox Get Blanked At Fenway While Celtics Falter Against The Sixers",
+  "headline": "Sox bats go cold at Fenway while Bruins and Celtics prepare for pivotal Game 3 battles",
   "morning_brew": [
-    "Are you kiddin' me with this? The Yankees come into Fenway Park and shut us out on four hits? Absolute disastah. I'm standing there on Yawkey Way before the game thinking we might actually show some life, but instead, we get zero runs and another loss. We're 9-14 now and sitting in the basement of the AL East. It's wicked frustrating watching this lineup go cold the second the pinstripes show up in our house. We need a spark, and we need it yesterday.",
-    "Then you look at the C's. Jaylen Brown drops 36 points and plays his heart out, but the rest of the squad decides to take the night off? 97 points in a playoff game is brutal. Jayson Tatum had 19, which is fine for the boards and assists, but we need him to be the killer we know he is. Losing by 14 to Philly at home in the playoffs is just unacceptable. This team is too talented to be sleepwalking through the first round like this.",
-    "The only bright spot was the B's over at the Garden\u2014well, they were on the road, but you know what I mean. Viktor Arvidsson was a beast with two goals and Jeremy Swayman stood on his head with 33 saves. Buffalo is a tough out this year, but we took care of business to grab that 4-2 win. That's the kind of grit we need from every team in this town right now. At least someone remembers how to win a playoff game."
+    "The Red Sox losing to the Yankees at Fenway Park is always a tough pill to swallow, but a 4-1 final with only five hits is absolutely brutal. Jose Suarez couldn't even make it through five innings, giving up four runs early and putting us in a hole we couldn't climb out of. We are sitting at 9-15 now, dead last in the division, and looking like a team that is completely lost at the plate when the lights are brightest.",
+    "Over at the Garden, the intensity is finally showing up. The Bruins are tied 1-1 with the Sabres, and we have a massive Game 3 tonight on home ice. After missing the playoffs last year, this city needs a deep run to make up for it. The Celtics are also knotted up at 1-1 with Philadelphia before heading down there for Game 3 on Friday. These series are where legends are made, and both teams need to find another gear starting right now.",
+    "And then there is the Patriots news. The draft is right around the corner and the rumors about a potential trade are flying everywhere. Mike Reiss says they are a team to watch, and after that 14-3 season, we need to make sure we capitalize on our picks. It is a wicked busy week in the Hub, and I am already on my third large Dunks just trying to keep up with the chaos on the Pike and at the parks."
   ],
   "trend_watch": [
     {
-      "category": "Heater",
-      "player": "Viktor Arvidsson",
-      "trend": "Scored two goals in the 4-2 playoff win over the Sabres.",
-      "dans_take": "This kid is playing out of his mind right now and exactly what we need in a physical series."
+      "category": "Slump",
+      "player": "Jose Suarez",
+      "trend": "Lasted only 4.2 innings while giving up 4 earned runs in a loss.",
+      "dans_take": "You cannot give up three runs in the first inning against those guys and expect to win. A short outing like that just kills the bullpen."
     },
     {
       "category": "Heater",
-      "player": "Jaylen Brown",
-      "trend": "Put up 36 points on 11-of-24 shooting in the loss to Philly.",
-      "dans_take": "He was the only one who looked like he wanted to be there last night\u2014the rest of the team needs to wake up."
+      "player": "Eduardo Rivera",
+      "trend": "Pitched 3.1 innings of scoreless relief with 3 strikeouts.",
+      "dans_take": "He was the only reason the score stayed respectable. The kid came in and threw strikes when the starter couldn't find the zone."
     },
     {
-      "category": "Bullpen Watch",
-      "player": "Trevor Samaniego",
-      "trend": "Tossed 1.2 scoreless innings with 3 strikeouts against the Yankees.",
-      "dans_take": "One of the few guys in a Sox uniform who didn't look scared of the moment yesterday."
+      "category": "Cold Snap",
+      "player": "Wynton Contreras",
+      "trend": "Went 0-for-3 in the loss to New York.",
+      "dans_take": "The offense is stuck in the mud right now and we need the big bats to actually make contact if we want to climb out of the basement."
     }
   ],
   "news_digest": [
     {
-      "headline": "2026 NBA playoffs: Eastern Conference first-round takeaways",
-      "url": "https://www.espn.com/nba/story/_/id/48506456/2026-nba-playoffs-eastern-conference-round-one-takeaways",
-      "dans_take": "The takeaway is simple: if we don't start hitting shots, this is gonna be a short spring."
+      "headline": "Celtics, 76ers tied 1-1 heading into game 3",
+      "url": "http://www.espn.com/nba/preview?gameId=401869404",
+      "dans_take": "Philly is a tough place to play, but the Celtics have the talent to go down there and take back home court advantage."
     },
     {
-      "headline": "MLB 2026: Early-season stats and numbers we're watching",
-      "url": "https://www.espn.com/mlb/story/_/id/48553796/mlb-2026-early-season-stats-walk-rate-average-miller-astros-mets-red-sox",
-      "dans_take": "The only stat I'm watching is the 'L' column and it's getting way too crowded."
+      "headline": "Mike Vrabel to seek counseling, won't be with Patriots for NFL draft Day 3",
+      "url": "https://www.espn.com/nfl/story/_/id/48566969/mike-vrabel-seek-counseling-not-patriots-day-3-nfl-draft",
+      "dans_take": "Hope everyone is safe as this is a tough situation, so we will let the process play out and see if his absence impacts the later rounds of the draft."
     },
     {
-      "headline": "2026 NFL mock draft: Schrager projects 32 first-round picks",
-      "url": "https://www.espn.com/nfl/draft2026/story/_/id/48550650/2026-nfl-mock-draft-peter-schrager-insider-intel-final-first-round-picks-predictions",
-      "dans_take": "The draft is right around the corner and we better hope for some help on the roster."
+      "headline": "Bruins and Sabres meet with series tied 1-1",
+      "url": "http://www.espn.com/nhl/preview?gameId=401869759",
+      "dans_take": "The Garden is going to be rocking tonight and the B's better be ready for a physical battle against Buffalo."
     }
   ],
   "box_scores": {
@@ -47,49 +47,44 @@
       "sport": "NBA",
       "home_team": "Boston Celtics",
       "away_team": "Philadelphia 76ers",
-      "home_score": 97,
-      "away_score": 111,
-      "game_date": "2026-04-21",
-      "played": true,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-22",
+      "played": false,
       "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Buffalo Sabres",
-      "away_team": "Boston Bruins",
-      "home_score": 2,
-      "away_score": 4,
-      "game_date": "2026-04-21",
-      "played": true,
+      "home_team": "Boston Bruins",
+      "away_team": "Buffalo Sabres",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-22",
+      "played": false,
       "season_type": "playoff"
     },
     "redsox": {
       "sport": "MLB",
       "home_team": "Boston Red Sox",
       "away_team": "New York Yankees",
-      "home_score": 0,
+      "home_score": 1,
       "away_score": 4,
-      "game_date": "2026-04-21",
+      "game_date": "2026-04-22",
       "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": null,
+      "home_team": "New England Patriots",
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-04-21",
+      "game_date": "2026-04-22",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-04-22",
-      "matchup": "New York Yankees at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
     {
       "date": "2026-04-23",
       "matchup": "New York Yankees at Boston Red Sox",
@@ -99,6 +94,66 @@
       "date": "2026-04-23",
       "matchup": "Buffalo Sabres at Boston Bruins",
       "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-04-24",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-04-24",
+      "matchup": "Boston Red Sox at Baltimore Orioles",
+      "time_et": "7:05 PM ET"
+    },
+    {
+      "date": "2026-04-25",
+      "matchup": "Boston Red Sox at Baltimore Orioles",
+      "time_et": "4:05 PM ET"
+    },
+    {
+      "date": "2026-04-26",
+      "matchup": "Boston Red Sox at Baltimore Orioles",
+      "time_et": "1:35 PM ET"
+    },
+    {
+      "date": "2026-04-26",
+      "matchup": "Buffalo Sabres at Boston Bruins",
+      "time_et": "2:00 PM ET"
+    },
+    {
+      "date": "2026-04-26",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-04-27",
+      "matchup": "Boston Red Sox at Toronto Blue Jays",
+      "time_et": "7:07 PM ET"
+    },
+    {
+      "date": "2026-04-28",
+      "matchup": "Philadelphia 76ers at Boston Celtics",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-04-28",
+      "matchup": "Boston Red Sox at Toronto Blue Jays",
+      "time_et": "7:07 PM ET"
+    },
+    {
+      "date": "2026-04-28",
+      "matchup": "Boston Bruins at Buffalo Sabres",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-04-29",
+      "matchup": "Boston Red Sox at Toronto Blue Jays",
+      "time_et": "3:07 PM ET"
+    },
+    {
+      "date": "2026-04-30",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "time_et": "12:00 AM ET"
     }
   ]
 }
