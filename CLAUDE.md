@@ -53,18 +53,18 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 
 **Never** add third-party Python packages beyond `google-genai` without discussion. The goal is a minimal, auditable dependency footprint.
 
-### Model Strategy: `gemini-flash-latest` vs Pinned Versions
+### Model Strategy: `gemini-flash-latest` for Higher Daily Quota
 
 **Decision: Always use `gemini-flash-latest` alias, NOT pinned versions like `gemini-2.5-flash`.**
 
 **Why:**
-- **Free tier access**: The `-latest` alias routes to whichever Flash model Google has designated as the current free tier offering. Pinned versions may not be free depending on when they were released.
-- **Cost $0/month target**: This project uses Google's free tier exclusively. Once a model is pinned and rotates out of the free tier, we'd incur charges. The `-latest` alias automatically tracks the current free offering.
-- **API demand spike resilience**: When `gemini-flash-latest` experiences high load (503 UNAVAILABLE), the retry logic in `generate_rant.py` and `safety_judge.py` (7 retries, up to 180s backoff) handles transient spikes. These are temporary — the system is designed to wait it out, not to switch models.
+- **Higher daily request limit**: Google's free tier grants higher daily request quotas to `gemini-flash-latest` (the officially recommended latest model) compared to older pinned versions. This allows our pipeline (generation + safety judge = 2 calls/day, plus retries on transient failures) to stay within free tier limits.
+- **Pinned versions have lower quotas**: Once a Flash model is pinned (e.g., `gemini-2.5-flash`), Google allocates it a lower daily quota. Using pinned versions would exhaust our quota faster and force paid upgrades.
+- **API demand spike resilience**: When `gemini-flash-latest` experiences high load (503 UNAVAILABLE), the retry logic in `generate_rant.py` and `safety_judge.py` (7 retries, up to 180s backoff) handles transient spikes. These are expected during peak times — the system is designed to wait it out.
 
-**Do not change this** unless Google's free tier model changes or the cost target changes. If you see a 503 error in the logs, it's expected during peak API times — check the logs for the retry backoff messages. The pipeline will succeed on the next attempt.
+**Do not change this** — it directly impacts our free tier quota and ability to run the daily pipeline. If you see a 503 error in the logs, it's a transient spike; check the logs for retry backoff messages. The pipeline will succeed on the next attempt.
 
-**Verify the current free tier model**: Run `curl https://generativelanguage.googleapis.com/v1beta/models -H "x-goog-api-key: $GEMINI_API_KEY" | jq '.models[] | select(.name | contains("flash"))'` to see what's available.
+**Note**: Both `gemini-flash-latest` and pinned versions are free — the difference is in the daily request quota allocation.
 
 ---
 
