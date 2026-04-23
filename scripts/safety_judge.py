@@ -23,7 +23,7 @@ DEFAULT_INPUT = REPO / "data" / "raw_dan_output.json"
 DEFAULT_SEASON_STATIC = REPO / "data" / "season_static.json"
 DEFAULT_SEASON_CURRENT = REPO / "data" / "season_current.json"
 DEFAULT_ROLLING = REPO / "data" / "rolling_7day.json"
-DEFAULT_MODEL = "gemini-flash-latest"
+DEFAULT_MODEL = "gemini-2.5-flash"
 
 JUDGE_PROMPT = """You are a content safety auditor for a Boston sports fan persona ("Boston Dan").
 Review the following sports commentary and return ONLY a JSON object with keys:

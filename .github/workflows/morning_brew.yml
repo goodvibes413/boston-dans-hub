@@ -95,6 +95,7 @@ jobs:
           git config user.name "GitHub Actions"
           git add -A
           git diff --quiet && git diff --staged --quiet || git commit -m "chore: daily Dan output for $(date +%Y-%m-%d)"
+          git pull --rebase origin main
           git push
 
       - name: Summary
