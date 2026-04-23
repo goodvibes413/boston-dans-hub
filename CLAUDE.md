@@ -168,11 +168,21 @@ The UI uses a cohesive design system with a Boston sports color palette, clean t
 - **Inverted**: Light background on dark theme, high contrast text
 
 #### Cards & Widgets
-- Background: `--surface-highest` with subtle elevation
-- Border radius: 6px
-- Padding: 16px internal, 12px between rows
-- Dividers: 1px `--surface-high` color
-- Hover state: Slight brightening of background or primary accent on interactive elements
+- **Base `.widget` class**: All dashboard cards use this base — Last Game (scoreboard), Trends, News, Upcoming (schedule)
+  - Background: `--surface-low` (dark card background)
+  - Border radius: 10px
+  - Padding: 18px (desktop); 14px (mobile)
+  - Box shadow: `var(--shadow-ambient)` for subtle elevation
+  - **Full width on all screen sizes**: Mobile (≤767px) uses `align-items: stretch` on flex container; tablet (768–1023px) uses `grid-column: 1 / -1` so all cards span full width
+- **`.widget-header`**: Consistent header for all cards
+  - Font: 0.6875rem, 700 weight, uppercase, letter-spacing 1.5px
+  - Color: `--on-surface-muted`
+  - Margin bottom: 12px
+- **Row/item patterns**:
+  - Scoreboard rows (`.score-row`): Grid layout with proper flex shrinking on mobile; text wraps at narrow widths (`white-space: normal` on mobile)
+  - Schedule rows (`.schedule-matchup` + `.schedule-time`): Flex layout; matchup has `flex: 1 1 0; min-width: 0` for proportional shrinking; time stays fixed-width
+  - News headlines (`.pulse-news-headline`): Desktop 0.9375rem; mobile uses `clamp(0.8125rem, 2.8vw, 0.9375rem)` for smooth proportional scaling
+- **Hover state**: Slight brightening of background or primary accent on interactive elements
 
 #### Text Hierarchy
 - **Primary text** (on-surface): High contrast, legible
@@ -202,11 +212,25 @@ The CSS variables are defined in the `<style>` block and consumed throughout:
 
 ### Responsive Design Tiers
 
-- **Mobile** (≤767px): Compact spacing (8–12px), reduced font sizes, simplified component layouts
-- **Tablet** (768–1023px): Medium spacing (12–16px), moderate font sizes
-- **Desktop** (≥1024px): Full spacing (16–24px), full-size fonts, rich layouts
+- **Mobile** (≤767px): 
+  - Compact spacing (8–12px)
+  - Reduced font sizes
+  - Flex layout with `align-items: stretch` so all cards are full-width
+  - Card padding: 14px (tighter than desktop)
+  - Proportional text scaling using `clamp()` for smooth responsiveness (e.g., headlines scale with viewport width, not discrete breakpoints)
+  
+- **Tablet** (768–1023px): 
+  - Medium spacing (12–16px)
+  - Moderate font sizes
+  - Cards span full width: `grid-column: 1 / -1` on all `.widget` elements
+  
+- **Desktop** (≥1024px): 
+  - Full spacing (16–24px)
+  - Full-size fonts
+  - Rich layouts (sidebar widgets, multi-column grids)
+  - Card padding: 18px
 
-Override tokens inside `@media` queries as needed. **Keep mobile-first**: define base styles for mobile, then use `@media (min-width: ...)` to enhance for larger screens.
+**Key principle**: Override tokens inside `@media` queries as needed. **Keep mobile-first**: define base styles for mobile, then use `@media (min-width: ...)` to enhance for larger screens. Use `clamp()` for proportional scaling instead of discrete font size jumps.
 
 ### Design Principles
 
