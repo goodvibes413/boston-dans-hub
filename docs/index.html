@@ -863,10 +863,11 @@
           const leftWinCls = won ? 'win' : 'loss'; const rightWinCls = won ? 'loss' : 'win';
           return `<div class="score-row"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code ${leftWinCls}">${escapeHtml(leftName)}</span><span class="team-score">${escapeHtml(leftScore)}</span><span class="vs">${connector}</span><span class="team-score">${escapeHtml(rightScore)}</span><span class="team-code ${rightWinCls}">${escapeHtml(rightName)}</span></div><span class="score-status">Final</span></div>`;
         }
+        if (!g.played && (g.seasonType === 'regular' || g.seasonType === 'playoff')) return `<div class="score-row dim"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code">${bostonName}</span></div><span class="score-status">No Game</span></div>`;
         const oppStr = g.opponent ? oppCode(g.opponent) : '—'; const connector = g.bostonHome ? 'vs' : (g.opponent ? '@' : '');
         return `<div class="score-row dim"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code">${bostonName}</span>${connector ? `<span class="vs">${connector}</span>` : ''}${g.opponent ? `<span class="team-code">${escapeHtml(oppStr)}</span>` : ''}</div><span class="score-status">—</span></div>`;
       }).join('');
-      return `<section class="widget scoreboard"><header class="widget-header"><span class="ms">trophy</span><span>Last Game</span></header><div class="score-rows">${rows}</div></section>`;
+      return `<section class="widget scoreboard"><header class="widget-header"><span class="ms">trophy</span><span>Last Night</span></header><div class="score-rows">${rows}</div></section>`;
     }
 
     function buildMobileStrip(boxScores) {
