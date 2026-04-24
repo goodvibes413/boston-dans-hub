@@ -1,12 +1,160 @@
 {
+  "headline": "Bruins Falter at the Garden and the Sox Bullpen Flushes a Gem",
   "morning_brew": [
-    "Dan's takin' the mornin' off. Check back tomorrow. In the meantime, go grab a Dunks."
+    "The B's had every chance to take control at the Garden last night, but they let the Sabres hang around and paid for it. Tanner Jeannot got us on the board in the second, but giving up two goals in the third is absolutely brutal. Jeremy Swayman was solid with 25 saves, but you aren't winning many playoff games when you only put one in the net. Now they are down 2-1 in the series and looking for answers before things get really dicey.",
+    "Over at Fenway Park, it is the same old story with this ballclub. Jayson Tolle goes out there and shoves for six innings, striking out 11 Yankees, and the bullpen treats a lead like a hot potato. Danny Coulombe and Ben Weissert combine to give up those runs in the seventh, and just like that, a masterpiece is wasted. That is three losses in a row for the Sox, and a 9-16 start to the season is just ugly no matter how you slice it.",
+    "It is a massive night for the Celtics down in Philly as they look to keep things moving in the first round. We need the 56-win version of this team to show up and remind the East who the 2-seed is. Meanwhile, the draft talk is everywhere. After a 14-3 run last year, the Patriots are in a spot to reload, and Mike Reiss is saying all the right things about the Round 1 haul. We just need to see that momentum carry into the fall."
   ],
-  "trend_watch": [],
-  "news_digest": [],
-  "box_scores": {},
-  "schedule": [],
-  "generated_at": "2026-04-24T10:18:31.386859+00:00",
-  "_fallback": true,
-  "_fallback_reason": "safety judge FAIL"
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Jayson Tolle",
+      "trend": "Struck out 11 batters over 6.0 innings of one-run ball against New York.",
+      "dans_take": "The kid was electric at the Fens last night, carving up the Yanks for 11 punchies and for what? A loss. Absolute shame to waste a start like that."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Danny Coulombe",
+      "trend": "Allowed 3 earned runs on 3 hits in just 0.2 innings of relief.",
+      "dans_take": "The bullpen door opens and the game goes south immediately. You cannot give up three runs in the seventh and expect to win a divisional game."
+    },
+    {
+      "category": "Slump",
+      "player": "Tanner Jeannot",
+      "trend": "Scored the lone goal for Boston in a 3-1 playoff loss to Buffalo.",
+      "dans_take": "I love that Jeannot got one, but one goal isn't going to cut it in April. The rest of the offense needs to wake up before this series slips away."
+    }
+  ],
+  "news_digest": [
+    {
+      "headline": "Sabres rally to beat Bruins 3-1, take 2-1 lead in NHL playoff series",
+      "url": "http://www.espn.com/nhl/recap?gameId=401869759",
+      "dans_take": "Tough way to lose at home, and now the pressure is really on to even this thing up."
+    },
+    {
+      "headline": "Red Sox take 3-game losing streak into matchup against the Orioles",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815065",
+      "dans_take": "Nine wins and sixteen losses is a disaster, I don't care how early in the season it is."
+    },
+    {
+      "headline": "Patriots' Round 1 Wrap Up",
+      "url": "https://www.espn.com/video/clip?id=48578286",
+      "dans_take": "The draft is the lifeblood of the rebuild, so let's hope these picks actually pan out for once."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Boston Celtics",
+      "away_team": "Philadelphia 76ers",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-23",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Boston Bruins",
+      "away_team": "Buffalo Sabres",
+      "home_score": 1,
+      "away_score": 3,
+      "game_date": "2026-04-23",
+      "played": true,
+      "season_type": "playoff"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": "Boston Red Sox",
+      "away_team": "New York Yankees",
+      "home_score": 2,
+      "away_score": 4,
+      "game_date": "2026-04-23",
+      "played": true,
+      "season_type": "regular"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": "New England Patriots",
+      "away_team": "TBD",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-23",
+      "played": false,
+      "season_type": "offseason"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-04-24",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-04-24",
+      "matchup": "Boston Red Sox at Baltimore Orioles",
+      "time_et": "7:05 PM ET"
+    },
+    {
+      "date": "2026-04-25",
+      "matchup": "Boston Red Sox at Baltimore Orioles",
+      "time_et": "4:05 PM ET"
+    },
+    {
+      "date": "2026-04-26",
+      "matchup": "Boston Red Sox at Baltimore Orioles",
+      "time_et": "1:35 PM ET"
+    },
+    {
+      "date": "2026-04-26",
+      "matchup": "Buffalo Sabres at Boston Bruins",
+      "time_et": "2:00 PM ET"
+    },
+    {
+      "date": "2026-04-26",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-04-27",
+      "matchup": "Boston Red Sox at Toronto Blue Jays",
+      "time_et": "7:07 PM ET"
+    },
+    {
+      "date": "2026-04-28",
+      "matchup": "Philadelphia 76ers at Boston Celtics",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-04-28",
+      "matchup": "Boston Red Sox at Toronto Blue Jays",
+      "time_et": "7:07 PM ET"
+    },
+    {
+      "date": "2026-04-28",
+      "matchup": "Boston Bruins at Buffalo Sabres",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-04-29",
+      "matchup": "Boston Red Sox at Toronto Blue Jays",
+      "time_et": "3:07 PM ET"
+    },
+    {
+      "date": "2026-04-30",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "time_et": "12:00 AM ET"
+    },
+    {
+      "date": "2026-05-01",
+      "matchup": "Buffalo Sabres at Boston Bruins",
+      "time_et": "12:00 PM ET"
+    },
+    {
+      "date": "2026-05-01",
+      "matchup": "Houston Astros at Boston Red Sox",
+      "time_et": "7:10 PM ET"
+    }
+  ],
+  "generated_at": "2026-04-24T10:38:31.148654+00:00"
 }
