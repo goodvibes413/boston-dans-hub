@@ -75,6 +75,7 @@ fetch_nba.py        → data/celtics_boxscore.json + data/celtics_schedule.json
 fetch_nhl.py        → data/bruins_boxscore.json  + data/bruins_schedule.json
 fetch_mlb.py        → data/redsox_boxscore.json  + data/redsox_schedule.json
 fetch_nfl.py        → data/patriots_news.json  (offseason: headlines only)
+fetch_draft.py      → data/boston_drafts.json  (all 4 teams' current draft picks)
     ↓
 update_store.py            → data/rolling_7day.json  (rolling 7-entry window)
 fetch_schedule.py          → data/upcoming_schedule.json  (merged, sorted)
@@ -102,6 +103,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/fetch_nhl.py` | ✅ Done | `bruins_boxscore.json`, `bruins_schedule.json`, `bruins_news.json` |
 | `scripts/fetch_mlb.py` | ✅ Done | `redsox_boxscore.json`, `redsox_schedule.json`, `redsox_news.json` |
 | `scripts/fetch_nfl.py` | ✅ Done | `patriots_news.json`, `patriots_boxscore.json`, `patriots_schedule.json` |
+| `scripts/fetch_draft.py` | ✅ Done | `boston_drafts.json` (all 4 Boston teams' current draft picks) |
 | `scripts/update_store.py` | ✅ Done | `rolling_7day.json` (7-entry rolling window) |
 | `scripts/fetch_schedule.py` | ✅ Done | `upcoming_schedule.json` (merged, sorted) |
 | `scripts/fetch_news.py` | ✅ Done | `latest_news.json` (merged, most-recent-first) |
@@ -425,6 +427,42 @@ Shape is status-conditional. `fetch_season_memory.py` writes one entry per team 
 { "celtics": { "current_season": {...}, "past_seasons": [...] }, ... }
 ```
 The safety judge also loads both files as `source_data` — any stat Dan cites must appear in `rolling_7day` OR `season_memory`, otherwise it's flagged as a fabricated stat (HIGH severity).
+
+### `data/boston_drafts.json` (gitignored — fetched daily during draft seasons)
+
+Fetched daily by `fetch_draft.py`, which queries ESPN's draft API for all 4 Boston teams.
+
+```json
+{
+  "generated_at": "2026-04-24T16:30:00+00:00",
+  "active_drafts": [
+    {
+      "sport": "NFL",
+      "year": 2026,
+      "team": "patriots",
+      "picks": [
+        {
+          "round": 1,
+          "pick_overall": 17,
+          "player_name": "Saquon Barkley",
+          "position": "RB",
+          "college": "Penn State"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Shape:**
+- `generated_at`: ISO timestamp of fetch
+- `active_drafts[]`: array of draft objects, one per Boston team's current draft
+- Each draft object: `sport`, `year`, `team`, `picks[]`
+- Each pick: `round`, `pick_overall`, `player_name`, `position`, `college`
+
+**Usage in prompt:** `generate_rant.py` injects `boston_drafts.json` as a `DRAFT_PICKS` block so Dan can cite player names and positions when discussing draft coverage. The safety judge loads it as `source_data` so player names pass the hallucination check.
+
+**Empty drafts:** If no Boston teams are currently drafting (offseason), `active_drafts` is an empty array `[]`.
 
 ### `site/data/daily_output.json` (Gemini output schema)
 ```json

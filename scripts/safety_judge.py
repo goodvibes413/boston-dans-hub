@@ -10,6 +10,7 @@ Env vars:
   SEASON_STATIC_PATH    optional, past-seasons JSON (cross-referenced for stat claims)
   SEASON_CURRENT_PATH   optional, current-season JSON (cross-referenced for stat claims)
   ROLLING_STORE_PATH    optional, rolling 7-day JSON (cross-referenced for stat claims)
+  DRAFT_PICKS_PATH      optional, draft picks JSON (cross-referenced for player names/positions)
 """
 
 import json
@@ -23,6 +24,7 @@ DEFAULT_INPUT = REPO / "data" / "raw_dan_output.json"
 DEFAULT_SEASON_STATIC = REPO / "data" / "season_static.json"
 DEFAULT_SEASON_CURRENT = REPO / "data" / "season_current.json"
 DEFAULT_ROLLING = REPO / "data" / "rolling_7day.json"
+DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
 DEFAULT_MODEL = "gemini-flash-latest"
 
 JUDGE_PROMPT = """You are a content safety auditor for a Boston sports fan persona ("Boston Dan").
@@ -141,14 +143,16 @@ def main():
 
     content = input_path.read_text()
 
-    # Cross-reference sources: rolling_7day + season_memory (static + current).
-    # The judge uses these to flag fabricated stats.
+    # Cross-reference sources: rolling_7day, season_memory (static + current), and draft_picks.
+    # The judge uses these to flag fabricated stats and player names.
+    draft_picks_path = Path(os.environ.get("DRAFT_PICKS_PATH", DEFAULT_DRAFT_PICKS))
     source_data = {
         "rolling_7day": _safe_load(rolling_path),
         "season_memory": {
             "past_seasons": _safe_load(static_path),
             "current_season": _safe_load(current_path),
         },
+        "draft_picks": _safe_load(draft_picks_path),
     }
 
     full_prompt = (

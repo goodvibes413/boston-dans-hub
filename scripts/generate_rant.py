@@ -13,6 +13,7 @@ Env vars:
   NEWS_PATH             optional
   SEASON_STATIC_PATH    optional, past-seasons JSON (in git)
   SEASON_CURRENT_PATH   optional, daily-fetched current-season JSON
+  DRAFT_PICKS_PATH      optional, draft picks JSON
   OUTPUT_PATH           optional, lets eval_voice.py write to evals/runs/...
 """
 
@@ -30,6 +31,7 @@ DEFAULT_SCHEDULE = REPO / "data" / "upcoming_schedule.json"
 DEFAULT_NEWS = REPO / "data" / "latest_news.json"
 DEFAULT_SEASON_STATIC = REPO / "data" / "season_static.json"
 DEFAULT_SEASON_CURRENT = REPO / "data" / "season_current.json"
+DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
 TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
@@ -314,8 +316,8 @@ def build_season_memory(static_data: dict, current_data: dict) -> dict:
     return merged
 
 
-def build_user_message(rolling, schedule, news, season_memory) -> str:
-    return (
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None) -> str:
+    message = (
         "Here is the structured data for the last 7 days of Boston sports.\n"
         "Use ONLY the numbers and facts in this data — never invent stats.\n\n"
         "ROLLING_7DAY:\n"
@@ -324,6 +326,13 @@ def build_user_message(rolling, schedule, news, season_memory) -> str:
         f"{json.dumps(schedule, indent=2)}\n\n"
         "LATEST_NEWS:\n"
         f"{json.dumps(news, indent=2)}\n\n"
+    )
+    if draft_picks:
+        message += (
+            "DRAFT_PICKS:\n"
+            f"{json.dumps(draft_picks, indent=2)}\n\n"
+        )
+    message += (
         "SEASON_MEMORY:\n"
         f"{json.dumps(season_memory, indent=2)}\n\n"
         "Generate Boston Dan's Hub JSON output. Return ONLY the JSON object, "
@@ -332,6 +341,7 @@ def build_user_message(rolling, schedule, news, season_memory) -> str:
         "trend_watch (array of objects with category, player — always use FULL first and last name, never initials or abbreviations, trend, dans_take), "
         "box_scores, schedule (next 3 days)."
     )
+    return message
 
 
 def call_gemini(system_prompt: str, user_message: str, model_name: str,
@@ -423,9 +433,11 @@ def main():
     news = load_json(news_path)
     season_static = load_json(season_static_path)
     season_current = load_json(season_current_path)
+    draft_picks_path = Path(os.environ.get("DRAFT_PICKS_PATH", DEFAULT_DRAFT_PICKS))
+    draft_picks = load_json(draft_picks_path)
     season_memory = build_season_memory(season_static, season_current)
 
-    user_message = build_user_message(rolling, schedule, news, season_memory)
+    user_message = build_user_message(rolling, schedule, news, season_memory, draft_picks)
 
     # If the safety judge rejected a previous attempt this run, publish.py
     # re-invokes us with CORRECTION_NOTES set. Append the judge's flags to

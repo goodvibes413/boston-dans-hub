@@ -103,6 +103,12 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_nfl.py
 
+      - name: Fetch draft picks (all 4 teams)
+        if: steps.freshness.outputs.skip != 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/fetch_draft.py
+
       - name: Update scoreboard store
         if: steps.freshness.outputs.skip != 'true'
         env:
