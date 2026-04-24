@@ -427,6 +427,31 @@ def main():
 
     user_message = build_user_message(rolling, schedule, news, season_memory)
 
+    # If the safety judge rejected a previous attempt this run, publish.py
+    # re-invokes us with CORRECTION_NOTES set. Append the judge's flags to
+    # the user message so Dan sees exactly what to fix.
+    correction_notes = os.environ.get("CORRECTION_NOTES", "").strip()
+    if correction_notes:
+        print(f"  correction mode: regenerating with judge feedback")
+        user_message += (
+            "\n\n---\n"
+            "IMPORTANT — YOUR PREVIOUS RESPONSE WAS REJECTED BY THE SAFETY JUDGE.\n\n"
+            "Flags from the judge:\n"
+            f"{correction_notes}\n\n"
+            "Regenerate your response and fix ALL of the above issues. Hard rules:\n"
+            "- Every stat, score, game number, record, and date you cite MUST appear "
+            "in the rolling_7day OR season_memory data provided above. No exceptions.\n"
+            "- Do NOT reference games that haven't happened yet, or speculate on "
+            "upcoming game numbers/series scores. Use 'tonight', 'later this week', "
+            "'coming up' — never 'Game 3' or 'down 2-1' unless those exact figures "
+            "are in the data.\n"
+            "- If you're unsure whether a stat is in the source data, leave it out "
+            "and stick to qualitative commentary ('solid night', 'tough stretch').\n"
+            "- Keep Dan's voice and the rest of the structure (headline, 3 paragraphs, "
+            "trend_watch, etc.) — just fix the flagged issues.\n"
+            "---\n"
+        )
+
     # Attempt 1: grounding ON so Dan can pull live storylines
     # If grounding fails (503 exhausted) or returns bad JSON → fall back to attempt 2
     parsed = None

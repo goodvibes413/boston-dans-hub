@@ -38,6 +38,8 @@ Stats Discipline (CRITICAL):
 - Every stat you cite must EXACTLY match the numbers in the provided structured data.
 - Do not round, estimate, embellish, or invent numbers.
 - If a number isn't in the data, don't cite it. Speak in qualitative terms instead.
+- This includes PLAYOFF GAME NUMBERS and SERIES SCORES. Do not write "Game 3" or "down 2-1" unless those exact figures are in season_memory.current_season or a completed rolling_7day entry. For upcoming playoff games, use vague framing: "tonight in Philly", "back at the Garden later this week", "the next one in the series" — never assert a specific game number or series score the data hasn't confirmed.
+- When in doubt about any number (score, record, seed, game #, series #, streak length), leave the number out and stay qualitative.
 
 Player Names:
 - Never use boxscore-style shorthand. "Gray, S" becomes "Sonny Gray". "Watson, R" becomes "Ryan Watson". Always use a player's natural full name.

@@ -17,6 +17,7 @@ Exit codes:
 """
 
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -26,6 +27,7 @@ from pathlib import Path
 RAW_OUTPUT_PATH = Path("data/raw_dan_output.json")
 PUBLISHED_OUTPUT_PATH = Path("docs/data/daily_output.json")
 STALE_MAX_AGE_HOURS = 48
+MAX_JUDGE_ATTEMPTS = 2  # original + 1 regeneration with correction notes
 
 SAFE_FALLBACK = {
     "morning_brew": [
@@ -117,8 +119,67 @@ def publish_fallback(reason: str) -> int:
     return 0 if ok else 1
 
 
+def run_judge() -> tuple[int | None, dict | None]:
+    """
+    Run safety_judge.py against data/raw_dan_output.json.
+
+    Returns (exit_code, parsed_verdict). exit_code is None if the judge
+    couldn't run at all (timeout, subprocess error); callers should treat
+    that like a timeout PASS (don't block on unavailable judge).
+    """
+    try:
+        result = subprocess.run(
+            ["python3", "scripts/safety_judge.py"],
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+    except subprocess.TimeoutExpired:
+        print("  warning: safety_judge.py timed out")
+        return None, None
+    except Exception as e:
+        print(f"  error: could not run safety_judge.py: {e}", file=sys.stderr)
+        return None, None
+
+    if result.stdout:
+        print(f"  judge output: {result.stdout.strip()}")
+    if result.stderr and "error" in result.stderr.lower():
+        print(f"  judge stderr: {result.stderr.strip()}", file=sys.stderr)
+
+    verdict = None
+    try:
+        verdict = json.loads(result.stdout)
+    except (json.JSONDecodeError, TypeError):
+        pass
+    return result.returncode, verdict
+
+
+def regenerate_with_correction(flags: list[str]) -> int:
+    """
+    Re-run generate_rant.py with CORRECTION_NOTES set so Dan sees the
+    judge's flags and fixes them. Returns the subprocess exit code
+    (0 on success, non-zero on failure).
+    """
+    notes = "\n".join(f"  - {f}" for f in flags) if flags else "  (no specific flags provided)"
+    env = dict(os.environ)
+    env["CORRECTION_NOTES"] = notes
+    try:
+        result = subprocess.run(
+            ["python3", "scripts/generate_rant.py"],
+            env=env,
+            timeout=600,
+        )
+        return result.returncode
+    except subprocess.TimeoutExpired:
+        print("  warning: generate_rant.py (retry) timed out", file=sys.stderr)
+        return 1
+    except Exception as e:
+        print(f"  error: could not run generate_rant.py retry: {e}", file=sys.stderr)
+        return 1
+
+
 def main():
-    """Run the publishing pipeline."""
+    """Run the publishing pipeline with judge+retry loop."""
     print("=" * 60)
     print("publish.py: Safety gate → docs/data/daily_output.json")
     print("=" * 60)
@@ -136,46 +197,57 @@ def main():
         print(f"  sentinel detected: generation failed ({reason})")
         return publish_fallback(f"generation failed: {reason}")
 
-    # Step 2: Run safety judge and capture exit code
-    print("\n[2] Running safety judge...")
-    try:
-        result = subprocess.run(
-            ["python3", "scripts/safety_judge.py"],
-            capture_output=True,
-            text=True,
-            timeout=300,
-        )
-        judge_exit_code = result.returncode
-        judge_stdout = result.stdout
-        judge_stderr = result.stderr
-    except subprocess.TimeoutExpired:
-        # Judge timed out — treat as PASS so content still publishes.
-        print("  warning: safety_judge.py timed out — treating as PASS")
-        output = dict(raw_output)
-        output["generated_at"] = now_iso()
-        write_json(PUBLISHED_OUTPUT_PATH, output, label="output (judge timeout)")
-        return 0
-    except Exception as e:
-        print(f"  error: could not run safety_judge.py: {e}", file=sys.stderr)
-        return publish_fallback(f"judge subprocess error: {type(e).__name__}")
+    # Step 2: Judge, regenerate on FAIL, re-judge (up to MAX_JUDGE_ATTEMPTS times)
+    last_flags: list[str] = []
+    for attempt in range(1, MAX_JUDGE_ATTEMPTS + 1):
+        print(f"\n[2.{attempt}] Running safety judge (attempt {attempt}/{MAX_JUDGE_ATTEMPTS})...")
+        exit_code, verdict = run_judge()
 
-    # Print judge output for logs
-    if judge_stdout:
-        print(f"  judge output: {judge_stdout.strip()}")
-    if judge_stderr and "error" in judge_stderr.lower():
-        print(f"  judge stderr: {judge_stderr.strip()}", file=sys.stderr)
+        if exit_code is None:
+            # Judge couldn't run — treat as PASS so content still publishes.
+            print("  warning: judge unavailable — publishing without safety gate this run")
+            output = dict(raw_output)
+            output["generated_at"] = now_iso()
+            write_json(PUBLISHED_OUTPUT_PATH, output, label="output (judge unavailable)")
+            return 0
 
-    # Step 3: Decide based on judge verdict
-    print("\n[3] Decision gate...")
-    if judge_exit_code == 0:
-        print("  ✅ safety judge PASSED")
-        output = dict(raw_output)
-        output["generated_at"] = now_iso()
-        success = write_json(PUBLISHED_OUTPUT_PATH, output)
-        return 0 if success else 1
-    else:
-        print("  ❌ safety judge FAILED")
-        return publish_fallback("safety judge FAIL")
+        if exit_code == 0:
+            print("  ✅ safety judge PASSED")
+            output = dict(raw_output)
+            output["generated_at"] = now_iso()
+            if attempt > 1:
+                output["_regenerated"] = True
+                output["_regeneration_reason"] = last_flags
+            success = write_json(PUBLISHED_OUTPUT_PATH, output)
+            return 0 if success else 1
+
+        # FAIL
+        last_flags = list(verdict.get("flags", [])) if verdict else []
+        print(f"  ❌ safety judge FAILED: {last_flags}")
+
+        if attempt >= MAX_JUDGE_ATTEMPTS:
+            print("  exhausted regeneration attempts; falling back")
+            break
+
+        print(f"\n[2.{attempt}.retry] Regenerating with correction notes...")
+        rc = regenerate_with_correction(last_flags)
+        if rc != 0:
+            print(f"  warning: regeneration returned exit {rc}; falling back")
+            break
+
+        # Re-read the newly written raw output (may be sentinel or fresh)
+        raw_output = read_json(RAW_OUTPUT_PATH)
+        if raw_output is None:
+            print("  warning: raw output missing after regeneration; falling back")
+            break
+        if raw_output.get("_generation_failed"):
+            reason = raw_output.get("reason", "unknown")
+            print(f"  regeneration produced a sentinel ({reason}); falling back")
+            return publish_fallback(f"regeneration failed: {reason}")
+
+    # All attempts failed — fall back.
+    reason = f"safety judge FAILed after {MAX_JUDGE_ATTEMPTS} attempts: {'; '.join(last_flags)[:200]}"
+    return publish_fallback(reason)
 
 
 if __name__ == "__main__":
