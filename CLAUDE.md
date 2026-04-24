@@ -464,6 +464,37 @@ Fetched daily by `fetch_draft.py`, which queries ESPN's draft API for all 4 Bost
 
 **Empty drafts:** If no Boston teams are currently drafting (offseason), `active_drafts` is an empty array `[]`.
 
+### `data/historical_facts.json` (in git — hand-curated)
+
+Curated Boston sports history for Dan's color references. Per-team structure with championships, dynasties, iconic moments, curses, and rivalries. Mirrors the `season_static.json` pattern — checked into git via a `!data/historical_facts.json` exception in `.gitignore`.
+
+```json
+{
+  "updated": "2026-04-24",
+  "celtics": {
+    "total_championships": 18,
+    "championships": [ { "year": 2024, "opponent": "Dallas Mavericks", "series": "4-1", "note": "Banner 18, Tatum's first ring" } ],
+    "dynasties":     [ { "name": "Russell Era", "years": "1957-1969", "note": "11 titles in 13 years" } ],
+    "iconic_moments":[ { "year": 2008, "moment": "Ray Allen's clutch threes in the Finals" } ],
+    "rivalries":     [ { "rival": "Lakers", "note": "12 Finals meetings" } ]
+  },
+  "bruins":   { "...": "..." },
+  "redsox":   { "total_championships": 9, "curses_and_droughts": [ { "name": "Curse of the Bambino", "years": "1918-2004" } ], "...": "..." },
+  "patriots": { "...": "..." }
+}
+```
+
+**Curation principles:**
+- 3–6 entries per category per team (not an encyclopedia)
+- Every fact is verifiable (championship years, opponents, numbers)
+- Narrative notes stay under 15 words — Dan expands in his voice
+- No opinions, no predictions — just facts
+- `total_championships` prevents Dan from miscounting ("17 banners" when it's 18)
+
+**Usage in prompt:** `generate_rant.py` injects `historical_facts.json` as a `HISTORICAL_FACTS` block so Dan can reference championships, dynasties, and iconic moments as color. The safety judge loads it as `source_data` so historical claims pass the hallucination check (rule 8).
+
+**Rollover:** Update after any Boston team wins a championship. Prepend to `championships`, bump `total_championships`, commit with `chore: rollover historical_facts after {team} {year}`.
+
 ### `site/data/daily_output.json` (Gemini output schema)
 ```json
 {
@@ -633,6 +664,7 @@ healthcheck.py
 | Week 3 | Publish & Health Check | ✅ Complete (publish.py, healthcheck.py, morning_brew.yml workflow) |
 | Week 4 | Frontend & Deployment | 🔄 In progress (static site, GitHub Pages) |
 | Week 4+ | Season Memory Module | ✅ Phase 1 complete (season_static.json + fetch_season_memory.py, judge + evals wired in) |
+| Week 4+ | Boston Sports History Module | ✅ Shipped (historical_facts.json curated + injected; judge rule 8 validates claims) |
 
 ---
 

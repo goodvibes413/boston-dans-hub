@@ -14,6 +14,7 @@ Env vars:
   SEASON_STATIC_PATH    optional, past-seasons JSON (in git)
   SEASON_CURRENT_PATH   optional, daily-fetched current-season JSON
   DRAFT_PICKS_PATH      optional, draft picks JSON
+  HISTORICAL_FACTS_PATH optional, curated Boston sports history JSON
   OUTPUT_PATH           optional, lets eval_voice.py write to evals/runs/...
 """
 
@@ -32,6 +33,7 @@ DEFAULT_NEWS = REPO / "data" / "latest_news.json"
 DEFAULT_SEASON_STATIC = REPO / "data" / "season_static.json"
 DEFAULT_SEASON_CURRENT = REPO / "data" / "season_current.json"
 DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
+DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
 TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
@@ -316,7 +318,7 @@ def build_season_memory(static_data: dict, current_data: dict) -> dict:
     return merged
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None) -> str:
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None) -> str:
     message = (
         "Here is the structured data for the last 7 days of Boston sports.\n"
         "Use ONLY the numbers and facts in this data — never invent stats.\n\n"
@@ -335,6 +337,13 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None)
     message += (
         "SEASON_MEMORY:\n"
         f"{json.dumps(season_memory, indent=2)}\n\n"
+    )
+    if historical_facts:
+        message += (
+            "HISTORICAL_FACTS:\n"
+            f"{json.dumps(historical_facts, indent=2)}\n\n"
+        )
+    message += (
         "Generate Boston Dan's Hub JSON output. Return ONLY the JSON object, "
         "no prose, no markdown fences. Keys: headline (punchy newspaper-style headline in Dan's voice — complete thought, no cut-off phrases, 10–16 words max), "
         "morning_brew (3 paragraphs), "
@@ -435,9 +444,11 @@ def main():
     season_current = load_json(season_current_path)
     draft_picks_path = Path(os.environ.get("DRAFT_PICKS_PATH", DEFAULT_DRAFT_PICKS))
     draft_picks = load_json(draft_picks_path)
+    historical_facts_path = Path(os.environ.get("HISTORICAL_FACTS_PATH", DEFAULT_HISTORICAL_FACTS))
+    historical_facts = load_json(historical_facts_path)
     season_memory = build_season_memory(season_static, season_current)
 
-    user_message = build_user_message(rolling, schedule, news, season_memory, draft_picks)
+    user_message = build_user_message(rolling, schedule, news, season_memory, draft_picks, historical_facts)
 
     # If the safety judge rejected a previous attempt this run, publish.py
     # re-invokes us with CORRECTION_NOTES set. Append the judge's flags to

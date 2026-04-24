@@ -1,0 +1,52 @@
+{
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-04-24",
+        "celtics": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "bruins": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      }
+    ]
+  },
+  "upcoming_schedule": {"games": []},
+  "latest_news": {
+    "articles": [
+      {
+        "team": "patriots",
+        "sport": "NFL",
+        "team_name": "New England Patriots",
+        "headline": "Patriots Select Saquon Barkley in Round 1",
+        "description": "New England addresses backfield with elite talent after Henry injury.",
+        "url": "https://example.com/patriots-draft-pick",
+        "published": "2026-04-24T16:00:00Z"
+      }
+    ]
+  },
+  "season_memory": {
+    "celtics": {"current_season": {"status": "offseason"}, "past_seasons": []},
+    "bruins": {"current_season": {"status": "offseason"}, "past_seasons": []},
+    "redsox": {"current_season": {"status": "offseason"}, "past_seasons": []},
+    "patriots": {"current_season": {"status": "offseason", "last_season_wins": 4, "last_season_losses": 13}, "past_seasons": []}
+  },
+  "draft_picks": {
+    "generated_at": "2026-04-24T16:00:00Z",
+    "active_drafts": [
+      {
+        "sport": "NFL",
+        "year": 2026,
+        "team": "patriots",
+        "picks": [
+          {
+            "round": 1,
+            "pick_overall": 17,
+            "player_name": "Saquon Barkley",
+            "position": "RB",
+            "college": "Penn State"
+          }
+        ]
+      }
+    ]
+  }
+}
