@@ -266,10 +266,12 @@ resp = client.models.generate_content(
 
 ### Retry logic (503/429)
 Both `generate_rant.py` and `safety_judge.py` use `call_with_retry()`:
-- 503 UNAVAILABLE: exponential backoff 2s → 5s → 10s (3 retries)
-- 429 QUOTA_EXCEEDED: parse `retryDelay` from error response and wait that duration
+- 503 UNAVAILABLE: 7 retries with exponential backoff `[5, 15, 30, 60, 90, 120, 180]` seconds (covers demand spikes up to ~8 minutes)
+- 429 QUOTA_EXCEEDED: parse `retryDelay` from the error response and wait that duration; otherwise fall back to the same backoff schedule
 - Other errors (400, 401): fail immediately, no retry
-- On exhaustion: exit with code 1, let next cron run retry
+- On exhaustion:
+  - `safety_judge.py` treats API failure as PASS (prints a `judge skipped — API error` flag) so the pipeline still publishes
+  - `generate_rant.py` writes a `{"_generation_failed": true, ...}` sentinel to `data/raw_dan_output.json` and exits 0 — `publish.py` then decides between yesterday's content (<48h old) and `SAFE_FALLBACK`. This keeps `publish.py` the single fallback decision point rather than having the workflow die mid-pipeline.
 
 ### Free tier model availability
 - `gemini-2.5-flash`: ✅ free tier available
@@ -496,8 +498,8 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | Variable | Used By | Notes |
 |---|---|---|
 | `GEMINI_API_KEY` | `generate_rant.py`, `safety_judge.py` | Set in `~/.zshrc` locally; GitHub Actions secret in CI |
-| `GEMINI_MODEL` | `generate_rant.py` | Default: `gemini-2.5-flash` |
-| `JUDGE_MODEL` | `safety_judge.py` | Default: `gemini-2.5-flash` |
+| `GEMINI_MODEL` | `generate_rant.py` | Default: `gemini-flash-latest` (see Model Strategy — do not pin) |
+| `JUDGE_MODEL` | `safety_judge.py` | Default: `gemini-flash-latest` (see Model Strategy — do not pin) |
 | `ROLLING_STORE_PATH` | `generate_rant.py` | Default: `data/rolling_7day.json`; override in evals to point at fixtures |
 | `OUTPUT_PATH` | `generate_rant.py` | Default: `data/raw_dan_output.json`; override in evals |
 | `INPUT_PATH` | `safety_judge.py` | Default: `data/raw_dan_output.json` |

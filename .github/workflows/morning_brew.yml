@@ -2,12 +2,18 @@ name: Morning Brew — Daily Dan Commentary
 
 on:
   schedule:
-    # 03:00 ET = 08:00 UTC (GitHub Actions uses UTC)
-    # Moved from 06:00 ET to avoid peak Gemini API demand times
-    # Note: Actual run time may vary by a few minutes due to GitHub's queue
+    # Primary: 03:00 ET = 08:00 UTC. Moved from 06:00 ET to avoid peak Gemini demand.
     - cron: '0 8 * * *'
+    # Safety net: 04:30 ET = 09:30 UTC. Runs only if the primary didn't already
+    # publish today's content (see "Skip if already published" step below).
+    - cron: '30 9 * * *'
   # Allow manual trigger for testing
   workflow_dispatch:
+
+# Serialize overlapping runs instead of letting them race each other to git push.
+concurrency:
+  group: morning-brew
+  cancel-in-progress: false
 
 jobs:
   daily_pipeline:
@@ -16,97 +22,212 @@ jobs:
     timeout-minutes: 25
     permissions:
       contents: write
+      issues: write
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Skip if today's content already published
+        id: freshness
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          p = Path("docs/data/daily_output.json")
+          if not p.exists():
+              print("no existing output — proceeding")
+              sys.exit(0)
+          try:
+              data = json.loads(p.read_text())
+          except Exception as e:
+              print(f"existing output unparseable ({e}) — proceeding")
+              sys.exit(0)
+
+          gen_at = data.get("generated_at")
+          if not gen_at:
+              print("no generated_at on existing output — proceeding")
+              sys.exit(0)
+          try:
+              dt = datetime.fromisoformat(gen_at)
+              if dt.tzinfo is None:
+                  dt = dt.replace(tzinfo=timezone.utc)
+          except Exception as e:
+              print(f"bad generated_at ({e}) — proceeding")
+              sys.exit(0)
+
+          today_utc = datetime.now(timezone.utc).date()
+          if dt.date() == today_utc and not data.get("_stale") and not data.get("_fallback"):
+              # Already have a real publish for today. Signal downstream steps to skip.
+              Path(os.environ["GITHUB_OUTPUT"]).open("a").write("skip=true\n")
+              print(f"today's content already published at {gen_at} — skipping")
+          else:
+              print(f"existing output is from {dt.date()} (today={today_utc}) — proceeding")
+          PY
+
       - name: Set up Python 3.14
+        if: steps.freshness.outputs.skip != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.14'
 
       - name: Install dependencies
+        if: steps.freshness.outputs.skip != 'true'
         run: |
           python3 -m pip install --upgrade pip
           pip install google-genai pydantic
 
       - name: Fetch NBA games
+        if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_nba.py
 
       - name: Fetch NHL games
+        if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_nhl.py
 
       - name: Fetch MLB games
+        if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_mlb.py
 
       - name: Fetch NFL games
+        if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_nfl.py
 
       - name: Update scoreboard store
+        if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/update_store.py
 
       - name: Fetch game schedule
+        if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_schedule.py
 
       - name: Fetch latest news
+        if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_news.py
 
       - name: Fetch season memory (current-season standings)
+        if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_season_memory.py
 
       - name: Generate Dan commentary
+        if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/generate_rant.py
 
-      - name: Run safety judge
+      - name: Publish output (with safety gate + fallback)
+        if: steps.freshness.outputs.skip != 'true'
+        id: publish
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python3 scripts/safety_judge.py
-
-      - name: Publish output
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python3 scripts/publish.py
+        run: |
+          # publish.py runs safety_judge.py internally and owns all fallback logic.
+          # Exit 0 = something was written (fresh, stale-recent, or safe fallback).
+          python3 scripts/publish.py
 
       - name: Health check
+        if: steps.freshness.outputs.skip != 'true'
         run: python3 scripts/healthcheck.py
 
-      - name: Commit and push changes
+      - name: Detect what was published
+        if: steps.freshness.outputs.skip != 'true'
+        id: kind
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          data = json.loads(Path("docs/data/daily_output.json").read_text())
+          if data.get("_fallback"):
+              kind = "fallback"
+          elif data.get("_stale"):
+              kind = "stale"
+          else:
+              kind = "fresh"
+          Path(os.environ["GITHUB_OUTPUT"]).open("a").write(f"kind={kind}\n")
+          print(f"published kind: {kind}")
+          PY
+
+      - name: Commit and push changes (retry loop)
+        if: steps.freshness.outputs.skip != 'true'
         run: |
           git config user.email "github-actions@github.com"
           git config user.name "GitHub Actions"
           git add -A
-          git diff --quiet && git diff --staged --quiet || git commit -m "chore: daily Dan output for $(date +%Y-%m-%d)"
-          git pull --rebase origin main
-          git push
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "no changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: daily Dan output for $(date +%Y-%m-%d)"
+          for i in 1 2 3; do
+            if git pull --rebase origin main && git push; then
+              echo "push succeeded on attempt $i"
+              exit 0
+            fi
+            echo "push attempt $i failed, retrying..."
+            sleep $((i * 5))
+          done
+          echo "::error::git push failed after 3 attempts"
+          exit 1
 
       - name: Summary
-        if: success()
+        if: success() && steps.freshness.outputs.skip != 'true'
         run: |
-          echo "✅ Morning Brew pipeline completed successfully"
+          kind="${{ steps.kind.outputs.kind }}"
+          if [ "$kind" = "fresh" ]; then
+            echo "✅ Morning Brew pipeline completed successfully (fresh content)"
+          elif [ "$kind" = "stale" ]; then
+            echo "::warning::Morning Brew published stale (yesterday's) content — generation failed but site is still readable"
+          elif [ "$kind" = "fallback" ]; then
+            echo "::warning::Morning Brew published SAFE_FALLBACK — nothing recoverable"
+          fi
           echo "📍 Published: docs/data/daily_output.json"
+
+      - name: Skip summary
+        if: steps.freshness.outputs.skip == 'true'
+        run: echo "✅ Skipped — today's content already published"
+
+      - name: Open/update failure issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="Morning Brew failed: $(date +%Y-%m-%d)"
+          body="Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          Event: ${{ github.event_name }}
+          Attempt: ${{ github.run_attempt }}
+
+          See run logs for details."
+          # Try to find an existing open issue with today's title; if none, create one.
+          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number' || true)
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body" --label "pipeline-failure" || \
+              gh issue create --title "$title" --body "$body"
+          fi
 
       - name: Failure summary
         if: failure()
         run: |
-          echo "❌ Morning Brew pipeline failed"
+          echo "::error::Morning Brew pipeline failed"
           echo "📍 Check logs above for details"
           exit 1

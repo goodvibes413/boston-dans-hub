@@ -11,12 +11,14 @@ This is the final gate before the cron is considered successful.
 
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Constants
 PUBLISHED_OUTPUT_PATH = Path("docs/data/daily_output.json")
 REQUIRED_KEYS = {"morning_brew", "trend_watch", "news_digest", "box_scores", "schedule"}
 FALLBACK_MARKER = "Dan's takin' the mornin' off"
+STALE_WARN_HOURS = 30
 
 
 def main():
@@ -68,8 +70,29 @@ def main():
     else:
         print(f"  ✅ real content (not fallback)")
 
-    # Step 5: Summary
-    print("\n[5] Summary...")
+    # Step 5: Freshness check (warn only)
+    print("\n[5] Checking freshness...")
+    gen_at_raw = data.get("generated_at")
+    if not gen_at_raw:
+        print("  ⚠️  no generated_at timestamp (pre-timestamp publish?)")
+    else:
+        try:
+            gen_at = datetime.fromisoformat(gen_at_raw)
+            if gen_at.tzinfo is None:
+                gen_at = gen_at.replace(tzinfo=timezone.utc)
+            age_hours = (datetime.now(timezone.utc) - gen_at).total_seconds() / 3600.0
+            if age_hours > STALE_WARN_HOURS:
+                print(f"  ⚠️  content is {age_hours:.1f}h old (>{STALE_WARN_HOURS}h threshold)")
+            else:
+                print(f"  ✅ fresh ({age_hours:.1f}h old)")
+        except Exception as e:
+            print(f"  ⚠️  could not parse generated_at={gen_at_raw!r}: {e}")
+
+    if data.get("_stale"):
+        print(f"  ⚠️  stale republish: {data.get('_stale_reason', 'unknown')}")
+
+    # Step 6: Summary
+    print("\n[6] Summary...")
     print(f"  ✅ {PUBLISHED_OUTPUT_PATH} is valid and complete")
     if is_fallback:
         print(f"  ⚠️  Note: fallback content is in use")

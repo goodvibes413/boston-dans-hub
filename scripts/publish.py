@@ -3,21 +3,29 @@
 publish.py — Safety gate and fallback arbiter.
 
 Reads raw Dan output, checks safety judge verdict, and publishes to docs/data/daily_output.json.
-- If safety_judge.py exits 0 (PASS): publish raw output
-- If safety_judge.py exits 1 (FAIL): publish SAFE_FALLBACK
-- If raw output is missing/unparseable: publish SAFE_FALLBACK
 
-Exit code: 0 on success, 1 on failure (even if fallback is written)
+Decision order when we cannot ship fresh content:
+  1. Prefer last-known-good docs/data/daily_output.json if <48h old
+     (republished with "_stale": true, preserving original generated_at).
+  2. Otherwise SAFE_FALLBACK.
+
+Fresh content is timestamped with top-level "generated_at" (UTC ISO).
+
+Exit codes:
+  0 — something usable was published (fresh, stale-but-recent, or safe fallback)
+  1 — nothing could be written
 """
 
 import json
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Constants
 RAW_OUTPUT_PATH = Path("data/raw_dan_output.json")
 PUBLISHED_OUTPUT_PATH = Path("docs/data/daily_output.json")
+STALE_MAX_AGE_HOURS = 48
 
 SAFE_FALLBACK = {
     "morning_brew": [
@@ -28,6 +36,10 @@ SAFE_FALLBACK = {
     "box_scores": {},
     "schedule": [],
 }
+
+
+def now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
 
 
 def read_json(path: Path) -> dict | None:
@@ -55,6 +67,42 @@ def write_json(path: Path, data: dict, label: str = "published") -> bool:
         return False
 
 
+def publish_fallback(reason: str) -> int:
+    """
+    Publish the best available fallback:
+      1. Last-known-good output if <48h old, marked _stale.
+      2. Else SAFE_FALLBACK.
+    Returns 0 if anything was written, 1 otherwise.
+    """
+    print(f"  fallback reason: {reason}")
+    existing = read_json(PUBLISHED_OUTPUT_PATH)
+    if existing and existing.get("generated_at") and not existing.get("_generation_failed"):
+        try:
+            gen_at = datetime.fromisoformat(existing["generated_at"])
+            if gen_at.tzinfo is None:
+                gen_at = gen_at.replace(tzinfo=timezone.utc)
+            age_hours = (datetime.now(timezone.utc) - gen_at).total_seconds() / 3600.0
+        except Exception:
+            age_hours = None
+
+        if age_hours is not None and age_hours < STALE_MAX_AGE_HOURS:
+            stale = dict(existing)
+            stale["_stale"] = True
+            stale["_stale_reason"] = reason
+            stale["_stale_age_hours"] = round(age_hours, 1)
+            # Preserve original generated_at so the frontend/healthcheck see true age.
+            ok = write_json(PUBLISHED_OUTPUT_PATH, stale, label=f"stale ({age_hours:.1f}h old)")
+            return 0 if ok else 1
+        print(f"  previous output too old to reuse (age={age_hours})")
+
+    fallback = dict(SAFE_FALLBACK)
+    fallback["generated_at"] = now_iso()
+    fallback["_fallback"] = True
+    fallback["_fallback_reason"] = reason
+    ok = write_json(PUBLISHED_OUTPUT_PATH, fallback, label="safe fallback")
+    return 0 if ok else 1
+
+
 def main():
     """Run the publishing pipeline."""
     print("=" * 60)
@@ -66,9 +114,13 @@ def main():
     raw_output = read_json(RAW_OUTPUT_PATH)
     if raw_output is None:
         print(f"  warning: {RAW_OUTPUT_PATH} not found or unparseable")
-        print("  → publishing SAFE_FALLBACK")
-        write_json(PUBLISHED_OUTPUT_PATH, SAFE_FALLBACK, label="fallback")
-        return 1
+        return publish_fallback("raw output missing or unparseable")
+
+    # Sentinel from generate_rant.py: generation failed, don't even bother judging.
+    if raw_output.get("_generation_failed"):
+        reason = raw_output.get("reason", "unknown")
+        print(f"  sentinel detected: generation failed ({reason})")
+        return publish_fallback(f"generation failed: {reason}")
 
     # Step 2: Run safety judge and capture exit code
     print("\n[2] Running safety judge...")
@@ -83,16 +135,15 @@ def main():
         judge_stdout = result.stdout
         judge_stderr = result.stderr
     except subprocess.TimeoutExpired:
-        # Judge took too long — treat as PASS so content still publishes.
-        # A judge that can't run should not block publication; only an
-        # explicit FAIL verdict should block.
+        # Judge timed out — treat as PASS so content still publishes.
         print("  warning: safety_judge.py timed out — treating as PASS")
-        write_json(PUBLISHED_OUTPUT_PATH, raw_output, label="output (judge timeout)")
+        output = dict(raw_output)
+        output["generated_at"] = now_iso()
+        write_json(PUBLISHED_OUTPUT_PATH, output, label="output (judge timeout)")
         return 0
     except Exception as e:
         print(f"  error: could not run safety_judge.py: {e}", file=sys.stderr)
-        write_json(PUBLISHED_OUTPUT_PATH, SAFE_FALLBACK, label="fallback")
-        return 1
+        return publish_fallback(f"judge subprocess error: {type(e).__name__}")
 
     # Print judge output for logs
     if judge_stdout:
@@ -103,17 +154,14 @@ def main():
     # Step 3: Decide based on judge verdict
     print("\n[3] Decision gate...")
     if judge_exit_code == 0:
-        # PASS: Publish raw output
         print("  ✅ safety judge PASSED")
-        print("  → publishing raw output")
-        success = write_json(PUBLISHED_OUTPUT_PATH, raw_output)
+        output = dict(raw_output)
+        output["generated_at"] = now_iso()
+        success = write_json(PUBLISHED_OUTPUT_PATH, output)
         return 0 if success else 1
     else:
-        # FAIL: Publish fallback
         print("  ❌ safety judge FAILED")
-        print("  → publishing SAFE_FALLBACK")
-        success = write_json(PUBLISHED_OUTPUT_PATH, SAFE_FALLBACK, label="fallback")
-        return 1
+        return publish_fallback("safety judge FAIL")
 
 
 if __name__ == "__main__":

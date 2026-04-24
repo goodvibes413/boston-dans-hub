@@ -20,6 +20,7 @@ import json
 import os
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -450,9 +451,21 @@ def main():
             )
             parsed = json.loads(raw)
         except (json.JSONDecodeError, Exception) as e:
-            print(f"error: attempt 2 failed ({type(e).__name__}: {str(e)[:100]})", file=sys.stderr)
-            print("error: Gemini could not produce valid JSON after 2 attempts; exiting with code 1", file=sys.stderr)
-            sys.exit(1)
+            # Do NOT exit 1 — that short-circuits the workflow and prevents
+            # publish.py from running its fallback logic. Instead, write a
+            # sentinel so publish.py becomes the single decision point.
+            reason = f"{type(e).__name__}: {str(e)[:200]}"
+            print(f"error: attempt 2 failed ({reason})", file=sys.stderr)
+            print("error: writing _generation_failed sentinel; publish.py will decide fallback", file=sys.stderr)
+            sentinel = {
+                "_generation_failed": True,
+                "reason": reason,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            }
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(json.dumps(sentinel, indent=2))
+            print(f"  wrote sentinel: {output_path}")
+            return
 
     # Normalize box_scores schema for consistent frontend rendering
     parsed = normalize_box_scores(parsed)
