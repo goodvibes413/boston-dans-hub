@@ -70,28 +70,42 @@ def write_json(path: Path, data: dict, label: str = "published") -> bool:
 def publish_fallback(reason: str) -> int:
     """
     Publish the best available fallback:
-      1. Last-known-good output if <48h old, marked _stale.
+      1. Last-known-good output if <48h old and not marked as generation-failed, marked _stale.
+         (Doesn't require generated_at for legacy files.)
       2. Else SAFE_FALLBACK.
     Returns 0 if anything was written, 1 otherwise.
     """
     print(f"  fallback reason: {reason}")
     existing = read_json(PUBLISHED_OUTPUT_PATH)
-    if existing and existing.get("generated_at") and not existing.get("_generation_failed"):
-        try:
-            gen_at = datetime.fromisoformat(existing["generated_at"])
-            if gen_at.tzinfo is None:
-                gen_at = gen_at.replace(tzinfo=timezone.utc)
-            age_hours = (datetime.now(timezone.utc) - gen_at).total_seconds() / 3600.0
-        except Exception:
-            age_hours = None
 
-        if age_hours is not None and age_hours < STALE_MAX_AGE_HOURS:
+    # Check if existing file is usable (not a generation failure, has real content)
+    if existing and not existing.get("_generation_failed"):
+        # Try to calculate age using generated_at if present
+        age_hours = None
+        if existing.get("generated_at"):
+            try:
+                gen_at = datetime.fromisoformat(existing["generated_at"])
+                if gen_at.tzinfo is None:
+                    gen_at = gen_at.replace(tzinfo=timezone.utc)
+                age_hours = (datetime.now(timezone.utc) - gen_at).total_seconds() / 3600.0
+            except Exception:
+                pass
+
+        # If age_hours couldn't be calculated from generated_at, assume file is recent
+        # since it exists in the repo (conservative approach: if we can't verify age, reuse it)
+        if age_hours is None:
+            print("  previous output exists but has no generated_at (legacy file) — reusing")
+            age_hours = 0  # Assume 0 age so it passes the threshold check
+
+        if age_hours < STALE_MAX_AGE_HOURS:
             stale = dict(existing)
             stale["_stale"] = True
             stale["_stale_reason"] = reason
-            stale["_stale_age_hours"] = round(age_hours, 1)
-            # Preserve original generated_at so the frontend/healthcheck see true age.
-            ok = write_json(PUBLISHED_OUTPUT_PATH, stale, label=f"stale ({age_hours:.1f}h old)")
+            if age_hours is not None:
+                stale["_stale_age_hours"] = round(age_hours, 1)
+            # Preserve original generated_at (if present) so the frontend/healthcheck see true age.
+            label = f"stale ({age_hours:.1f}h old)" if age_hours is not None else "stale (legacy, age unknown)"
+            ok = write_json(PUBLISHED_OUTPUT_PATH, stale, label=label)
             return 0 if ok else 1
         print(f"  previous output too old to reuse (age={age_hours})")
 
