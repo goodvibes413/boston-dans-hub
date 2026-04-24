@@ -1,45 +1,45 @@
 {
-  "headline": "Bruins Fall Behind Sabres While Red Sox Bullpen Melts Down Against Yankees",
+  "headline": "Bruins trail Buffalo while Red Sox bullpen collapses against the Yankees",
   "morning_brew": [
-    "Are you kiddin' me with this Bruins game? We are back at the Garden, the place is jumpin', and we let the Buffalo Sabres walk away with a 3-1 win to take a 2-1 lead in the series. Tanner Jeannot gave us some life in the second period, but the offense completely dried up after that. Jeremy Swayman was solid enough with 25 saves on 27 shots, but you simply aren't winning playoff games with one goal. It is absolutely brutal to see them trailing a Sabres team we should be putting away.",
-    "Over at Fenway, it was the same old story for the Sox. Tolle was absolutely electric on the mound, sitting down 11 Yankees via the strikeout over six innings of one-run ball. You cannot ask for a better start in the oldest yard in baseball. But then the bullpen comes in and the wheels come off. Danny Coulombe gets tagged for three earned runs in the seventh, and just like that, it is a 4-2 loss and our third straight defeat. At 9-16, this team is buried in the basement of the AL East.",
-    "The only thing keeping us going right now is the NFL Draft and the Celtics heading to Philly tonight. The Patriots are coming off a 14-3 season but have plenty of holes to fill, so I am glued to the Round 1 wrap-up news. Meanwhile, the C's are looking to bounce back in their series after a 56-win regular season. After that 2024 championship run, we know what this core is capable of, but they need to show more heart on the road than the B's did last night. Time to see if they have that championship grit."
+    "Are you kidding me with this? The Bruins head back to the Garden and let the Sabres walk away with a 3-1 win to take a 2-1 series lead. Jeremy Swayman did his part with 25 saves, but Tanner Jeannot was the only guy who could find the back of the net in the second period. You cannot win playoff games scoring one goal, I do not care who is standing in the crease. Absolutely brutal to drop that one on home ice when the series was right there for the taking.",
+    "Then you look over at Fenway Park and it is more of the same frustration. The Sox are now 9-16 after a 4-2 loss to the Yankees. Tolle was throwing absolute gas out there, fanning 11 hitters in six innings of work, and the bullpen just hands the game over on a silver platter. Danny Coulombe gets tagged for three runs in less than an inning and the losing streak is at three. Losing to the Pinstripes at the oldest yard in baseball is a tough pill to swallow for any townie.",
+    "We have the Celtics heading into Philly tonight for a massive playoff matchup, and honestly, we need them to show some life because the rest of the Hub is struggling right now. On the football side, Mike Reiss is wrapping up the first round of the draft, so at least there is some hope for the future. It is a busy morning on the phones, but watching the Sox and Bruins both trip up on the same night is a total disastah."
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "Tolle",
-      "trend": "11 strikeouts in 6.0 innings pitched",
-      "dans_take": "A wicked performance at Fenway wasted by a bullpen that could not hold a lead if their lives depended on it."
+      "trend": "Fanned 11 batters over 6.0 innings with only one earned run",
+      "dans_take": "The kid was electric out there against the New York bats, it is a shame the relief corps couldn't hold the lead for him."
     },
     {
       "category": "Cold Snap",
       "player": "Danny Coulombe",
-      "trend": "3 earned runs allowed in 0.2 innings",
-      "dans_take": "Absolutely brutal outing in the seventh inning that flushed a dominant start down the drain."
+      "trend": "Surrendered 3 earned runs on 3 hits in just 0.2 innings of work",
+      "dans_take": "You come in for a high-leverage spot and get hit like that? Absolutely brutal performance from a guy we need to be steady."
     },
     {
       "category": "Slump",
       "player": "William Contreras",
-      "trend": "0-for-4 in loss to New York",
-      "dans_take": "We need the big bats to show up when we are playing the Pinstripes, not disappear when the lights are brightest."
+      "trend": "Went 0-for-4 in the loss to the Yankees",
+      "dans_take": "We need the big bats at the top of the order to actually produce if we are going to climb out of this 9-16 hole."
     }
   ],
   "news_digest": [
     {
       "headline": "Sabres rally to beat Bruins 3-1, take 2-1 lead in NHL playoff series",
       "url": "http://www.espn.com/nhl/recap?gameId=401869759",
-      "dans_take": "What a disastah\u2014Buffalo is actually outworking us in our own building."
-    },
-    {
-      "headline": "Red Sox take 3-game losing streak into matchup against the Orioles",
-      "url": "http://www.espn.com/mlb/preview?gameId=401815065",
-      "dans_take": "At 9-16, this season is already slipping away into the Charles River."
+      "dans_take": "A third-period collapse at home is exactly how you find yourself shaking hands early in the postseason."
     },
     {
       "headline": "Patriots' Round 1 Wrap Up",
       "url": "https://www.espn.com/video/clip?id=48578286",
-      "dans_take": "Coming off 14 wins, we need to nail these picks to stay at the top of the mountain."
+      "dans_take": "Glad to see the draft moving along, let's hope these new additions can actually move the chains."
+    },
+    {
+      "headline": "Red Sox take 3-game losing streak into matchup against the Orioles",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815065",
+      "dans_take": "Heading to Baltimore while sliding down the standings is a recipe for a wicked long weekend."
     }
   ],
   "box_scores": {
@@ -76,7 +76,7 @@
     "patriots": {
       "sport": "NFL",
       "home_team": "New England Patriots",
-      "away_team": "None",
+      "away_team": null,
       "home_score": null,
       "away_score": null,
       "game_date": "2026-04-23",
