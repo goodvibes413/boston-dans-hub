@@ -1,0 +1,128 @@
+{
+  "_fixture_notes": "Test historical_facts injection — Celtics in playoffs chasing Banner 19, should reference championship count and 2008 Big Three. Bruins playoff loss references 2013 heartbreak. Sox bullpen collapse echoes past struggles.",
+  "rolling_7day": {
+    "days": [
+    {
+      "date": "2026-05-15",
+      "celtics": {
+        "boxscore": {
+          "game_date": "2026-05-14",
+          "played": true,
+          "season_type": "playoff",
+          "home": true,
+          "celtics_score": 108,
+          "opponent": "Miami Heat",
+          "opponent_score": 102,
+          "result": "W 108-102"
+        },
+        "news": {
+          "generated_at": "2026-05-15T02:00:00+00:00",
+          "headlines": [
+            {
+              "headline": "Celtics edge Heat in Game 3, take 2-1 series lead",
+              "url": "https://www.espn.com/nba/recap?gameId=401869999"
+            }
+          ]
+        }
+      },
+      "bruins": {
+        "boxscore": {
+          "game_date": "2026-05-14",
+          "played": true,
+          "season_type": "playoff",
+          "home": false,
+          "bruins_score": 2,
+          "opponent": "New York Rangers",
+          "opponent_score": 4,
+          "result": "L 2-4"
+        },
+        "news": {
+          "generated_at": "2026-05-15T02:00:00+00:00",
+          "headlines": [
+            {
+              "headline": "Rangers take Game 3 in overtime, lead series 2-1",
+              "url": "https://www.espn.com/nhl/recap?gameId=401869888"
+            }
+          ]
+        }
+      },
+      "redsox": {
+        "boxscore": {
+          "game_date": "2026-05-14",
+          "played": true,
+          "season_type": "regular",
+          "home": true,
+          "redsox_score": 4,
+          "opponent": "New York Yankees",
+          "opponent_score": 6,
+          "result": "L 4-6"
+        },
+        "news": {
+          "generated_at": "2026-05-15T02:00:00+00:00",
+          "headlines": [
+            {
+              "headline": "Red Sox bullpen blows lead again in loss to Yankees",
+              "url": "https://www.espn.com/mlb/recap?gameId=401815555"
+            }
+          ]
+        }
+      },
+      "patriots": {
+        "boxscore": {
+          "game_date": "2026-05-14",
+          "played": false,
+          "season_type": "offseason"
+        },
+        "news": {
+          "generated_at": "2026-05-15T02:00:00+00:00",
+          "headlines": []
+        }
+      }
+    }
+  ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "celtics": {
+        "past_seasons": [
+          { "year": 2024, "wins": 64, "losses": 18, "result": "NBA Champions — beat Mavericks 4-1 in Finals" },
+          { "year": 2023, "wins": 57, "losses": 25, "result": "Lost Eastern Conference Finals vs Heat 4-3" }
+        ]
+      },
+      "bruins": {
+        "past_seasons": [
+          { "year": 2024, "record": "47-20-15", "result": "Lost Round 2 vs Panthers 4-2" },
+          { "year": 2013, "record": "52-24-6", "result": "Lost Stanley Cup Finals vs Blackhawks 4-2" }
+        ]
+      },
+      "redsox": {
+        "past_seasons": [
+          { "year": 2024, "wins": 81, "losses": 81, "result": "Missed playoffs" }
+        ]
+      }
+    },
+    "current_season": {
+      "celtics": {
+        "status": "in_playoffs",
+        "regular_season_wins": 56,
+        "regular_season_losses": 26,
+        "regular_season_summary": "56-26",
+        "playoff_seed": 2
+      },
+      "bruins": {
+        "status": "in_playoffs",
+        "regular_season_wins": 50,
+        "regular_season_losses": 28,
+        "regular_season_summary": "50-28",
+        "playoff_seed": 3
+      },
+      "redsox": {
+        "status": "regular_season",
+        "wins": 18,
+        "losses": 20,
+        "win_pct": 0.474,
+        "streak": "L3"
+      }
+    }
+  }
+}
