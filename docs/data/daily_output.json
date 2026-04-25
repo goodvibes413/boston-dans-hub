@@ -1,104 +1,94 @@
 {
-  "headline": "Bruins Falter at the Garden and the Sox Bullpen Flushes a Gem",
+  "headline": "Patriots Focus On Protection While The Celtics Take Control In Philly",
   "morning_brew": [
-    "The B's had every chance to take control at the Garden last night, but they let the Sabres hang around and paid for it. Tanner Jeannot got us on the board in the second, but giving up two goals in the third is absolutely brutal. Jeremy Swayman was solid with 25 saves, but you aren't winning many playoff games when you only put one in the net. Now they are down 2-1 in the series and looking for answers before things get really dicey.",
-    "Over at Fenway Park, it is the same old story with this ballclub. Jayson Tolle goes out there and shoves for six innings, striking out 11 Yankees, and the bullpen treats a lead like a hot potato. Danny Coulombe and Ben Weissert combine to give up those runs in the seventh, and just like that, a masterpiece is wasted. That is three losses in a row for the Sox, and a 9-16 start to the season is just ugly no matter how you slice it.",
-    "It is a massive night for the Celtics down in Philly as they look to keep things moving in the first round. We need the 56-win version of this team to show up and remind the East who the 2-seed is. Meanwhile, the draft talk is everywhere. After a 14-3 run last year, the Patriots are in a spot to reload, and Mike Reiss is saying all the right things about the Round 1 haul. We just need to see that momentum carry into the fall."
+    "The Pats are finally getting serious about protecting the franchise. Caleb Lomu out of Utah at pick twenty-eight is a move I can get behind. The offensive line was a sieve last year, and you cannot have Drake Maye running for his life every Sunday. They followed it up by grabbing Gabe Jacas and Eli Raridon later in the draft. Love it, this is a blue-collar haul that fills some massive holes on this roster.",
+    "Over on the hardwood, the C's took care of business in Philly with a hundred-eight to hundred win. Jayson Tatum and Jaylen Brown both dropped twenty-five, which is exactly what you need from your stars on the road in the playoffs. They looked composed even when the crowd at the Xfinity Mobile Arena got loud. Payton Pritchard gave them a massive spark off the bench with fifteen points and some big buckets.",
+    "Then you have the Sox, who are making it real hard to keep the faith right now. They got absolutely smoked by the O's in a ten-three disastah. Brayan Bello did not even make it out of the fourth inning, giving up eight earned runs and thirteen hits. That is a brutal outing for a guy we are supposed to trust as an ace. Ten hits from the bats did not matter when you are down by a touchdown before the beer man even gets to your row."
   ],
   "trend_watch": [
     {
-      "category": "Heater",
-      "player": "Jayson Tolle",
-      "trend": "Struck out 11 batters over 6.0 innings of one-run ball against New York.",
-      "dans_take": "The kid was electric at the Fens last night, carving up the Yanks for 11 punchies and for what? A loss. Absolute shame to waste a start like that."
-    },
-    {
       "category": "Cold Snap",
-      "player": "Danny Coulombe",
-      "trend": "Allowed 3 earned runs on 3 hits in just 0.2 innings of relief.",
-      "dans_take": "The bullpen door opens and the game goes south immediately. You cannot give up three runs in the seventh and expect to win a divisional game."
+      "player": "Brayan Bello",
+      "trend": "Eight earned runs and thirteen hits in three and a third innings against Baltimore.",
+      "dans_take": "Absolutely brutal start for the kid on a night when we needed a stopper."
     },
     {
-      "category": "Slump",
-      "player": "Tanner Jeannot",
-      "trend": "Scored the lone goal for Boston in a 3-1 playoff loss to Buffalo.",
-      "dans_take": "I love that Jeannot got one, but one goal isn't going to cut it in April. The rest of the offense needs to wake up before this series slips away."
+      "category": "Heater",
+      "player": "Jayson Tatum",
+      "trend": "Dropped twenty-five points and seven assists in a road playoff win.",
+      "dans_take": "JT looked like the best player on the floor when it mattered most in that fourth quarter."
+    },
+    {
+      "category": "Heater",
+      "player": "Wilyer Abreu",
+      "trend": "Went two for four with a home run in the blowout loss.",
+      "dans_take": "One of the few guys actually showing a pulse in this lineup during this losing streak."
     }
   ],
   "news_digest": [
     {
-      "headline": "Sabres rally to beat Bruins 3-1, take 2-1 lead in NHL playoff series",
-      "url": "http://www.espn.com/nhl/recap?gameId=401869759",
-      "dans_take": "Tough way to lose at home, and now the pressure is really on to even this thing up."
+      "headline": "New England Patriots' 2026 NFL draft picks: Selection analysis",
+      "url": "https://www.espn.com/nfl/draft2026/story/_/id/48432125/new-england-patriots-nfl-draft-picks-2026-selection-analysis-depth-chart",
+      "dans_take": "Love seeing the focus on the trenches to protect the future of this team."
     },
     {
-      "headline": "Red Sox take 3-game losing streak into matchup against the Orioles",
-      "url": "http://www.espn.com/mlb/preview?gameId=401815065",
-      "dans_take": "Nine wins and sixteen losses is a disaster, I don't care how early in the season it is."
+      "headline": "Jayson Tatum, Jaylen Brown come up big in Celtics' 'fun' Game 3 win",
+      "url": "https://www.espn.com/nba/story/_/id/48586481/jayson-tatum-jaylen-brown-come-big-celtics-fun-game-3-win",
+      "dans_take": "This is exactly how your two best players are supposed to play on the road in the postseason."
     },
     {
-      "headline": "Patriots' Round 1 Wrap Up",
-      "url": "https://www.espn.com/video/clip?id=48578286",
-      "dans_take": "The draft is the lifeblood of the rebuild, so let's hope these picks actually pan out for once."
+      "headline": "Adley Rutschman blasts 2 HRs as O's offense erupts to drub Red Sox",
+      "url": "https://www.espn.com/mlb/story/_/id/48585391/adley-rutschman-rips-2-hrs-orioles-offense-erupts-pound-red-sox",
+      "dans_take": "Absolutely brutal night for the pitching staff down in Baltimore."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-04-23",
-      "played": false,
+      "home_team": "Philadelphia 76ers",
+      "away_team": "Boston Celtics",
+      "home_score": 100,
+      "away_score": 108,
+      "game_date": "2026-04-24",
+      "played": true,
       "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
       "home_team": "Boston Bruins",
       "away_team": "Buffalo Sabres",
-      "home_score": 1,
-      "away_score": 3,
-      "game_date": "2026-04-23",
-      "played": true,
+      "home_score": 0,
+      "away_score": 0,
+      "game_date": "2026-04-24",
+      "played": false,
       "season_type": "playoff"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "New York Yankees",
-      "home_score": 2,
-      "away_score": 4,
-      "game_date": "2026-04-23",
+      "home_team": "Baltimore Orioles",
+      "away_team": "Boston Red Sox",
+      "home_score": 10,
+      "away_score": 3,
+      "game_date": "2026-04-24",
       "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
       "home_team": "New England Patriots",
-      "away_team": "TBD",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-04-23",
+      "away_team": "Unknown",
+      "home_score": 0,
+      "away_score": 0,
+      "game_date": "2026-04-24",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
     {
-      "date": "2026-04-24",
-      "matchup": "Boston Celtics at Philadelphia 76ers",
-      "time_et": "7:00 PM ET"
-    },
-    {
-      "date": "2026-04-24",
-      "matchup": "Boston Red Sox at Baltimore Orioles",
-      "time_et": "7:05 PM ET"
-    },
-    {
       "date": "2026-04-25",
       "matchup": "Boston Red Sox at Baltimore Orioles",
-      "time_et": "4:05 PM ET"
+      "time_et": "12:05 PM ET"
     },
     {
       "date": "2026-04-26",
@@ -154,7 +144,17 @@
       "date": "2026-05-01",
       "matchup": "Houston Astros at Boston Red Sox",
       "time_et": "7:10 PM ET"
+    },
+    {
+      "date": "2026-05-02",
+      "matchup": "Philadelphia 76ers at Boston Celtics",
+      "time_et": "12:00 AM ET"
+    },
+    {
+      "date": "2026-05-02",
+      "matchup": "Houston Astros at Boston Red Sox",
+      "time_et": "4:10 PM ET"
     }
   ],
-  "generated_at": "2026-04-24T10:38:31.148654+00:00"
+  "generated_at": "2026-04-25T10:19:12.808704+00:00"
 }
