@@ -9,6 +9,12 @@ on:
     - cron: '30 9 * * *'
   # Allow manual trigger for testing
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force regeneration even if today''s content is already published'
+        type: boolean
+        required: false
+        default: false
 
 # Serialize overlapping runs instead of letting them race each other to git push.
 concurrency:
@@ -30,11 +36,17 @@ jobs:
 
       - name: Skip if today's content already published
         id: freshness
+        env:
+          FORCE: ${{ inputs.force }}
         run: |
           python3 - <<'PY'
           import json, os, sys
           from datetime import datetime, timezone
           from pathlib import Path
+
+          if os.environ.get("FORCE", "").lower() == "true":
+              print("force=true — bypassing freshness check")
+              sys.exit(0)
 
           p = Path("docs/data/daily_output.json")
           if not p.exists():
