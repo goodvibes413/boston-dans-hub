@@ -195,7 +195,15 @@ jobs:
           fi
           git commit -m "chore: daily Dan output for $(date +%Y-%m-%d)"
           for i in 1 2 3; do
-            if git pull --rebase origin main && git push; then
+            # Clean up any stuck rebase from a prior attempt. Without this, a
+            # conflict on attempt 1 leaves the tree mid-rebase, and attempts 2+3
+            # bail with "Pulling is not possible because you have unmerged files".
+            git rebase --abort 2>/dev/null || true
+            # -X theirs during rebase: when our local commit conflicts with
+            # origin/main on docs/data/daily_output.json (the only file likely
+            # to conflict), our content wins. Semantically correct — our run
+            # produced the latest deterministic pipeline output.
+            if git pull --rebase -X theirs origin main && git push; then
               echo "push succeeded on attempt $i"
               exit 0
             fi
