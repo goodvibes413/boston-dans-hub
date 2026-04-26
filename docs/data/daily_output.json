@@ -1,65 +1,65 @@
 {
-  "headline": "Patriots Focus On Protection While The Celtics Take Control In Philly",
+  "headline": "Red Sox blast the Orioles while Alex Cora gets the axe",
   "morning_brew": [
-    "The Pats are finally getting serious about protecting the franchise. Caleb Lomu out of Utah at pick twenty-eight is a move I can get behind. The offensive line was a sieve last year, and you cannot have Drake Maye running for his life every Sunday. They followed it up by grabbing Gabe Jacas and Eli Raridon later in the draft. Love it, this is a blue-collar haul that fills some massive holes on this roster.",
-    "Over on the hardwood, the C's took care of business in Philly with a hundred-eight to hundred win. Jayson Tatum and Jaylen Brown both dropped twenty-five, which is exactly what you need from your stars on the road in the playoffs. They looked composed even when the crowd at the Xfinity Mobile Arena got loud. Payton Pritchard gave them a massive spark off the bench with fifteen points and some big buckets.",
-    "Then you have the Sox, who are making it real hard to keep the faith right now. They got absolutely smoked by the O's in a ten-three disastah. Brayan Bello did not even make it out of the fourth inning, giving up eight earned runs and thirteen hits. That is a brutal outing for a guy we are supposed to trust as an ace. Ten hits from the bats did not matter when you are down by a touchdown before the beer man even gets to your row."
+    "Everything is upside down at Fenway Park after the front office fired Alex Cora along with five members of his staff. A record of 10-17 was apparently the breaking point for the management. I hope everyone involved is doing okay, and we will let the league and the team handle the fallout. It is a massive move that signals a total shift in direction for this season.",
+    "The players actually responded with a massive 17-1 win over the Baltimore Orioles on Saturday night. Willson Contreras had a huge night with a home run and five runs batted in. Garrett Crochet was absolutely dominant on the mound, tossing six innings of scoreless ball with seven strikeouts. Seventeen hits in a single game is one way to tell the front office you are still fighting.",
+    "We also have the full draft class for the Patriots to talk about this morning. Caleb Lomu from Utah is the new big man on the offensive line after being taken at pick twenty-eight. The team added nine players in total, including defensive help with Gabe Jacas from Illinois and a new tight end in Eli Raridon from Notre Dame. Addressing the line was a huge need, so I love the focus on protecting the future of the franchise."
   ],
   "trend_watch": [
     {
-      "category": "Cold Snap",
-      "player": "Brayan Bello",
-      "trend": "Eight earned runs and thirteen hits in three and a third innings against Baltimore.",
-      "dans_take": "Absolutely brutal start for the kid on a night when we needed a stopper."
+      "category": "Heater",
+      "player": "Garrett Crochet",
+      "trend": "Six scoreless innings with seven strikeouts in a blowout win.",
+      "dans_take": "The guy is a total horse and exactly what this rotation needs right now."
     },
     {
       "category": "Heater",
-      "player": "Jayson Tatum",
-      "trend": "Dropped twenty-five points and seven assists in a road playoff win.",
-      "dans_take": "JT looked like the best player on the floor when it mattered most in that fourth quarter."
+      "player": "Willson Contreras",
+      "trend": "Two hits including a home run and five runs batted in.",
+      "dans_take": "This is the kind of production we expected when he signed with the club."
     },
     {
-      "category": "Heater",
-      "player": "Wilyer Abreu",
-      "trend": "Went two for four with a home run in the blowout loss.",
-      "dans_take": "One of the few guys actually showing a pulse in this lineup during this losing streak."
+      "category": "Bullpen Watch",
+      "player": "Trevor Samaniego",
+      "trend": "Pitched a perfect ninth inning to close out the game.",
+      "dans_take": "Good to see the young arm get some clean work in a laugher."
     }
   ],
   "news_digest": [
     {
-      "headline": "New England Patriots' 2026 NFL draft picks: Selection analysis",
-      "url": "https://www.espn.com/nfl/draft2026/story/_/id/48432125/new-england-patriots-nfl-draft-picks-2026-selection-analysis-depth-chart",
-      "dans_take": "Love seeing the focus on the trenches to protect the future of this team."
+      "headline": "Why Passan says Red Sox can still turn their season around",
+      "url": "https://www.espn.com/video/clip?id=48597207",
+      "dans_take": "Jeff always has a pulse on the league, and I hope he is right about a turnaround."
     },
     {
-      "headline": "Jayson Tatum, Jaylen Brown come up big in Celtics' 'fun' Game 3 win",
-      "url": "https://www.espn.com/nba/story/_/id/48586481/jayson-tatum-jaylen-brown-come-big-celtics-fun-game-3-win",
-      "dans_take": "This is exactly how your two best players are supposed to play on the road in the postseason."
+      "headline": "What's next for Red Sox after Alex Cora?",
+      "url": "https://www.espn.com/video/clip?id=48597151",
+      "dans_take": "It is a massive shakeup for the staff, and now we wait to see who takes the reins."
     },
     {
-      "headline": "Adley Rutschman blasts 2 HRs as O's offense erupts to drub Red Sox",
-      "url": "https://www.espn.com/mlb/story/_/id/48585391/adley-rutschman-rips-2-hrs-orioles-offense-erupts-pound-red-sox",
-      "dans_take": "Absolutely brutal night for the pitching staff down in Baltimore."
+      "headline": "Patriots' NFL Draft Recap",
+      "url": "https://www.espn.com/video/clip?id=48597885",
+      "dans_take": "Mike knows this team better than anyone, and his breakdown of the new kids is essential."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Philadelphia 76ers",
-      "away_team": "Boston Celtics",
-      "home_score": 100,
-      "away_score": 108,
-      "game_date": "2026-04-24",
-      "played": true,
+      "home_team": "Boston Celtics",
+      "away_team": "Philadelphia 76ers",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-25",
+      "played": false,
       "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
       "home_team": "Boston Bruins",
       "away_team": "Buffalo Sabres",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-04-24",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-25",
       "played": false,
       "season_type": "playoff"
     },
@@ -67,9 +67,9 @@
       "sport": "MLB",
       "home_team": "Baltimore Orioles",
       "away_team": "Boston Red Sox",
-      "home_score": 10,
-      "away_score": 3,
-      "game_date": "2026-04-24",
+      "home_score": 1,
+      "away_score": 17,
+      "game_date": "2026-04-25",
       "played": true,
       "season_type": "regular"
     },
@@ -77,19 +77,14 @@
       "sport": "NFL",
       "home_team": "New England Patriots",
       "away_team": "Unknown",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-04-24",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-25",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-04-25",
-      "matchup": "Boston Red Sox at Baltimore Orioles",
-      "time_et": "12:05 PM ET"
-    },
     {
       "date": "2026-04-26",
       "matchup": "Boston Red Sox at Baltimore Orioles",
@@ -154,7 +149,21 @@
       "date": "2026-05-02",
       "matchup": "Houston Astros at Boston Red Sox",
       "time_et": "4:10 PM ET"
+    },
+    {
+      "date": "2026-05-03",
+      "matchup": "Boston Bruins at Buffalo Sabres",
+      "time_et": "12:00 PM ET"
+    },
+    {
+      "date": "2026-05-03",
+      "matchup": "Houston Astros at Boston Red Sox",
+      "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-04-25T10:19:12.808704+00:00"
+  "generated_at": "2026-04-26T10:17:38.029204+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
+    "profanity"
+  ]
 }
