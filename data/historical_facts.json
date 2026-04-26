@@ -1,0 +1,98 @@
+{
+  "_notes": "Boston sports historical facts for Dan's color references. Hand-curated. Add sparingly — Dan should use history for flavor, not content. 3-6 entries per category. Every fact is verifiable.",
+  "updated": "2026-04-24",
+  "celtics": {
+    "total_championships": 18,
+    "championships": [
+      {"year": 2024, "opponent": "Dallas Mavericks", "series": "4-1", "note": "Banner 18, Tatum's first ring, Jaylen Brown Finals MVP"},
+      {"year": 2008, "opponent": "Los Angeles Lakers", "series": "4-2", "note": "The Big Three's one and only, Pierce Finals MVP"},
+      {"year": 1986, "opponent": "Houston Rockets", "series": "4-2", "note": "Larry Bird era apex"},
+      {"year": 1981, "opponent": "Houston Rockets", "series": "4-2", "note": "Bird's first title"},
+      {"year": 1969, "opponent": "Los Angeles Lakers", "series": "4-3", "note": "Russell's 11th and final ring as player-coach"}
+    ],
+    "dynasties": [
+      {"name": "Russell Era", "years": "1957-1969", "note": "11 titles in 13 years, Bill Russell never cared about stats"},
+      {"name": "Larry Bird Era", "years": "1979-1992", "note": "3 titles, Celtics-Lakers defines the 80s"},
+      {"name": "Big Three", "years": "2007-2012", "note": "Pierce, Garnett, Allen, 1 title but always a threat"}
+    ],
+    "iconic_moments": [
+      {"year": 2008, "moment": "Ray Allen's clutch threes in the Finals vs the Lakers"},
+      {"year": 1987, "moment": "Bird steals the inbounds pass in Game 5 vs the Pistons"},
+      {"year": 1986, "moment": "The Green Team wire-to-wire, maybe the greatest Celtics team ever"}
+    ],
+    "rivalries": [
+      {"rival": "Lakers", "note": "12 Finals meetings, defines the NBA"},
+      {"rival": "76ers", "note": "Bird vs Doctor J, modern Tatum vs Embiid"},
+      {"rival": "Heat", "note": "Playoff nemesis through the 2010s and 2020s"}
+    ]
+  },
+  "bruins": {
+    "total_championships": 6,
+    "championships": [
+      {"year": 2011, "opponent": "Vancouver Canucks", "series": "4-3", "note": "Thomas Conn Smythe, Game 7 shutout in Vancouver"},
+      {"year": 1972, "opponent": "New York Rangers", "series": "4-2", "note": "Orr and Esposito in their prime"},
+      {"year": 1970, "opponent": "St. Louis Blues", "series": "4-0", "note": "Orr's flying goal, the iconic photo"}
+    ],
+    "dynasties": [
+      {"name": "Big Bad Bruins", "years": "1967-1979", "note": "Orr, Esposito, Bucyk, physical and dominant"},
+      {"name": "Bergeron-Marchand-Pastrnak", "years": "2011-2023", "note": "Presidents' Trophies, 1 Cup, perennial contender"}
+    ],
+    "iconic_moments": [
+      {"year": 1970, "moment": "Bobby Orr's airborne Cup-winning goal"},
+      {"year": 2011, "moment": "Tim Thomas robs the Sedins in the Cup Final"},
+      {"year": 2013, "moment": "Heartbreak loss to the Blackhawks in the Final"}
+    ],
+    "rivalries": [
+      {"rival": "Canadiens", "note": "Original Six, most playoff meetings in NHL history"},
+      {"rival": "Maple Leafs", "note": "Playoff nemesis, Bruins own the recent head-to-head"}
+    ]
+  },
+  "redsox": {
+    "total_championships": 9,
+    "championships": [
+      {"year": 2018, "opponent": "Los Angeles Dodgers", "series": "4-1", "note": "108-win juggernaut, Mookie Betts MVP"},
+      {"year": 2013, "opponent": "St. Louis Cardinals", "series": "4-2", "note": "Boston Strong after the Marathon bombing"},
+      {"year": 2007, "opponent": "Colorado Rockies", "series": "4-0", "note": "Papi and Manny still rolling, Pedroia ROY"},
+      {"year": 2004, "opponent": "St. Louis Cardinals", "series": "4-0", "note": "Broke the 86-year curse, came back from 0-3 vs the Yankees"}
+    ],
+    "curses_and_droughts": [
+      {"name": "Curse of the Bambino", "years": "1918-2004", "note": "86-year title drought after selling Babe Ruth to the Yankees"}
+    ],
+    "dynasties": [
+      {"name": "Papi Era", "years": "2003-2016", "note": "3 titles, Ortiz became the face of Boston"}
+    ],
+    "iconic_moments": [
+      {"year": 2004, "moment": "Dave Roberts steals second in ALCS Game 4, the turning point"},
+      {"year": 1986, "moment": "The grounder through Buckner's legs (we don't talk about it)"},
+      {"year": 1978, "moment": "Bucky Dent's home run at Fenway (also don't talk about it)"},
+      {"year": 1975, "moment": "Fisk waves it fair in Game 6 vs the Reds"}
+    ],
+    "rivalries": [
+      {"rival": "Yankees", "note": "The rivalry. 100-plus years, defines baseball in the Northeast"}
+    ]
+  },
+  "patriots": {
+    "total_championships": 6,
+    "championships": [
+      {"year": 2018, "opponent": "Los Angeles Rams", "series": "Super Bowl LIII", "note": "13-3 defensive slugfest, Brady's 6th ring"},
+      {"year": 2016, "opponent": "Atlanta Falcons", "series": "Super Bowl LI", "note": "28-3 comeback, greatest Super Bowl ever"},
+      {"year": 2014, "opponent": "Seattle Seahawks", "series": "Super Bowl XLIX", "note": "Malcolm Butler's goal-line INT"},
+      {"year": 2004, "opponent": "Philadelphia Eagles", "series": "Super Bowl XXXIX", "note": "Back-to-back, dynasty confirmed"},
+      {"year": 2003, "opponent": "Carolina Panthers", "series": "Super Bowl XXXVIII", "note": "Vinatieri's second walk-off field goal in three years"},
+      {"year": 2001, "opponent": "St. Louis Rams", "series": "Super Bowl XXXVI", "note": "Brady's first, Tuck Rule changed history"}
+    ],
+    "dynasties": [
+      {"name": "Brady-Belichick", "years": "2001-2019", "note": "6 rings, 9 Super Bowl appearances, greatest dynasty in NFL history"}
+    ],
+    "iconic_moments": [
+      {"year": 2001, "moment": "The Tuck Rule game vs the Raiders"},
+      {"year": 2016, "moment": "28-3, the comeback in Super Bowl LI"},
+      {"year": 2014, "moment": "Malcolm Butler's goal-line interception vs Seattle"}
+    ],
+    "rivalries": [
+      {"rival": "Jets", "note": "Divisional nemesis, Brady owned them"},
+      {"rival": "Colts", "note": "Brady vs Manning, era-defining QB duels"},
+      {"rival": "Ravens", "note": "Playoff heartbreaks, physical AFC matchup"}
+    ]
+  }
+}

@@ -3,7 +3,7 @@ __pycache__/
 .env
 .DS_Store
 evals/runs/
-data/
+data/*
 !docs/data/
 !data/season_static.json
 !data/historical_facts.json
