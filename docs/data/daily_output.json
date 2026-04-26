@@ -165,5 +165,8 @@
   "_regenerated": true,
   "_regeneration_reason": [
     "profanity"
-  ]
+  ],
+  "_stale": true,
+  "_stale_reason": "safety judge FAILed after 2 attempts: Profanity ('damn')",
+  "_stale_age_hours": 0.7
 }
