@@ -808,6 +808,22 @@ Once the end-to-end pipeline is live (Week 3 complete, daily cron running), expa
 - **Safety**: Ensure unsubscribe links work; comply with CAN-SPAM
 - **Why deferred**: Current focus is on perfecting the daily generation pipeline and frontend design. Newsletter infrastructure (database, email service, compliance) can come later once the core product is stable and gaining traction.
 
+### Quality Roadmap (Pursuing Tiers 1–3, Considering Tier 4)
+
+Single-prompt generation is the right shape at our scale and $0 cost ceiling; full multi-agent is overengineering for today's failure modes (proven 2026-04-26 — all three observed failures were prompt-engineering bugs, not architectural ones, and a prompt fix resolved them in one cycle). Quality improvements come from tighter evals + deterministic structured pre-passes + judge expansion + richer source data — in that order.
+
+**Source of truth:** [`docs/QUALITY_ROADMAP.md`](docs/QUALITY_ROADMAP.md). That file holds the full reasoning, cost math, trigger conditions for re-evaluating multi-agent, and per-tier implementation notes. Read it before opening this section as a starting point for new work.
+
+| Tier | Description | Status | Effort | Cost |
+|---|---|---|---|---|
+| 1 | Eval-driven prompt iteration (regression fixtures + gating) | **Pursuing** | ~half day | $0 |
+| 2 | Deterministic structured pre-passes (`build_draft_block.py`, `build_causation_notes.py`) | **Pursuing** | 1–2 days | $0 |
+| 3 | Voice/quality rubric expansion in `safety_judge.py` | **Pursuing** | 2–3 days | +0–1 calls/day |
+| 4 | Richer source data (deeper history, caller archetypes, grudge book) | **Considering** | Ongoing | $0 |
+| Multi-agent | 2+ Gemini calls collaborating on generation | **Conditional** | — | Breaks $0 |
+
+**Trigger conditions to revisit multi-agent**: $0 constraint softens, source data exceeds ~50–100KB, multi-team scope expansion, or three+ recurring quality misses per week that Tiers 1–3 cannot close.
+
 ### Invert pipeline architecture into reusable workflows (Deferred)
 
 If reliability remains an issue after the retry-budget cap (2026-04-26), the right next move is *not* to split into two parallel workflows (cron-drift races, state-handoff complexity, surface area grows). It's to **invert** the architecture: make `publish.py` a **reusable workflow** (`on: workflow_call`) that can be invoked from the daily scheduler OR manually OR by another workflow, with a separate "data refresh" reusable workflow it depends on.
