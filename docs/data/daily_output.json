@@ -1,52 +1,53 @@
 {
-  "headline": "Red Sox blast the Orioles while Alex Cora gets the axe",
+  "headline": "Cora is out at Fenway as the Patriots reload during the draft",
   "morning_brew": [
-    "Everything is upside down at Fenway Park after the front office fired Alex Cora along with five members of his staff. A record of 10-17 was apparently the breaking point for the management. I hope everyone involved is doing okay, and we will let the league and the team handle the fallout. It is a massive move that signals a total shift in direction for this season.",
-    "The players actually responded with a massive 17-1 win over the Baltimore Orioles on Saturday night. Willson Contreras had a huge night with a home run and five runs batted in. Garrett Crochet was absolutely dominant on the mound, tossing six innings of scoreless ball with seven strikeouts. Seventeen hits in a single game is one way to tell the front office you are still fighting.",
-    "We also have the full draft class for the Patriots to talk about this morning. Caleb Lomu from Utah is the new big man on the offensive line after being taken at pick twenty-eight. The team added nine players in total, including defensive help with Gabe Jacas from Illinois and a new tight end in Eli Raridon from Notre Dame. Addressing the line was a huge need, so I love the focus on protecting the future of the franchise."
+    "Alex Cora is out, along with his staff. Ten wins and seventeen losses was the breaking point. I respect the run, especially that 2018 title that felt like a juggernaut, but this team needed a jolt and ownership finally pulled the trigger. Hope it works.",
+    "Naturally the bats decide to show up right as the manager gets his walking papers. Seventeen runs on seventeen hits against the Orioles is a joke. Garrett Crochet was lights out with six innings of three-hit ball and seven strikeouts. Willson Contreras drove in five runs, including a home run, but it is too little too late for the current regime.",
+    "Patriots draft recap time. Round 1, pick 28: Caleb Lomu, OT out of Utah. Drake Maye needed better protection all year. Love it, glaring need addressed. Round 2, pick 55: Gabe Jacas, EDGE out of Illinois. Interesting hire, we need the pass rush. Round 3, pick 95: Eli Raridon, TE out of Notre Dame. Head-scratcher, thought we had enough depth there. Round 5, pick 171: Karon Prunty, CB out of Wake Forest, depth at corner. Round 6, pick 196: Dametrious Crownover, OT out of Texas A&M, more help for the line. Round 6, pick 212: Namdi Obiazor, LB out of TCU, special teams help. Round 7, pick 234: Behren Morton, QB out of Texas Tech, another arm for camp. Round 7, pick 245: Jam Miller, RB out of Alabama, flyer on a back. Round 7, pick 247: Quintayvious Hutchins, EDGE out of Boston College, local kid staying home.",
+    "Playoffs are in full swing and the pressure is on. The C's are sitting on fifty-six wins and a two seed, looking to avoid the heartbreak we saw in the past. The B's have forty-five wins and are back at the Garden against Buffalo. We have eighteen banners and six Cups in this town, so anything less than a deep run is a failure."
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "Garrett Crochet",
-      "trend": "Six scoreless innings with seven strikeouts in a blowout win.",
-      "dans_take": "The guy is a total horse and exactly what this rotation needs right now."
+      "trend": "Six innings of shutout ball with seven strikeouts.",
+      "dans_take": "Absolute dominance on the mound when we needed it most."
     },
     {
       "category": "Heater",
       "player": "Willson Contreras",
-      "trend": "Two hits including a home run and five runs batted in.",
-      "dans_take": "This is the kind of production we expected when he signed with the club."
+      "trend": "Two hits and five runs batted in including a long ball.",
+      "dans_take": "The big man finally found his swing in Baltimore."
     },
     {
       "category": "Bullpen Watch",
       "player": "Trevor Samaniego",
-      "trend": "Pitched a perfect ninth inning to close out the game.",
-      "dans_take": "Good to see the young arm get some clean work in a laugher."
+      "trend": "One clean inning with no hits allowed to close it out.",
+      "dans_take": "Nice to see the bullpen not set the building on fire for once."
     }
   ],
   "news_digest": [
     {
-      "headline": "Why Passan says Red Sox can still turn their season around",
-      "url": "https://www.espn.com/video/clip?id=48597207",
-      "dans_take": "Jeff always has a pulse on the league, and I hope he is right about a turnaround."
+      "headline": "What's next for Alex Cora after being fired by Red Sox?",
+      "url": "https://www.espn.com/video/clip?id=48599626",
+      "dans_take": "Alex Cora is out and it was a long time coming."
     },
     {
-      "headline": "What's next for Red Sox after Alex Cora?",
-      "url": "https://www.espn.com/video/clip?id=48597151",
-      "dans_take": "It is a massive shakeup for the staff, and now we wait to see who takes the reins."
+      "headline": "2026 NFL draft grades for 32 teams: Winners, losers, steals",
+      "url": "https://www.espn.com/nfl/draft2026/story/_/id/48547351/2026-nfl-draft-grades-32-teams-kiper-winners-losers-steals-sleepers-favorite-picks-classes",
+      "dans_take": "Kiper has his thoughts, but we'll see how these kids play on Sundays."
     },
     {
-      "headline": "Patriots' NFL Draft Recap",
-      "url": "https://www.espn.com/video/clip?id=48597885",
-      "dans_take": "Mike knows this team better than anyone, and his breakdown of the new kids is essential."
+      "headline": "What could the Patriots trade for receiver A.J. Brown?",
+      "url": "https://www.espn.com/nfl/story/_/id/48592782/new-england-patriots-aj-brown-trade-compensation-eagles-2026-nfl-draft-recap",
+      "dans_take": "The rumor mill is spinning, but I'll believe it when I see it."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
+      "home_team": "Philadelphia 76ers",
+      "away_team": "Boston Celtics",
       "home_score": null,
       "away_score": null,
       "game_date": "2026-04-25",
@@ -161,12 +162,5 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-04-26T10:17:38.029204+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "profanity"
-  ],
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 2 attempts: Profanity ('damn')",
-  "_stale_age_hours": 0.7
+  "generated_at": "2026-04-26T15:03:14.604780+00:00"
 }
