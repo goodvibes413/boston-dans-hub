@@ -74,15 +74,20 @@ SOURCE_DATA (the only acceptable source for any stat Dan cites):
 """
 
 
-def call_with_retry(fn, max_retries=4):
+def call_with_retry(fn, max_retries=3):
     """
     Call fn() with exponential backoff retry on 503/429 errors.
 
-    On 503 UNAVAILABLE: wait 5s, 15s, 30s, 60s (up to ~2 min — covers demand spikes)
+    On 503 UNAVAILABLE: wait 5s, 15s, 30s (up to ~50s total)
     On 429 QUOTA_EXCEEDED: parse retryDelay from error, wait that duration
     On other errors: fail immediately
+
+    Budget capped at ~50s/call so the judge-correction-judge chain inside
+    publish.py can't burn the workflow's 25-min job timeout. If quota is
+    truly exhausted, the existing exception handler treats the API failure
+    as PASS so content still publishes.
     """
-    backoff_delays = [5, 15, 30, 60]
+    backoff_delays = [5, 15, 30]
 
     for attempt in range(max_retries + 1):
         try:

@@ -669,6 +669,20 @@ Two zsh foot-guns specific to this project:
 1. `status` is a read-only variable in zsh — never use `status=$(...)` inside a script. Use `st=` or similar.
 2. If you have unstaged changes (common when working on multiple files), `git pull --rebase --quiet` exits non-zero with no output captured. Always `git status --porcelain` first or stash before pulling.
 
+### Rule #8: Cross-check Monitor "completed|success" output before reporting to the user
+
+When a Monitor reports `STATE: completed|success` and prints a `headline` / `generated_at`, that output may be **stale or fabricated by a silent git fetch failure**. On 2026-04-26 I (Claude) reported a "5-7 score" and a "Bruins Stave Off Elimination" headline that never existed — the Monitor's `git fetch origin main --quiet` had failed silently (unstaged changes blocked it), and the subsequent `git show origin/main:<path>` then read a stale local refs/remotes pointer.
+
+Always verify before relaying to the user:
+
+```bash
+git fetch origin main
+git log origin/main --oneline -3                                  # must show today's chore commit
+git show origin/main:docs/data/daily_output.json | jq '.generated_at, .headline'
+```
+
+If the most recent `chore: daily Dan output for YYYY-MM-DD` commit is not today's date, the run did not actually publish — say so plainly instead of reporting whatever `jq` happened to print.
+
 ---
 
 ## Week 3: Publish & Health Check Infrastructure
@@ -793,6 +807,16 @@ Once the end-to-end pipeline is live (Week 3 complete, daily cron running), expa
 - **Backend**: Store emails, trigger daily send via GitHub Actions after publish.py completes
 - **Safety**: Ensure unsubscribe links work; comply with CAN-SPAM
 - **Why deferred**: Current focus is on perfecting the daily generation pipeline and frontend design. Newsletter infrastructure (database, email service, compliance) can come later once the core product is stable and gaining traction.
+
+### Invert pipeline architecture into reusable workflows (Deferred)
+
+If reliability remains an issue after the retry-budget cap (2026-04-26), the right next move is *not* to split into two parallel workflows (cron-drift races, state-handoff complexity, surface area grows). It's to **invert** the architecture: make `publish.py` a **reusable workflow** (`on: workflow_call`) that can be invoked from the daily scheduler OR manually OR by another workflow, with a separate "data refresh" reusable workflow it depends on.
+
+**Benefits**: each piece is independently testable; the scheduler becomes a thin orchestrator; a manual `gh workflow run publish` becomes possible without re-running fetchers; failures attributed to specific concerns rather than one monolithic step.
+
+**Costs**: meaningful YAML refactor; need to thread artifacts/inputs between callers and callees; two concurrency groups to reason about.
+
+**Trigger conditions for picking this up**: pipeline timeout / publish-step failures recur ≥3 times in a 2-week window after the 2026-04-26 retry cap lands. Until then, the monolithic workflow is the simpler shape.
 
 ---
 
