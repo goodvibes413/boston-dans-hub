@@ -765,6 +765,92 @@
       .stat-splash { padding: 20px; }
     }
 
+    /* =============================================
+       DAN INTRO (static hero above the dynamic page)
+    ============================================= */
+    .dan-intro {
+      background: var(--surface-low);
+      border-bottom: 1px solid var(--surface-high);
+    }
+    .dan-intro-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .dan-intro-portrait {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--surface-base);
+      border: 2px solid var(--surface-high);
+      display: block;
+    }
+    .dan-intro-copy { display: flex; flex-direction: column; gap: 12px; }
+    .dan-intro-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .dan-intro-headline {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+      color: var(--on-surface);
+      margin: 0;
+    }
+    .dan-intro-body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--on-surface-variant);
+      max-width: 60ch;
+    }
+    .dan-intro-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .dan-intro-chip {
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+      transition: background 120ms ease, color 120ms ease;
+    }
+    .dan-intro-chip:hover {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    /* Mobile: stack image above copy, shrink portrait, center text */
+    @media (max-width: 767px) {
+      .dan-intro-inner {
+        grid-template-columns: 1fr;
+        padding: 24px 16px;
+        gap: 16px;
+        text-align: center;
+        justify-items: center;
+      }
+      .dan-intro-portrait { width: 160px; height: 160px; }
+      .dan-intro-body { max-width: none; }
+      .dan-intro-chips { justify-content: center; }
+    }
+
   </style>
 </head>
 <body>
@@ -781,6 +867,32 @@
       <a href="#news">News</a>
     </nav>
   </nav>
+
+  <!-- DAN INTRO (static, above the dynamic page) -->
+  <section class="dan-intro" aria-label="Meet Boston Dan">
+    <div class="dan-intro-inner">
+      <img class="dan-intro-portrait"
+           src="dan-character.png"
+           alt="Boston Dan, a Boston sports fan in a Red Sox cap and Bruins jersey holding a Dunkin iced coffee"
+           width="520" height="520">
+      <div class="dan-intro-copy">
+        <p class="dan-intro-eyebrow">MEET YOUR HOST</p>
+        <h1 class="dan-intro-headline">Mornin'. I'm Boston Dan.</h1>
+        <p class="dan-intro-body">
+          Every mornin' at 3 AM I brew fresh Dunks and write up the only Boston sports rant that matters. Sox, C's, B's, Pats. Wins, losses, ownership decisions I've got opinions on whether ya asked or not.
+        </p>
+        <p class="dan-intro-body">
+          Scroll down for today's Morning Brew, last night's box scores, what's on tap, who's heatin' up, who's in a slump, and the headlines worth ya time. No fluff. No hedgin'. I tell ya what I think.
+        </p>
+        <div class="dan-intro-chips" role="list">
+          <a class="dan-intro-chip" href="#brew" role="listitem">Today's Rant</a>
+          <a class="dan-intro-chip" href="#schedule" role="listitem">Upcoming</a>
+          <a class="dan-intro-chip" href="#trends" role="listitem">Trends</a>
+          <a class="dan-intro-chip" href="#news" role="listitem">News</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- MAIN CONTENT -->
   <div id="app">
