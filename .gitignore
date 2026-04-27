@@ -7,3 +7,5 @@ data/*
 !docs/data/
 !data/season_static.json
 !data/historical_facts.json
+!data/dan_archive/
+!data/dan_archive/**

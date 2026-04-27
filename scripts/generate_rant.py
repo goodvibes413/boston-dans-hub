@@ -34,7 +34,12 @@ DEFAULT_SEASON_STATIC = REPO / "data" / "season_static.json"
 DEFAULT_SEASON_CURRENT = REPO / "data" / "season_current.json"
 DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
 DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
+DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
+
+# Continuity memory: number of past Dan outputs to inject into the prompt.
+# 3 covers most news cycles without bloating tokens.
+DEFAULT_MEMORY_DAYS = 3
 
 TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
 
@@ -324,7 +329,54 @@ def build_season_memory(static_data: dict, current_data: dict) -> dict:
     return merged
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None) -> str:
+def load_recent_dan_output(archive_dir: Path, days: int = DEFAULT_MEMORY_DAYS) -> list[dict]:
+    """
+    Load the last N days of Dan's published output for continuity memory.
+
+    Reads `data/dan_archive/YYYY-MM-DD.json` files (written by publish.py),
+    returns the most recent `days` entries newest-first, skipping today's
+    UTC date if it exists (avoids self-reference on re-runs).
+
+    Each archived entry is a slim copy: {date, headline, morning_brew,
+    news_digest, generated_at}. Box scores, schedule, trend_watch are
+    excluded (those are date-specific facts, not Dan's voice).
+
+    Returns [] on missing dir, no archives, or any read error — graceful
+    degradation. The continuity feature should never block generation.
+    """
+    if not archive_dir.exists() or not archive_dir.is_dir():
+        return []
+
+    today_iso = datetime.now(timezone.utc).date().isoformat()
+
+    try:
+        archive_files = sorted(
+            (p for p in archive_dir.glob("*.json") if p.stem != today_iso),
+            key=lambda p: p.stem,
+            reverse=True,
+        )
+    except Exception as e:
+        print(f"  warn: could not list archive dir ({e})", file=sys.stderr)
+        return []
+
+    entries: list[dict] = []
+    for path in archive_files[:days]:
+        try:
+            data = json.loads(path.read_text())
+            entries.append({
+                "date": path.stem,
+                "headline": data.get("headline", ""),
+                "morning_brew": data.get("morning_brew", []),
+                "news_digest": data.get("news_digest", []),
+            })
+        except Exception as e:
+            print(f"  warn: skipping unreadable archive {path.name} ({e})", file=sys.stderr)
+            continue
+
+    return entries
+
+
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None) -> str:
     message = (
         "Here is the structured data for the last 7 days of Boston sports.\n"
         "Use ONLY the numbers and facts in this data — never invent stats.\n\n"
@@ -335,6 +387,13 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
         "LATEST_NEWS:\n"
         f"{json.dumps(news, indent=2)}\n\n"
     )
+    if recent_output:
+        message += (
+            "RECENT_DAN_OUTPUT (last few days of YOUR OWN writing — DO NOT REPEAT phrasing or "
+            "re-introduce stories you already covered. See the Continuity rule in the system "
+            "prompt for what counts as acceptable callbacks vs. forbidden self-repetition):\n"
+            f"{json.dumps(recent_output, indent=2)}\n\n"
+        )
     if draft_picks:
         message += (
             "DRAFT_PICKS:\n"
@@ -454,7 +513,12 @@ def main():
     historical_facts = load_json(historical_facts_path)
     season_memory = build_season_memory(season_static, season_current)
 
-    user_message = build_user_message(rolling, schedule, news, season_memory, draft_picks, historical_facts)
+    archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
+    memory_days = int(os.environ.get("DAN_MEMORY_DAYS", DEFAULT_MEMORY_DAYS))
+    recent_output = load_recent_dan_output(archive_dir, memory_days)
+    print(f"  archive_dir:    {archive_dir} ({len(recent_output)} prior day(s) loaded)")
+
+    user_message = build_user_message(rolling, schedule, news, season_memory, draft_picks, historical_facts, recent_output)
 
     # If the safety judge rejected a previous attempt this run, publish.py
     # re-invokes us with CORRECTION_NOTES set. Append the judge's flags to

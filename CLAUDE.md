@@ -495,6 +495,25 @@ Curated Boston sports history for Dan's color references. Per-team structure wit
 
 **Rollover:** Update after any Boston team wins a championship. Prepend to `championships`, bump `total_championships`, commit with `chore: rollover historical_facts after {team} {year}`.
 
+### `data/dan_archive/YYYY-MM-DD.json` (in git — Dan's continuity memory)
+
+Slim copies of past `daily_output.json` files, written by `publish.py` after every successful fresh publish. `generate_rant.py` reads the last 3 entries and injects them as a `RECENT_DAN_OUTPUT` block in the prompt so Dan can avoid repeating yesterday's phrasing. Checked into git via `!data/dan_archive/` exception in `.gitignore`. Retention: 7 days (older files pruned automatically).
+
+```json
+{
+  "generated_at": "2026-04-27T09:48:53.271684+00:00",
+  "headline": "Pritchard lights up Philly as the Celtics push for another deep playoff run",
+  "morning_brew": ["paragraph1", "paragraph2", "..."],
+  "news_digest": [{"headline": "...", "url": "...", "dans_take": "..."}]
+}
+```
+
+**Excluded fields**: `box_scores`, `schedule`, `trend_watch` are date-specific facts, not voice/phrasing — Dan doesn't need to remember them for continuity.
+
+**Skipped on**: `_stale` and `_fallback` content — we don't want fallback phrasing polluting tomorrow's continuity memory.
+
+**Configuration**: `DAN_ARCHIVE_PATH` env var overrides the default location (used by `eval_voice.py` to point at fixture-specific archives). `DAN_MEMORY_DAYS` env var overrides the default 3-day memory window.
+
 ### `site/data/daily_output.json` (Gemini output schema)
 ```json
 {
@@ -537,6 +556,7 @@ Full persona lives in `prompts/boston_dan_system.txt` — that is the source of 
 - **Yawkey Way**: Dan calls it Yawkey Way. Always. He refuses to say Jersey Street and will grumble about the rename if it comes up.
 - **Takes**: Strong opinions on coaching, draft, rivals. No hedging.
 - **The Lookback Rule**: Dan always references the full 7-day window — streaks, slumps, notable events from days ago.
+- **Continuity**: Dan reads his last 3 days of output (`RECENT_DAN_OUTPUT` block) and avoids repeating signature phrases or re-introducing stories he already covered. Stories evolve day-to-day rather than being re-stated.
 - **Season Memory** (deferred to Week 4+): Dan is aware of current season context (record, playoff position, key injuries) and past season trends (rebuilds, streaks, notable trades). This gives his takes historical grounding beyond the 7-day window.
 - **Stats discipline**: Every cited number must exactly match the structured input data. Zero hallucination.
 - **Off-field conduct**: Dan uses a league-policy-based framework — not a blanket ban. Pure personal news (divorce, relationships) = silence. Conduct situations covered by league policy (NFL Personal Conduct Policy, NBA/MLB/NHL conduct rules) = brief human decency + defer to process + conditional "if" language for on-field impact. Never speculates on guilt or editorializes on character.
@@ -574,6 +594,8 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `INPUT_PATH` | `safety_judge.py` | Default: `data/raw_dan_output.json` |
 | `SEASON_STATIC_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/season_static.json`; override in evals |
 | `SEASON_CURRENT_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/season_current.json`; override in evals |
+| `DAN_ARCHIVE_PATH` | `generate_rant.py`, `publish.py` | Default: `data/dan_archive`; override in evals to point at fixture-specific archives |
+| `DAN_MEMORY_DAYS` | `generate_rant.py` | Default: `3` (days of past Dan output to inject as continuity memory) |
 
 ---
 
@@ -817,7 +839,7 @@ Single-prompt generation is the right shape at our scale and $0 cost ceiling; fu
 | Tier | Description | Status | Effort | Cost |
 |---|---|---|---|---|
 | 1 | Eval-driven prompt iteration (regression fixtures + gating) | **Pursuing** | ~half day | $0 |
-| 2 | Deterministic structured pre-passes (`build_draft_block.py`, `build_causation_notes.py`) | **Pursuing** | 1–2 days | $0 |
+| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; draft & causation pending) | **In progress** | 1–2 days | $0 |
 | 3 | Voice/quality rubric expansion in `safety_judge.py` | **Pursuing** | 2–3 days | +0–1 calls/day |
 | 4 | Richer source data (deeper history, caller archetypes, grudge book) | **Considering** | Ongoing | $0 |
 | Multi-agent | 2+ Gemini calls collaborating on generation | **Conditional** | — | Breaks $0 |

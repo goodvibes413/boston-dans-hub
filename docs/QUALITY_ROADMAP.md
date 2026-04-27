@@ -81,7 +81,7 @@ None of these are "the model couldn't hold all the context." They're "the prompt
 - Effort: ~half a day to add fixtures + a runner script.
 - Impact: catches anti-template bugs *before* they hit production. The 2026-04-26 prompt fix should have been gated by an eval that flagged `"added nine players in total"` in the output.
 
-### Tier 2 — Deterministic structured pre-passes (Pursuing)
+### Tier 2 — Deterministic structured pre-passes (In progress)
 
 For the outputs that keep failing in mechanical ways, generate the structured shell in Python before the LLM call, then tell Dan to *include it verbatim* with his takes interleaved.
 
@@ -94,6 +94,8 @@ R4.140: Eli Raridon, TE, Notre Dame
 ... (all 9 picks)
 ```
 Dan's prompt receives this and is told: *"Echo each line verbatim, then add one Dan-voice sentence per pick. Never collapse this list."* The model can't accidentally collapse 9 picks into a summary because the structured block is already in front of it as required scaffolding.
+
+**Continuity memory** (shipped 2026-04-27) — `scripts/publish.py` now writes a slim copy of each fresh publish to `data/dan_archive/YYYY-MM-DD.json` (committed via gitignore exception, 7-day rolling retention). `scripts/generate_rant.py` loads the last 3 archives and injects them as a `RECENT_DAN_OUTPUT` block in the prompt. The Continuity rule in `prompts/boston_dan_system.txt` instructs Dan to evolve takes rather than re-introduce stories, and to vary signature phrasing across consecutive days. Trigger: 4-26 and 4-27 outputs both led with "Alex Cora is out, along with his staff" + "I respect the run" + "Hope it works" — same template, different day. Feature address: see Continuity rule in `prompts/boston_dan_system.txt`. Regression coverage: `evals/fixtures/continuity_no_repeat_firing.json`.
 
 **`scripts/build_causation_notes.py`** — given LATEST_NEWS timestamps + rolling_7day game start times, emits:
 ```
@@ -156,7 +158,7 @@ Until any of these trip, Tiers 1–4 are cheaper and faster.
 | Tier | Description | Status | Effort | Cost |
 |---|---|---|---|---|
 | 1 | Eval-driven prompt iteration (regression fixtures + gating) | **Pursuing** | ~half day | $0 |
-| 2 | Deterministic structured pre-passes (`build_draft_block.py`, `build_causation_notes.py`) | **Pursuing** | 1–2 days | $0 |
+| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; draft & causation pending) | **In progress** | 1–2 days | $0 |
 | 3 | Voice/quality rubric expansion in `safety_judge.py` | **Pursuing** | 2–3 days | +0–1 calls/day |
 | 4 | Richer source data (deeper history, caller archetypes, grudge book) | **Considering** | Ongoing | $0 |
 | Multi-agent | 2+ Gemini calls collaborating on generation | **Conditional** | — | Breaks $0 |

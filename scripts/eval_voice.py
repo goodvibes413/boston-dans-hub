@@ -52,19 +52,25 @@ def summarize(path: Path):
 
 def split_fixture(fixture_data: dict):
     """
-    Detect fixture shape and return (rolling_7day, season_static, season_current).
+    Detect fixture shape and return
+    (rolling_7day, season_static, season_current, recent_dan_output).
 
     New shape: has explicit "rolling_7day" key → split into sections.
     Legacy shape: whole fixture IS the rolling_7day payload; season files blank.
+
+    `recent_dan_output` is a list of past-Dan entries (see Continuity rule);
+    fixtures use it to test that today's output doesn't repeat yesterday's.
+    Legacy fixtures and any without the key get an empty list.
     """
     if isinstance(fixture_data, dict) and "rolling_7day" in fixture_data:
         rolling = fixture_data.get("rolling_7day", {}) or {}
         season_memory = fixture_data.get("season_memory", {}) or {}
         past = season_memory.get("past_seasons", {}) or {}
         current = season_memory.get("current_season", {}) or {}
-        return rolling, past, current
+        recent = fixture_data.get("recent_dan_output", []) or []
+        return rolling, past, current, recent
     # Legacy: the fixture IS the rolling_7day payload
-    return fixture_data, {}, {}
+    return fixture_data, {}, {}, []
 
 
 def main():
@@ -86,7 +92,7 @@ def main():
         fixture_data = json.loads(fixture.read_text())
     except json.JSONDecodeError as e:
         sys.exit(f"error: fixture not valid JSON: {e}")
-    rolling, season_past, season_current = split_fixture(fixture_data)
+    rolling, season_past, season_current, recent_output = split_fixture(fixture_data)
 
     # Write split sections to tmp files so generate_rant.py can read them via env vars
     tmp_rolling = RUNS_DIR / f"{label}_tmp_rolling.json"
@@ -103,6 +109,21 @@ def main():
     stub_schedule.write_text('{"games": []}')
     stub_news.write_text('{"articles": []}')
 
+    # Continuity memory: recent_dan_output is a list of {date, headline, ...}
+    # entries. generate_rant.py reads these from a directory of <date>.json
+    # files (mirrors the production layout in data/dan_archive/).
+    tmp_archive_dir = RUNS_DIR / f"{label}_tmp_archive"
+    tmp_archive_dir.mkdir(parents=True, exist_ok=True)
+    # Clear any stale fixture archive files from prior runs
+    for old in tmp_archive_dir.glob("*.json"):
+        old.unlink()
+    for entry in recent_output:
+        date = entry.get("date")
+        if not date:
+            continue
+        slim = {k: v for k, v in entry.items() if k != "date"}
+        (tmp_archive_dir / f"{date}.json").write_text(json.dumps(slim, indent=2))
+
     print(f"eval_voice: fixture={fixture.name} label={label} n={args.n}")
     summaries = []
     for i in range(1, args.n + 1):
@@ -113,6 +134,7 @@ def main():
         env["NEWS_PATH"] = str(stub_news)
         env["SEASON_STATIC_PATH"] = str(tmp_static)
         env["SEASON_CURRENT_PATH"] = str(tmp_current)
+        env["DAN_ARCHIVE_PATH"] = str(tmp_archive_dir)
         env["OUTPUT_PATH"] = str(out_path)
         print(f"  run {i}/{args.n} → {out_path.name}")
         result = subprocess.run(

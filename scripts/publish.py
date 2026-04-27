@@ -26,6 +26,8 @@ from pathlib import Path
 # Constants
 RAW_OUTPUT_PATH = Path("data/raw_dan_output.json")
 PUBLISHED_OUTPUT_PATH = Path("docs/data/daily_output.json")
+ARCHIVE_DIR = Path(os.environ.get("DAN_ARCHIVE_PATH", "data/dan_archive"))
+ARCHIVE_RETENTION_DAYS = 7  # generate_rant reads 3; extra buffer covers UTC date boundary edge cases
 STALE_MAX_AGE_HOURS = 48
 MAX_JUDGE_ATTEMPTS = 2  # original + 1 regeneration with correction notes
 
@@ -67,6 +69,62 @@ def write_json(path: Path, data: dict, label: str = "published") -> bool:
     except IOError as e:
         print(f"  error: could not write {path}: {e}", file=sys.stderr)
         return False
+
+
+def archive_dan_output(published: dict, archive_dir: Path = ARCHIVE_DIR,
+                       retention_days: int = ARCHIVE_RETENTION_DAYS) -> None:
+    """
+    Save a slim copy of the freshly-published output for continuity memory.
+
+    Writes data/dan_archive/YYYY-MM-DD.json with only {headline, morning_brew,
+    news_digest, generated_at} — date-specific facts (box_scores, schedule,
+    trend_watch) are excluded because they aren't useful for avoiding voice
+    repetition tomorrow.
+
+    Skips on _stale or _fallback content (we don't want fallback phrasing
+    polluting tomorrow's continuity memory).
+
+    Wrapped in try/except — archive failure must NEVER block publishing.
+    """
+    if published.get("_stale") or published.get("_fallback"):
+        print("  archive: skipping (stale or fallback content)")
+        return
+
+    try:
+        gen_at = published.get("generated_at")
+        if gen_at:
+            dt = datetime.fromisoformat(gen_at)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            date_str = dt.astimezone(timezone.utc).date().isoformat()
+        else:
+            date_str = datetime.now(timezone.utc).date().isoformat()
+
+        archive_dir.mkdir(parents=True, exist_ok=True)
+        slim = {
+            "generated_at": gen_at or now_iso(),
+            "headline": published.get("headline", ""),
+            "morning_brew": published.get("morning_brew", []),
+            "news_digest": published.get("news_digest", []),
+        }
+        archive_path = archive_dir / f"{date_str}.json"
+        with open(archive_path, "w") as f:
+            json.dump(slim, f, indent=2)
+        print(f"  archived: {archive_path}")
+
+        # Prune anything older than retention window. Sort by filename
+        # (lexicographic == chronological for ISO dates), keep the last N.
+        all_files = sorted(archive_dir.glob("*.json"), key=lambda p: p.stem)
+        excess = len(all_files) - retention_days
+        if excess > 0:
+            for old in all_files[:excess]:
+                try:
+                    old.unlink()
+                    print(f"  pruned: {old.name}")
+                except Exception as e:
+                    print(f"  warn: could not prune {old.name}: {e}", file=sys.stderr)
+    except Exception as e:
+        print(f"  warn: archive failed ({type(e).__name__}: {e}) — continuing", file=sys.stderr)
 
 
 def publish_fallback(reason: str) -> int:
@@ -209,6 +267,7 @@ def main():
             output = dict(raw_output)
             output["generated_at"] = now_iso()
             write_json(PUBLISHED_OUTPUT_PATH, output, label="output (judge unavailable)")
+            archive_dan_output(output)
             return 0
 
         if exit_code == 0:
@@ -219,6 +278,8 @@ def main():
                 output["_regenerated"] = True
                 output["_regeneration_reason"] = last_flags
             success = write_json(PUBLISHED_OUTPUT_PATH, output)
+            if success:
+                archive_dan_output(output)
             return 0 if success else 1
 
         # FAIL

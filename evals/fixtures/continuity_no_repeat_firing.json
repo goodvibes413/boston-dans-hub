@@ -1,0 +1,118 @@
+{
+  "_fixture_notes": "Regression test for the Continuity rule. Yesterday's morning_brew (in recent_dan_output) led with 'Alex Cora is out' and used the signature phrases 'I respect the run' and 'Hope it works.' Today's rolling_7day shows another Sox loss, the firing is in latest_news because it's still being discussed, but the firing is now ~2 days old. Pass criteria: today's output does NOT lead paragraph 1 with 'Alex Cora is out' (re-introducing the firing as if new), does NOT close any paragraph with 'Hope it works,' and does NOT use 'I respect the run.' Either evolves the take with a callback ('two days into life without Cora,' 'the post-Cora era,' etc.) or shifts focus to a different storyline.",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-04-25",
+        "celtics": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "bruins": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-04-25",
+            "home_team": "Boston Red Sox",
+            "away_team": "Baltimore Orioles",
+            "home_score": 3,
+            "away_score": 7,
+            "result": "Red Sox lost 3-7"
+          },
+          "news": {"articles": []}
+        },
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      },
+      {
+        "date": "2026-04-26",
+        "celtics": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "bruins": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-04-26",
+            "home_team": "Baltimore Orioles",
+            "away_team": "Boston Red Sox",
+            "home_score": 1,
+            "away_score": 17,
+            "result": "Red Sox won 17-1"
+          },
+          "news": {"articles": []}
+        },
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      },
+      {
+        "date": "2026-04-27",
+        "celtics": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "bruins": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-04-27",
+            "home_team": "Baltimore Orioles",
+            "away_team": "Boston Red Sox",
+            "home_score": 5,
+            "away_score": 3,
+            "result": "Red Sox lost 3-5"
+          },
+          "news": {"articles": []}
+        },
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      }
+    ]
+  },
+  "upcoming_schedule": {"games": []},
+  "latest_news": {
+    "articles": [
+      {
+        "team": "redsox",
+        "sport": "MLB",
+        "team_name": "Boston Red Sox",
+        "headline": "What's next for Red Sox after Alex Cora firing?",
+        "description": "Two days after the front office parted ways with manager Alex Cora and his coaching staff, the search for an interim manager continues.",
+        "url": "https://example.com/redsox-cora-aftermath",
+        "published": "2026-04-27T14:00:00Z"
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "redsox": {"past_seasons": [{"year": 2024, "wins": 81, "losses": 81, "result": "Missed playoffs"}]}
+    },
+    "current_season": {
+      "redsox": {
+        "status": "regular_season",
+        "wins": 11,
+        "losses": 18,
+        "win_pct": 0.379,
+        "streak": "L1"
+      }
+    }
+  },
+  "recent_dan_output": [
+    {
+      "date": "2026-04-27",
+      "headline": "Pritchard lights up Philly as the Celtics push for another deep playoff run",
+      "morning_brew": [
+        "Alex Cora is out, along with his coaching staff. An 11-17 record was the breaking point for ownership. I respect the run, particularly that 2018 championship, but this team needed a jolt and the front office finally pulled the trigger. Hope it works.",
+        "The club responded with a 5-3 win on the road against the Orioles, led by another Willson Contreras home run.",
+        "Bruins back at the Garden tonight, looking to even the series."
+      ],
+      "news_digest": [
+        {"headline": "What's next for Alex Cora after being fired by Red Sox?", "url": "https://example.com/cora", "dans_take": "Alex Cora is out and it was a long time coming."}
+      ]
+    },
+    {
+      "date": "2026-04-26",
+      "headline": "Cora is out at Fenway as the Patriots reload during the draft",
+      "morning_brew": [
+        "Alex Cora is out, along with his staff. Ten wins and seventeen losses was the breaking point. I respect the run, especially that 2018 title that felt like a juggernaut, but this team needed a jolt and ownership finally pulled the trigger. Hope it works.",
+        "Naturally the bats decide to show up right as the manager gets his walking papers. Seventeen runs on seventeen hits against the Orioles is a joke.",
+        "Patriots draft recap time. Round 1, pick 28: Caleb Lomu, OT out of Utah. Drake Maye needed better protection all year. Love it, glaring need addressed."
+      ],
+      "news_digest": [
+        {"headline": "What's next for Alex Cora after being fired by Red Sox?", "url": "https://example.com/cora", "dans_take": "It is a massive shakeup for the staff, and now we wait to see who takes the reins."}
+      ]
+    }
+  ]
+}
