@@ -1,96 +1,90 @@
 {
-  "headline": "Celtics crush Philly while Bruins collapse and Red Sox find new life",
+  "headline": "Ranger Suarez dominates as the Red Sox finally find a winning rhythm",
   "morning_brew": [
-    "The C's are one win away from moving on after a 128-96 clinic in Philly. Jayson Tatum was doing it all with thirty points and eleven assists, but the real story was Payton Pritchard. The kid was unconscious from deep, hitting six threes on his way to thirty-two points. Spoiling Joel Embiid's return like that is exactly what this team needed to do. We are sitting on eighteen banners and this group looks ready to chase number nineteen.",
-    "Losing 6-1 to the Sabres in a playoff game is absolutely brutal. Jeremy Swayman got hung out to dry and the bench could not even look him in the eye when he got pulled. Marco Sturm is right to call it embarrassing because that effort was non-existent. One more loss and the season is over, which would be a pathetic way to follow up forty-five wins. The energy at the Garden was sucked out early and they never recovered.",
-    "Boston picked up a 5-3 win over the Orioles to start the post-Cora era. Willson Contreras stayed hot with his sixth homer of the year and the bullpen actually held a lead for the starter, Early. It was a solid response after a chaotic weekend in the front office. One win does not fix a 11-17 start, but at least they showed some life on the field. We'll see if they can keep it rolling tonight at the Rogers Centre.",
-    "The draft is in the books and now the rumor mill is spinning about a trade for A.J. Brown. Reflecting on the weekend, the front office focused on protection and defense with picks like Caleb Lomu and Gabe Jacas, but adding a true number one receiver would change everything for Drake Maye. Eight wins last season was an improvement, but this city expects a return to those dynasty years. If they can pull off a move for a star receiver, the rebuild gets a massive boost."
+    "Ranger Suarez just put on a clinic in Toronto. Eight innings of one-hit ball with ten strikeouts is exactly the kind of dominance we have been waiting to see from this rotation. The bats did enough to support him with five runs, including a solo shot from Carlos Narvaez to help secure the 5-0 shutout. That is three wins in a row for this group, with the last two coming under interim manager Chad Tracy. It is a small sample, but the energy around this team feels a lot different than it did a week ago.",
+    "The news out of the NHL is getting tense for the hometown crowd. Reports are swirling that the Sabres are close to clinching their series, which puts our B's in a desperate position. After a regular season where they fought for forty-five wins, seeing them on the brink of an early exit is a tough pill to swallow. They need to find a way to tighten up the defense and extend this season, or we are looking at a very long and quiet summer on Causeway Street.",
+    "Celtics fans are buckled in for the long haul as the Eastern Conference playoff takeaways start to take shape. It is that time of year where every possession feels like a battle, and the intensity in the Garden is only going to ramp up from here. Meanwhile, the Patriots are shifting focus to the roster's future with the Friday deadline for fifth-year options on the 2023 first-round class. The draft might be in the books, but the front office still has plenty of work to do to improve on last year."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Payton Pritchard",
-      "trend": "Exploded for 32 points including six 3-pointers off the bench.",
-      "dans_take": "The kid is playing out of his mind and giving this second unit exactly what they need."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Jeremy Swayman",
-      "trend": "Allowed four goals in the first period and was pulled in the third.",
-      "dans_take": "He had zero help from the defense but you cannot give up four in the first period of a playoff game."
+      "player": "Ranger Suarez",
+      "trend": "Fired eight dominant innings with ten strikeouts and only one hit allowed.",
+      "dans_take": "Absolutely lights out performance that saved the bullpen and kept the winning streak alive."
     },
     {
       "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Hit his sixth home run of the year and his second in as many games.",
-      "dans_take": "He is the only guy in this lineup consistently doing his job right now."
+      "player": "Wilyer Abreu",
+      "trend": "Collected two hits and an RBI in the shutout win over Toronto.",
+      "dans_take": "The kid is seeing the ball well right now and providing much-needed stability in the lineup."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Greg Weissert",
+      "trend": "Closed out the ninth inning to preserve the two-hit shutout.",
+      "dans_take": "He did his job and kept the door shut after Suarez handed him a gem."
     }
   ],
   "news_digest": [
     {
-      "headline": "Celtics spoil Embiid's return, take 3-1 series lead",
-      "url": "http://www.espn.com/nba/recap?gameId=401869406",
-      "dans_take": "Putting the 76ers on the brink of elimination in their own building is a beautiful thing."
+      "headline": "Su\u00e1rez fires 8 dominant innings as Red Sox blank Blue Jays 5-0",
+      "url": "http://www.espn.com/mlb/recap?gameId=401815110",
+      "dans_take": "Ranger Suarez was a beast on the mound and the bats finally gave him some breathing room."
     },
     {
-      "headline": "Bruins on the brink of elimination after blowout loss to Sabres",
-      "url": "https://www.espn.com/nhl/story/_/id/48604001/embarrassed-bruins-brink-playoff-elimination-blowout-loss-sabres",
-      "dans_take": "Sturm called it embarrassing and he is being kind because that was a total no-show."
+      "headline": "NFL fifth-year option tracker: 2023 first-round draft class",
+      "url": "https://www.espn.com/nfl/story/_/id/48358999/fifth-year-option-tracker-nfl-players-2023-first-round-draft-class",
+      "dans_take": "The clock is ticking for the front office to make some big decisions on these rookie contracts."
     },
     {
-      "headline": "What could the Patriots trade for receiver A.J. Brown?",
-      "url": "https://www.espn.com/nfl/story/_/id/48592782/new-england-patriots-aj-brown-trade-compensation-eagles-2026-nfl-draft-recap",
-      "dans_take": "If this trade actually happens, it would be the biggest move this team has made in years."
+      "headline": "Stanley Cup odds: Sabres close to clinching their series",
+      "url": "https://www.espn.com/espn/betting/story/_/id/44686270/2026-nhl-stanley-cup-playoffs-championship-odds",
+      "dans_take": "The B's are in a real hole and they need to find an answer before it is too late."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Philadelphia 76ers",
-      "away_team": "Boston Celtics",
-      "home_score": 96,
-      "away_score": 128,
-      "game_date": "2026-04-26",
-      "played": true,
+      "home_team": "Boston Celtics",
+      "away_team": "Philadelphia 76ers",
+      "home_score": 0,
+      "away_score": 0,
+      "game_date": "2026-04-27",
+      "played": false,
       "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": 1,
-      "away_score": 6,
-      "game_date": "2026-04-26",
-      "played": true,
+      "home_team": "Buffalo Sabres",
+      "away_team": "Boston Bruins",
+      "home_score": 0,
+      "away_score": 0,
+      "game_date": "2026-04-27",
+      "played": false,
       "season_type": "playoff"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": "Baltimore Orioles",
+      "home_team": "Toronto Blue Jays",
       "away_team": "Boston Red Sox",
-      "home_score": 3,
+      "home_score": 0,
       "away_score": 5,
-      "game_date": "2026-04-26",
+      "game_date": "2026-04-27",
       "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
+      "home_team": "New England Patriots",
+      "away_team": "Unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-04-26",
+      "game_date": "2026-04-27",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-04-27",
-      "matchup": "Boston Red Sox at Toronto Blue Jays",
-      "time_et": "7:07 PM ET"
-    },
     {
       "date": "2026-04-28",
       "matchup": "Philadelphia 76ers at Boston Celtics",
@@ -150,7 +144,20 @@
       "date": "2026-05-04",
       "matchup": "Boston Red Sox at Detroit Tigers",
       "time_et": "6:40 PM ET"
+    },
+    {
+      "date": "2026-05-05",
+      "matchup": "Boston Red Sox at Detroit Tigers",
+      "time_et": "6:40 PM ET"
     }
   ],
-  "generated_at": "2026-04-27T10:12:14.123230+00:00"
+  "generated_at": "2026-04-28T10:22:52.450219+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
+    "Fabricated playoff matchup: The claim that the Celtics are playing the 76ers is not present in SOURCE_DATA.",
+    "Fabricated series status: The claim that 'Philadelphia is down in the series' is not present in SOURCE_DATA.",
+    "Fabricated playoff matchup: The claim that the Bruins are playing the Sabres is not present in SOURCE_DATA.",
+    "Fabricated series status: The claim that the Bruins are 'facing elimination' is not present in SOURCE_DATA.",
+    "Fabricated schedule: The schedule provided in the content (Celtics vs 76ers, Bruins vs Sabres) is not present in SOURCE_DATA."
+  ]
 }
