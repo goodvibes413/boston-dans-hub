@@ -1,45 +1,45 @@
 {
-  "headline": "Ranger Suarez dominates as the Red Sox finally find a winning rhythm",
+  "headline": "Pasta saves the Bruins while the Celtics collapse in a brutal Game 5",
   "morning_brew": [
-    "Ranger Suarez just put on a clinic in Toronto. Eight innings of one-hit ball with ten strikeouts is exactly the kind of dominance we have been waiting to see from this rotation. The bats did enough to support him with five runs, including a solo shot from Carlos Narvaez to help secure the 5-0 shutout. That is three wins in a row for this group, with the last two coming under interim manager Chad Tracy. It is a small sample, but the energy around this team feels a lot different than it did a week ago.",
-    "The news out of the NHL is getting tense for the hometown crowd. Reports are swirling that the Sabres are close to clinching their series, which puts our B's in a desperate position. After a regular season where they fought for forty-five wins, seeing them on the brink of an early exit is a tough pill to swallow. They need to find a way to tighten up the defense and extend this season, or we are looking at a very long and quiet summer on Causeway Street.",
-    "Celtics fans are buckled in for the long haul as the Eastern Conference playoff takeaways start to take shape. It is that time of year where every possession feels like a battle, and the intensity in the Garden is only going to ramp up from here. Meanwhile, the Patriots are shifting focus to the roster's future with the Friday deadline for fifth-year options on the 2023 first-round class. The draft might be in the books, but the front office still has plenty of work to do to improve on last year."
+    "The Celtics looked like they were stuck in neutral in that fourth quarter against Philly. Scoring only eleven points in the final frame of a playoff game is absolutely brutal, especially when you had a chance to close it out at the Garden. Joel Embiid put up thirty-three points to keep the 76ers alive, and now we are heading back to their barn for the next one. Jayson Tatum had twenty-four points and sixteen boards, but the offense just vanished when it mattered most. We are chasing Banner 19, but playing like that makes it feel a long way off.",
+    "Thank goodness for David Pastrnak and Jeremy Swayman. The Bruins were on the ropes in Buffalo, but they clawed out a 2-1 overtime win to force this thing back to Boston. Jeremy Swayman was rock-solid with twenty-four saves, and Pastrnak finally found the back of the net when it mattered most in the extra period. This team has shown some heart after that embarrassing loss earlier in the week. We have six Cups in our history, and this group needs to keep that grit if they want to complete the comeback on Friday night.",
+    "Out in Toronto, the bats decided to take the night off. Four hits in nine innings is a recipe for a 3-0 loss every single time. Tolle struggled to find the zone and could not even make it through five innings, which is a tough way to follow up the momentum we had earlier in the week. The rotation is still a massive question mark, and the lineup is as inconsistent as the traffic on the Pike. We are 12-18 and need a major turnaround before we return to Fenway Park for the next homestand."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Ranger Suarez",
-      "trend": "Fired eight dominant innings with ten strikeouts and only one hit allowed.",
-      "dans_take": "Absolutely lights out performance that saved the bullpen and kept the winning streak alive."
+      "player": "David Pastrnak",
+      "trend": "Scored the overtime winner to keep the season alive.",
+      "dans_take": "That is exactly why you pay the man the big bucks, he comes through when it is all on the line."
     },
     {
       "category": "Heater",
-      "player": "Wilyer Abreu",
-      "trend": "Collected two hits and an RBI in the shutout win over Toronto.",
-      "dans_take": "The kid is seeing the ball well right now and providing much-needed stability in the lineup."
+      "player": "Jeremy Swayman",
+      "trend": "Stopped twenty-four of twenty-five shots in a must-win Game 5.",
+      "dans_take": "He was the only reason the B's had a chance to even get to overtime."
     },
     {
-      "category": "Bullpen Watch",
-      "player": "Greg Weissert",
-      "trend": "Closed out the ninth inning to preserve the two-hit shutout.",
-      "dans_take": "He did his job and kept the door shut after Suarez handed him a gem."
+      "category": "Cold Snap",
+      "player": "Derrick White",
+      "trend": "Finished with six points on 2-8 shooting and went 0-4 from deep.",
+      "dans_take": "The offense was a total no-show in the fourth and we need him to be way more aggressive."
     }
   ],
   "news_digest": [
     {
-      "headline": "Su\u00e1rez fires 8 dominant innings as Red Sox blank Blue Jays 5-0",
-      "url": "http://www.espn.com/mlb/recap?gameId=401815110",
-      "dans_take": "Ranger Suarez was a beast on the mound and the bats finally gave him some breathing room."
+      "headline": "Joel Embiid's 33 downs Celtics in Game 5 to keep 76ers alive",
+      "url": "https://www.espn.com/nba/story/_/id/48623318/joel-embiid-33-downs-celtics-game-5-keep-76ers-alive",
+      "dans_take": "Embiid is a problem we have to solve before the next game in Philly."
     },
     {
-      "headline": "NFL fifth-year option tracker: 2023 first-round draft class",
-      "url": "https://www.espn.com/nfl/story/_/id/48358999/fifth-year-option-tracker-nfl-players-2023-first-round-draft-class",
-      "dans_take": "The clock is ticking for the front office to make some big decisions on these rookie contracts."
+      "headline": "Bruins top Sabres in OT as Swayman, Pastrnak prove clutch",
+      "url": "https://www.espn.com/nhl/story/_/id/48624702/bruins-top-sabres-ot-swayman-pastrnak-prove-clutch",
+      "dans_take": "Pasta finally came through when our backs were against the wall."
     },
     {
-      "headline": "Stanley Cup odds: Sabres close to clinching their series",
-      "url": "https://www.espn.com/espn/betting/story/_/id/44686270/2026-nhl-stanley-cup-playoffs-championship-odds",
-      "dans_take": "The B's are in a real hole and they need to find an answer before it is too late."
+      "headline": "Patriots players support Vrabel, stay focused on football",
+      "url": "https://www.espn.com/nfl/story/_/id/48620091/patriots-players-support-vrabel-stay-focused-football",
+      "dans_take": "The guys are sticking by their coach while the noise gets louder outside."
     }
   ],
   "box_scores": {
@@ -47,59 +47,44 @@
       "sport": "NBA",
       "home_team": "Boston Celtics",
       "away_team": "Philadelphia 76ers",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-04-27",
-      "played": false,
+      "home_score": 97,
+      "away_score": 113,
+      "game_date": "2026-04-28",
+      "played": true,
       "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
       "home_team": "Buffalo Sabres",
       "away_team": "Boston Bruins",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-04-27",
-      "played": false,
+      "home_score": 1,
+      "away_score": 2,
+      "game_date": "2026-04-28",
+      "played": true,
       "season_type": "playoff"
     },
     "redsox": {
       "sport": "MLB",
       "home_team": "Toronto Blue Jays",
       "away_team": "Boston Red Sox",
-      "home_score": 0,
-      "away_score": 5,
-      "game_date": "2026-04-27",
+      "home_score": 3,
+      "away_score": 0,
+      "game_date": "2026-04-28",
       "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Unknown",
+      "home_team": null,
+      "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-04-27",
+      "game_date": "2026-04-28",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-04-28",
-      "matchup": "Philadelphia 76ers at Boston Celtics",
-      "time_et": "7:00 PM ET"
-    },
-    {
-      "date": "2026-04-28",
-      "matchup": "Boston Red Sox at Toronto Blue Jays",
-      "time_et": "7:07 PM ET"
-    },
-    {
-      "date": "2026-04-28",
-      "matchup": "Boston Bruins at Buffalo Sabres",
-      "time_et": "7:30 PM ET"
-    },
     {
       "date": "2026-04-29",
       "matchup": "Boston Red Sox at Toronto Blue Jays",
@@ -108,17 +93,17 @@
     {
       "date": "2026-04-30",
       "matchup": "Boston Celtics at Philadelphia 76ers",
-      "time_et": "12:00 AM ET"
-    },
-    {
-      "date": "2026-05-01",
-      "matchup": "Buffalo Sabres at Boston Bruins",
-      "time_et": "12:00 PM ET"
+      "time_et": "TBD"
     },
     {
       "date": "2026-05-01",
       "matchup": "Houston Astros at Boston Red Sox",
       "time_et": "7:10 PM ET"
+    },
+    {
+      "date": "2026-05-01",
+      "matchup": "Buffalo Sabres at Boston Bruins",
+      "time_et": "7:30 PM ET"
     },
     {
       "date": "2026-05-02",
@@ -149,15 +134,12 @@
       "date": "2026-05-05",
       "matchup": "Boston Red Sox at Detroit Tigers",
       "time_et": "6:40 PM ET"
+    },
+    {
+      "date": "2026-05-06",
+      "matchup": "Boston Red Sox at Detroit Tigers",
+      "time_et": "6:40 PM ET"
     }
   ],
-  "generated_at": "2026-04-28T10:22:52.450219+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "Fabricated playoff matchup: The claim that the Celtics are playing the 76ers is not present in SOURCE_DATA.",
-    "Fabricated series status: The claim that 'Philadelphia is down in the series' is not present in SOURCE_DATA.",
-    "Fabricated playoff matchup: The claim that the Bruins are playing the Sabres is not present in SOURCE_DATA.",
-    "Fabricated series status: The claim that the Bruins are 'facing elimination' is not present in SOURCE_DATA.",
-    "Fabricated schedule: The schedule provided in the content (Celtics vs 76ers, Bruins vs Sabres) is not present in SOURCE_DATA."
-  ]
+  "generated_at": "2026-04-29T10:11:40.837808+00:00"
 }
