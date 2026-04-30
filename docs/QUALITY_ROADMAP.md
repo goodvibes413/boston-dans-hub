@@ -97,6 +97,8 @@ Dan's prompt receives this and is told: *"Echo each line verbatim, then add one 
 
 **Continuity memory** (shipped 2026-04-27) — `scripts/publish.py` now writes a slim copy of each fresh publish to `data/dan_archive/YYYY-MM-DD.json` (committed via gitignore exception, 7-day rolling retention). `scripts/generate_rant.py` loads the last 3 archives and injects them as a `RECENT_DAN_OUTPUT` block in the prompt. The Continuity rule in `prompts/boston_dan_system.txt` instructs Dan to evolve takes rather than re-introduce stories, and to vary signature phrasing across consecutive days. Trigger: 4-26 and 4-27 outputs both led with "Alex Cora is out, along with his staff" + "I respect the run" + "Hope it works" — same template, different day. Feature address: see Continuity rule in `prompts/boston_dan_system.txt`. Regression coverage: `evals/fixtures/continuity_no_repeat_firing.json`.
 
+**Event freshness / draft decay** (shipped 2026-04-30) — `scripts/fetch_draft.py` now persists `last_active_date` whenever ESPN returns Boston picks, preserving it across runs even when later fetches return empty. `scripts/generate_rant.py::compute_draft_freshness()` maps that date plus today's date to one of four states (active / fresh / aging / stale) and injects the DRAFT_PICKS block in three different shapes per state — full annotated for active+fresh, slim "do not recap" block for aging, omitted entirely for stale. Both `generate_rant.py` and `safety_judge.py` now also prepend `TODAY: YYYY-MM-DD` to the user message so the model has an explicit temporal anchor. The Major Milestones section of `boston_dan_system.txt` has matching freshness-aware coverage rules. Trigger: 4-30 output was still leading with "Patriots draft recap time" five days post-draft; the news cycle had clearly moved on. Regression coverage: `evals/fixtures/milestone_draft_aging_5days.json` (must NOT recap), `evals/fixtures/milestone_draft_active.json` (must recap every pick).
+
 **`scripts/build_causation_notes.py`** — given LATEST_NEWS timestamps + rolling_7day game start times, emits:
 ```
 CAUSATION_NOTES: Cora firing announced at 10:30 AM ET, AFTER the 17-1 win (game ended ~10:00 PM ET previous day). Safe to say "after the game."
@@ -158,7 +160,7 @@ Until any of these trip, Tiers 1–4 are cheaper and faster.
 | Tier | Description | Status | Effort | Cost |
 |---|---|---|---|---|
 | 1 | Eval-driven prompt iteration (regression fixtures + gating) | **Pursuing** | ~half day | $0 |
-| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; draft & causation pending) | **In progress** | 1–2 days | $0 |
+| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; event freshness / draft decay **shipped 2026-04-30**; causation pending) | **In progress** | 1–2 days | $0 |
 | 3 | Voice/quality rubric expansion in `safety_judge.py` | **Pursuing** | 2–3 days | +0–1 calls/day |
 | 4 | Richer source data (deeper history, caller archetypes, grudge book) | **Considering** | Ongoing | $0 |
 | Multi-agent | 2+ Gemini calls collaborating on generation | **Conditional** | — | Breaks $0 |

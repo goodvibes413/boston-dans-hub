@@ -1,0 +1,75 @@
+{
+  "_fixture_notes": "Regression for the freshness=active path. The 2026 NFL Draft is happening RIGHT NOW. boston_drafts has a non-empty active_drafts with 9 Patriots picks across all 7 rounds. Today is 2026-04-25 (the same day as last_active_date). Pass criteria: morning_brew names EVERY pick individually. Rounds 1-3 each get round + overall pick + full name + position + college + a rationale sentence + a grade in Dan's voice. Rounds 4-7 each get a one-line read with round, pick, name, position, college. No collapsing. Forbidden: 'and several depth pieces', 'rounded out the class with', anything that lumps multiple picks into one sentence. This is the regression test that the freshness rule still permits the full mandate when the draft is live.",
+  "today": "2026-04-25",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-04-23",
+        "celtics": {"boxscore": {"played": false, "season_type": "playoff"}, "news": {"articles": []}},
+        "bruins":  {"boxscore": {"played": false, "season_type": "playoff"}, "news": {"articles": []}},
+        "redsox":  {"boxscore": {"played": false, "season_type": "regular"}, "news": {"articles": []}},
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      },
+      {
+        "date": "2026-04-24",
+        "celtics": {"boxscore": {"played": false, "season_type": "playoff"}, "news": {"articles": []}},
+        "bruins":  {"boxscore": {"played": false, "season_type": "playoff"}, "news": {"articles": []}},
+        "redsox":  {"boxscore": {"played": false, "season_type": "regular"}, "news": {"articles": []}},
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      },
+      {
+        "date": "2026-04-25",
+        "celtics": {"boxscore": {"played": false, "season_type": "playoff"}, "news": {"articles": []}},
+        "bruins":  {"boxscore": {"played": false, "season_type": "playoff"}, "news": {"articles": []}},
+        "redsox":  {"boxscore": {"played": false, "season_type": "regular"}, "news": {"articles": []}},
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      }
+    ]
+  },
+  "upcoming_schedule": {"games": []},
+  "latest_news": {
+    "articles": [
+      {
+        "team": "patriots", "sport": "NFL", "team_name": "New England Patriots",
+        "headline": "Patriots take Caleb Lomu in the first round to protect Drake Maye",
+        "description": "New England addresses its biggest 2025 weakness by selecting the Utah offensive tackle at pick 28.",
+        "url": "https://example.com/pats-lomu",
+        "published": "2026-04-25T01:30:00Z"
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "patriots": {"past_seasons": [{"year": 2025, "wins": 8, "losses": 9, "result": "Missed playoffs"}]}
+    },
+    "current_season": {
+      "patriots": {"status": "offseason", "last_season_wins": 8, "last_season_losses": 9, "last_season_summary": "8-9"},
+      "redsox":   {"status": "regular_season", "wins": 11, "losses": 17, "win_pct": 0.393, "streak": "W1"},
+      "celtics":  {"status": "in_playoffs", "regular_season_summary": "60-22", "playoff_seed": 1},
+      "bruins":   {"status": "in_playoffs", "regular_season_summary": "47-25-10", "playoff_seed": 4}
+    }
+  },
+  "boston_drafts": {
+    "generated_at": "2026-04-25T10:00:00+00:00",
+    "last_active_date": "2026-04-25",
+    "active_drafts": [
+      {
+        "sport": "NFL",
+        "year": 2026,
+        "team": "patriots",
+        "picks": [
+          {"round": 1, "pick_overall": 28,  "player_name": "Caleb Lomu",          "position": "OT",   "college": "Utah"},
+          {"round": 2, "pick_overall": 55,  "player_name": "Gabe Jacas",          "position": "EDGE", "college": "Illinois"},
+          {"round": 3, "pick_overall": 95,  "player_name": "Eli Raridon",         "position": "TE",   "college": "Notre Dame"},
+          {"round": 5, "pick_overall": 171, "player_name": "Karon Prunty",        "position": "CB",   "college": "Wake Forest"},
+          {"round": 6, "pick_overall": 196, "player_name": "Dametrious Crownover","position": "OT",   "college": "Texas A&M"},
+          {"round": 6, "pick_overall": 212, "player_name": "Namdi Obiazor",       "position": "LB",   "college": "TCU"},
+          {"round": 7, "pick_overall": 234, "player_name": "Behren Morton",       "position": "QB",   "college": "Texas Tech"},
+          {"round": 7, "pick_overall": 245, "player_name": "Jam Miller",          "position": "RB",   "college": "Alabama"},
+          {"round": 7, "pick_overall": 247, "player_name": "Quintayvious Hutchins","position": "EDGE","college": "Boston College"}
+        ]
+      }
+    ]
+  },
+  "recent_dan_output": []
+}
