@@ -1,45 +1,45 @@
 {
-  "headline": "Pasta saves the Bruins while the Celtics collapse in a brutal Game 5",
+  "headline": "Red Sox hammered in Toronto while Patriots overhaul the roster",
   "morning_brew": [
-    "The Celtics looked like they were stuck in neutral in that fourth quarter against Philly. Scoring only eleven points in the final frame of a playoff game is absolutely brutal, especially when you had a chance to close it out at the Garden. Joel Embiid put up thirty-three points to keep the 76ers alive, and now we are heading back to their barn for the next one. Jayson Tatum had twenty-four points and sixteen boards, but the offense just vanished when it mattered most. We are chasing Banner 19, but playing like that makes it feel a long way off.",
-    "Thank goodness for David Pastrnak and Jeremy Swayman. The Bruins were on the ropes in Buffalo, but they clawed out a 2-1 overtime win to force this thing back to Boston. Jeremy Swayman was rock-solid with twenty-four saves, and Pastrnak finally found the back of the net when it mattered most in the extra period. This team has shown some heart after that embarrassing loss earlier in the week. We have six Cups in our history, and this group needs to keep that grit if they want to complete the comeback on Friday night.",
-    "Out in Toronto, the bats decided to take the night off. Four hits in nine innings is a recipe for a 3-0 loss every single time. Tolle struggled to find the zone and could not even make it through five innings, which is a tough way to follow up the momentum we had earlier in the week. The rotation is still a massive question mark, and the lineup is as inconsistent as the traffic on the Pike. We are 12-18 and need a major turnaround before we return to Fenway Park for the next homestand."
+    "The Sox got absolutely hammered in Toronto, losing 8-1. Brayan Bello could not even get through four innings, giving up four earned runs. That is a brutal outing when you need a spark and some consistency from the rotation. We are 12-19 and the season is slipping away fast. Alex Cora sent an email to the organization after his firing last Saturday, but words do not fix a sub-.400 winning percentage. This team needs a major jolt to get back to the nine titles we have in the trophy case.",
+    "The draft is where the future is built, and the Patriots were busy addressing a lot of holes. R1.28: Caleb Lomu, OT out of Utah. Drake Maye needed better protection all year. Love it, glaring need addressed. R2.55: Gabe Jacas, EDGE out of Illinois. The defense needs a boost on the outside. Head-scratcher, plenty of talent still on the board. R3.95: Eli Raridon, TE out of Notre Dame. We needed another target in the passing game. About time, filling an obvious gap. R5.171: Karon Prunty, CB out of Wake Forest, depth at corner. R6.196: Dametrious Crownover, OT out of Texas A&M, more protection for the pocket. R6.212: Namdi Obiazor, LB out of TCU, special teams or depth. R7.234: Behren Morton, QB out of Texas Tech, a developmental arm. R7.245: Jam Miller, RB out of Alabama, backfield depth. R7.247: Quintayvious Hutchins, EDGE out of Boston College, a local kid to round out the class.",
+    "The C's are heading to Philly tonight with a chance to move on. Jayson Tatum and the crew are 56-26 and need to show that championship grit that defines eighteen banners in the Garden. Meanwhile, the B's are in a massive hole. Buffalo is looking to clinch the series in the next one. After winning forty-five games this year, seeing them on the brink of elimination is tough. We have six Cups in our history, but that does not mean anything if you cannot finish a series. They need a huge effort to keep the dream of another parade through the Hub alive."
   ],
   "trend_watch": [
     {
-      "category": "Heater",
-      "player": "David Pastrnak",
-      "trend": "Scored the overtime winner to keep the season alive.",
-      "dans_take": "That is exactly why you pay the man the big bucks, he comes through when it is all on the line."
-    },
-    {
-      "category": "Heater",
-      "player": "Jeremy Swayman",
-      "trend": "Stopped twenty-four of twenty-five shots in a must-win Game 5.",
-      "dans_take": "He was the only reason the B's had a chance to even get to overtime."
-    },
-    {
       "category": "Cold Snap",
-      "player": "Derrick White",
-      "trend": "Finished with six points on 2-8 shooting and went 0-4 from deep.",
-      "dans_take": "The offense was a total no-show in the fourth and we need him to be way more aggressive."
+      "player": "Brayan Bello",
+      "trend": "Gave up four earned runs in 3.2 innings",
+      "dans_take": "Bello needs to find his command or this rotation is going to be a total disaster."
+    },
+    {
+      "category": "Heater",
+      "player": "Willson Contreras",
+      "trend": "Collected two hits and a home run in Toronto",
+      "dans_take": "Contreras is one of the few guys actually showing some life for the Sox right now."
+    },
+    {
+      "category": "Draft Watch",
+      "player": "Caleb Lomu",
+      "trend": "Selected 28th overall in the first round",
+      "dans_take": "Protecting the quarterback is the only way this rebuild actually works for the long haul."
     }
   ],
   "news_digest": [
     {
-      "headline": "Joel Embiid's 33 downs Celtics in Game 5 to keep 76ers alive",
-      "url": "https://www.espn.com/nba/story/_/id/48623318/joel-embiid-33-downs-celtics-game-5-keep-76ers-alive",
-      "dans_take": "Embiid is a problem we have to solve before the next game in Philly."
+      "headline": "In email, thankful Alex Cora confident in Red Sox's future",
+      "url": "https://www.espn.com/mlb/story/_/id/48631998/in-email-thankful-alex-cora-confident-red-sox-future",
+      "dans_take": "It is nice to say goodbye, but we need to see some real results on the field at Fenway."
     },
     {
-      "headline": "Bruins top Sabres in OT as Swayman, Pastrnak prove clutch",
-      "url": "https://www.espn.com/nhl/story/_/id/48624702/bruins-top-sabres-ot-swayman-pastrnak-prove-clutch",
-      "dans_take": "Pasta finally came through when our backs were against the wall."
+      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
+      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
+      "dans_take": "The robots are taking over the game, but maybe they can help the Sox get a call for once."
     },
     {
       "headline": "Patriots players support Vrabel, stay focused on football",
       "url": "https://www.espn.com/nfl/story/_/id/48620091/patriots-players-support-vrabel-stay-focused-football",
-      "dans_take": "The guys are sticking by their coach while the noise gets louder outside."
+      "dans_take": "The locker room is sticking by the coach while the noise keeps getting louder."
     }
   ],
   "box_scores": {
@@ -47,49 +47,44 @@
       "sport": "NBA",
       "home_team": "Boston Celtics",
       "away_team": "Philadelphia 76ers",
-      "home_score": 97,
-      "away_score": 113,
-      "game_date": "2026-04-28",
-      "played": true,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-29",
+      "played": false,
       "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Buffalo Sabres",
-      "away_team": "Boston Bruins",
-      "home_score": 1,
-      "away_score": 2,
-      "game_date": "2026-04-28",
-      "played": true,
+      "home_team": "Boston Bruins",
+      "away_team": "Buffalo Sabres",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-29",
+      "played": false,
       "season_type": "playoff"
     },
     "redsox": {
       "sport": "MLB",
       "home_team": "Toronto Blue Jays",
       "away_team": "Boston Red Sox",
-      "home_score": 3,
-      "away_score": 0,
-      "game_date": "2026-04-28",
+      "home_score": 8,
+      "away_score": 1,
+      "game_date": "2026-04-29",
       "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": null,
+      "home_team": "New England Patriots",
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-04-28",
+      "game_date": "2026-04-29",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-04-29",
-      "matchup": "Boston Red Sox at Toronto Blue Jays",
-      "time_et": "3:07 PM ET"
-    },
     {
       "date": "2026-04-30",
       "matchup": "Boston Celtics at Philadelphia 76ers",
@@ -139,7 +134,18 @@
       "date": "2026-05-06",
       "matchup": "Boston Red Sox at Detroit Tigers",
       "time_et": "6:40 PM ET"
+    },
+    {
+      "date": "2026-05-07",
+      "matchup": "Tampa Bay Rays at Boston Red Sox",
+      "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-04-29T10:11:40.837808+00:00"
+  "generated_at": "2026-04-30T10:14:32.973460+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
+    "Profanity ('damn')",
+    "Fabricated statistic/event ('Game 5' collapse for Celtics is not in SOURCE_DATA)",
+    "Fabricated information (Interim manager 'Chad Tracy' is not in SOURCE_DATA)"
+  ]
 }
