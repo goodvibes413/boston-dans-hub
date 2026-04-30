@@ -147,5 +147,8 @@
     "Profanity ('damn')",
     "Fabricated statistic/event ('Game 5' collapse for Celtics is not in SOURCE_DATA)",
     "Fabricated information (Interim manager 'Chad Tracy' is not in SOURCE_DATA)"
-  ]
+  ],
+  "_stale": true,
+  "_stale_reason": "safety judge FAILed after 2 attempts: Fabricated game outcome (Bruins overtime win not present in SOURCE_DATA)",
+  "_stale_age_hours": 5.0
 }
