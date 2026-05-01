@@ -22,7 +22,7 @@ import json
 import os
 import sys
 import time
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -40,15 +40,6 @@ DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 # Continuity memory: number of past Dan outputs to inject into the prompt.
 # 3 covers most news cycles without bloating tokens.
 DEFAULT_MEMORY_DAYS = 3
-
-# Draft freshness windows (days since the draft was last "active" — i.e. ESPN
-# was returning Boston picks). Tunable; matches Boston sports talk-radio cycles.
-#   active     active_drafts non-empty (draft is happening RIGHT NOW)
-#   fresh      0–DRAFT_FRESH_DAYS days post — full recap allowed
-#   aging      DRAFT_FRESH_DAYS+1 to DRAFT_AGING_DAYS — slim block, news-only mentions
-#   stale      >DRAFT_AGING_DAYS — DRAFT_PICKS not injected at all
-DRAFT_FRESH_DAYS = 2
-DRAFT_AGING_DAYS = 7
 
 TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
 
@@ -385,53 +376,8 @@ def load_recent_dan_output(archive_dir: Path, days: int = DEFAULT_MEMORY_DAYS) -
     return entries
 
 
-def compute_draft_freshness(draft_picks: dict | None, today: date) -> tuple[str | None, int | None]:
-    """
-    Classify how fresh the draft news cycle is, so generate_rant.py can decide
-    how much DRAFT_PICKS context to hand Dan.
-
-    Returns (freshness, days_since_active):
-      ("active",  0)        active_drafts non-empty (happening right now)
-      ("fresh",   N)        last_active_date within DRAFT_FRESH_DAYS
-      ("aging",   N)        last_active_date within DRAFT_AGING_DAYS
-      ("stale",   N)        last_active_date older than DRAFT_AGING_DAYS
-      (None,      None)     no draft to discuss (no picks, no last_active_date,
-                            or unparseable date) — caller should omit DRAFT_PICKS.
-    """
-    if not draft_picks:
-        return None, None
-
-    if draft_picks.get("active_drafts"):
-        return "active", 0
-
-    last_active = draft_picks.get("last_active_date")
-    if not last_active:
-        return None, None  # never been active in tracked memory
-
-    try:
-        # Accept either bare date "2026-04-25" or ISO datetime "2026-04-25T..."
-        last_dt = (
-            datetime.fromisoformat(last_active).date()
-            if "T" in last_active
-            else date.fromisoformat(last_active)
-        )
-    except (ValueError, TypeError):
-        return None, None
-
-    days = max(0, (today - last_dt).days)
-    if days <= DRAFT_FRESH_DAYS:
-        return "fresh", days
-    if days <= DRAFT_AGING_DAYS:
-        return "aging", days
-    return "stale", days
-
-
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, today_iso: str | None = None) -> str:
-    if today_iso is None:
-        today_iso = datetime.now(timezone.utc).date().isoformat()
-
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None) -> str:
     message = (
-        f"TODAY: {today_iso}\n\n"
         "Here is the structured data for the last 7 days of Boston sports.\n"
         "Use ONLY the numbers and facts in this data — never invent stats.\n\n"
         "ROLLING_7DAY:\n"
@@ -448,36 +394,11 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
             "prompt for what counts as acceptable callbacks vs. forbidden self-repetition):\n"
             f"{json.dumps(recent_output, indent=2)}\n\n"
         )
-
-    # Freshness-aware DRAFT_PICKS injection. See compute_draft_freshness() and
-    # the Major Milestones section of boston_dan_system.txt for the rules per state.
-    freshness, days_since = compute_draft_freshness(draft_picks, date.fromisoformat(today_iso))
-    if freshness in ("active", "fresh"):
-        annotated = dict(draft_picks)
-        annotated["freshness"] = freshness
-        annotated["days_since_active"] = days_since
+    if draft_picks:
         message += (
             "DRAFT_PICKS:\n"
-            f"{json.dumps(annotated, indent=2)}\n\n"
+            f"{json.dumps(draft_picks, indent=2)}\n\n"
         )
-    elif freshness == "aging":
-        # Slim block: keep player names available for the safety judge's
-        # source-data check, but tell Dan explicitly NOT to recap the draft.
-        slim = {
-            "freshness": "aging",
-            "days_since_active": days_since,
-            "active_drafts": (draft_picks or {}).get("active_drafts", []),
-            "_note": (
-                "Draft is OVER and the news cycle has moved on. "
-                "Do NOT proactively recap picks. Reference a specific draftee "
-                "only if LATEST_NEWS surfaces them by name."
-            ),
-        }
-        message += (
-            "DRAFT_PICKS:\n"
-            f"{json.dumps(slim, indent=2)}\n\n"
-        )
-    # freshness in ("stale", None): omit DRAFT_PICKS entirely.
     message += (
         "SEASON_MEMORY:\n"
         f"{json.dumps(season_memory, indent=2)}\n\n"
@@ -597,11 +518,7 @@ def main():
     recent_output = load_recent_dan_output(archive_dir, memory_days)
     print(f"  archive_dir:    {archive_dir} ({len(recent_output)} prior day(s) loaded)")
 
-    # TODAY_OVERRIDE lets eval fixtures pin "today" to a specific date so
-    # freshness-sensitive scenarios (e.g. 5 days post-draft) stay reproducible
-    # as the real calendar moves forward. Production leaves this unset.
-    today_iso = os.environ.get("TODAY_OVERRIDE") or datetime.now(timezone.utc).date().isoformat()
-    user_message = build_user_message(rolling, schedule, news, season_memory, draft_picks, historical_facts, recent_output, today_iso=today_iso)
+    user_message = build_user_message(rolling, schedule, news, season_memory, draft_picks, historical_facts, recent_output)
 
     # If the safety judge rejected a previous attempt this run, publish.py
     # re-invokes us with CORRECTION_NOTES set. Append the judge's flags to

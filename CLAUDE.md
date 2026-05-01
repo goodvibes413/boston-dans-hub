@@ -435,7 +435,6 @@ Fetched daily by `fetch_draft.py`, which queries ESPN's draft API for all 4 Bost
 ```json
 {
   "generated_at": "2026-04-24T16:30:00+00:00",
-  "last_active_date": "2026-04-24",
   "active_drafts": [
     {
       "sport": "NFL",
@@ -457,34 +456,13 @@ Fetched daily by `fetch_draft.py`, which queries ESPN's draft API for all 4 Bost
 
 **Shape:**
 - `generated_at`: ISO timestamp of fetch
-- `last_active_date`: UTC date string of the most recent run that observed non-empty `active_drafts` (or `null` if a draft has never been observed). Persisted across runs so post-draft freshness can be computed.
 - `active_drafts[]`: array of draft objects, one per Boston team's current draft
 - Each draft object: `sport`, `year`, `team`, `picks[]`
 - Each pick: `round`, `pick_overall`, `player_name`, `position`, `college`
 
-**Usage in prompt:** `generate_rant.py` runs `compute_draft_freshness()` against this file and injects a `DRAFT_PICKS` block conditionally based on the result. See **Event Freshness** below.
+**Usage in prompt:** `generate_rant.py` injects `boston_drafts.json` as a `DRAFT_PICKS` block so Dan can cite player names and positions when discussing draft coverage. The safety judge loads it as `source_data` so player names pass the hallucination check.
 
-**Empty drafts:** When ESPN returns no Boston picks (offseason), `active_drafts` is `[]` but `last_active_date` is preserved from the prior run so freshness can decay correctly.
-
-### Event Freshness — how "seasonal" milestones decay
-
-Some milestones (drafts, trade deadlines, free agency, training camp openers) deserve heavy coverage when they happen, then taper off as the news cycle moves on. Without explicit freshness tracking, "always-on" data fetchers like `fetch_draft.py` would keep handing Dan the same source data forever, and he'd keep recapping a draft that ended a week ago.
-
-**Implementation today** is draft-only:
-
-1. `fetch_draft.py` records `last_active_date` whenever ESPN returns picks. When the next fetch returns empty, the date is preserved (not overwritten).
-2. `scripts/generate_rant.py::compute_draft_freshness()` reads that date against `TODAY` and returns one of:
-   - `("active", 0)` — `active_drafts` is non-empty
-   - `("fresh", N)` — within `DRAFT_FRESH_DAYS` (2)
-   - `("aging", N)` — within `DRAFT_AGING_DAYS` (7)
-   - `("stale", N)` — older than `DRAFT_AGING_DAYS`
-   - `(None, None)` — no draft to discuss
-3. `generate_rant.py` injects DRAFT_PICKS in three different shapes per state: full annotated block for active/fresh, slim block (no picks, just the freshness label and a `_note`) for aging, omitted entirely for stale/absent.
-4. `prompts/boston_dan_system.txt` has matching coverage rules per state in the **Major Milestones** section.
-
-**Generalization for future fetchers:** any new "always-on" milestone fetcher (e.g. a hypothetical `fetch_trade_deadline.py`) should follow the same pattern — persist a `last_active_date`, expose a freshness helper, and add a state-aware rule to the persona. Other milestones today (free agency, conduct stories, firings) come through `LATEST_NEWS` and decay naturally as headlines age out.
-
-**TODAY injection:** `generate_rant.py` and `safety_judge.py` both prepend `TODAY: YYYY-MM-DD` to the user message so the model has an explicit temporal anchor for any timestamped block. Production uses `datetime.now(timezone.utc).date()`. Tests can pin via `TODAY_OVERRIDE` env var (also set by `eval_voice.py` from the fixture's `today` field).
+**Empty drafts:** If no Boston teams are currently drafting (offseason), `active_drafts` is an empty array `[]`.
 
 ### `data/historical_facts.json` (in git — hand-curated)
 
@@ -618,8 +596,6 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `SEASON_CURRENT_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/season_current.json`; override in evals |
 | `DAN_ARCHIVE_PATH` | `generate_rant.py`, `publish.py` | Default: `data/dan_archive`; override in evals to point at fixture-specific archives |
 | `DAN_MEMORY_DAYS` | `generate_rant.py` | Default: `3` (days of past Dan output to inject as continuity memory) |
-| `DRAFT_PICKS_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_drafts.json`; override in evals to point at fixture drafts |
-| `TODAY_OVERRIDE` | `generate_rant.py` | Pins "today" for freshness-sensitive eval fixtures. Production leaves this unset. |
 
 ---
 
@@ -863,7 +839,7 @@ Single-prompt generation is the right shape at our scale and $0 cost ceiling; fu
 | Tier | Description | Status | Effort | Cost |
 |---|---|---|---|---|
 | 1 | Eval-driven prompt iteration (regression fixtures + gating) | **Pursuing** | ~half day | $0 |
-| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; event freshness / draft decay **shipped 2026-04-30**; causation pending) | **In progress** | 1–2 days | $0 |
+| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; draft & causation pending) | **In progress** | 1–2 days | $0 |
 | 3 | Voice/quality rubric expansion in `safety_judge.py` | **Pursuing** | 2–3 days | +0–1 calls/day |
 | 4 | Richer source data (deeper history, caller archetypes, grudge book) | **Considering** | Ongoing | $0 |
 | Multi-agent | 2+ Gemini calls collaborating on generation | **Conditional** | — | Breaks $0 |

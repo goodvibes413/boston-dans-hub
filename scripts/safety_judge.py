@@ -18,7 +18,6 @@ import json
 import os
 import sys
 import time
-from datetime import datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -168,10 +167,8 @@ def main():
         "historical_facts": _safe_load(historical_facts_path),
     }
 
-    today_iso = datetime.now(timezone.utc).date().isoformat()
     full_prompt = (
-        f"TODAY: {today_iso}\n\n"
-        + JUDGE_PROMPT
+        JUDGE_PROMPT
         + json.dumps(source_data, indent=2)
         + "\n\nCONTENT TO REVIEW:\n"
         + content

@@ -293,36 +293,9 @@ def main():
                   f"{type(e).__name__}: {e}", file=sys.stderr)
             continue
 
-    # Read prior file to preserve last_active_date when current fetch is empty.
-    # This is the freshness state machine: once a draft fires picks, we remember
-    # that date forever (until a NEW draft fires picks). Lets generate_rant.py
-    # compute days-since-active and back off recap depth as the news cycle moves on.
-    prior = {}
-    if OUTPUT_PATH.exists():
-        try:
-            with open(OUTPUT_PATH) as f:
-                prior = json.load(f)
-        except (json.JSONDecodeError, IOError) as e:
-            print(f"  warning: could not read prior {OUTPUT_PATH}: {e}", file=sys.stderr)
-            prior = {}
-
-    today_date = datetime.now(timezone.utc).date().isoformat()
-    if active_drafts:
-        # Picks are flowing from ESPN — today is the new last_active_date
-        last_active_date = today_date
-        print(f"  draft active — stamping last_active_date={today_date}")
-    else:
-        # No picks today — preserve prior date if it exists
-        last_active_date = prior.get("last_active_date")
-        if last_active_date:
-            print(f"  no picks this run — preserving last_active_date={last_active_date}")
-        else:
-            print(f"  no picks this run and no prior last_active_date — leaving null")
-
     # Write output
     output = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "last_active_date": last_active_date,
         "active_drafts": active_drafts,
     }
 
@@ -334,13 +307,8 @@ def main():
         return 0
     except IOError as e:
         print(f"  ❌ error: could not write {OUTPUT_PATH}: {e}", file=sys.stderr)
-        # Write empty-but-valid JSON as fallback. Preserve last_active_date if we have it
-        # so a transient write failure doesn't wipe freshness state.
-        fallback = {
-            "generated_at": datetime.now(timezone.utc).isoformat(),
-            "last_active_date": last_active_date,
-            "active_drafts": [],
-        }
+        # Write empty-but-valid JSON as fallback
+        fallback = {"generated_at": datetime.now(timezone.utc).isoformat(), "active_drafts": []}
         try:
             OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
             with open(OUTPUT_PATH, "w") as f:

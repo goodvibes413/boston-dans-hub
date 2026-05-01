@@ -53,22 +53,14 @@ def summarize(path: Path):
 def split_fixture(fixture_data: dict):
     """
     Detect fixture shape and return
-    (rolling_7day, season_static, season_current, recent_dan_output,
-     boston_drafts, latest_news).
+    (rolling_7day, season_static, season_current, recent_dan_output).
 
     New shape: has explicit "rolling_7day" key → split into sections.
-    Legacy shape: whole fixture IS the rolling_7day payload; everything else blank.
+    Legacy shape: whole fixture IS the rolling_7day payload; season files blank.
 
     `recent_dan_output` is a list of past-Dan entries (see Continuity rule);
     fixtures use it to test that today's output doesn't repeat yesterday's.
-
-    `boston_drafts` is the DRAFT_PICKS payload (active_drafts, last_active_date)
-    so milestone-freshness fixtures can simulate post-draft scenarios.
-
-    `latest_news` is the LATEST_NEWS payload so fixtures can supply specific
-    headlines (e.g., to test that Dan only mentions a draftee when news names them).
-
-    Legacy fixtures and any without these keys get sensible empty defaults.
+    Legacy fixtures and any without the key get an empty list.
     """
     if isinstance(fixture_data, dict) and "rolling_7day" in fixture_data:
         rolling = fixture_data.get("rolling_7day", {}) or {}
@@ -76,11 +68,9 @@ def split_fixture(fixture_data: dict):
         past = season_memory.get("past_seasons", {}) or {}
         current = season_memory.get("current_season", {}) or {}
         recent = fixture_data.get("recent_dan_output", []) or []
-        drafts = fixture_data.get("boston_drafts", None)  # None → file doesn't exist
-        news = fixture_data.get("latest_news", None)
-        return rolling, past, current, recent, drafts, news
+        return rolling, past, current, recent
     # Legacy: the fixture IS the rolling_7day payload
-    return fixture_data, {}, {}, [], None, None
+    return fixture_data, {}, {}, []
 
 
 def main():
@@ -102,8 +92,7 @@ def main():
         fixture_data = json.loads(fixture.read_text())
     except json.JSONDecodeError as e:
         sys.exit(f"error: fixture not valid JSON: {e}")
-    rolling, season_past, season_current, recent_output, drafts, news = split_fixture(fixture_data)
-    fixture_today = fixture_data.get("today") if isinstance(fixture_data, dict) else None
+    rolling, season_past, season_current, recent_output = split_fixture(fixture_data)
 
     # Write split sections to tmp files so generate_rant.py can read them via env vars
     tmp_rolling = RUNS_DIR / f"{label}_tmp_rolling.json"
@@ -113,22 +102,12 @@ def main():
     tmp_static.write_text(json.dumps(season_past, indent=2))
     tmp_current.write_text(json.dumps(season_current, indent=2))
 
-    # Write fixture-specific draft picks if present, otherwise no draft file
-    # (generate_rant.py treats missing as "no draft to discuss").
-    tmp_drafts = RUNS_DIR / f"{label}_tmp_drafts.json"
-    if drafts is not None:
-        tmp_drafts.write_text(json.dumps(drafts, indent=2))
-    elif tmp_drafts.exists():
-        tmp_drafts.unlink()  # clear any leftover from a prior run
-
-    # Empty stub for schedule. News stub is fixture-overridable.
+    # Write empty stubs for schedule/news — fixtures are self-contained;
+    # these files don't exist when data/ is gitignored.
     stub_schedule = RUNS_DIR / f"{label}_stub_schedule.json"
     stub_news = RUNS_DIR / f"{label}_stub_news.json"
     stub_schedule.write_text('{"games": []}')
-    if news is not None:
-        stub_news.write_text(json.dumps(news, indent=2))
-    else:
-        stub_news.write_text('{"articles": []}')
+    stub_news.write_text('{"articles": []}')
 
     # Continuity memory: recent_dan_output is a list of {date, headline, ...}
     # entries. generate_rant.py reads these from a directory of <date>.json
@@ -157,16 +136,6 @@ def main():
         env["SEASON_CURRENT_PATH"] = str(tmp_current)
         env["DAN_ARCHIVE_PATH"] = str(tmp_archive_dir)
         env["OUTPUT_PATH"] = str(out_path)
-        # Point at the fixture draft picks if the fixture provided one;
-        # otherwise point at a non-existent path so generate_rant.py treats
-        # it as "no draft data" (load_json returns {} for missing files).
-        if tmp_drafts.exists():
-            env["DRAFT_PICKS_PATH"] = str(tmp_drafts)
-        else:
-            env["DRAFT_PICKS_PATH"] = str(RUNS_DIR / f"{label}_no_drafts.json")
-        # Pin "today" so freshness-sensitive fixtures don't drift with the calendar.
-        if fixture_today:
-            env["TODAY_OVERRIDE"] = fixture_today
         print(f"  run {i}/{args.n} → {out_path.name}")
         result = subprocess.run(
             [sys.executable, str(REPO / "scripts" / "generate_rant.py")],
