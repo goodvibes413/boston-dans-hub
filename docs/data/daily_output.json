@@ -1,56 +1,56 @@
 {
-  "headline": "Red Sox hammered in Toronto while Patriots overhaul the roster",
+  "headline": "Celtics fall flat in Philly and now it all comes down to a massive Game 7",
   "morning_brew": [
-    "The Sox got absolutely hammered in Toronto, losing 8-1. Brayan Bello could not even get through four innings, giving up four earned runs. That is a brutal outing when you need a spark and some consistency from the rotation. We are 12-19 and the season is slipping away fast. Alex Cora sent an email to the organization after his firing last Saturday, but words do not fix a sub-.400 winning percentage. This team needs a major jolt to get back to the nine titles we have in the trophy case.",
-    "The draft is where the future is built, and the Patriots were busy addressing a lot of holes. R1.28: Caleb Lomu, OT out of Utah. Drake Maye needed better protection all year. Love it, glaring need addressed. R2.55: Gabe Jacas, EDGE out of Illinois. The defense needs a boost on the outside. Head-scratcher, plenty of talent still on the board. R3.95: Eli Raridon, TE out of Notre Dame. We needed another target in the passing game. About time, filling an obvious gap. R5.171: Karon Prunty, CB out of Wake Forest, depth at corner. R6.196: Dametrious Crownover, OT out of Texas A&M, more protection for the pocket. R6.212: Namdi Obiazor, LB out of TCU, special teams or depth. R7.234: Behren Morton, QB out of Texas Tech, a developmental arm. R7.245: Jam Miller, RB out of Alabama, backfield depth. R7.247: Quintayvious Hutchins, EDGE out of Boston College, a local kid to round out the class.",
-    "The C's are heading to Philly tonight with a chance to move on. Jayson Tatum and the crew are 56-26 and need to show that championship grit that defines eighteen banners in the Garden. Meanwhile, the B's are in a massive hole. Buffalo is looking to clinch the series in the next one. After winning forty-five games this year, seeing them on the brink of elimination is tough. We have six Cups in our history, but that does not mean anything if you cannot finish a series. They need a huge effort to keep the dream of another parade through the Hub alive."
+    "The Celtics absolutely choked away a chance to end it in Philly. Tyrese Maxey went off for thirty points and the C's had no answer. Jayson Tatum finished with seventeen points and Jaylen Brown had eighteen, but the energy just was not there. It is a total disastah to let a team that you beat by thirty-two twice in this series hang around like this. Now we are heading back to the Garden for a Game 7 where everything is on the line. Eighteenth banners do not win themselves, and this group needs to wake up before the season ends in a heartbreak.",
+    "Things are not looking much better for the Sox as they head back to Fenway Park to host the Astros. We are sitting at 12-19 and carrying a three-game home losing streak into this set. The bats have been quiet and the vibe around the Fens is pretty salty right now. Ownership is watching a sub-.400 team while the fans are wondering when the turnaround actually starts. We need a win tonight to stop the bleeding, because the AL East waits for nobody. It is time for someone in that dugout to step up and lead.",
+    "Bruins fans are ready to erupt tonight at the Garden as the playoff series against Buffalo continues. After forty-five wins in the regular season, the expectations are sky-high for this group to make a deep run. Meanwhile, the Patriots have a deadline today on those fifth-year options for the 2023 draft class. It is a big day for the front office to decide who is part of the long-term plan in Foxborough after a fourteen-win season last year. Between the ice and the front office, there is plenty of drama to keep every townie in the Hub busy."
   ],
   "trend_watch": [
     {
       "category": "Cold Snap",
-      "player": "Brayan Bello",
-      "trend": "Gave up four earned runs in 3.2 innings",
-      "dans_take": "Bello needs to find his command or this rotation is going to be a total disaster."
+      "player": "Jayson Tatum",
+      "trend": "Seventeen points and three turnovers in the Game 6 loss.",
+      "dans_take": "The superstar needs to find another gear for the decider back home."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Jaylen Brown",
+      "trend": "Eighteen points with five turnovers in the defeat.",
+      "dans_take": "Giving the ball away that many times is a recipe for a playoff exit."
     },
     {
       "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Collected two hits and a home run in Toronto",
-      "dans_take": "Contreras is one of the few guys actually showing some life for the Sox right now."
-    },
-    {
-      "category": "Draft Watch",
-      "player": "Caleb Lomu",
-      "trend": "Selected 28th overall in the first round",
-      "dans_take": "Protecting the quarterback is the only way this rebuild actually works for the long haul."
+      "player": "Tyrese Maxey",
+      "trend": "Thirty points to force a seventh game in the series.",
+      "dans_take": "We have to find a way to stay in front of this kid at the Garden."
     }
   ],
   "news_digest": [
     {
-      "headline": "In email, thankful Alex Cora confident in Red Sox's future",
-      "url": "https://www.espn.com/mlb/story/_/id/48631998/in-email-thankful-alex-cora-confident-red-sox-future",
-      "dans_take": "It is nice to say goodbye, but we need to see some real results on the field at Fenway."
+      "headline": "Maxey, George deliver as Sixers push Celtics to Game 7",
+      "url": "https://www.espn.com/nba/story/_/id/48643439/maxey-george-deliver-sixers-push-celtics-game-7",
+      "dans_take": "The C's let them back in the door and now we are looking at a do-or-die scenario."
     },
     {
-      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
-      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
-      "dans_take": "The robots are taking over the game, but maybe they can help the Sox get a call for once."
+      "headline": "Red Sox host the Astros on 3-game home losing streak",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815159",
+      "dans_take": "We need to protect our home turf at Fenway Park before this season gets away from us."
     },
     {
-      "headline": "Patriots players support Vrabel, stay focused on football",
-      "url": "https://www.espn.com/nfl/story/_/id/48620091/patriots-players-support-vrabel-stay-focused-football",
-      "dans_take": "The locker room is sticking by the coach while the noise keeps getting louder."
+      "headline": "NFL fifth-year option tracker: 2023 first-round draft class",
+      "url": "https://www.espn.com/nfl/story/_/id/48358999/fifth-year-option-tracker-nfl-players-2023-first-round-draft-class",
+      "dans_take": "Today is the day the front office has to make some tough calls on the roster future."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-04-29",
-      "played": false,
+      "home_team": "Philadelphia 76ers",
+      "away_team": "Boston Celtics",
+      "home_score": 106,
+      "away_score": 93,
+      "game_date": "2026-04-30",
+      "played": true,
       "season_type": "playoff"
     },
     "bruins": {
@@ -59,27 +59,27 @@
       "away_team": "Buffalo Sabres",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-04-29",
+      "game_date": "2026-04-30",
       "played": false,
       "season_type": "playoff"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": "Toronto Blue Jays",
-      "away_team": "Boston Red Sox",
-      "home_score": 8,
-      "away_score": 1,
-      "game_date": "2026-04-29",
-      "played": true,
+      "home_team": "Boston Red Sox",
+      "away_team": "Houston Astros",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-04-30",
+      "played": false,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
       "home_team": "New England Patriots",
-      "away_team": null,
+      "away_team": "TBD",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-04-29",
+      "game_date": "2026-04-30",
       "played": false,
       "season_type": "offseason"
     }
@@ -102,13 +102,13 @@
     },
     {
       "date": "2026-05-02",
-      "matchup": "Philadelphia 76ers at Boston Celtics",
-      "time_et": "12:00 AM ET"
+      "matchup": "Houston Astros at Boston Red Sox",
+      "time_et": "4:10 PM ET"
     },
     {
       "date": "2026-05-02",
-      "matchup": "Houston Astros at Boston Red Sox",
-      "time_et": "4:10 PM ET"
+      "matchup": "Philadelphia 76ers at Boston Celtics",
+      "time_et": "7:30 PM ET"
     },
     {
       "date": "2026-05-03",
@@ -139,16 +139,18 @@
       "date": "2026-05-07",
       "matchup": "Tampa Bay Rays at Boston Red Sox",
       "time_et": "7:10 PM ET"
+    },
+    {
+      "date": "2026-05-08",
+      "matchup": "Tampa Bay Rays at Boston Red Sox",
+      "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-04-30T10:14:32.973460+00:00",
+  "generated_at": "2026-05-01T14:14:59.406588+00:00",
   "_regenerated": true,
   "_regeneration_reason": [
-    "Profanity ('damn')",
-    "Fabricated statistic/event ('Game 5' collapse for Celtics is not in SOURCE_DATA)",
-    "Fabricated information (Interim manager 'Chad Tracy' is not in SOURCE_DATA)"
-  ],
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 2 attempts: Profanity ('damn')",
-  "_stale_age_hours": 24.7
+    "Fabricated statistic: 'four hits a night' for the Red Sox is not present in SOURCE_DATA.",
+    "Fabricated historical event/result: 'overtime win earlier in the week' for the Bruins is not present in SOURCE_DATA.",
+    "Fabricated information: 'Chad Tracy' is not mentioned in SOURCE_DATA as being associated with the Red Sox."
+  ]
 }
