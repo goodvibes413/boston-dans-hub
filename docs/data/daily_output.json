@@ -149,6 +149,6 @@
     "Fabricated information (Interim manager 'Chad Tracy' is not in SOURCE_DATA)"
   ],
   "_stale": true,
-  "_stale_reason": "safety judge FAILed after 2 attempts: Fabricated game outcome (Bruins overtime win not present in SOURCE_DATA)",
-  "_stale_age_hours": 5.0
+  "_stale_reason": "safety judge FAILed after 2 attempts: Fabricated historical event: The claim that the Bruins had an 'overtime win a few nights ago' is not present in or verifiable against the provided SOURCE_DATA.",
+  "_stale_age_hours": 23.7
 }
