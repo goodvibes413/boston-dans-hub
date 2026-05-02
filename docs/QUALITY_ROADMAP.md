@@ -1,6 +1,6 @@
 # Quality Roadmap — How We Make Dan Better at $0/month
 
-**Status (2026-04-26):** Pursuing Tiers 1–3, Considering Tier 4. Multi-agent architecture deferred (see "When multi-agent WOULD be the right answer" below).
+**Status (2026-05-02):** Pursuing Tiers 1–3, Considering Tier 4, Backlogged Tier 5 (product/UX). Multi-agent architecture deferred (see "When multi-agent WOULD be the right answer" below).
 
 This document is the source of truth for how we improve Dan's content quality without breaking the $0/month operating-cost constraint. It exists because the question "should we move to a multi-agent system?" came up after a string of recurring content failures, and the answer needs to survive across sessions and machines.
 
@@ -107,9 +107,20 @@ CAUSATION_NOTES: Order unverified. Use side-by-side framing only.
 ```
 Dan's prompt is told this is ground truth; do not infer otherwise.
 
-- Cost: $0. Pure Python.
-- Effort: 1–2 days.
-- Impact: closes the failure modes that keep recurring without adding any LLM round-trips.
+**`scripts/build_facts_of_day.py`** — given rolling_7day + latest_news, extract and chunk the "facts of the day":
+```
+FACTS_OF_THE_DAY:
+- [box_scores] Celtics 110, Sixers 105 (Tatum 17pts, Maxey 30pts). Series tied 3-3.
+- [schedule] Game 7 tonight at 7:30pm ET.
+- [news] Patriots made 5-year deadline decision on 2023 draft class.
+- [rolling_window] Red Sox 12-19, 3-game losing streak. Sox/Astros series begins today.
+- [bruins_playoff] Bruins vs Buffalo continues. Bruins 45-20-15 regular season.
+```
+This "facts inventory" is then injected alongside rolling_7day in the user message, so Dan has a scannable summary of the key stories to cover. The prompt is updated to reference this block and ensure comprehensive coverage.
+
+- Cost: $0. Pure Python chunking.
+- Effort: ~1 day (schema design + extraction logic).
+- Impact: ensures Dan never misses major storylines by burying them in nested JSON; makes coverage gaps visible in evals.
 
 ### Tier 3 — Specialist judge expansion (Pursuing)
 
@@ -138,6 +149,22 @@ Quality often comes from what Dan *knows*, not how the prompt is structured. Con
 - Effort: ongoing — 1 hour every couple of weeks adds material.
 - Impact: directly raises ceiling on "noticeably funnier, more grounded."
 
+### Tier 5 — Product & UX (Backlog)
+
+Quality isn't just about generation — it's about trust and exploration. This tier adds user-facing features that make Dan's work transparent and archive-able.
+
+**Readable archive of past posts** — Create a browsable `/archive` page that lists all published Dan posts by date with headline + first paragraph. Each entry is clickable to view the full post. Archive is auto-generated from `data/dan_archive/` (which already exists — we just need a frontend to display it). Benefits: (1) fans can re-read past commentary, (2) shows Dan's consistency over time, (3) builds community around the daily routine.
+
+- Cost: $0 (no new data fetches, re-use existing archive).
+- Effort: ~1 day (HTML/CSS for archive page, JavaScript to iterate the archive directory).
+- Impact: users see the "living project" aspect; drives repeat visits.
+
+**Eval data drill-down** — Each post gets a small **[eval data]** link that shows: (1) the raw `source_data` (rolling_7day + season_memory + latest_news + draft_picks) that was fed to Gemini, (2) the raw `raw_dan_output.json` before safety judge, (3) the judge verdict + flags if any, (4) the final published output. Clicking through lets obsessive fans see *what Dan was working with* and *why he said what he said*. This is also invaluable for debugging quality issues — when someone reports "Dan got the score wrong," you can immediately show them the source_data.
+
+- Cost: $0 (exposing existing artifacts).
+- Effort: ~1–2 days (JSON viewer UI, navigation, one-click drill-down from post to eval data).
+- Impact: transparency builds trust; unblocks debugging; gives fans insight into the generation process.
+
 ---
 
 ## When multi-agent WOULD be the right answer
@@ -158,24 +185,36 @@ Until any of these trip, Tiers 1–4 are cheaper and faster.
 | Tier | Description | Status | Effort | Cost |
 |---|---|---|---|---|
 | 1 | Eval-driven prompt iteration (regression fixtures + gating) | **Pursuing** | ~half day | $0 |
-| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; draft & causation pending) | **In progress** | 1–2 days | $0 |
+| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; draft & causation pending; facts chunking pending) | **In progress** | 1–2 days | $0 |
 | 3 | Voice/quality rubric expansion in `safety_judge.py` | **Pursuing** | 2–3 days | +0–1 calls/day |
 | 4 | Richer source data (deeper history, caller archetypes, grudge book) | **Considering** | Ongoing | $0 |
+| 5 | Product & UX (readable archive, eval data drill-down) | **Backlog** | 2–3 days | $0 |
 | Multi-agent | 2+ Gemini calls collaborating on generation | **Conditional** | — | Breaks $0 |
 
 ---
 
-## Critical files (for Tiers 2–3 implementation)
+## Critical files (for Tiers 2–5 implementation)
 
-- `scripts/generate_rant.py` — extend `build_user_message()` to inject `DRAFT_BLOCK_VERBATIM` and `CAUSATION_NOTES` fields
+### Generation & validation (Tiers 2–3)
+- `scripts/generate_rant.py` — extend `build_user_message()` to inject `DRAFT_BLOCK_VERBATIM`, `CAUSATION_NOTES`, and `FACTS_OF_THE_DAY` fields
 - `scripts/build_draft_block.py` — new (deterministic Python from `data/boston_drafts.json`)
 - `scripts/build_causation_notes.py` — new (deterministic Python from `data/latest_news.json` + `data/rolling_7day.json` timestamps)
+- `scripts/build_facts_of_day.py` — new (deterministic Python to chunk rolling_7day + latest_news for scannable overview)
 - `scripts/safety_judge.py` — extend `JUDGE_PROMPT` with voice/quality rubric items
-- `prompts/boston_dan_system.txt` — add reference to verbatim blocks ("when DRAFT_BLOCK_VERBATIM is present, echo it line-by-line and append one take per line")
-- `evals/fixtures/` — add fixtures for firing-tone, draft-collapse, same-day-causation regression tests
+- `prompts/boston_dan_system.txt` — add references to verbatim blocks and facts inventory
+
+### Source data (Tier 4)
 - `data/historical_facts.json` — deepen (Tier 4)
 - `data/callers_and_voices.json` — new (Tier 4)
 - `data/grudge_book.json` — new (Tier 4)
+
+### Evals (Tier 1)
+- `evals/fixtures/` — add fixtures for firing-tone, draft-collapse, same-day-causation regression tests
+
+### Frontend (Tier 5)
+- `site/archive.html` — new (browsable archive of past Dan posts)
+- `site/app.js` — extend to: (1) load and render archive from `data/dan_archive/`, (2) add eval data drill-down links to each post, (3) JSON viewer modal for source_data/raw_output/judge_verdict
+- `site/style.css` — add styles for archive list, drill-down modal, JSON viewer
 
 ---
 
