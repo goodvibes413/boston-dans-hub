@@ -1,50 +1,45 @@
 {
-  "headline": "Bruins collapse at the Garden while the Celtics face Game 7 tension",
+  "headline": "Celtics choke away a three-one lead and get bounced at the Garden",
   "morning_brew": [
-    "The Bruins are out after a 4-1 loss to the Sabres. Getting bounced in the first round by Buffalo is a total disastah. We have six Cups in this city, but this group looked like they forgot how to play playoff hockey when it mattered. Jeremy Swayman made twenty-two saves, but you cannot win when the offense only gives you one goal from David Pastrnak. It is another early exit, and frankly, it is embarrassing for a team with this much history to go out like that.",
-    "It all comes down to tonight at the Garden. Game 7 against the Sixers is the only thing that matters right now. We are chasing Banner 19 and we need Jayson Tatum and Jaylen Brown to play like the superstars they are. Philadelphia is not just going to roll over, especially with Embiid back in the mix. The Garden needs to be absolutely electric because a loss tonight would be a stain on this era of Celtics basketball. Let us hope they show up with some real grit.",
-    "At least the Sox gave us something to smile about at Fenway. Jake Bennett was fantastic in his big-league debut, giving up just one run over five innings. Jarren Duran provided the fireworks with that three-run blast to secure the 3-1 win. Meanwhile, that plane flying the sell banner over the Fens shows exactly where the fans are at with ownership right now. Over in Foxborough, the draft is in the books and we are waiting to see if these new guys can help us get back to the six Lombardis we are used to seeing."
+    "The Celtics just turned a dream season into a complete nightmare at the Garden. Losing 109-100 in a Game 7 after being up 3-1 in the series is absolutely brutal. Philadelphia became the fourteenth team in history to pull that off, and they did it right on our floor. Jaylen Brown had thirty-three points, but it was not enough to stop the bleeding. We have eighteen banners hanging above us, but this group forgot how to close out a series when it mattered most.",
+    "Over at Fenway Park, the Red Sox are still stuck in a massive rut after a 6-3 loss to the Astros. The starter Early struggled on the mound, lasting only four innings and giving up five earned runs. We are sitting at 13-20 now, which is a sub-.400 winning percentage that makes every Dunks run taste a little more bitter. Wilyer Abreu had two hits and an RBI, but the pitching just cannot keep us in these games. It is a long summer ahead if they do not find some consistency soon.",
+    "The news does not get much better for the rest of the Hub. Charlie McAvoy is facing an in-person hearing for that slash, which could mean a long suspension to start next season. It is another headache for a team that already had a disappointing exit. Meanwhile, the Patriots are grinding through OTAs and making decisions on fifth-year options for the 2023 class. Fourteen wins last season set a high bar, and the front office has to decide who actually fits into the long-term plan in Foxborough."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Jake Bennett",
-      "trend": "Won his major league debut with five innings of one-run ball.",
-      "dans_take": "What a way to start a career. He gave the rotation exactly the kind of jolt we have been begging for all month."
-    },
-    {
-      "category": "Heater",
-      "player": "Jarren Duran",
-      "trend": "Hit a massive three-run home run to provide all the offense in a 3-1 win.",
-      "dans_take": "He is the engine of this lineup and when he is hitting for power, this team actually looks competitive."
+      "player": "Jaylen Brown",
+      "trend": "Put up thirty-three points and nine rebounds in the Game 7 loss.",
+      "dans_take": "One of the few guys who actually showed up to fight for Banner 19 last night."
     },
     {
       "category": "Cold Snap",
-      "player": "Jeremy Swayman",
-      "trend": "Allowed three goals on twenty-five shots in the season-ending loss.",
-      "dans_take": "Twenty-two saves just was not enough to save a team that could not find the back of the net."
+      "player": "Derrick White",
+      "trend": "Shot nine for twenty-six from the field in the season-ending defeat.",
+      "dans_take": "We needed more efficiency from him if we were going to survive that Philly surge."
+    },
+    {
+      "category": "Heater",
+      "player": "Wilyer Abreu",
+      "trend": "Went two for three with an RBI in the loss to Houston.",
+      "dans_take": "He is one of the few bright spots in a lineup that looks lost right now."
     }
   ],
   "news_digest": [
     {
-      "headline": "Sabres beat Bruins 4-1 in Game 6 to reach 2nd round for 1st time since 2007",
-      "url": "http://www.espn.com/nhl/recap?gameId=401869765",
-      "dans_take": "A total collapse for the B's against a team they should have put away."
+      "headline": "76ers, Embiid vanquish Celtics to complete 3-1 comeback",
+      "url": "https://www.espn.com/nba/story/_/id/48662033/76ers-embiid-vanquish-celtics-complete-3-1-comeback",
+      "dans_take": "A total collapse that is going to haunt this city for a long time."
     },
     {
-      "headline": "Jarren Duran hits 3-run HR, Jake Bennett wins big-league debut as Red Sox beat Astros 3-1",
-      "url": "http://www.espn.com/mlb/recap?gameId=401815159",
-      "dans_take": "The kids are alright at Fenway Park and Bennett looks like the real deal."
+      "headline": "Bruins' Charlie McAvoy offered in-person hearing after slash",
+      "url": "https://www.espn.com/nhl/story/_/id/48658828/bruins-charlie-mcavoy-offered-person-hearing-slash",
+      "dans_take": "Hope everyone is safe, but the league is clearly looking to make an example here."
     },
     {
-      "headline": "Celtics, 76ers set for winner-take-all game 7",
-      "url": "http://www.espn.com/nba/preview?gameId=401869412",
-      "dans_take": "Everything is on the line tonight at the Garden and there are no more excuses."
-    },
-    {
-      "headline": "Plane circles Fenway towing banner urging Red Sox ownership to 'sell'",
-      "url": "https://www.espn.com/mlb/story/_/id/48650161/red-sox-fan-plane-banner-urges-owner-john-henry-sell-team",
-      "dans_take": "The fans are frustrated and they are making sure ownership hears it from the sky."
+      "headline": "NFL fifth-year option tracker: 2023 first-round draft class",
+      "url": "https://www.espn.com/nfl/story/_/id/48358999/fifth-year-option-tracker-nfl-players-2023-first-round-draft-class",
+      "dans_take": "The deadline is here and the front office needs to be smart about the future."
     }
   ],
   "box_scores": {
@@ -52,20 +47,20 @@
       "sport": "NBA",
       "home_team": "Boston Celtics",
       "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
+      "home_score": 100,
+      "away_score": 109,
       "game_date": "2026-05-02",
-      "played": false,
+      "played": true,
       "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
       "home_team": "Boston Bruins",
       "away_team": "Buffalo Sabres",
-      "home_score": 1,
-      "away_score": 4,
-      "game_date": "2026-05-01",
-      "played": true,
+      "home_score": 0,
+      "away_score": 0,
+      "game_date": "2026-05-02",
+      "played": false,
       "season_type": "playoff"
     },
     "redsox": {
@@ -73,33 +68,23 @@
       "home_team": "Boston Red Sox",
       "away_team": "Houston Astros",
       "home_score": 3,
-      "away_score": 1,
-      "game_date": "2026-05-01",
+      "away_score": 6,
+      "game_date": "2026-05-02",
       "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
       "home_team": "New England Patriots",
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-01",
+      "away_team": "Unknown",
+      "home_score": 0,
+      "away_score": 0,
+      "game_date": "2026-05-02",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-05-02",
-      "matchup": "Houston Astros at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-02",
-      "matchup": "Philadelphia 76ers at Boston Celtics",
-      "time_et": "7:30 PM ET"
-    },
     {
       "date": "2026-05-03",
       "matchup": "Houston Astros at Boston Red Sox",
@@ -134,7 +119,12 @@
       "date": "2026-05-09",
       "matchup": "Tampa Bay Rays at Boston Red Sox",
       "time_et": "4:10 PM ET"
+    },
+    {
+      "date": "2026-05-10",
+      "matchup": "Tampa Bay Rays at Boston Red Sox",
+      "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-05-02T09:12:41.468135+00:00"
+  "generated_at": "2026-05-03T09:26:08.180216+00:00"
 }
