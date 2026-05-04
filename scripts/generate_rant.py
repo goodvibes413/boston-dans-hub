@@ -44,12 +44,12 @@ DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 # from today's date so a given day always sees the same archetypes.
 CALLERS_PER_DAY = 3
 
-# Draft freshness windows (days since the draft was last "active" — i.e.
-# ESPN was returning Boston picks). Tunable; matches Boston sports talk-radio
-# news cycles.
-#   active     active_drafts non-empty (draft is happening RIGHT NOW)
-#   fresh      0–DRAFT_FRESH_DAYS days post — full recap allowed
-#   aging      DRAFT_FRESH_DAYS+1 to DRAFT_AGING_DAYS — slim block, news-only mentions
+# Draft freshness windows (days since last_active_date — the date when
+# fetch_draft.py last saw new picks arrive). Tunable; matches Boston sports
+# talk-radio news cycles.
+#   active     last_active_date == today (new picks arrived today)
+#   fresh      1–DRAFT_FRESH_DAYS days post-active — full recap allowed
+#   aging      DRAFT_FRESH_DAYS+1 to DRAFT_AGING_DAYS — slim block, aside only
 #   stale      >DRAFT_AGING_DAYS — DRAFT_PICKS not injected at all
 DRAFT_FRESH_DAYS = 2
 DRAFT_AGING_DAYS = 7
@@ -402,18 +402,21 @@ def compute_draft_freshness(draft_picks: dict | None, today: date) -> tuple[str 
     how much DRAFT_PICKS context to hand Dan.
 
     Returns (freshness, days_since_active):
-      ("active",  0)        active_drafts non-empty (happening right now)
-      ("fresh",   N)        last_active_date within DRAFT_FRESH_DAYS
-      ("aging",   N)        last_active_date within DRAFT_AGING_DAYS
-      ("stale",   N)        last_active_date older than DRAFT_AGING_DAYS
-      (None,      None)     no draft to discuss (no picks, no last_active_date,
+      ("active",  0)        last_active_date == today (new picks added today)
+      ("fresh",   N)        1–DRAFT_FRESH_DAYS days post-active
+      ("aging",   N)        DRAFT_FRESH_DAYS+1 to DRAFT_AGING_DAYS
+      ("stale",   N)        >DRAFT_AGING_DAYS — DRAFT_PICKS omitted entirely
+      (None,      None)     no draft to discuss (no last_active_date or
                             unparseable date) — caller should omit DRAFT_PICKS.
+
+    NOTE: active_drafts presence is intentionally NOT used as the "active" signal.
+    ESPN serves completed draft picks year-round, so active_drafts is always
+    non-empty after a draft has concluded. The sole source of truth is
+    last_active_date, which fetch_draft.py stamps only when the pick count
+    GROWS relative to the prior file (i.e., new picks actually arrived today).
     """
     if not draft_picks:
         return None, None
-
-    if draft_picks.get("active_drafts"):
-        return "active", 0
 
     last_active = draft_picks.get("last_active_date")
     if not last_active:
@@ -429,6 +432,8 @@ def compute_draft_freshness(draft_picks: dict | None, today: date) -> tuple[str 
         return None, None
 
     days = max(0, (today - last_dt).days)
+    if days == 0:
+        return "active", 0
     if days <= DRAFT_FRESH_DAYS:
         return "fresh", days
     if days <= DRAFT_AGING_DAYS:

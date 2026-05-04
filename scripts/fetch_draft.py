@@ -294,13 +294,20 @@ def main():
             continue
 
     # Persist last_active_date so generate_rant.py can compute freshness
-    # (active / fresh / aging / stale) per the Major Milestones rule. Read
-    # the prior file: when today's fetch is non-empty, today IS the new
-    # last_active_date; when today's fetch is empty, preserve whatever was
-    # there. Migration default: if the prior file lacks last_active_date AND
-    # has empty active_drafts (offseason after the prior draft ended), stamp
-    # "1970-01-01" so freshness computes as "stale" immediately rather than
-    # erroneously re-introducing draft commentary on the first run.
+    # (active / fresh / aging / stale) per the Major Milestones rule.
+    #
+    # Key insight: ESPN serves completed draft picks year-round, so
+    # active_drafts is ALWAYS non-empty after the draft has concluded. We
+    # cannot use "active_drafts non-empty" as the signal for "draft is live."
+    # Instead, we compare today's total pick count to the prior file's total.
+    # If picks GREW today, new selections actually arrived → stamp today as
+    # last_active_date. If the count is unchanged, the draft ended (ESPN is
+    # just serving the completed record) → preserve the prior last_active_date.
+    #
+    # Migration default: if the prior file lacks last_active_date AND today
+    # has no new picks (count unchanged from prior), stamp "1970-01-01" so
+    # freshness computes as "stale" immediately. Real drafts will overwrite
+    # this on their first active day.
     prior: dict = {}
     if OUTPUT_PATH.exists():
         try:
@@ -309,16 +316,24 @@ def main():
             prior = {}
 
     today_iso = datetime.now(timezone.utc).date().isoformat()
-    if active_drafts:
+    prior_total_picks = sum(
+        len(d.get("picks", [])) for d in prior.get("active_drafts", [])
+    )
+    today_total_picks = sum(len(d.get("picks", [])) for d in active_drafts)
+
+    if today_total_picks > prior_total_picks:
+        # New picks arrived today — draft is actively running right now
         last_active_date = today_iso
+        print(f"  draft active: {today_total_picks} picks today vs "
+              f"{prior_total_picks} yesterday → last_active_date={today_iso}")
     else:
+        # Pick count unchanged — draft has concluded (ESPN is serving the
+        # completed record) or hasn't started yet. Preserve prior date.
         last_active_date = prior.get("last_active_date")
         if last_active_date is None:
-            # Migration: no prior tracking + no active picks today. Default
-            # to a far-past date so freshness becomes "stale" and DRAFT_PICKS
-            # gets omitted. Real drafts will overwrite this on their first
-            # active day.
             last_active_date = "1970-01-01"
+        print(f"  draft inactive: {today_total_picks} picks (same as prior) "
+              f"→ last_active_date preserved as {last_active_date}")
 
     # Write output
     output = {
