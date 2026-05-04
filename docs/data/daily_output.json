@@ -126,5 +126,8 @@
   "_regeneration_reason": [
     "Voice repetition (eighteen banners citation)",
     "Voice repetition in news_digest (McAvoy take)"
-  ]
+  ],
+  "_stale": true,
+  "_stale_reason": "safety judge FAILed after 2 attempts: Fabricated statistics: Dan claims the Red Sox out-hit the opponent 9-3, but the source data indicates the opponent had 10 hits (Suarez 3, Samaniego 1, Weissert 3, Whitlock 1, Chapman 1, Kelly 1).",
+  "_stale_age_hours": 0.2
 }
