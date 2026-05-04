@@ -1,29 +1,10 @@
 {
+  "generated_at": "2026-05-04T10:19:09.075935+00:00",
   "headline": "Red Sox fall in extras while Jaylen Brown rips the officials",
   "morning_brew": [
     "Another tough day at Fenway Park ended with a 3-1 loss to Houston. Suarez gave us four solid innings with zero earned runs, but the bats just could not wake up when it mattered most. William Contreras had three hits, yet we only managed a single run in the fifth. Losing in ten innings is absolutely brutal, especially when Zack Kelly gives up two in the final frame. The team is sitting at 13-21 now, and watching this sub-.400 baseball is starting to feel like a real chore for every fan in the Hub.",
     "Jaylen Brown is not holding back on Twitch, calling out the refs and accusing Joel Embiid of ruining the game with flopping. It is a bold move after the season ended, but he is not wrong about the officiating being a mess lately. We are staring at a long offseason now with eighteen banners hanging over a group that still has questions to answer. The front office has to decide if this core can actually get back to the mountaintop or if more changes are coming to the Garden. We need more than just complaints to get back to the Finals.",
     "The Patriots have their new class in the building and it is time to look at the haul. Round 1, Pick 28: Caleb Lomu, OT out of Utah. Drake Maye needed better protection all year. Love it, glaring need addressed. Round 2, Pick 55: Gabe Jacas, EDGE out of Illinois, interesting pick for the pass rush. Round 3, Pick 95: Eli Raridon, TE out of Notre Dame, a big target for the offense. Round 5, Pick 171: Karon Prunty, CB out of Wake Forest, depth for the secondary. Round 6, Pick 196: Dametrious Crownover, OT out of Texas A&M, more beef for the line. Round 6, Pick 212: Namdi Obiazor, LB out of TCU, special teams help. Round 7, Pick 234: Behren Morton, QB out of Texas Tech, a developmental arm. Round 7, Pick 245: Jam Miller, RB out of Alabama, depth in the backfield. Round 7, Pick 247: Quintayvious Hutchins, EDGE out of Boston College, a local kid for the defense."
-  ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "William Contreras",
-      "trend": "Three hits in four at-bats on Sunday.",
-      "dans_take": "One of the few guys actually showing up at the plate right now."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Zack Kelly",
-      "trend": "Gave up two runs in the tenth inning to take the loss.",
-      "dans_take": "Absolutely brutal way to end a close game at Fenway."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Trevor Samaniego",
-      "trend": "Walked one and gave up a hit in less than an inning.",
-      "dans_take": "We need the middle relief to be much cleaner than this."
-    }
   ],
   "news_digest": [
     {
@@ -41,85 +22,5 @@
       "url": "https://www.espn.com/nfl/story/_/id/48647764/who-new-england-patriots-new-edge-rusher-gabe-jacas-2026-nfl-draft",
       "dans_take": "Always good to see a fresh face coming in to help the defense."
     }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-05-03",
-      "played": false,
-      "season_type": "playoff"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-05-03",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Houston Astros",
-      "home_score": 1,
-      "away_score": 3,
-      "game_date": "2026-05-03",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Opponent",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-05-03",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-05-04",
-      "matchup": "Boston Red Sox at Detroit Tigers",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-05-05",
-      "matchup": "Boston Red Sox at Detroit Tigers",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-05-06",
-      "matchup": "Boston Red Sox at Detroit Tigers",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-05-07",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-08",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-09",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-10",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    }
-  ],
-  "generated_at": "2026-05-04T10:19:09.075935+00:00"
+  ]
 }
