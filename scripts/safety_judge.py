@@ -16,8 +16,10 @@ Env vars:
 
 import json
 import os
+import re
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -27,7 +29,27 @@ DEFAULT_SEASON_CURRENT = REPO / "data" / "season_current.json"
 DEFAULT_ROLLING = REPO / "data" / "rolling_7day.json"
 DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
 DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
+DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_MODEL = "gemini-flash-latest"
+
+# Signature-phrase patterns that should never recur in 3+ consecutive
+# daily outputs. Conservative list (9 entries); expand only after observing
+# eval results. Pre-pass returns LOW severity only — a one-time regen via
+# publish.py's retry loop usually clears it. See repetition_signature_phrases
+# fixture for the contract this enforces.
+REPETITION_PATTERNS = [
+    r"\b18 banners?\b",
+    r"\bbanner 19\b",
+    r"\b6 (?:Cups|Lombardis)\b",
+    r"\b9 titles?\b",
+    r"\bcurse of the bambino\b",
+    r"hope it works",
+    r"glaring need addressed",
+    r"about damn time",
+    r"absolutely brutal",
+]
+REPETITION_LOOKBACK_DAYS = 3
+REPETITION_MIN_OCCURRENCES = 3
 
 JUDGE_PROMPT = """You are a content safety auditor for a Boston sports fan persona ("Boston Dan").
 Review the following sports commentary and return ONLY a JSON object with keys:
@@ -63,6 +85,12 @@ FAIL if ANY of these are present:
 9. news_digest dans_take contains personal attacks, speculation on guilt, character judgments,
    or references to pure personal news (divorce, relationships, family) with no league conduct
    dimension. Apply the same graduated standard as rule 5 to all news_digest entries.
+10. Voice repetition — if RECENT_DAN_OUTPUT (provided in source_data below) contains the
+    same signature phrasing as today's content (same paragraph opener, same closing
+    sign-off, same historical_facts citation like "18 banners" / "Banner 19" /
+    total_championships count, or the same iconic_moment description), flag it as
+    LOW severity. The Continuity rule in the persona requires variation across
+    consecutive days. Only flag clear matches; minor word overlap is fine.
 
 Severity:
 - "low" if a single borderline phrase that could be tightened
@@ -131,6 +159,75 @@ def _safe_load(path: Path) -> dict:
         return {}
 
 
+def _load_recent_archives(archive_dir: Path, days: int = REPETITION_LOOKBACK_DAYS) -> list[dict]:
+    """
+    Load the last N days of Dan's published output for repetition cross-check.
+    Skips today's UTC date. Returns [] on missing dir / no archives.
+    """
+    if not archive_dir.exists() or not archive_dir.is_dir():
+        return []
+    today_iso = datetime.now(timezone.utc).date().isoformat()
+    try:
+        files = sorted(
+            (p for p in archive_dir.glob("*.json") if p.stem != today_iso),
+            key=lambda p: p.stem,
+            reverse=True,
+        )
+    except Exception:
+        return []
+    out: list[dict] = []
+    for p in files[:days]:
+        try:
+            out.append(json.loads(p.read_text()))
+        except Exception:
+            continue
+    return out
+
+
+def _flatten_text(entry: dict) -> str:
+    """Collapse a Dan output (today's raw, or an archive entry) to one
+    lowercase string for regex matching."""
+    parts: list[str] = []
+    if isinstance(entry.get("headline"), str):
+        parts.append(entry["headline"])
+    brew = entry.get("morning_brew") or []
+    if isinstance(brew, list):
+        parts.extend(str(p) for p in brew)
+    digest = entry.get("news_digest") or []
+    if isinstance(digest, list):
+        for d in digest:
+            if isinstance(d, dict) and isinstance(d.get("dans_take"), str):
+                parts.append(d["dans_take"])
+    return " ".join(parts).lower()
+
+
+def detect_repetition(today: dict, recent_archives: list[dict]) -> list[str]:
+    """
+    Deterministic pre-pass: flag any REPETITION_PATTERN appearing in today's
+    output AND in REPETITION_MIN_OCCURRENCES-1 (or more) of the recent
+    archives. Returns a list of flag strings (low severity); empty list if
+    nothing repeated. Runs in milliseconds, no API call.
+    """
+    today_text = _flatten_text(today)
+    if not today_text:
+        return []
+    archive_texts = [_flatten_text(a) for a in recent_archives]
+    flags: list[str] = []
+    for pattern in REPETITION_PATTERNS:
+        rx = re.compile(pattern, re.IGNORECASE)
+        if not rx.search(today_text):
+            continue
+        archive_hits = sum(1 for t in archive_texts if rx.search(t))
+        # today + archive_hits >= REPETITION_MIN_OCCURRENCES
+        if 1 + archive_hits >= REPETITION_MIN_OCCURRENCES:
+            flags.append(
+                f"repetition: phrase matching /{pattern}/ appeared in today's output "
+                f"and in {archive_hits} of the last {len(archive_texts)} archives "
+                f"(threshold: {REPETITION_MIN_OCCURRENCES} consecutive days)"
+            )
+    return flags
+
+
 def main():
     input_path = Path(os.environ.get("INPUT_PATH", DEFAULT_INPUT))
     rolling_path = Path(os.environ.get("ROLLING_STORE_PATH", DEFAULT_ROLLING))
@@ -157,6 +254,8 @@ def main():
     # The judge uses these to flag fabricated stats and player names.
     draft_picks_path = Path(os.environ.get("DRAFT_PICKS_PATH", DEFAULT_DRAFT_PICKS))
     historical_facts_path = Path(os.environ.get("HISTORICAL_FACTS_PATH", DEFAULT_HISTORICAL_FACTS))
+    archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
+    recent_archives = _load_recent_archives(archive_dir, REPETITION_LOOKBACK_DAYS)
     source_data = {
         "rolling_7day": _safe_load(rolling_path),
         "season_memory": {
@@ -165,7 +264,19 @@ def main():
         },
         "draft_picks": _safe_load(draft_picks_path),
         "historical_facts": _safe_load(historical_facts_path),
+        "recent_dan_output": recent_archives,
     }
+
+    # Deterministic repetition pre-pass — runs before the LLM judge so its
+    # flags (low severity) get merged into the final verdict regardless of
+    # what the LLM judge returns.
+    try:
+        today_obj = json.loads(content)
+    except json.JSONDecodeError:
+        today_obj = {}
+    pre_pass_flags = detect_repetition(today_obj, recent_archives)
+    if pre_pass_flags:
+        print(f"  pre-pass: {len(pre_pass_flags)} repetition flag(s) detected", file=sys.stderr)
 
     full_prompt = (
         JUDGE_PROMPT
@@ -190,7 +301,14 @@ def main():
         # API unavailable or quota exhausted — PASS with a warning so content
         # still publishes. A judge that can't run should not block publication;
         # only a judge that returns an explicit FAIL verdict should block.
+        # Pre-pass repetition flags are still surfaced as a low-severity FAIL
+        # to give the regen loop one shot at variation.
         print(f"warning: safety judge API error ({type(e).__name__}), treating as PASS", file=sys.stderr)
+        if pre_pass_flags:
+            print(json.dumps({"verdict": "FAIL", "severity": "low",
+                              "flags": pre_pass_flags +
+                                       [f"judge skipped — API error: {type(e).__name__}"]}))
+            sys.exit(1)
         print(json.dumps({"verdict": "PASS", "severity": "low",
                           "flags": [f"judge skipped — API error: {type(e).__name__}"]}))
         sys.exit(0)
@@ -200,6 +318,14 @@ def main():
     except json.JSONDecodeError:
         print(f"judge returned non-JSON: {resp.text}", file=sys.stderr)
         sys.exit(1)
+
+    # Merge pre-pass flags into the verdict. Pre-pass is low severity; if the
+    # LLM judge already returned high-severity FAIL, that severity wins.
+    if pre_pass_flags:
+        verdict.setdefault("flags", []).extend(pre_pass_flags)
+        if verdict.get("verdict") == "PASS":
+            verdict["verdict"] = "FAIL"
+            verdict["severity"] = "low"
 
     print(json.dumps(verdict, indent=2))
 
