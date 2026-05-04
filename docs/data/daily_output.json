@@ -1,45 +1,45 @@
 {
-  "headline": "Red Sox fall in extras while Jaylen Brown rips the officials",
+  "headline": "Red Sox struggle at Fenway while the Patriots rebuild through the draft",
   "morning_brew": [
-    "Another tough day at Fenway Park ended with a 3-1 loss to Houston. Suarez gave us four solid innings with zero earned runs, but the bats just could not wake up when it mattered most. William Contreras had three hits, yet we only managed a single run in the fifth. Losing in ten innings is absolutely brutal, especially when Zack Kelly gives up two in the final frame. The team is sitting at 13-21 now, and watching this sub-.400 baseball is starting to feel like a real chore for every fan in the Hub.",
-    "Jaylen Brown is not holding back on Twitch, calling out the refs and accusing Joel Embiid of ruining the game with flopping. It is a bold move after the season ended, but he is not wrong about the officiating being a mess lately. We are staring at a long offseason now with eighteen banners hanging over a group that still has questions to answer. The front office has to decide if this core can actually get back to the mountaintop or if more changes are coming to the Garden. We need more than just complaints to get back to the Finals.",
-    "The Patriots have their new class in the building and it is time to look at the haul. Round 1, Pick 28: Caleb Lomu, OT out of Utah. Drake Maye needed better protection all year. Love it, glaring need addressed. Round 2, Pick 55: Gabe Jacas, EDGE out of Illinois, interesting pick for the pass rush. Round 3, Pick 95: Eli Raridon, TE out of Notre Dame, a big target for the offense. Round 5, Pick 171: Karon Prunty, CB out of Wake Forest, depth for the secondary. Round 6, Pick 196: Dametrious Crownover, OT out of Texas A&M, more beef for the line. Round 6, Pick 212: Namdi Obiazor, LB out of TCU, special teams help. Round 7, Pick 234: Behren Morton, QB out of Texas Tech, a developmental arm. Round 7, Pick 245: Jam Miller, RB out of Alabama, depth in the backfield. Round 7, Pick 247: Quintayvious Hutchins, EDGE out of Boston College, a local kid for the defense."
+    "Thirteen wins and twenty-one losses is a brutal way to enter the first full week of May. The Sox dropped another one at Fenway Park, falling 3-1 to the Astros in ten innings. Suarez gave us four solid innings with zero earned runs, but the bats were as quiet as the Garden after a Game 7 loss. William Contreras was the only real spark with three hits, but you cannot win games when you leave that many runners on the path. We are sitting at the bottom of the AL East, and this sub-.400 winning percentage is making my morning coffee taste like Pike water. It is a long way from the nine titles we have in the trophy case.",
+    "The NFL Draft is active and the Patriots are busy overhauling this roster in Foxborough. R1.28: Caleb Lomu, OT out of Utah. Drake Maye needed better protection all year. Love it, glaring need addressed. R2.55: Gabe Jacas, EDGE out of Illinois. The defense needs a boost on the outside. Head-scratcher, plenty of talent still on the board. R3.95: Eli Raridon, TE out of Notre Dame. We needed another target in the passing game. About time, filling an obvious gap. R5.171: Karon Prunty, CB out of Wake Forest, depth at corner. R6.196: Dametrious Crownover, OT out of Texas A&M, more protection for the pocket. R6.212: Namdi Obiazor, LB out of TCU, special teams or depth. R7.234: Behren Morton, QB out of Texas Tech, a developmental arm. R7.245: Jam Miller, RB out of Alabama, backfield depth. R7.247: Quintayvious Hutchins, EDGE out of Boston College, a local kid to round out the class.",
+    "It is a strange vibe in the Hub right now with both the Celtics and Bruins watching the playoffs from their couches. The B's have to deal with the Charlie McAvoy hearing situation, which is a massive headache for the start of next season. The league is handling the discipline for that slash, and we just have to wait for the ruling. Meanwhile, the experts are already grading the MLB start, and the Sox are not exactly acing the test. We head to Detroit next, and if this rotation does not start eating innings, it is going to be a very long summer for every townie from Revere to Quincy."
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "William Contreras",
-      "trend": "Three hits in four at-bats on Sunday.",
-      "dans_take": "One of the few guys actually showing up at the plate right now."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Zack Kelly",
-      "trend": "Gave up two runs in the tenth inning to take the loss.",
-      "dans_take": "Absolutely brutal way to end a close game at Fenway."
+      "trend": "Three hits in four at-bats against Houston.",
+      "dans_take": "The only guy in the lineup who looks like he wants to be there right now."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Trevor Samaniego",
-      "trend": "Walked one and gave up a hit in less than an inning.",
-      "dans_take": "We need the middle relief to be much cleaner than this."
+      "player": "Zack Kelly",
+      "trend": "Gave up two runs and two walks in the tenth inning.",
+      "dans_take": "Absolutely brutal way to end a close game. You have to find the zone."
+    },
+    {
+      "category": "Streak",
+      "player": "Jose Suarez",
+      "trend": "Four scoreless innings with three strikeouts as the starter.",
+      "dans_take": "A bright spot in a dark week. He did his job, but the offense stayed on the bus."
     }
   ],
   "news_digest": [
     {
-      "headline": "Celtics' Jaylen Brown rips refs, calls out Embiid for flopping",
-      "url": "https://www.espn.com/nba/story/_/id/48672626/celtics-jaylen-brown-rips-refs-calls-embiid-flopping",
-      "dans_take": "Jaylen is speaking his mind but the season is still over."
-    },
-    {
       "headline": "Bruins' Charlie McAvoy offered in-person hearing after slash",
       "url": "https://www.espn.com/nhl/story/_/id/48658828/bruins-charlie-mcavoy-offered-person-hearing-slash",
-      "dans_take": "Hope everyone is safe, let the league handle the discipline on this one."
+      "dans_take": "The league is taking this seriously and we will let the process play out."
+    },
+    {
+      "headline": "Handing out 2026 April grades to all 30 MLB teams",
+      "url": "https://www.espn.com/mlb/story/_/id/48666631/mlb-2026-season-first-month-april-grades-all-30-teams",
+      "dans_take": "The Sox are flunking the early part of the year and everybody knows it."
     },
     {
       "headline": "Who is the Patriots' new edge rusher Gabe Jacas?",
       "url": "https://www.espn.com/nfl/story/_/id/48647764/who-new-england-patriots-new-edge-rusher-gabe-jacas-2026-nfl-draft",
-      "dans_take": "Always good to see a fresh face coming in to help the defense."
+      "dans_take": "He has the size for the edge, but he needs to prove he can handle the jump to the pros."
     }
   ],
   "box_scores": {
@@ -47,21 +47,21 @@
       "sport": "NBA",
       "home_team": "Boston Celtics",
       "away_team": "Philadelphia 76ers",
-      "home_score": 0,
-      "away_score": 0,
+      "home_score": 100,
+      "away_score": 109,
       "game_date": "2026-05-03",
-      "played": false,
+      "played": true,
       "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
       "home_team": "Boston Bruins",
       "away_team": "Buffalo Sabres",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-05-03",
-      "played": false,
-      "season_type": "offseason"
+      "home_score": 1,
+      "away_score": 4,
+      "game_date": "2026-05-02",
+      "played": true,
+      "season_type": "playoff"
     },
     "redsox": {
       "sport": "MLB",
@@ -76,10 +76,10 @@
     "patriots": {
       "sport": "NFL",
       "home_team": "New England Patriots",
-      "away_team": "Opponent",
+      "away_team": "N/A",
       "home_score": 0,
       "away_score": 0,
-      "game_date": "2026-05-03",
+      "game_date": "2026-05-04",
       "played": false,
       "season_type": "offseason"
     }
@@ -88,7 +88,7 @@
     {
       "date": "2026-05-04",
       "matchup": "Boston Red Sox at Detroit Tigers",
-      "time_et": "6:40 PM ET"
+      "time_et": "6:10 PM ET"
     },
     {
       "date": "2026-05-05",
@@ -121,5 +121,5 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-05-04T10:19:09.075935+00:00"
+  "generated_at": "2026-05-04T19:38:51.147216+00:00"
 }
