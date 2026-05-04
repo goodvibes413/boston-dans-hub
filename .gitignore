@@ -11,3 +11,4 @@ data/*
 !data/grudge_book.json
 !data/dan_archive/
 !data/dan_archive/**
+!data/boston_drafts.json
