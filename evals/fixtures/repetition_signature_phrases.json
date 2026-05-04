@@ -1,0 +1,55 @@
+{
+  "_fixture_notes": "Regression for the safety_judge.py deterministic repetition pre-pass (REPETITION_PATTERNS). Pass criteria: when this fixture's recent_dan_output reuses three forbidden phrases ('hope it works', 'glaring need addressed', 'absolutely brutal') in 2 prior days each, AND today's generated output reuses any of them, the judge's pre-pass should append low-severity repetition flags to the verdict and FAIL once. Manual usage: drive a single generation against this fixture and inspect the safety_judge.py output for 'repetition:' flags. The fixture exists primarily to document the contract; the test runs are best done as integration via publish.py.",
+  "today": "2026-05-04",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-05-03",
+        "celtics":  {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "bruins":   {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-05-03",
+            "home_team": "Boston Red Sox",
+            "away_team": "Houston Astros",
+            "home_score": 2,
+            "away_score": 8,
+            "result": "Red Sox lost 2-8"
+          },
+          "news": {"articles": []}
+        },
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {},
+    "current_season": {
+      "redsox": {"status": "regular_season", "wins": 14, "losses": 22, "win_pct": 0.389, "streak": "L4"}
+    }
+  },
+  "recent_dan_output": [
+    {
+      "date": "2026-05-01",
+      "headline": "Sox bullpen falters in another late collapse",
+      "morning_brew": [
+        "Absolutely brutal night at Fenway. The bullpen blew it again, this team needs help. The trade deadline is months away, glaring need addressed should be the front office's mantra.",
+        "Hope it works for whatever the manager is selling, because right now this team is sinking.",
+        "We need a real arm."
+      ],
+      "news_digest": []
+    },
+    {
+      "date": "2026-05-02",
+      "headline": "Another Sox loss, another night of the same questions",
+      "morning_brew": [
+        "Absolutely brutal showing at Fenway. The bats went quiet, the bullpen melted down, and another loss goes in the book.",
+        "Glaring need addressed in the offseason? Apparently not, because this lineup looks lost.",
+        "Hope it works out before the deadline because right now we are chasing the season."
+      ],
+      "news_digest": []
+    }
+  ]
+}

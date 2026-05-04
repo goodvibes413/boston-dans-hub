@@ -1,0 +1,67 @@
+{
+  "_fixture_notes": "Regression for the Continuity historical-facts rotation rule + the safety_judge repetition pre-pass. recent_dan_output contains 3 prior days where every morning_brew leans on '18 banners' / 'Banner 19' as the Celtics historical-fact crutch. Today's rolling_7day has another Celtics playoff game. Pass criteria: today's morning_brew does NOT cite '18 banners' or 'Banner 19'. Dan can still mention the playoff push using different historical color (a Russell-era nod, a Big Three callback) or skip historical color entirely. The safety judge's deterministic repetition pre-pass should also catch this if Dan slips and reuses the phrase.",
+  "today": "2026-05-04",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-05-03",
+        "celtics": {
+          "boxscore": {
+            "played": true,
+            "season_type": "playoff",
+            "game_date": "2026-05-03",
+            "home_team": "Boston Celtics",
+            "away_team": "Philadelphia 76ers",
+            "home_score": 110,
+            "away_score": 105,
+            "result": "Celtics won 110-105"
+          },
+          "news": {"articles": []}
+        },
+        "bruins":   {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox":   {"boxscore": {"played": false, "season_type": "regular"}, "news": {"articles": []}},
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "celtics": {"past_seasons": [{"year": 2024, "wins": 64, "losses": 18, "result": "NBA Champions — beat Mavericks 4-1"}]}
+    },
+    "current_season": {
+      "celtics": {"status": "in_playoffs", "regular_season_summary": "55-27", "playoff_seed": 1}
+    }
+  },
+  "recent_dan_output": [
+    {
+      "date": "2026-05-01",
+      "headline": "Celtics chase Banner 19 as Tatum carries the load",
+      "morning_brew": [
+        "Banner 19 is on the line tonight. The 18 banners hanging in the Garden have set the standard, and this group knows it. Tatum and Brown showed up.",
+        "Another night, another reminder that 18 banners is the bar. The C's have to play like champions.",
+        "Hope it works."
+      ],
+      "news_digest": []
+    },
+    {
+      "date": "2026-05-02",
+      "headline": "C's grind out a Game 5 win at the Garden",
+      "morning_brew": [
+        "Banner 19 talk is everywhere because we earned it. 18 banners and counting, that's the standard.",
+        "The Garden was electric. 18 banners worth of history has shown them how to close.",
+        "Absolutely brutal pace, but the C's pulled through."
+      ],
+      "news_digest": []
+    },
+    {
+      "date": "2026-05-03",
+      "headline": "Tatum and Brown push C's one win from another Finals run",
+      "morning_brew": [
+        "We are chasing Banner 19 and you can feel it in the building. 18 banners worth of expectations, and this team is rising to it.",
+        "Look at the 18 banners and tell me this group cant add to the tradition.",
+        "About damn time someone other than Tatum stepped up."
+      ],
+      "news_digest": []
+    }
+  ]
+}

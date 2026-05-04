@@ -1,0 +1,68 @@
+{
+  "_fixture_notes": "Regression for generate_rant.py freshness: aging draft state (5 days post-draft). boston_drafts.last_active_date='2026-04-25', active_drafts=[], today='2026-04-30' → days_since=5 → compute_draft_freshness returns ('aging', 5). Pass criteria: (1) morning_brew does NOT enumerate picks by name/round/position — no pick-by-pick recap; (2) morning_brew does NOT open with a draft-focused paragraph; (3) if the draft is mentioned at all it is a brief aside, not the lead. The DRAFT_PICKS block is injected in slim mode with a _note suppressing the recap. Manual usage: python3 scripts/eval_voice.py --fixture evals/fixtures/milestone_draft_aging_5days.json --n 2",
+  "today": "2026-04-30",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-04-29",
+        "celtics": {
+          "boxscore": {
+            "played": true,
+            "season_type": "playoff",
+            "game_date": "2026-04-29",
+            "home_team": "Boston Celtics",
+            "away_team": "Miami Heat",
+            "home_score": 98,
+            "away_score": 104,
+            "result": "Celtics lost 98-104"
+          },
+          "news": {"articles": []}
+        },
+        "bruins":   {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-04-29",
+            "home_team": "New York Yankees",
+            "away_team": "Boston Red Sox",
+            "home_score": 7,
+            "away_score": 2,
+            "result": "Red Sox lost 2-7"
+          },
+          "news": {"articles": []}
+        },
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "celtics": {"past_seasons": [{"year": 2024, "wins": 64, "losses": 18, "result": "NBA Champions — beat Mavericks 4-1"}]},
+      "redsox": {"past_seasons": [{"year": 2025, "wins": 78, "losses": 84, "result": "Missed playoffs"}]},
+      "patriots": {"past_seasons": [{"year": 2025, "wins": 6, "losses": 11, "result": "Missed playoffs"}]}
+    },
+    "current_season": {
+      "celtics": {"status": "in_playoffs", "regular_season_summary": "57-25", "playoff_seed": 1},
+      "redsox": {"status": "regular_season", "wins": 10, "losses": 18, "win_pct": 0.357, "streak": "L3"},
+      "patriots": {"status": "offseason"}
+    }
+  },
+  "boston_drafts": {
+    "generated_at": "2026-04-30T08:00:00+00:00",
+    "last_active_date": "2026-04-25",
+    "active_drafts": []
+  },
+  "recent_dan_output": [
+    {
+      "date": "2026-04-28",
+      "headline": "Celtics drop Game 3 in Miami, Sox losing streak reaches three",
+      "morning_brew": [
+        "Game 3 hurt. Jaylen Brown went quiet in the fourth and the Heat made 'em pay. Series is 2-1 Celtics but Miami is never dead.",
+        "Sox are getting pushed around on the road right now. Three straight losses and the bats keep going cold at the worst times.",
+        "Patriots draft class is in and the offseason grind is on. Malik Okafor at four was the right call."
+      ],
+      "news_digest": []
+    }
+  ]
+}
