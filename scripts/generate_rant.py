@@ -38,8 +38,11 @@ DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
 # Continuity memory: number of past Dan outputs to inject into the prompt.
-# 3 covers most news cycles without bloating tokens.
-DEFAULT_MEMORY_DAYS = 3
+# 5 days gives Dan a long enough memory to spot recurring crutches (e.g. "18
+# banners" being reused every morning) without bloating tokens — each archive
+# is ~1.5KB, so 5 days adds ~7.5KB to a ~30KB prompt. Was 3; bumped 2026-05-04
+# after observing daily repetition of the same historical_facts citations.
+DEFAULT_MEMORY_DAYS = 5
 
 TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
 

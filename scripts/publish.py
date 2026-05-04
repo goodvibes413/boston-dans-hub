@@ -27,7 +27,7 @@ from pathlib import Path
 RAW_OUTPUT_PATH = Path("data/raw_dan_output.json")
 PUBLISHED_OUTPUT_PATH = Path("docs/data/daily_output.json")
 ARCHIVE_DIR = Path(os.environ.get("DAN_ARCHIVE_PATH", "data/dan_archive"))
-ARCHIVE_RETENTION_DAYS = 7  # generate_rant reads 3; extra buffer covers UTC date boundary edge cases
+ARCHIVE_RETENTION_DAYS = 9  # generate_rant reads 5; extra buffer covers UTC date boundary edge cases
 STALE_MAX_AGE_HOURS = 48
 MAX_JUDGE_ATTEMPTS = 2  # original + 1 regeneration with correction notes
 
