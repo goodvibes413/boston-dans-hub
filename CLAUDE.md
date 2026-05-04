@@ -435,6 +435,7 @@ Fetched daily by `fetch_draft.py`, which queries ESPN's draft API for all 4 Bost
 ```json
 {
   "generated_at": "2026-04-24T16:30:00+00:00",
+  "last_active_date": "2026-04-25",
   "active_drafts": [
     {
       "sport": "NFL",
@@ -456,13 +457,19 @@ Fetched daily by `fetch_draft.py`, which queries ESPN's draft API for all 4 Bost
 
 **Shape:**
 - `generated_at`: ISO timestamp of fetch
+- `last_active_date`: ISO date (YYYY-MM-DD) of the most recent run where `active_drafts` was non-empty. Persisted across runs; used by `generate_rant.py` to compute freshness (active / fresh / aging / stale) and adjust DRAFT_PICKS injection. Migration default for first-run-after-feature: `"1970-01-01"` if prior file lacked the field and `active_drafts` is empty (offseason) → freshness becomes `stale` immediately so DRAFT_PICKS is omitted.
 - `active_drafts[]`: array of draft objects, one per Boston team's current draft
 - Each draft object: `sport`, `year`, `team`, `picks[]`
 - Each pick: `round`, `pick_overall`, `player_name`, `position`, `college`
 
-**Usage in prompt:** `generate_rant.py` injects `boston_drafts.json` as a `DRAFT_PICKS` block so Dan can cite player names and positions when discussing draft coverage. The safety judge loads it as `source_data` so player names pass the hallucination check.
+**Usage in prompt:** `generate_rant.py` computes a freshness label from `last_active_date` and `active_drafts`, then injects `boston_drafts.json` as a `DRAFT_PICKS` block in three different shapes:
+- **active** (currently drafting) or **fresh** (≤ 2 days post): full block, MANDATORY pick-by-pick coverage.
+- **aging** (3–7 days post): slim block with a `_note` telling Dan not to recap.
+- **stale** (> 7 days) or no `last_active_date`: block omitted entirely; Dan does not introduce draft commentary unless `LATEST_NEWS` surfaces a pick.
 
-**Empty drafts:** If no Boston teams are currently drafting (offseason), `active_drafts` is an empty array `[]`.
+Constants `DRAFT_FRESH_DAYS=2` and `DRAFT_AGING_DAYS=7` in `generate_rant.py` define the boundaries. Tunable; matches Boston sports talk-radio cycles.
+
+**Empty drafts:** If no Boston teams are currently drafting (offseason), `active_drafts` is an empty array `[]`. If the prior file's `last_active_date` is preserved.
 
 ### `data/historical_facts.json` (in git — hand-curated)
 
@@ -494,6 +501,45 @@ Curated Boston sports history for Dan's color references. Per-team structure wit
 **Usage in prompt:** `generate_rant.py` injects `historical_facts.json` as a `HISTORICAL_FACTS` block so Dan can reference championships, dynasties, and iconic moments as color. The safety judge loads it as `source_data` so historical claims pass the hallucination check (rule 8).
 
 **Rollover:** Update after any Boston team wins a championship. Prepend to `championships`, bump `total_championships`, commit with `chore: rollover historical_facts after {team} {year}`.
+
+### `data/callers_and_voices.json` (in git — voice flavor pool)
+
+Curated WEEI / 98.5 caller archetypes used as voice flavor. `generate_rant.py` picks `CALLERS_PER_DAY=3` per day (deterministically seeded by today's UTC date) and injects them as a `CALLER_FLAVOR` block. Dan uses **at most one** phrasing per `morning_brew`, only if it fits the moment — adapts the template to the specific story rather than quoting verbatim.
+
+```json
+{
+  "updated": "2026-05-04",
+  "archetypes": [
+    {
+      "name": "Townie Tony from Southie",
+      "vibe": "blue-collar, takes everything personally, hates ownership",
+      "sample_phrasings": ["Are you kiddin' me with this?", "Pay the man already.", "..."]
+    }
+  ]
+}
+```
+
+These are *flavor*, not *facts* — the safety judge does **not** cross-reference them. Curation: add archetypes by hand, no rotation needed beyond the daily seed-based pick. Checked into git via `!data/callers_and_voices.json` exception.
+
+### `data/grudge_book.json` (in git — durable rivalries)
+
+Curated Boston-vs-rival storylines for color when news surfaces a rival. `generate_rant.py` injects the whole file as a `GRUDGE_BOOK` block; the persona rule tells Dan to lean into the historical animosity (per the entry's `tone` direction) rather than treating the rival as a generic opponent.
+
+```json
+{
+  "updated": "2026-05-04",
+  "rivalries": [
+    {
+      "rival": "New York Yankees",
+      "team": "redsox",
+      "history": "1918 Babe Ruth sale, 2003 Aaron Boone walk-off, 2004 ALCS comeback...",
+      "tone": "deepest, most personal — every Yankees mention earns a jab"
+    }
+  ]
+}
+```
+
+These ARE facts — judge cross-references the `history` field. Don't invent rivalries that aren't in the file. Curation: hand-edit. Checked into git via `!data/grudge_book.json` exception.
 
 ### `data/dan_archive/YYYY-MM-DD.json` (in git — Dan's continuity memory)
 
@@ -594,8 +640,13 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `INPUT_PATH` | `safety_judge.py` | Default: `data/raw_dan_output.json` |
 | `SEASON_STATIC_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/season_static.json`; override in evals |
 | `SEASON_CURRENT_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/season_current.json`; override in evals |
-| `DAN_ARCHIVE_PATH` | `generate_rant.py`, `publish.py` | Default: `data/dan_archive`; override in evals to point at fixture-specific archives |
-| `DAN_MEMORY_DAYS` | `generate_rant.py` | Default: `3` (days of past Dan output to inject as continuity memory) |
+| `DAN_ARCHIVE_PATH` | `generate_rant.py`, `publish.py`, `safety_judge.py` | Default: `data/dan_archive`; override in evals to point at fixture-specific archives |
+| `DAN_MEMORY_DAYS` | `generate_rant.py` | Default: `5` (days of past Dan output to inject as continuity memory; bumped 2026-05-04 from 3) |
+| `DRAFT_PICKS_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_drafts.json`; override in evals |
+| `CALLERS_PATH` | `generate_rant.py` | Default: `data/callers_and_voices.json`; override in evals |
+| `GRUDGE_BOOK_PATH` | `generate_rant.py` | Default: `data/grudge_book.json`; override in evals |
+| `TODAY_OVERRIDE` | `generate_rant.py` | Pin "today" to a specific date (YYYY-MM-DD) for freshness-sensitive eval fixtures. Production leaves unset. |
+| `DRY_RUN` | `generate_rant.py` | Set to `1` to print the assembled prompt and exit before any Gemini call. Used for the look-before-leap pass during risky deploys. |
 
 ---
 

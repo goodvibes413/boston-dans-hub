@@ -293,9 +293,37 @@ def main():
                   f"{type(e).__name__}: {e}", file=sys.stderr)
             continue
 
+    # Persist last_active_date so generate_rant.py can compute freshness
+    # (active / fresh / aging / stale) per the Major Milestones rule. Read
+    # the prior file: when today's fetch is non-empty, today IS the new
+    # last_active_date; when today's fetch is empty, preserve whatever was
+    # there. Migration default: if the prior file lacks last_active_date AND
+    # has empty active_drafts (offseason after the prior draft ended), stamp
+    # "1970-01-01" so freshness computes as "stale" immediately rather than
+    # erroneously re-introducing draft commentary on the first run.
+    prior: dict = {}
+    if OUTPUT_PATH.exists():
+        try:
+            prior = json.loads(OUTPUT_PATH.read_text())
+        except (json.JSONDecodeError, IOError):
+            prior = {}
+
+    today_iso = datetime.now(timezone.utc).date().isoformat()
+    if active_drafts:
+        last_active_date = today_iso
+    else:
+        last_active_date = prior.get("last_active_date")
+        if last_active_date is None:
+            # Migration: no prior tracking + no active picks today. Default
+            # to a far-past date so freshness becomes "stale" and DRAFT_PICKS
+            # gets omitted. Real drafts will overwrite this on their first
+            # active day.
+            last_active_date = "1970-01-01"
+
     # Write output
     output = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "last_active_date": last_active_date,
         "active_drafts": active_drafts,
     }
 
@@ -303,12 +331,16 @@ def main():
         OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
         with open(OUTPUT_PATH, "w") as f:
             json.dump(output, f, indent=2)
-        print(f"\n✅ published: {OUTPUT_PATH}")
+        print(f"\n✅ published: {OUTPUT_PATH} (last_active_date={last_active_date})")
         return 0
     except IOError as e:
         print(f"  ❌ error: could not write {OUTPUT_PATH}: {e}", file=sys.stderr)
         # Write empty-but-valid JSON as fallback
-        fallback = {"generated_at": datetime.now(timezone.utc).isoformat(), "active_drafts": []}
+        fallback = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "last_active_date": last_active_date,
+            "active_drafts": [],
+        }
         try:
             OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
             with open(OUTPUT_PATH, "w") as f:

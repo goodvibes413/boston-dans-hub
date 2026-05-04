@@ -1,6 +1,6 @@
 # Quality Roadmap — How We Make Dan Better at $0/month
 
-**Status (2026-05-02):** Pursuing Tiers 1–3, Considering Tier 4, Backlogged Tier 5 (product/UX). Multi-agent architecture deferred (see "When multi-agent WOULD be the right answer" below).
+**Status (2026-05-04):** Tier 2 freshness pre-pass + repetition judge shipped today (carefully, with DRY_RUN gate). Tier 4 partial: callers_and_voices + grudge_book shipped. Continuity memory window extended 3→5 days. Backlogged Tier 5 (product/UX). Multi-agent architecture deferred (see "When multi-agent WOULD be the right answer" below).
 
 This document is the source of truth for how we improve Dan's content quality without breaking the $0/month operating-cost constraint. It exists because the question "should we move to a multi-agent system?" came up after a string of recurring content failures, and the answer needs to survive across sessions and machines.
 
@@ -185,9 +185,9 @@ Until any of these trip, Tiers 1–4 are cheaper and faster.
 | Tier | Description | Status | Effort | Cost |
 |---|---|---|---|---|
 | 1 | Eval-driven prompt iteration (regression fixtures + gating) | **Pursuing** | ~half day | $0 |
-| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; draft & causation pending; facts chunking pending) | **In progress** | 1–2 days | $0 |
-| 3 | Voice/quality rubric expansion in `safety_judge.py` | **Pursuing** | 2–3 days | +0–1 calls/day |
-| 4 | Richer source data (deeper history, caller archetypes, grudge book) | **Considering** | Ongoing | $0 |
+| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; **draft freshness shipped 2026-05-04** with DRY_RUN gate; causation pending; facts chunking deferred) | **In progress** | 1–2 days | $0 |
+| 3 | Voice/quality rubric expansion in `safety_judge.py` (**repetition pre-pass + bullet 10 shipped 2026-05-04**) | **Pursuing** | 2–3 days | +0–1 calls/day |
+| 4 | Richer source data (callers_and_voices + grudge_book **shipped 2026-05-04**; deeper history ongoing) | **Partial** | Ongoing | $0 |
 | 5 | Product & UX (readable archive, eval data drill-down) | **Backlog** | 2–3 days | $0 |
 | Multi-agent | 2+ Gemini calls collaborating on generation | **Conditional** | — | Breaks $0 |
 

@@ -53,14 +53,13 @@ def summarize(path: Path):
 def split_fixture(fixture_data: dict):
     """
     Detect fixture shape and return
-    (rolling_7day, season_static, season_current, recent_dan_output).
+    (rolling_7day, season_static, season_current, recent_dan_output,
+     boston_drafts, latest_news, today_iso).
 
-    New shape: has explicit "rolling_7day" key → split into sections.
-    Legacy shape: whole fixture IS the rolling_7day payload; season files blank.
-
-    `recent_dan_output` is a list of past-Dan entries (see Continuity rule);
-    fixtures use it to test that today's output doesn't repeat yesterday's.
-    Legacy fixtures and any without the key get an empty list.
+    New shape: has explicit "rolling_7day" key → split into sections. May also
+    carry "boston_drafts" (DRAFT_PICKS source), "latest_news" (LATEST_NEWS
+    source), and "today" (pins TODAY_OVERRIDE for freshness-sensitive tests).
+    Legacy shape: whole fixture IS the rolling_7day payload; everything else blank.
     """
     if isinstance(fixture_data, dict) and "rolling_7day" in fixture_data:
         rolling = fixture_data.get("rolling_7day", {}) or {}
@@ -68,9 +67,12 @@ def split_fixture(fixture_data: dict):
         past = season_memory.get("past_seasons", {}) or {}
         current = season_memory.get("current_season", {}) or {}
         recent = fixture_data.get("recent_dan_output", []) or []
-        return rolling, past, current, recent
+        drafts = fixture_data.get("boston_drafts", {}) or {}
+        news = fixture_data.get("latest_news", {}) or {}
+        today = fixture_data.get("today")
+        return rolling, past, current, recent, drafts, news, today
     # Legacy: the fixture IS the rolling_7day payload
-    return fixture_data, {}, {}, []
+    return fixture_data, {}, {}, [], {}, {}, None
 
 
 def main():
@@ -92,22 +94,23 @@ def main():
         fixture_data = json.loads(fixture.read_text())
     except json.JSONDecodeError as e:
         sys.exit(f"error: fixture not valid JSON: {e}")
-    rolling, season_past, season_current, recent_output = split_fixture(fixture_data)
+    rolling, season_past, season_current, recent_output, drafts, news, fixture_today = split_fixture(fixture_data)
 
     # Write split sections to tmp files so generate_rant.py can read them via env vars
     tmp_rolling = RUNS_DIR / f"{label}_tmp_rolling.json"
     tmp_static = RUNS_DIR / f"{label}_tmp_season_static.json"
     tmp_current = RUNS_DIR / f"{label}_tmp_season_current.json"
+    tmp_drafts = RUNS_DIR / f"{label}_tmp_drafts.json"
+    tmp_news = RUNS_DIR / f"{label}_tmp_news.json"
     tmp_rolling.write_text(json.dumps(rolling, indent=2))
     tmp_static.write_text(json.dumps(season_past, indent=2))
     tmp_current.write_text(json.dumps(season_current, indent=2))
+    tmp_drafts.write_text(json.dumps(drafts, indent=2))
+    tmp_news.write_text(json.dumps(news, indent=2))
 
-    # Write empty stubs for schedule/news — fixtures are self-contained;
-    # these files don't exist when data/ is gitignored.
+    # Write empty stub for schedule — fixtures don't usually exercise it.
     stub_schedule = RUNS_DIR / f"{label}_stub_schedule.json"
-    stub_news = RUNS_DIR / f"{label}_stub_news.json"
     stub_schedule.write_text('{"games": []}')
-    stub_news.write_text('{"articles": []}')
 
     # Continuity memory: recent_dan_output is a list of {date, headline, ...}
     # entries. generate_rant.py reads these from a directory of <date>.json
@@ -131,11 +134,14 @@ def main():
         env = os.environ.copy()
         env["ROLLING_STORE_PATH"] = str(tmp_rolling)
         env["SCHEDULE_PATH"] = str(stub_schedule)
-        env["NEWS_PATH"] = str(stub_news)
+        env["NEWS_PATH"] = str(tmp_news)
         env["SEASON_STATIC_PATH"] = str(tmp_static)
         env["SEASON_CURRENT_PATH"] = str(tmp_current)
+        env["DRAFT_PICKS_PATH"] = str(tmp_drafts)
         env["DAN_ARCHIVE_PATH"] = str(tmp_archive_dir)
         env["OUTPUT_PATH"] = str(out_path)
+        if fixture_today:
+            env["TODAY_OVERRIDE"] = fixture_today
         print(f"  run {i}/{args.n} → {out_path.name}")
         result = subprocess.run(
             [sys.executable, str(REPO / "scripts" / "generate_rant.py")],

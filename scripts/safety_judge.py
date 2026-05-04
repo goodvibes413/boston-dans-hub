@@ -278,8 +278,10 @@ def main():
     if pre_pass_flags:
         print(f"  pre-pass: {len(pre_pass_flags)} repetition flag(s) detected", file=sys.stderr)
 
+    today_iso = datetime.now(timezone.utc).date().isoformat()
     full_prompt = (
-        JUDGE_PROMPT
+        f"TODAY: {today_iso}\n\n"
+        + JUDGE_PROMPT
         + json.dumps(source_data, indent=2)
         + "\n\nCONTENT TO REVIEW:\n"
         + content
