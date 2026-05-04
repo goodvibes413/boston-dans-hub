@@ -34,8 +34,15 @@ DEFAULT_SEASON_STATIC = REPO / "data" / "season_static.json"
 DEFAULT_SEASON_CURRENT = REPO / "data" / "season_current.json"
 DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
 DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
+DEFAULT_CALLERS = REPO / "data" / "callers_and_voices.json"
+DEFAULT_GRUDGE_BOOK = REPO / "data" / "grudge_book.json"
 DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
+
+# Caller flavor: how many archetypes to inject per day. 2-3 keeps the prompt
+# focused without locking Dan into a single voice. Picked deterministically
+# from today's date so a given day always sees the same archetypes.
+CALLERS_PER_DAY = 3
 
 # Continuity memory: number of past Dan outputs to inject into the prompt.
 # 5 days gives Dan a long enough memory to spot recurring crutches (e.g. "18
@@ -379,7 +386,31 @@ def load_recent_dan_output(archive_dir: Path, days: int = DEFAULT_MEMORY_DAYS) -
     return entries
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None) -> str:
+def select_daily_callers(callers_data: dict, today_iso: str, n: int = CALLERS_PER_DAY) -> list[dict]:
+    """
+    Deterministically pick N caller archetypes for today, seeded by date.
+    Same day always picks the same archetypes (so re-runs / corrections match);
+    different days rotate.
+
+    Returns [] if callers_data is missing/malformed.
+    """
+    if not callers_data or not isinstance(callers_data, dict):
+        return []
+    archetypes = callers_data.get("archetypes", []) or []
+    if not archetypes:
+        return []
+
+    import hashlib
+    seed = int(hashlib.sha256(today_iso.encode()).hexdigest()[:8], 16)
+    pool = list(archetypes)
+    # Fisher-Yates with seeded indices, deterministic across runs
+    for i in range(len(pool) - 1, 0, -1):
+        j = (seed + i * 2654435761) % (i + 1)
+        pool[i], pool[j] = pool[j], pool[i]
+    return pool[:n]
+
+
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None) -> str:
     message = (
         "Here is the structured data for the last 7 days of Boston sports.\n"
         "Use ONLY the numbers and facts in this data — never invent stats.\n\n"
@@ -410,6 +441,17 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
         message += (
             "HISTORICAL_FACTS:\n"
             f"{json.dumps(historical_facts, indent=2)}\n\n"
+        )
+    if grudges:
+        message += (
+            "GRUDGE_BOOK:\n"
+            f"{json.dumps(grudges, indent=2)}\n\n"
+        )
+    if callers:
+        message += (
+            "CALLER_FLAVOR (today's archetypes — use AT MOST one phrasing per "
+            "morning_brew, only if it fits the moment; do not stack):\n"
+            f"{json.dumps(callers, indent=2)}\n\n"
         )
     message += (
         "Generate Boston Dan's Hub JSON output. Return ONLY the JSON object, "
@@ -514,6 +556,10 @@ def main():
     draft_picks = load_json(draft_picks_path)
     historical_facts_path = Path(os.environ.get("HISTORICAL_FACTS_PATH", DEFAULT_HISTORICAL_FACTS))
     historical_facts = load_json(historical_facts_path)
+    callers_path = Path(os.environ.get("CALLERS_PATH", DEFAULT_CALLERS))
+    callers_data = load_json(callers_path)
+    grudge_path = Path(os.environ.get("GRUDGE_BOOK_PATH", DEFAULT_GRUDGE_BOOK))
+    grudges = load_json(grudge_path)
     season_memory = build_season_memory(season_static, season_current)
 
     archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
@@ -521,7 +567,18 @@ def main():
     recent_output = load_recent_dan_output(archive_dir, memory_days)
     print(f"  archive_dir:    {archive_dir} ({len(recent_output)} prior day(s) loaded)")
 
-    user_message = build_user_message(rolling, schedule, news, season_memory, draft_picks, historical_facts, recent_output)
+    today_iso = datetime.now(timezone.utc).date().isoformat()
+    todays_callers = select_daily_callers(callers_data, today_iso)
+    print(f"  callers:        {len(todays_callers)} archetype(s) picked for {today_iso}")
+
+    user_message = build_user_message(
+        rolling, schedule, news, season_memory,
+        draft_picks=draft_picks,
+        historical_facts=historical_facts,
+        recent_output=recent_output,
+        callers=todays_callers,
+        grudges=grudges,
+    )
 
     # If the safety judge rejected a previous attempt this run, publish.py
     # re-invokes us with CORRECTION_NOTES set. Append the judge's flags to

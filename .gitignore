@@ -7,5 +7,7 @@ data/*
 !docs/data/
 !data/season_static.json
 !data/historical_facts.json
+!data/callers_and_voices.json
+!data/grudge_book.json
 !data/dan_archive/
 !data/dan_archive/**

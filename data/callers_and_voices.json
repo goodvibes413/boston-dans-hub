@@ -1,0 +1,114 @@
+{
+  "updated": "2026-05-04",
+  "_note": "WEEI / 98.5 caller archetypes used as voice flavor. generate_rant.py picks 2-3 per day (deterministic seed = today's date) and injects them as a CALLER_FLAVOR block. These are FLAVOR, not FACTS — the safety judge does not cross-reference them.",
+  "archetypes": [
+    {
+      "name": "Townie Tony from Southie",
+      "vibe": "blue-collar, takes everything personally, hates ownership",
+      "sample_phrasings": [
+        "Are you kiddin' me with this?",
+        "Pay the man already.",
+        "This is why we can't have nice things."
+      ]
+    },
+    {
+      "name": "Marty from Medford",
+      "vibe": "old-school, has watched every game since 1978, suspicious of analytics",
+      "sample_phrasings": [
+        "We didn't need this fancy launch-angle stuff back in the day.",
+        "I been watchin' this team since '78.",
+        "Just play the kid, what are we waitin' for?"
+      ]
+    },
+    {
+      "name": "Donna from Dot",
+      "vibe": "knows the team better than the play-by-play guy, won't let you off the hook",
+      "sample_phrasings": [
+        "I'll tell you exactly what's wrong with this bullpen.",
+        "Don't give me that.",
+        "I been sayin' it all year."
+      ]
+    },
+    {
+      "name": "Big Sully from Saugus",
+      "vibe": "sweaty, loud, loves a good rant, loves Tuukka, loves Pasta",
+      "sample_phrasings": [
+        "Pasta's been heatin' up, give him the rock.",
+        "We need a guy who wants to be here.",
+        "This is a wicked good problem to have."
+      ]
+    },
+    {
+      "name": "Mike from Malden",
+      "vibe": "trade-rumor obsessive, always has 'a guy' who tells him things",
+      "sample_phrasings": [
+        "I got a guy who said it's almost done.",
+        "Watch the wire later, somethin's brewin'.",
+        "Front office better be on the phone right now."
+      ]
+    },
+    {
+      "name": "Linda from Lynn",
+      "vibe": "wry, world-weary, has seen every flavor of Boston heartbreak",
+      "sample_phrasings": [
+        "Same movie, different remake.",
+        "I'll believe it when I see it in October.",
+        "We've been here before, we'll be here again."
+      ]
+    },
+    {
+      "name": "Frankie from the North End",
+      "vibe": "neighborhood pride, casual but sharp, refers to Bobby Orr like he's family",
+      "sample_phrasings": [
+        "That's a Bobby Orr-type goal right there.",
+        "C'mon, give the kid a shot at the Garden.",
+        "We grew up on this stuff, you can't fake it."
+      ]
+    },
+    {
+      "name": "Joey from Quincy",
+      "vibe": "bullpen truther, will trade any starter for two relievers",
+      "sample_phrasings": [
+        "It's the bullpen, it's always the bullpen.",
+        "Get me a setup guy and I'll quiet down.",
+        "You can't win in October without seven good innings of relief."
+      ]
+    },
+    {
+      "name": "Eddie from Everett",
+      "vibe": "dropped his accent thirty years ago but kept all the takes",
+      "sample_phrasings": [
+        "I don't care what the sabermetric guys say.",
+        "Coach has lost the room.",
+        "We need a vet, not another rookie."
+      ]
+    },
+    {
+      "name": "Patti from Peabody",
+      "vibe": "sox lifer, blows up at any whiff of selling, would chain herself to the gates",
+      "sample_phrasings": [
+        "If they sell at the deadline I'm done.",
+        "Pay the players, John.",
+        "This town doesn't tank."
+      ]
+    },
+    {
+      "name": "Al from Allston",
+      "vibe": "young, BC-educated, talks himself into every hot take",
+      "sample_phrasings": [
+        "Hear me out before you laugh.",
+        "I think we got something here.",
+        "Numbers don't lie, the eye test agrees."
+      ]
+    },
+    {
+      "name": "Coach from Cambridge",
+      "vibe": "actually coached high school, will go on a ten-minute fundamentals rant",
+      "sample_phrasings": [
+        "It's basic fundamentals.",
+        "You've got to box out, period.",
+        "We're not running a clinic out there, we're playing pro basketball."
+      ]
+    }
+  ]
+}
