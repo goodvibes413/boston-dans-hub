@@ -1,45 +1,45 @@
 {
-  "headline": "Red Sox stumble at Fenway while the Celtics face a long offseason",
+  "headline": "Red Sox find a spark in Detroit while Roman Anthony heads home",
   "morning_brew": [
-    "Sunday afternoon at Fenway Park was a total grind that ended in another disappointing loss. A 3-1 final against the Astros in ten innings leaves this team at 13-21 and searching for any kind of identity. I don't care what the sabermetric guys say, you cannot win games when your starter only goes four innings. Jose Suarez put a massive burden on the bullpen and Zack Kelly just could not hold it together in the tenth. We are heading to Detroit now and the vibes are at an all-time low in the Hub.",
-    "The fallout from the collapse against Philadelphia is going to be felt all summer long. Blowing a three-one lead is something you just do not see from a team with this much talent. It is the kind of loss that makes you question the entire core of the roster. Philadelphia has been a thorn in our side since the Bird era, but losing like this in the modern day is just pathetic. Two days after the Bruins got bounced by Buffalo, the Celtics followed suit with their own disaster right here at the Garden.",
-    "Looking at the new class in Foxborough, the front office clearly focused on the trenches and depth. R1.28: Caleb Lomu, OT out of Utah. Drake Maye needed better protection all year. Love the pick, total necessity. R2.55: Gabe Jacas, EDGE out of Illinois. The defense needs a boost on the outside. A bit of a reach with other guys available. R3.95: Eli Raridon, TE out of Notre Dame. We needed another target in the passing game. Smart move to get more weapons. R5.171: Karon Prunty, CB out of Wake Forest, depth at corner. R6.196: Dametrious Crownover, OT out of Texas A&M, more protection for the pocket. R6.212: Namdi Obiazor, LB out of TCU, special teams or depth. R7.234: Behren Morton, QB out of Texas Tech, a developmental arm. R7.245: Jam Miller, RB out of Alabama, backfield depth. R7.247: Quintayvious Hutchins, EDGE out of Boston College, a local kid to round out the class."
+    "Monday night in Detroit finally gave us something to cheer about after that miserable stretch at Fenway Park. Payton Tolle was absolutely dealing, giving up just one hit over seven innings of work. Five runs in the seventh inning turned the whole game around, capped off by that massive three-run blast from Jarren Duran. It is about time this offense showed some life because we have been starving for a performance like this.",
+    "The win comes with a side of worry as Roman Anthony is heading back to the Hub to get his hand checked out. Losing a young talent like that right when the team is trying to climb out of the basement is absolutely brutal. I been watchin' this team since '78, and the injury bug always seems to bite at the worst possible moment. We need that kid in the lineup if we are going to make any noise in the AL East.",
+    "Around the rest of the Hub, it is a lot of waiting and wondering. The Celtics and Bruins are both facing long summers of what-ifs after those early exits at the Garden. Over in the legal world, the Stefon Diggs trial is getting underway. It is a tough situation for everyone involved, so we should just hope for a fair process and let the league handle the details. If a suspension comes down later, we will see how it affects the roster in Foxborough."
   ],
   "trend_watch": [
     {
-      "category": "Cold Snap",
-      "player": "Jose Suarez",
-      "trend": "Lasted only 4.0 innings in his start against Houston.",
-      "dans_take": "Four innings does not get the job done when your bullpen is already gassed."
-    },
-    {
       "category": "Heater",
-      "player": "William Contreras",
-      "trend": "Collected three hits in four at-bats on Sunday.",
-      "dans_take": "He is the only one in this lineup showing any real consistency at the plate right now."
+      "player": "Payton Tolle",
+      "trend": "Pitched seven innings of one-hit ball with eight strikeouts",
+      "dans_take": "The kid was a total stud on the mound and gave the bullpen a much-needed breather."
+    },
+    {
+      "category": "Streak",
+      "player": "Jarren Duran",
+      "trend": "Hit a clutch three-run home run to lead the comeback",
+      "dans_take": "He is one of the few guys actually showing some heart and power during this road trip."
     },
     {
       "category": "Cold Snap",
-      "player": "Wilyer Abreu",
-      "trend": "Went 0 for 3 in the extra-innings loss.",
-      "dans_take": "We need the young guys to step up in big moments if we want to climb out of the basement."
+      "player": "Roman Anthony",
+      "trend": "Exited the game with wrist discomfort and returning to Boston",
+      "dans_take": "This is a massive blow to the lineup and we just have to pray for a clean report from the doctor."
     }
   ],
   "news_digest": [
     {
-      "headline": "Expert picks for the 2026 NBA playoff second round",
-      "url": "https://www.espn.com/nba/story/_/id/48629118/2026-nba-playoff-expert-picks-second-round-conference-semi-finals",
-      "dans_take": "The experts are moving on without us and it is going to be a long wait for next year."
+      "headline": "Red Sox's Roman Anthony to have hand rechecked in Boston",
+      "url": "https://www.espn.com/mlb/story/_/id/48680767/red-sox-roman-anthony-hand-checked-boston",
+      "dans_take": "Total heartbreaker for the kid, hope the news is better than it sounds once he gets home."
     },
     {
-      "headline": "Handing out April grades to all thirty MLB teams",
-      "url": "https://www.espn.com/mlb/story/_/id/48666631/mlb-2026-season-first-month-april-grades-all-30-teams",
-      "dans_take": "The marks for the Sox are going to be ugly after this start at Fenway."
+      "headline": "Stefon Diggs' attorney says assault never happened as trial begins",
+      "url": "https://www.espn.com/nfl/story/_/id/48677557/stefon-diggs-says-assault-never-happened-trial-begins",
+      "dans_take": "Hope everyone is safe, but we will let the league and the courts sort this one out."
     },
     {
-      "headline": "Defenseman Charlie McAvoy offered in-person hearing after slash",
-      "url": "https://www.espn.com/nhl/story/_/id/48658828/bruins-charlie-mcavoy-offered-person-hearing-slash",
-      "dans_take": "The league is coming down hard and this could really hurt the B's to start next season."
+      "headline": "Brenda Song, Macaulay Culkin lead NBA playoffs celebrity sightings",
+      "url": "https://www.espn.com/nba/story/_/id/48514336/nba-playoffs-2026-celebrity-sightings",
+      "dans_take": "I do not care who is sitting courtside if the Celtics are not on the floor."
     }
   ],
   "box_scores": {
@@ -47,29 +47,29 @@
       "sport": "NBA",
       "home_team": "Boston Celtics",
       "away_team": "Philadelphia 76ers",
-      "home_score": 100,
-      "away_score": 109,
-      "game_date": "2026-05-03",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-05-04",
       "played": false,
       "season_type": "playoff"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Buffalo Sabres",
-      "away_team": "Boston Bruins",
-      "home_score": 4,
-      "away_score": 1,
-      "game_date": "2026-05-01",
+      "home_team": "Boston Bruins",
+      "away_team": "Buffalo Sabres",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-05-04",
       "played": false,
-      "season_type": "playoff"
+      "season_type": "offseason"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Houston Astros",
-      "home_score": 1,
-      "away_score": 3,
-      "game_date": "2026-05-03",
+      "home_team": "Detroit Tigers",
+      "away_team": "Boston Red Sox",
+      "home_score": 4,
+      "away_score": 5,
+      "game_date": "2026-05-04",
       "played": true,
       "season_type": "regular"
     },
@@ -79,17 +79,12 @@
       "away_team": "Unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-05-03",
+      "game_date": "2026-05-04",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-05-04",
-      "matchup": "Boston Red Sox at Detroit Tigers",
-      "time_et": "6:10 PM ET"
-    },
     {
       "date": "2026-05-05",
       "matchup": "Boston Red Sox at Detroit Tigers",
@@ -119,15 +114,12 @@
       "date": "2026-05-10",
       "matchup": "Tampa Bay Rays at Boston Red Sox",
       "time_et": "1:35 PM ET"
+    },
+    {
+      "date": "2026-05-12",
+      "matchup": "Philadelphia Phillies at Boston Red Sox",
+      "time_et": "6:45 PM ET"
     }
   ],
-  "generated_at": "2026-05-04T19:56:27.840255+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "Voice repetition (eighteen banners citation)",
-    "Voice repetition in news_digest (McAvoy take)"
-  ],
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 2 attempts: Fabricated statistics: Dan claims the Red Sox out-hit the opponent 9-3, but the source data indicates the opponent had 10 hits (Suarez 3, Samaniego 1, Weissert 3, Whitlock 1, Chapman 1, Kelly 1).",
-  "_stale_age_hours": 0.2
+  "generated_at": "2026-05-05T10:08:04.909195+00:00"
 }
