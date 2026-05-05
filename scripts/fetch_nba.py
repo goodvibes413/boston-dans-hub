@@ -478,6 +478,47 @@ def fetch_schedule() -> None:
 # Entry point
 # ---------------------------------------------------------------------------
 
+def patch_eliminated_team() -> None:
+    """
+    Post-process the boxscore after the schedule is fetched.
+
+    Problem: fetch_boxscore() runs before fetch_schedule(). When the Celtics
+    have no game today AND the date heuristic says we're in playoff month (May/
+    June), the boxscore is written with season_type="playoff" and played=False.
+    The frontend renders this as "No Game" instead of "Offseason."
+
+    Fix: if boxscore says played=False + season_type="playoff" AND the 7-day
+    schedule has zero upcoming games, the team is eliminated — patch the
+    boxscore to season_type="offseason" so the frontend shows "Offseason."
+
+    Runs silently on any read/write error so it can never block publishing.
+    """
+    try:
+        boxscore_raw = BOXSCORE_PATH.read_text()
+        schedule_raw = SCHEDULE_PATH.read_text()
+    except IOError:
+        return  # files don't exist yet — nothing to patch
+
+    try:
+        boxscore = json.loads(boxscore_raw)
+        schedule = json.loads(schedule_raw)
+    except json.JSONDecodeError:
+        return  # malformed — leave as-is
+
+    if (
+        not boxscore.get("played")
+        and boxscore.get("season_type") == "playoff"
+        and not schedule.get("games")
+    ):
+        boxscore["season_type"] = "offseason"
+        try:
+            BOXSCORE_PATH.write_text(json.dumps(boxscore, indent=2))
+            print("  patched: no upcoming games → season_type changed "
+                  "playoff → offseason (team eliminated)")
+        except IOError as e:
+            print(f"  warning: could not write patched boxscore: {e}", file=sys.stderr)
+
+
 def main() -> None:
     """Run all three fetchers in sequence."""
     print("=" * 52)
@@ -491,6 +532,11 @@ def main() -> None:
 
     print("\n[2/3] Next 7-day schedule")
     fetch_schedule()
+
+    # Post-process: if team was eliminated (no upcoming games) but boxscore
+    # says season_type="playoff", patch to "offseason" so the frontend renders
+    # "Offseason" rather than "No Game".
+    patch_eliminated_team()
 
     print("\n[3/3] Latest Celtics news")
     fetch_news()

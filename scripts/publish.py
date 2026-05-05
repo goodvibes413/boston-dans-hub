@@ -27,6 +27,7 @@ from pathlib import Path
 RAW_OUTPUT_PATH = Path("data/raw_dan_output.json")
 PUBLISHED_OUTPUT_PATH = Path("docs/data/daily_output.json")
 ARCHIVE_DIR = Path(os.environ.get("DAN_ARCHIVE_PATH", "data/dan_archive"))
+SEASON_CURRENT_PATH = Path(os.environ.get("SEASON_CURRENT_PATH", "data/season_current.json"))
 ARCHIVE_RETENTION_DAYS = 9  # generate_rant reads 5; extra buffer covers UTC date boundary edge cases
 STALE_MAX_AGE_HOURS = 48
 MAX_JUDGE_ATTEMPTS = 2  # original + 1 regeneration with correction notes
@@ -56,6 +57,40 @@ def read_json(path: Path) -> dict | None:
     except (json.JSONDecodeError, IOError) as e:
         print(f"  error: could not parse {path}: {e}", file=sys.stderr)
         return None
+
+
+def patch_box_score_season_types(output: dict) -> dict:
+    """
+    Override season_type in box_scores to 'offseason' for any team whose
+    current-season status is 'offseason' in season_current.json.
+
+    This fixes a class of frontend bugs where a team was eliminated from the
+    playoffs but their box_score still carries season_type='playoff' (because
+    fetch_nba/nhl/etc. uses a date heuristic that says "May = playoff month"
+    even for eliminated teams). The frontend renders these as "No Game" instead
+    of "Offseason." season_current.json is the authoritative status source.
+
+    Never raises — a missing or malformed season_current.json is silently
+    ignored so this patch never blocks publishing.
+    """
+    try:
+        season_current = read_json(SEASON_CURRENT_PATH)
+        if not isinstance(season_current, dict):
+            return output
+        box_scores = output.get("box_scores")
+        if not isinstance(box_scores, dict):
+            return output
+        for team in ("celtics", "bruins", "redsox", "patriots"):
+            team_status = (season_current.get(team) or {}).get("status")
+            if team_status == "offseason" and isinstance(box_scores.get(team), dict):
+                if box_scores[team].get("season_type") != "offseason":
+                    print(f"  patching box_scores.{team}: season_type "
+                          f"'{box_scores[team].get('season_type')}' → 'offseason' "
+                          f"(season_current says offseason)")
+                    box_scores[team]["season_type"] = "offseason"
+    except Exception as e:
+        print(f"  warning: patch_box_score_season_types failed: {e}", file=sys.stderr)
+    return output
 
 
 def write_json(path: Path, data: dict, label: str = "published") -> bool:
@@ -266,6 +301,7 @@ def main():
             print("  warning: judge unavailable — publishing without safety gate this run")
             output = dict(raw_output)
             output["generated_at"] = now_iso()
+            output = patch_box_score_season_types(output)
             write_json(PUBLISHED_OUTPUT_PATH, output, label="output (judge unavailable)")
             archive_dan_output(output)
             return 0
@@ -277,6 +313,7 @@ def main():
             if attempt > 1:
                 output["_regenerated"] = True
                 output["_regeneration_reason"] = last_flags
+            output = patch_box_score_season_types(output)
             success = write_json(PUBLISHED_OUTPUT_PATH, output)
             if success:
                 archive_dan_output(output)
