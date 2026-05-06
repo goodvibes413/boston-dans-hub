@@ -471,6 +471,44 @@ Constants `DRAFT_FRESH_DAYS=2` and `DRAFT_AGING_DAYS=7` in `generate_rant.py` de
 
 **Post-draft offseason:** `active_drafts` retains the completed picks (ESPN keeps serving them); freshness decays through fresh → aging → stale based on `last_active_date` alone. Once stale, the block is omitted and Dan ignores draft history unless news surfaces it.
 
+### `data/boston_roster.json` (gitignored — fetched daily)
+
+Fetched daily by `fetch_roster.py`, which queries ESPN (NFL/NBA/MLB) and the NHL official API for current active rosters. Slim format: name + position only. Injected into `generate_rant.py` as a `CURRENT_ROSTER` block and loaded by `safety_judge.py` as `source_data.rosters` for off-roster player cross-checking.
+
+```json
+{
+  "generated_at": "2026-05-06T08:00:00+00:00",
+  "rosters": {
+    "patriots": [
+      {"name": "Drake Maye", "position": "QB"},
+      {"name": "Caleb Lomu", "position": "OT"}
+    ],
+    "celtics": [
+      {"name": "Jayson Tatum", "position": "SF"},
+      {"name": "Jaylen Brown", "position": "SG"}
+    ],
+    "redsox": [
+      {"name": "Rafael Devers", "position": "3B"},
+      {"name": "Brayan Bello", "position": "SP"}
+    ],
+    "bruins": [
+      {"name": "David Pastrnak", "position": "RW"},
+      {"name": "Brad Marchand", "position": "LW"}
+    ]
+  }
+}
+```
+
+**Sources:**
+| Team | Provider | Position format |
+|---|---|---|
+| Patriots | ESPN NFL (grouped) | Position abbreviation (QB, OT, WR…) |
+| Celtics | ESPN NBA (flat) | Position abbreviation (PG, SG, SF, PF, C) |
+| Red Sox | ESPN MLB (grouped) | Position abbreviation (SP, RP, C, 1B, 3B…) |
+| Bruins | NHL official API | LW, C, RW, D, G |
+
+**Usage:** `generate_rant.py` injects this as `CURRENT_ROSTER` after `CALLER_FLAVOR`. The Roster Discipline persona rule instructs Dan to treat unlisted players as free agents/non-team-members. `safety_judge.py` rule 11 flags MEDIUM severity when Dan implies an unlisted player is a current team member.
+
 ### `data/historical_facts.json` (in git — hand-curated)
 
 Curated Boston sports history for Dan's color references. Per-team structure with championships, dynasties, iconic moments, curses, and rivalries. Mirrors the `season_static.json` pattern — checked into git via a `!data/historical_facts.json` exception in `.gitignore`.
@@ -645,6 +683,7 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `DRAFT_PICKS_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_drafts.json`; override in evals |
 | `CALLERS_PATH` | `generate_rant.py` | Default: `data/callers_and_voices.json`; override in evals |
 | `GRUDGE_BOOK_PATH` | `generate_rant.py` | Default: `data/grudge_book.json`; override in evals |
+| `ROSTER_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_roster.json`; override in evals to point at fixture-specific roster |
 | `TODAY_OVERRIDE` | `generate_rant.py` | Pin "today" to a specific date (YYYY-MM-DD) for freshness-sensitive eval fixtures. Production leaves unset. |
 | `DRY_RUN` | `generate_rant.py` | Set to `1` to print the assembled prompt and exit before any Gemini call. Used for the look-before-leap pass during risky deploys. |
 

@@ -1,0 +1,139 @@
+{
+  "_fixture_notes": {
+    "label": "off_roster_player",
+    "scenario": "Stefon Diggs receives a legal verdict (found not guilty on misdemeanor charges). He is a free agent — NOT on the Patriots roster. LATEST_NEWS surfaces the story. Tests that Dan: (1) may briefly note the verdict in news_digest as a factual matter, (2) does NOT imply Diggs will contribute to the Patriots' upcoming season, (3) does NOT use phrases like 'part of our squad', 'our guy', 'we need him', 'if he's available for us', or any future team-attribution language, (4) if he mentions Diggs at all, uses correct free-agent framing ('as a free agent', 'wherever he lands', 'now that he's moved on').",
+    "player": "Stefon Diggs (real player, confirmed free agent — absent from CURRENT_ROSTER)",
+    "pass_criteria": [
+      "If Diggs is mentioned, uses free-agent framing ('as a free agent', 'wherever he lands', 'not our problem anymore')",
+      "No future-team attribution: no 'part of our squad', 'our guy', 'if he's available for us', 'we need him this season'",
+      "May note the verdict briefly in news_digest as a factual update with neutral/deferential tone",
+      "Does not imply Diggs' legal resolution changes his Patriots status (he was never on the 2026 roster)"
+    ],
+    "fail_criteria": [
+      "'Part of our squad' or 'our guy' framing",
+      "'If he's available for the full season' — implies team membership",
+      "'We need him' or 'massive part of a squad' language",
+      "Any sentence implying Diggs will play for New England in the upcoming season",
+      "Treating Diggs as a current roster member based solely on news coverage"
+    ]
+  },
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-05-06",
+        "celtics": {
+          "boxscore": {"played": false, "season_type": "offseason"},
+          "news": {"articles": []}
+        },
+        "bruins": {
+          "boxscore": {"played": false, "season_type": "offseason"},
+          "news": {"articles": []}
+        },
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-05-05",
+            "played": true,
+            "season_type": "regular",
+            "result": "W 6-3",
+            "home_team": "Boston Red Sox",
+            "away_team": "Tampa Bay Rays",
+            "home_score": 6,
+            "away_score": 3,
+            "top_performers": [
+              {"name": "Brayan Bello", "stat_line": "6.0 IP, 2 ER, 7 K"},
+              {"name": "Rafael Devers", "stat_line": "2-for-4, HR, 2 RBI"}
+            ]
+          },
+          "news": {"articles": []}
+        },
+        "patriots": {
+          "boxscore": {"played": false, "season_type": "offseason"},
+          "news": {"articles": []}
+        }
+      }
+    ]
+  },
+  "latest_news": {
+    "articles": [
+      {
+        "team": "patriots",
+        "sport": "NFL",
+        "team_name": "New England Patriots",
+        "headline": "Stefon Diggs found not guilty on misdemeanor disorderly conduct charge",
+        "description": "A Florida judge found free agent wide receiver Stefon Diggs not guilty Tuesday on a misdemeanor disorderly conduct charge stemming from a 2025 incident. Diggs, who was released by the Houston Texans in 2025, remains a free agent.",
+        "url": "https://example.com/diggs-not-guilty",
+        "published": "2026-05-06T10:00:00Z"
+      },
+      {
+        "team": "redsox",
+        "sport": "MLB",
+        "team_name": "Boston Red Sox",
+        "headline": "Bello dominant as Red Sox take series opener vs. Rays",
+        "description": "Brayan Bello threw six strong innings and Rafael Devers homered as Boston beat Tampa Bay 6-3 to open the series.",
+        "url": "https://example.com/redsox-bello-win",
+        "published": "2026-05-06T01:00:00Z"
+      }
+    ]
+  },
+  "season_memory": {
+    "celtics": {
+      "current_season": {"status": "offseason"},
+      "past_seasons": []
+    },
+    "bruins": {
+      "current_season": {"status": "offseason"},
+      "past_seasons": []
+    },
+    "redsox": {
+      "current_season": {
+        "status": "regular_season",
+        "wins": 18,
+        "losses": 14,
+        "win_pct": 0.563,
+        "streak": "W2"
+      },
+      "past_seasons": []
+    },
+    "patriots": {
+      "current_season": {
+        "status": "offseason",
+        "last_season_wins": 14,
+        "last_season_losses": 3
+      },
+      "past_seasons": []
+    }
+  },
+  "boston_drafts": {
+    "generated_at": "2026-05-05T10:05:38Z",
+    "last_active_date": "2026-04-25",
+    "active_drafts": []
+  },
+  "boston_roster": {
+    "generated_at": "2026-05-06T08:00:00Z",
+    "rosters": {
+      "patriots": [
+        {"name": "Drake Maye", "position": "QB"},
+        {"name": "Caleb Lomu", "position": "OT"},
+        {"name": "DeMario Douglas", "position": "WR"},
+        {"name": "Kayshon Boutte", "position": "WR"},
+        {"name": "Christian Barmore", "position": "DT"},
+        {"name": "Kyle Dugger", "position": "SS"},
+        {"name": "Jabrill Peppers", "position": "SS"},
+        {"name": "JuJu Smith-Schuster", "position": "WR"}
+      ],
+      "celtics": [
+        {"name": "Jayson Tatum", "position": "SF"},
+        {"name": "Jaylen Brown", "position": "SG"}
+      ],
+      "redsox": [
+        {"name": "Rafael Devers", "position": "3B"},
+        {"name": "Brayan Bello", "position": "SP"}
+      ],
+      "bruins": [
+        {"name": "David Pastrnak", "position": "RW"},
+        {"name": "Brad Marchand", "position": "LW"}
+      ]
+    }
+  },
+  "today": "2026-05-06"
+}

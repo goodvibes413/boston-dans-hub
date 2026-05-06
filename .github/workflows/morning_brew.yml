@@ -121,6 +121,10 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python3 scripts/fetch_draft.py
 
+      - name: Fetch current rosters (all 4 teams)
+        if: steps.freshness.outputs.skip != 'true'
+        run: python3 scripts/fetch_roster.py
+
       - name: Update scoreboard store
         if: steps.freshness.outputs.skip != 'true'
         env:
