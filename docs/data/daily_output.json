@@ -1,45 +1,45 @@
 {
-  "headline": "Red Sox find a spark in Detroit while Roman Anthony heads home",
+  "headline": "Red Sox show some fight in Detroit while the legal dust settles",
   "morning_brew": [
-    "Monday night in Detroit finally gave us something to cheer about after that miserable stretch at Fenway Park. Payton Tolle was absolutely dealing, giving up just one hit over seven innings of work. Five runs in the seventh inning turned the whole game around, capped off by that massive three-run blast from Jarren Duran. It is about time this offense showed some life because we have been starving for a performance like this.",
-    "The win comes with a side of worry as Roman Anthony is heading back to the Hub to get his hand checked out. Losing a young talent like that right when the team is trying to climb out of the basement is absolutely brutal. I been watchin' this team since '78, and the injury bug always seems to bite at the worst possible moment. We need that kid in the lineup if we are going to make any noise in the AL East.",
-    "Around the rest of the Hub, it is a lot of waiting and wondering. The Celtics and Bruins are both facing long summers of what-ifs after those early exits at the Garden. Over in the legal world, the Stefon Diggs trial is getting underway. It is a tough situation for everyone involved, so we should just hope for a fair process and let the league handle the details. If a suspension comes down later, we will see how it affects the roster in Foxborough."
+    "Tuesday night in Detroit was exactly what this team needed to build some momentum. Ten runs on twelve hits was a sight for sore eyes after that rough stretch we saw at Fenway Park earlier this month. Ceddanne Rafaela was the man of the hour, driving in four runs and launching a massive home run to break things open. The real fireworks happened in the fourth when Framber Valdez decided to drill Trevor Story, leading to the benches clearing and an ejection. Hear me out before you laugh, but seeing the guys stand up for each other like that shows a grit we have been missing lately.",
+    "Jaylen Brown is lighter in the wallet today after the league handed down a fifty thousand dollar fine for his comments about the officiating. It is a tough pill to swallow after that first-round exit at the Garden, but the league office does not play around when you question the integrity of the game. We are stuck watching the rest of the NBA playoffs from the couch while teams like the Timberwolves and Knicks keep grinding. It is going to be a long summer of looking at the lottery and free agency lists to see how this roster gets back to chasing Banner 19. The Hub feels a little quieter without green on the floor in May.",
+    "The legal process wrapped up for Stefon Diggs with a not guilty verdict on all counts yesterday. It is a relief for everyone to have a resolution so the focus can eventually return to the field. We will see what the league decides regarding any further review of the situation under the personal conduct policy. If he is available for the full season, he is going to be a massive part of a squad that won fourteen games last fall. We need every weapon we can get to stay competitive in a crowded AFC field as we look toward training camp in Foxborough."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Payton Tolle",
-      "trend": "Pitched seven innings of one-hit ball with eight strikeouts",
-      "dans_take": "The kid was a total stud on the mound and gave the bullpen a much-needed breather."
+      "player": "Ceddanne Rafaela",
+      "trend": "Three hits and four RBI in the blowout win over the Tigers.",
+      "dans_take": "The kid is starting to find his stroke and his versatility in the field is a massive asset."
     },
     {
-      "category": "Streak",
-      "player": "Jarren Duran",
-      "trend": "Hit a clutch three-run home run to lead the comeback",
-      "dans_take": "He is one of the few guys actually showing some heart and power during this road trip."
+      "category": "Heater",
+      "player": "Brayan Bello",
+      "trend": "Seven innings of one-run ball with seven strikeouts to earn the win.",
+      "dans_take": "Coming out of the bullpen for seven frames is a legendary performance that saved the rest of the arms."
     },
     {
       "category": "Cold Snap",
-      "player": "Roman Anthony",
-      "trend": "Exited the game with wrist discomfort and returning to Boston",
-      "dans_take": "This is a massive blow to the lineup and we just have to pray for a clean report from the doctor."
+      "player": "Mor\u00e1n",
+      "trend": "Lasted only one inning while giving up two earned runs and two walks.",
+      "dans_take": "A very short outing that put a lot of pressure on the staff early in the game."
     }
   ],
   "news_digest": [
     {
-      "headline": "Red Sox's Roman Anthony to have hand rechecked in Boston",
-      "url": "https://www.espn.com/mlb/story/_/id/48680767/red-sox-roman-anthony-hand-checked-boston",
-      "dans_take": "Total heartbreaker for the kid, hope the news is better than it sounds once he gets home."
+      "headline": "Celtics' Jaylen Brown fined $50,000 for criticizing officials",
+      "url": "https://www.espn.com/nba/story/_/id/48689072/celtics-jaylen-brown-fined-50000-criticizing-officials",
+      "dans_take": "That is a steep price to pay for speaking your mind after a tough loss."
     },
     {
-      "headline": "Stefon Diggs' attorney says assault never happened as trial begins",
-      "url": "https://www.espn.com/nfl/story/_/id/48677557/stefon-diggs-says-assault-never-happened-trial-begins",
-      "dans_take": "Hope everyone is safe, but we will let the league and the courts sort this one out."
+      "headline": "Jury finds Stefon Diggs not guilty of assault, strangulation",
+      "url": "https://www.espn.com/nfl/story/_/id/48685492/chef-shies-financial-questions-stefon-diggs-assault-trial",
+      "dans_take": "Glad to see a resolution in court, now we wait for the league to finish their review."
     },
     {
-      "headline": "Brenda Song, Macaulay Culkin lead NBA playoffs celebrity sightings",
-      "url": "https://www.espn.com/nba/story/_/id/48514336/nba-playoffs-2026-celebrity-sightings",
-      "dans_take": "I do not care who is sitting courtside if the Celtics are not on the floor."
+      "headline": "2026 NHL draft: Gavin McKenna, Ivar Stenberg top rankings",
+      "url": "https://www.espn.com/nhl/story/_/id/48666667/2026-nhl-draft-rankings-top-prospects-players-gavin-mckenna-ivar-stenberg-carson-carels",
+      "dans_take": "Always good to keep an eye on the next wave of talent for the B's."
     }
   ],
   "box_scores": {
@@ -47,9 +47,9 @@
       "sport": "NBA",
       "home_team": "Boston Celtics",
       "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-04",
+      "home_score": 100,
+      "away_score": 109,
+      "game_date": "2026-05-03",
       "played": false,
       "season_type": "offseason"
     },
@@ -57,9 +57,9 @@
       "sport": "NHL",
       "home_team": "Boston Bruins",
       "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-04",
+      "home_score": 1,
+      "away_score": 4,
+      "game_date": "2026-05-02",
       "played": false,
       "season_type": "offseason"
     },
@@ -67,9 +67,9 @@
       "sport": "MLB",
       "home_team": "Detroit Tigers",
       "away_team": "Boston Red Sox",
-      "home_score": 4,
-      "away_score": 5,
-      "game_date": "2026-05-04",
+      "home_score": 3,
+      "away_score": 10,
+      "game_date": "2026-05-05",
       "played": true,
       "season_type": "regular"
     },
@@ -79,17 +79,12 @@
       "away_team": "Unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-05-04",
+      "game_date": "2026-05-05",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-05-05",
-      "matchup": "Boston Red Sox at Detroit Tigers",
-      "time_et": "6:40 PM ET"
-    },
     {
       "date": "2026-05-06",
       "matchup": "Boston Red Sox at Detroit Tigers",
@@ -119,15 +114,16 @@
       "date": "2026-05-12",
       "matchup": "Philadelphia Phillies at Boston Red Sox",
       "time_et": "6:45 PM ET"
+    },
+    {
+      "date": "2026-05-13",
+      "matchup": "Philadelphia Phillies at Boston Red Sox",
+      "time_et": "6:45 PM ET"
     }
   ],
-  "generated_at": "2026-05-05T13:23:26.442107+00:00",
+  "generated_at": "2026-05-06T10:27:19.175710+00:00",
   "_regenerated": true,
   "_regeneration_reason": [
-    "Voice repetition (eighteen banners citation)",
-    "Voice repetition in news_digest (McAvoy take)"
-  ],
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 2 attempts: Fabricated statistics: Dan claims the Red Sox out-hit the opponent 9-3, but the source data indicates the opponent had 10 hits (Suarez 3, Samaniego 1, Weissert 3, Whitlock 1, Chapman 1, Kelly 1).",
-  "_stale_age_hours": 0.2
+    "Voice repetition: The commentary regarding the Stefon Diggs legal situation in the Morning Brew section uses nearly identical phrasing to the previous day's output."
+  ]
 }
