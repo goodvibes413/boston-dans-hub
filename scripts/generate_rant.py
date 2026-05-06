@@ -36,6 +36,7 @@ DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
 DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
 DEFAULT_CALLERS = REPO / "data" / "callers_and_voices.json"
 DEFAULT_GRUDGE_BOOK = REPO / "data" / "grudge_book.json"
+DEFAULT_ROSTER = REPO / "data" / "boston_roster.json"
 DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
@@ -465,7 +466,7 @@ def select_daily_callers(callers_data: dict, today_iso: str, n: int = CALLERS_PE
     return pool[:n]
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, today_iso: str | None = None) -> str:
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, today_iso: str | None = None) -> str:
     if today_iso is None:
         today_iso = datetime.now(timezone.utc).date().isoformat()
 
@@ -536,6 +537,12 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
             "CALLER_FLAVOR (today's archetypes — use AT MOST one phrasing per "
             "morning_brew, only if it fits the moment; do not stack):\n"
             f"{json.dumps(callers, indent=2)}\n\n"
+        )
+    if roster and roster.get("rosters"):
+        message += (
+            "CURRENT_ROSTER (active players only as of today — do NOT imply any "
+            "unlisted player is currently on the team):\n"
+            f"{json.dumps(roster['rosters'], indent=2)}\n\n"
         )
     message += (
         "Generate Boston Dan's Hub JSON output. Return ONLY the JSON object, "
@@ -644,6 +651,8 @@ def main():
     callers_data = load_json(callers_path)
     grudge_path = Path(os.environ.get("GRUDGE_BOOK_PATH", DEFAULT_GRUDGE_BOOK))
     grudges = load_json(grudge_path)
+    roster_path = Path(os.environ.get("ROSTER_PATH", DEFAULT_ROSTER))
+    roster = load_json(roster_path)
     season_memory = build_season_memory(season_static, season_current)
 
     archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
@@ -666,6 +675,7 @@ def main():
         recent_output=recent_output,
         callers=todays_callers,
         grudges=grudges,
+        roster=roster,
         today_iso=today_iso,
     )
 
