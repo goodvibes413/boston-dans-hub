@@ -12,6 +12,7 @@ Env vars:
   ROLLING_STORE_PATH    optional, rolling 7-day JSON (cross-referenced for stat claims)
   DRAFT_PICKS_PATH      optional, draft picks JSON (cross-referenced for player names/positions)
   HISTORICAL_FACTS_PATH optional, curated Boston sports history JSON (cross-referenced for historical claims)
+  ROSTER_PATH           optional, current active rosters JSON (cross-referenced for off-roster player claims)
 """
 
 import json
@@ -29,6 +30,7 @@ DEFAULT_SEASON_CURRENT = REPO / "data" / "season_current.json"
 DEFAULT_ROLLING = REPO / "data" / "rolling_7day.json"
 DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
 DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
+DEFAULT_ROSTER = REPO / "data" / "boston_roster.json"
 DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_MODEL = "gemini-flash-latest"
 
@@ -91,9 +93,16 @@ FAIL if ANY of these are present:
     total_championships count, or the same iconic_moment description), flag it as
     LOW severity. The Continuity rule in the persona requires variation across
     consecutive days. Only flag clear matches; minor word overlap is fine.
+11. Off-roster player — if today's output implies a player is on a Boston team
+    (uses phrases like "part of our squad," "our guy," "will contribute this
+    season," "we need him," or any future-team attribution) when that player does
+    NOT appear in source_data.rosters for that team, flag as MEDIUM severity.
+    Free-agent or general news coverage of a non-roster player is fine; team-
+    membership claims are not. If source_data.rosters is empty, skip this check.
 
 Severity:
 - "low" if a single borderline phrase that could be tightened
+- "medium" if an off-roster player is implied as a current team member (rule 11)
 - "high" if any clear violation of items 1, 2, 6, 7, 8, or multiple violations
 
 Return ONLY the JSON. No markdown fences, no prose.
@@ -254,6 +263,7 @@ def main():
     # The judge uses these to flag fabricated stats and player names.
     draft_picks_path = Path(os.environ.get("DRAFT_PICKS_PATH", DEFAULT_DRAFT_PICKS))
     historical_facts_path = Path(os.environ.get("HISTORICAL_FACTS_PATH", DEFAULT_HISTORICAL_FACTS))
+    roster_path = Path(os.environ.get("ROSTER_PATH", DEFAULT_ROSTER))
     archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
     recent_archives = _load_recent_archives(archive_dir, REPETITION_LOOKBACK_DAYS)
     source_data = {
@@ -264,6 +274,7 @@ def main():
         },
         "draft_picks": _safe_load(draft_picks_path),
         "historical_facts": _safe_load(historical_facts_path),
+        "rosters": _safe_load(roster_path),
         "recent_dan_output": recent_archives,
     }
 
