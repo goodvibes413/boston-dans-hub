@@ -581,7 +581,7 @@ These ARE facts — judge cross-references the `history` field. Don't invent riv
 
 ### `data/dan_archive/YYYY-MM-DD.json` (in git — Dan's continuity memory)
 
-Slim copies of past `daily_output.json` files, written by `publish.py` after every successful fresh publish. `generate_rant.py` reads the last 3 entries and injects them as a `RECENT_DAN_OUTPUT` block in the prompt so Dan can avoid repeating yesterday's phrasing. Checked into git via `!data/dan_archive/` exception in `.gitignore`. Retention: 7 days (older files pruned automatically).
+Slim copies of past `daily_output.json` files, written by `publish.py` after every successful fresh publish. `generate_rant.py` reads the last 3 entries and injects them as a `RECENT_DAN_OUTPUT` block in the prompt so Dan can avoid repeating yesterday's phrasing. Checked into git via `!data/dan_archive/` exception in `.gitignore`. Retention: 9 days (older files pruned automatically).
 
 ```json
 {
@@ -596,7 +596,60 @@ Slim copies of past `daily_output.json` files, written by `publish.py` after eve
 
 **Skipped on**: `_stale` and `_fallback` content — we don't want fallback phrasing polluting tomorrow's continuity memory.
 
-**Configuration**: `DAN_ARCHIVE_PATH` env var overrides the default location (used by `eval_voice.py` to point at fixture-specific archives). `DAN_MEMORY_DAYS` env var overrides the default 3-day memory window.
+**Configuration**: `DAN_ARCHIVE_PATH` env var overrides the default location (used by `eval_voice.py` to point at fixture-specific archives). `DAN_MEMORY_DAYS` env var overrides the default 5-day memory window.
+
+### `data/dan_archive/YYYY-MM-DD.evals.json` (in git — pipeline observability)
+
+Written alongside each post archive file by `publish.py`. Captures the full pipeline trace for the evals dashboard: outcome, per-attempt judge verdicts, timing, and pre-pass results. Same retention window as post archives (9 days). Read by `publish_evals_to_docs()` and copied to `docs/data/evals/` for the static site.
+
+```json
+{
+  "date": "2026-05-07",
+  "generated_at": "2026-05-07T11:32:14Z",
+  "outcome": "fresh",           // "fresh" | "retry" | "fallback"
+  "winning_attempt": 1,         // which attempt produced the published post (null for fallback)
+  "total_attempts": 1,
+  "generation_seconds": 18.4,
+  "pre_pass": {
+    "repetition_check": "pass", // "pass" | "fail"
+    "flagged_phrases": []       // phrases from the deterministic pre-pass
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "PASS",
+      "severity": null,
+      "flags": [],              // merged flags from LLM judge + pre-pass
+      "duration_seconds": 9.3
+    }
+  ]
+}
+```
+
+**Failure example (retry):** `outcome: "retry"`, `total_attempts: 2`, `attempts[0].verdict: "FAIL"`, `attempts[1].verdict: "PASS"`.
+
+### `docs/data/evals/index.json` (published — evals dashboard index)
+
+Written by `publish_evals_to_docs()` in `publish.py`. Consumed by the frontend dashboard to show the rule rubric and 5-day aggregate stats without fetching individual files.
+
+```json
+{
+  "available_dates": ["2026-05-03", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07"],
+  "rules": [
+    {"number": 1, "title": "Profanity", "summary": "Curse words including censored versions"},
+    ...
+    {"number": 11, "title": "Off-roster player", "summary": "Implies current team membership for non-roster players"}
+  ],
+  "summary_5day": {
+    "fresh": 4, "retry": 1, "fallback": 0,
+    "most_flagged_rules": [{"rule": 11, "count": 2, "title": "Off-roster player"}]
+  }
+}
+```
+
+### `docs/data/posts/YYYY-MM-DD.json` (published — archive picker post snapshots)
+
+Slim post snapshots written by `publish_evals_to_docs()` — the same fields as `daily_output.json` but one file per day so the archive picker can swap post content without reloading. Covers the same 5-day window as evals. Today's snapshot is copied from the freshly-published `daily_output.json`; past days are copied from `data/dan_archive/`.
 
 ### `site/data/daily_output.json` (Gemini output schema)
 ```json
@@ -686,6 +739,7 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `ROSTER_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_roster.json`; override in evals to point at fixture-specific roster |
 | `TODAY_OVERRIDE` | `generate_rant.py` | Pin "today" to a specific date (YYYY-MM-DD) for freshness-sensitive eval fixtures. Production leaves unset. |
 | `DRY_RUN` | `generate_rant.py` | Set to `1` to print the assembled prompt and exit before any Gemini call. Used for the look-before-leap pass during risky deploys. |
+| `JUDGE_RESULT_PATH` | `safety_judge.py` | Optional. If set, writes an enriched verdict JSON (with `pre_pass_flags`, `llm_flags`, `rule_titles`) to this path alongside the normal stdout output. Used by `publish.py` to build the `*.evals.json` artifact for the dashboard. Does not affect exit code or stdout. |
 
 ---
 

@@ -20,6 +20,8 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -31,6 +33,26 @@ SEASON_CURRENT_PATH = Path(os.environ.get("SEASON_CURRENT_PATH", "data/season_cu
 ARCHIVE_RETENTION_DAYS = 9  # generate_rant reads 5; extra buffer covers UTC date boundary edge cases
 STALE_MAX_AGE_HOURS = 48
 MAX_JUDGE_ATTEMPTS = 2  # original + 1 regeneration with correction notes
+
+# Evals dashboard constants
+DOCS_EVALS_DIR = Path("docs/data/evals")
+DOCS_POSTS_DIR = Path("docs/data/posts")
+DAN_MEMORY_DAYS = int(os.environ.get("DAN_MEMORY_DAYS", 5))  # match generate_rant.py's window
+
+# Rule titles mirrored from safety_judge.py RULE_TITLES — must stay in sync.
+RULE_TITLES = {
+    1: "Profanity",
+    2: "Discriminatory content",
+    3: "Player character attack",
+    4: "Coach / ref / official attack",
+    5: "Pure personal news",
+    6: "Violence or hate promotion",
+    7: "Fabricated statistics",
+    8: "Fabricated historical events",
+    9: "News digest personal attack",
+    10: "Voice repetition",
+    11: "Off-roster player",
+}
 
 SAFE_FALLBACK = {
     "morning_brew": [
@@ -162,6 +184,177 @@ def archive_dan_output(published: dict, archive_dir: Path = ARCHIVE_DIR,
         print(f"  warn: archive failed ({type(e).__name__}: {e}) — continuing", file=sys.stderr)
 
 
+def archive_evals(evals_doc: dict, archive_dir: Path = ARCHIVE_DIR,
+                  retention_days: int = ARCHIVE_RETENTION_DAYS) -> Path | None:
+    """
+    Persist the pipeline evals document to data/dan_archive/<date>.evals.json.
+
+    Returns the path written, or None on failure. Wrapped in try/except —
+    eval archiving must NEVER block publishing.
+    """
+    try:
+        date_str = evals_doc.get("date") or datetime.now(timezone.utc).date().isoformat()
+        archive_dir.mkdir(parents=True, exist_ok=True)
+        evals_path = archive_dir / f"{date_str}.evals.json"
+        with open(evals_path, "w") as f:
+            json.dump(evals_doc, f, indent=2)
+        print(f"  evals archived: {evals_path}")
+
+        # Prune old .evals.json files alongside the post archive retention window.
+        evals_files = sorted(
+            archive_dir.glob("*.evals.json"),
+            key=lambda p: p.stem.replace(".evals", ""),
+        )
+        excess = len(evals_files) - retention_days
+        if excess > 0:
+            for old in evals_files[:excess]:
+                try:
+                    old.unlink()
+                    print(f"  pruned evals: {old.name}")
+                except Exception as e:
+                    print(f"  warn: could not prune {old.name}: {e}", file=sys.stderr)
+
+        return evals_path
+    except Exception as e:
+        print(f"  warn: archive_evals failed ({type(e).__name__}: {e}) — continuing", file=sys.stderr)
+        return None
+
+
+def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
+                          memory_days: int = DAN_MEMORY_DAYS) -> None:
+    """
+    Copy the most recent N days of evals + post snapshots into docs/data/ for
+    the static site to fetch. Also writes docs/data/evals/index.json with the
+    rule rubric and 5-day aggregate stats.
+
+    Wrapped in try/except — failure must never block publishing.
+    """
+    try:
+        today_iso = datetime.now(timezone.utc).date().isoformat()
+
+        # --- Evals: docs/data/evals/<date>.json ---
+        DOCS_EVALS_DIR.mkdir(parents=True, exist_ok=True)
+        evals_files = sorted(
+            archive_dir.glob("*.evals.json"),
+            key=lambda p: p.stem.replace(".evals", ""),
+            reverse=True,
+        )[:memory_days]
+        available_dates: list[str] = []
+        outcome_counts = {"fresh": 0, "retry": 0, "fallback": 0, "stale": 0}
+        rule_flag_counts: dict[int, int] = {}
+
+        for ef in evals_files:
+            date_str = ef.stem.replace(".evals", "")
+            available_dates.append(date_str)
+            dest = DOCS_EVALS_DIR / f"{date_str}.json"
+            try:
+                evals_data = json.loads(ef.read_text())
+                dest.write_text(json.dumps(evals_data, indent=2))
+            except Exception as e:
+                print(f"  warn: could not publish evals {ef.name}: {e}", file=sys.stderr)
+                continue
+
+            # Accumulate aggregate stats
+            outcome = evals_data.get("outcome", "unknown")
+            if outcome in outcome_counts:
+                outcome_counts[outcome] += 1
+
+            for attempt in evals_data.get("attempts", []):
+                for flag in attempt.get("flags", []):
+                    flag_lower = str(flag).lower()
+                    # Detect which rule fired by looking for "rule N" in the flag text,
+                    # or by checking for "repetition" (rule 10) / "off-roster" (rule 11).
+                    for rule_num in range(1, 12):
+                        if (f"rule {rule_num}" in flag_lower or
+                                (rule_num == 10 and "repetition" in flag_lower) or
+                                (rule_num == 11 and "off-roster" in flag_lower)):
+                            rule_flag_counts[rule_num] = rule_flag_counts.get(rule_num, 0) + 1
+
+        available_dates.sort()
+
+        # Most-flagged rules summary (top 3)
+        most_flagged = sorted(rule_flag_counts.items(), key=lambda x: -x[1])[:3]
+        most_flagged_rules = [{"rule": r, "count": c, "title": RULE_TITLES.get(r, f"Rule {r}")}
+                              for r, c in most_flagged]
+
+        # Rule rubric for the frontend (sourced once from RULE_TITLES)
+        rule_summaries = {
+            1: "Curse words including censored versions",
+            2: "Racist, sexist, anti-LGBTQ+, or antisemitic content",
+            3: "Attacks on a player's character, family, or personal life",
+            4: "Personal attacks on coaches, refs, or officials",
+            5: "Divorce, relationships, family — no league conduct dimension",
+            6: "Content promoting violence or hate",
+            7: "Any cited stat must appear in source data",
+            8: "Past trades, picks, championships must be verifiable",
+            9: "Same rule 3/5 standard applied to news commentary",
+            10: "Same signature phrasing as recent consecutive days",
+            11: "Implies current team membership for non-roster players",
+        }
+        rules = [
+            {"number": n, "title": RULE_TITLES[n], "summary": rule_summaries.get(n, "")}
+            for n in sorted(RULE_TITLES.keys())
+        ]
+
+        index = {
+            "available_dates": available_dates,
+            "rules": rules,
+            "summary_5day": {
+                **outcome_counts,
+                "most_flagged_rules": most_flagged_rules,
+            },
+        }
+        (DOCS_EVALS_DIR / "index.json").write_text(json.dumps(index, indent=2))
+        print(f"  evals index published: {DOCS_EVALS_DIR}/index.json ({len(available_dates)} days)")
+
+        # --- Posts: docs/data/posts/<date>.json ---
+        DOCS_POSTS_DIR.mkdir(parents=True, exist_ok=True)
+        post_files = sorted(
+            (p for p in archive_dir.glob("*.json")
+             if ".evals" not in p.name and p.stem != today_iso),
+            key=lambda p: p.stem,
+            reverse=True,
+        )[:memory_days]
+
+        # Always include today's published output as the canonical today post
+        if PUBLISHED_OUTPUT_PATH.exists():
+            today_dest = DOCS_POSTS_DIR / f"{today_iso}.json"
+            try:
+                today_data = json.loads(PUBLISHED_OUTPUT_PATH.read_text())
+                # Slim it down to the fields the archive picker needs
+                slim_today = {
+                    "date": today_iso,
+                    "generated_at": today_data.get("generated_at"),
+                    "headline": today_data.get("headline", ""),
+                    "morning_brew": today_data.get("morning_brew", []),
+                    "news_digest": today_data.get("news_digest", []),
+                    "trend_watch": today_data.get("trend_watch", []),
+                    "box_scores": today_data.get("box_scores", {}),
+                    "schedule": today_data.get("schedule", []),
+                    "_stale": today_data.get("_stale"),
+                    "_fallback": today_data.get("_fallback"),
+                }
+                today_dest.write_text(json.dumps(slim_today, indent=2))
+            except Exception as e:
+                print(f"  warn: could not publish today's post snapshot: {e}", file=sys.stderr)
+
+        for pf in post_files:
+            dest = DOCS_POSTS_DIR / pf.name
+            try:
+                post_data = json.loads(pf.read_text())
+                post_data["date"] = pf.stem  # inject date so the frontend knows which day
+                dest.write_text(json.dumps(post_data, indent=2))
+            except Exception as e:
+                print(f"  warn: could not publish post snapshot {pf.name}: {e}", file=sys.stderr)
+
+        post_count = sum(1 for _ in DOCS_POSTS_DIR.glob("*.json"))
+        print(f"  post snapshots published: {DOCS_POSTS_DIR}/ ({post_count} files)")
+
+    except Exception as e:
+        print(f"  warn: publish_evals_to_docs failed ({type(e).__name__}: {e}) — continuing",
+              file=sys.stderr)
+
+
 def publish_fallback(reason: str) -> int:
     """
     Publish the best available fallback:
@@ -212,27 +405,35 @@ def publish_fallback(reason: str) -> int:
     return 0 if ok else 1
 
 
-def run_judge() -> tuple[int | None, dict | None]:
+def run_judge(save_path: Path | None = None) -> tuple[int | None, dict | None, dict | None]:
     """
     Run safety_judge.py against data/raw_dan_output.json.
 
-    Returns (exit_code, parsed_verdict). exit_code is None if the judge
-    couldn't run at all (timeout, subprocess error); callers should treat
-    that like a timeout PASS (don't block on unavailable judge).
+    Returns (exit_code, parsed_verdict, enriched_verdict).
+    - exit_code is None if the judge couldn't run at all (timeout, subprocess error);
+      callers should treat that like a PASS (don't block on unavailable judge).
+    - enriched_verdict is the richer dict written to save_path by safety_judge.py
+      (includes pre_pass_flags, llm_flags, rule_titles). None if save_path not set
+      or the file couldn't be read.
     """
+    env = dict(os.environ)
+    if save_path:
+        env["JUDGE_RESULT_PATH"] = str(save_path)
+
     try:
         result = subprocess.run(
             ["python3", "scripts/safety_judge.py"],
             capture_output=True,
             text=True,
             timeout=300,
+            env=env,
         )
     except subprocess.TimeoutExpired:
         print("  warning: safety_judge.py timed out")
-        return None, None
+        return None, None, None
     except Exception as e:
         print(f"  error: could not run safety_judge.py: {e}", file=sys.stderr)
-        return None, None
+        return None, None, None
 
     if result.stdout:
         print(f"  judge output: {result.stdout.strip()}")
@@ -244,7 +445,15 @@ def run_judge() -> tuple[int | None, dict | None]:
         verdict = json.loads(result.stdout)
     except (json.JSONDecodeError, TypeError):
         pass
-    return result.returncode, verdict
+
+    enriched = None
+    if save_path and save_path.exists():
+        try:
+            enriched = json.loads(save_path.read_text())
+        except Exception:
+            pass
+
+    return result.returncode, verdict, enriched
 
 
 def regenerate_with_correction(flags: list[str]) -> int:
@@ -277,74 +486,141 @@ def main():
     print("publish.py: Safety gate → docs/data/daily_output.json")
     print("=" * 60)
 
+    pipeline_start = time.time()
+    today_iso = datetime.now(timezone.utc).date().isoformat()
+
+    # Evals document — built incrementally as attempts run, persisted at end.
+    evals_doc: dict = {
+        "date": today_iso,
+        "generated_at": now_iso(),
+        "outcome": "unknown",
+        "winning_attempt": None,
+        "total_attempts": 0,
+        "generation_seconds": None,
+        "pre_pass": {"repetition_check": "unknown", "flagged_phrases": []},
+        "attempts": [],
+    }
+
+    def _finalize_evals(outcome: str, winning_attempt: int | None = None) -> None:
+        """Stamp outcome + timing and persist evals artifact + docs export."""
+        evals_doc["outcome"] = outcome
+        evals_doc["winning_attempt"] = winning_attempt
+        evals_doc["total_attempts"] = len(evals_doc["attempts"])
+        evals_doc["generation_seconds"] = round(time.time() - pipeline_start, 1)
+        archive_evals(evals_doc)
+        publish_evals_to_docs()
+
     # Step 1: Read raw output
     print("\n[1] Reading raw Dan output...")
     raw_output = read_json(RAW_OUTPUT_PATH)
     if raw_output is None:
         print(f"  warning: {RAW_OUTPUT_PATH} not found or unparseable")
+        _finalize_evals("fallback")
         return publish_fallback("raw output missing or unparseable")
 
     # Sentinel from generate_rant.py: generation failed, don't even bother judging.
     if raw_output.get("_generation_failed"):
         reason = raw_output.get("reason", "unknown")
         print(f"  sentinel detected: generation failed ({reason})")
+        _finalize_evals("fallback")
         return publish_fallback(f"generation failed: {reason}")
+
+    # Temp file for enriched judge output (reused each attempt, overwritten)
+    judge_save_fd, judge_save_str = tempfile.mkstemp(suffix=".json", prefix="judge_result_")
+    os.close(judge_save_fd)
+    judge_save_path = Path(judge_save_str)
 
     # Step 2: Judge, regenerate on FAIL, re-judge (up to MAX_JUDGE_ATTEMPTS times)
     last_flags: list[str] = []
-    for attempt in range(1, MAX_JUDGE_ATTEMPTS + 1):
-        print(f"\n[2.{attempt}] Running safety judge (attempt {attempt}/{MAX_JUDGE_ATTEMPTS})...")
-        exit_code, verdict = run_judge()
+    try:
+        for attempt in range(1, MAX_JUDGE_ATTEMPTS + 1):
+            print(f"\n[2.{attempt}] Running safety judge (attempt {attempt}/{MAX_JUDGE_ATTEMPTS})...")
+            attempt_start = time.time()
+            exit_code, verdict, enriched = run_judge(save_path=judge_save_path)
+            attempt_duration = round(time.time() - attempt_start, 1)
 
-        if exit_code is None:
-            # Judge couldn't run — treat as PASS so content still publishes.
-            print("  warning: judge unavailable — publishing without safety gate this run")
-            output = dict(raw_output)
-            output["generated_at"] = now_iso()
-            output = patch_box_score_season_types(output)
-            write_json(PUBLISHED_OUTPUT_PATH, output, label="output (judge unavailable)")
-            archive_dan_output(output)
-            return 0
+            # Extract pre-pass info from enriched verdict (first attempt only — pre-pass
+            # reflects the original generation; subsequent attempts have their own pre-pass).
+            if enriched:
+                pre_pass_flags = enriched.get("pre_pass_flags", [])
+                evals_doc["pre_pass"] = {
+                    "repetition_check": "fail" if pre_pass_flags else "pass",
+                    "flagged_phrases": pre_pass_flags,
+                }
 
-        if exit_code == 0:
-            print("  ✅ safety judge PASSED")
-            output = dict(raw_output)
-            output["generated_at"] = now_iso()
-            if attempt > 1:
-                output["_regenerated"] = True
-                output["_regeneration_reason"] = last_flags
-            output = patch_box_score_season_types(output)
-            success = write_json(PUBLISHED_OUTPUT_PATH, output)
-            if success:
+            # Record this attempt
+            attempt_record: dict = {
+                "attempt": attempt,
+                "verdict": (verdict.get("verdict") if verdict else
+                            ("PASS" if exit_code == 0 else "FAIL" if exit_code is not None else "UNKNOWN")),
+                "severity": verdict.get("severity") if verdict else None,
+                "flags": list(verdict.get("flags", [])) if verdict else [],
+                "duration_seconds": attempt_duration,
+            }
+            evals_doc["attempts"].append(attempt_record)
+
+            if exit_code is None:
+                # Judge couldn't run — treat as PASS so content still publishes.
+                print("  warning: judge unavailable — publishing without safety gate this run")
+                output = dict(raw_output)
+                output["generated_at"] = now_iso()
+                output = patch_box_score_season_types(output)
+                write_json(PUBLISHED_OUTPUT_PATH, output, label="output (judge unavailable)")
                 archive_dan_output(output)
-            return 0 if success else 1
+                _finalize_evals("fresh", winning_attempt=attempt)
+                return 0
 
-        # FAIL
-        last_flags = list(verdict.get("flags", [])) if verdict else []
-        print(f"  ❌ safety judge FAILED: {last_flags}")
+            if exit_code == 0:
+                print("  ✅ safety judge PASSED")
+                output = dict(raw_output)
+                output["generated_at"] = now_iso()
+                outcome = "fresh"
+                if attempt > 1:
+                    output["_regenerated"] = True
+                    output["_regeneration_reason"] = last_flags
+                    outcome = "retry"
+                output = patch_box_score_season_types(output)
+                success = write_json(PUBLISHED_OUTPUT_PATH, output)
+                if success:
+                    archive_dan_output(output)
+                    _finalize_evals(outcome, winning_attempt=attempt)
+                return 0 if success else 1
 
-        if attempt >= MAX_JUDGE_ATTEMPTS:
-            print("  exhausted regeneration attempts; falling back")
-            break
+            # FAIL
+            last_flags = list(verdict.get("flags", [])) if verdict else []
+            print(f"  ❌ safety judge FAILED: {last_flags}")
 
-        print(f"\n[2.{attempt}.retry] Regenerating with correction notes...")
-        rc = regenerate_with_correction(last_flags)
-        if rc != 0:
-            print(f"  warning: regeneration returned exit {rc}; falling back")
-            break
+            if attempt >= MAX_JUDGE_ATTEMPTS:
+                print("  exhausted regeneration attempts; falling back")
+                break
 
-        # Re-read the newly written raw output (may be sentinel or fresh)
-        raw_output = read_json(RAW_OUTPUT_PATH)
-        if raw_output is None:
-            print("  warning: raw output missing after regeneration; falling back")
-            break
-        if raw_output.get("_generation_failed"):
-            reason = raw_output.get("reason", "unknown")
-            print(f"  regeneration produced a sentinel ({reason}); falling back")
-            return publish_fallback(f"regeneration failed: {reason}")
+            print(f"\n[2.{attempt}.retry] Regenerating with correction notes...")
+            rc = regenerate_with_correction(last_flags)
+            if rc != 0:
+                print(f"  warning: regeneration returned exit {rc}; falling back")
+                break
+
+            # Re-read the newly written raw output (may be sentinel or fresh)
+            raw_output = read_json(RAW_OUTPUT_PATH)
+            if raw_output is None:
+                print("  warning: raw output missing after regeneration; falling back")
+                break
+            if raw_output.get("_generation_failed"):
+                reason = raw_output.get("reason", "unknown")
+                print(f"  regeneration produced a sentinel ({reason}); falling back")
+                _finalize_evals("fallback")
+                return publish_fallback(f"regeneration failed: {reason}")
+
+    finally:
+        # Clean up the temp file regardless of how we exit
+        try:
+            judge_save_path.unlink(missing_ok=True)
+        except Exception:
+            pass
 
     # All attempts failed — fall back.
     reason = f"safety judge FAILed after {MAX_JUDGE_ATTEMPTS} attempts: {'; '.join(last_flags)[:200]}"
+    _finalize_evals("fallback")
     return publish_fallback(reason)
 
 

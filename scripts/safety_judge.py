@@ -13,6 +13,9 @@ Env vars:
   DRAFT_PICKS_PATH      optional, draft picks JSON (cross-referenced for player names/positions)
   HISTORICAL_FACTS_PATH optional, curated Boston sports history JSON (cross-referenced for historical claims)
   ROSTER_PATH           optional, current active rosters JSON (cross-referenced for off-roster player claims)
+  JUDGE_RESULT_PATH     optional, if set writes an enriched verdict JSON to this path in addition
+                        to the standard stdout output. Includes pre_pass_flags and rule_titles for
+                        the evals dashboard. Does not affect stdout or exit code.
 """
 
 import json
@@ -39,6 +42,22 @@ DEFAULT_MODEL = "gemini-flash-latest"
 # eval results. Pre-pass returns LOW severity only — a one-time regen via
 # publish.py's retry loop usually clears it. See repetition_signature_phrases
 # fixture for the contract this enforces.
+# Human-readable titles for each judge rule (used by the evals dashboard).
+# Must stay in sync with the numbered rules in JUDGE_PROMPT below.
+RULE_TITLES = {
+    1: "Profanity",
+    2: "Discriminatory content",
+    3: "Player character attack",
+    4: "Coach / ref / official attack",
+    5: "Pure personal news",
+    6: "Violence or hate promotion",
+    7: "Fabricated statistics",
+    8: "Fabricated historical events",
+    9: "News digest personal attack",
+    10: "Voice repetition",
+    11: "Off-roster player",
+}
+
 REPETITION_PATTERNS = [
     r"\b18 banners?\b",
     r"\bbanner 19\b",
@@ -238,6 +257,29 @@ def detect_repetition(today: dict, recent_archives: list[dict]) -> list[str]:
     return flags
 
 
+def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
+                    all_flags: list | None = None) -> None:
+    """
+    Write an enriched verdict to JUDGE_RESULT_PATH (if set).
+    Safe to call at any exit point — failure is logged but never propagated.
+    """
+    judge_result_path = os.environ.get("JUDGE_RESULT_PATH")
+    if not judge_result_path:
+        return
+    enriched = {
+        "verdict": verdict.get("verdict"),
+        "severity": verdict.get("severity"),
+        "flags": all_flags if all_flags is not None else list(verdict.get("flags", [])),
+        "pre_pass_flags": list(pre_pass_flags),
+        "llm_flags": list(llm_flags),
+        "rule_titles": {str(k): v for k, v in RULE_TITLES.items()},
+    }
+    try:
+        Path(judge_result_path).write_text(json.dumps(enriched, indent=2))
+    except Exception as e:
+        print(f"  warning: could not write JUDGE_RESULT_PATH: {e}", file=sys.stderr)
+
+
 def main():
     input_path = Path(os.environ.get("INPUT_PATH", DEFAULT_INPUT))
     rolling_path = Path(os.environ.get("ROLLING_STORE_PATH", DEFAULT_ROLLING))
@@ -318,13 +360,16 @@ def main():
         # Pre-pass repetition flags are still surfaced as a low-severity FAIL
         # to give the regen loop one shot at variation.
         print(f"warning: safety judge API error ({type(e).__name__}), treating as PASS", file=sys.stderr)
+        api_note = f"judge skipped — API error: {type(e).__name__}"
         if pre_pass_flags:
-            print(json.dumps({"verdict": "FAIL", "severity": "low",
-                              "flags": pre_pass_flags +
-                                       [f"judge skipped — API error: {type(e).__name__}"]}))
+            v = {"verdict": "FAIL", "severity": "low",
+                 "flags": pre_pass_flags + [api_note]}
+            _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note])
+            print(json.dumps(v))
             sys.exit(1)
-        print(json.dumps({"verdict": "PASS", "severity": "low",
-                          "flags": [f"judge skipped — API error: {type(e).__name__}"]}))
+        v = {"verdict": "PASS", "severity": "low", "flags": [api_note]}
+        _write_enriched(v, pre_pass_flags, [], [api_note])
+        print(json.dumps(v))
         sys.exit(0)
 
     try:
@@ -333,6 +378,9 @@ def main():
         print(f"judge returned non-JSON: {resp.text}", file=sys.stderr)
         sys.exit(1)
 
+    # Capture LLM-only flags before merging pre-pass (used by enriched output below).
+    llm_flags = list(verdict.get("flags", []))
+
     # Merge pre-pass flags into the verdict. Pre-pass is low severity; if the
     # LLM judge already returned high-severity FAIL, that severity wins.
     if pre_pass_flags:
@@ -340,6 +388,10 @@ def main():
         if verdict.get("verdict") == "PASS":
             verdict["verdict"] = "FAIL"
             verdict["severity"] = "low"
+
+    # Persist enriched verdict for the evals dashboard if JUDGE_RESULT_PATH is set.
+    # This does NOT affect stdout or exit code — publish.py's existing parsing is unaffected.
+    _write_enriched(verdict, pre_pass_flags, llm_flags)
 
     print(json.dumps(verdict, indent=2))
 

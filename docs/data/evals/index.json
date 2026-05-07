@@ -1,0 +1,69 @@
+{
+  "available_dates": [
+    "2026-05-07"
+  ],
+  "rules": [
+    {
+      "number": 1,
+      "title": "Profanity",
+      "summary": "Curse words including censored versions"
+    },
+    {
+      "number": 2,
+      "title": "Discriminatory content",
+      "summary": "Racist, sexist, anti-LGBTQ+, or antisemitic content"
+    },
+    {
+      "number": 3,
+      "title": "Player character attack",
+      "summary": "Attacks on a player's character, family, or personal life"
+    },
+    {
+      "number": 4,
+      "title": "Coach / ref / official attack",
+      "summary": "Personal attacks on coaches, refs, or officials"
+    },
+    {
+      "number": 5,
+      "title": "Pure personal news",
+      "summary": "Divorce, relationships, family \u2014 no league conduct dimension"
+    },
+    {
+      "number": 6,
+      "title": "Violence or hate promotion",
+      "summary": "Content promoting violence or hate"
+    },
+    {
+      "number": 7,
+      "title": "Fabricated statistics",
+      "summary": "Any cited stat must appear in source data"
+    },
+    {
+      "number": 8,
+      "title": "Fabricated historical events",
+      "summary": "Past trades, picks, championships must be verifiable"
+    },
+    {
+      "number": 9,
+      "title": "News digest personal attack",
+      "summary": "Same rule 3/5 standard applied to news commentary"
+    },
+    {
+      "number": 10,
+      "title": "Voice repetition",
+      "summary": "Same signature phrasing as recent consecutive days"
+    },
+    {
+      "number": 11,
+      "title": "Off-roster player",
+      "summary": "Implies current team membership for non-roster players"
+    }
+  ],
+  "summary_5day": {
+    "fresh": 0,
+    "retry": 0,
+    "fallback": 1,
+    "stale": 0,
+    "most_flagged_rules": []
+  }
+}
