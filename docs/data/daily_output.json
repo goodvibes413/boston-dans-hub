@@ -127,6 +127,6 @@
     "Voice repetition: The commentary regarding the Stefon Diggs legal situation in the Morning Brew section uses nearly identical phrasing to the previous day's output."
   ],
   "_stale": true,
-  "_stale_reason": "safety judge FAILed after 2 attempts: Fabricated statistic: claimed 'perfect' innings for Tyler Samaniego when source data shows 1 walk (Rule 7).",
-  "_stale_age_hours": 24.1
+  "_stale_reason": "safety judge FAILed after 2 attempts: Voice repetition (Rule 10) - repetitive paragraph opener 'Day night in Detroit' used for three consecutive days; Off-roster player (Rule 11) - Stefon Diggs implied as current team member ('allows the ",
+  "_stale_age_hours": 25.0
 }
