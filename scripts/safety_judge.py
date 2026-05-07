@@ -93,12 +93,13 @@ FAIL if ANY of these are present:
     total_championships count, or the same iconic_moment description), flag it as
     LOW severity. The Continuity rule in the persona requires variation across
     consecutive days. Only flag clear matches; minor word overlap is fine.
-11. Off-roster player — if today's output implies a player is on a Boston team
-    (uses phrases like "part of our squad," "our guy," "will contribute this
-    season," "we need him," or any future-team attribution) when that player does
-    NOT appear in source_data.rosters for that team, flag as MEDIUM severity.
-    Free-agent or general news coverage of a non-roster player is fine; team-
-    membership claims are not. If source_data.rosters is empty, skip this check.
+11. Off-roster player — flag MEDIUM severity if today's output uses "we/our/our team"
+    language about a player NOT in source_data.rosters, or links their news
+    (legal verdict, free agency, injury) to team prospects ("allows us to focus",
+    "we need them", "our squad will/can/must"). Explicit statements like "part of
+    our squad," "our guy," "will contribute this season," "we can't win without
+    them" are RED FLAGS. Free-agent or general news coverage (e.g., "as a free
+    agent, he'll...") is fine. If source_data.rosters is empty, skip this check.
 
 Severity:
 - "low" if a single borderline phrase that could be tightened
