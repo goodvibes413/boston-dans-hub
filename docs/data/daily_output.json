@@ -125,5 +125,8 @@
   "_regenerated": true,
   "_regeneration_reason": [
     "Voice repetition: The commentary regarding the Stefon Diggs legal situation in the Morning Brew section uses nearly identical phrasing to the previous day's output."
-  ]
+  ],
+  "_stale": true,
+  "_stale_reason": "safety judge FAILed after 2 attempts: Fabricated statistic: claimed 'perfect' innings for Tyler Samaniego when source data shows 1 walk (Rule 7).",
+  "_stale_age_hours": 24.1
 }
