@@ -1,0 +1,30 @@
+{
+  "date": "2026-05-06",
+  "generated_at": "2026-05-06T08:14:22.000000+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 31.2,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "Grounding — unsourced quote attributed to Brad Stevens not found in latest_news or rolling_7day sources."
+      ],
+      "duration_seconds": 14.1
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": null,
+      "flags": [],
+      "duration_seconds": 17.1
+    }
+  ]
+}

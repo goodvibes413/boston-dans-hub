@@ -1,0 +1,30 @@
+{
+  "date": "2026-05-05",
+  "generated_at": "2026-05-05T08:09:51.000000+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 28.7,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        "News digest personal attack — speculative framing on Stefon Diggs legal proceedings editorializes beyond league policy language."
+      ],
+      "duration_seconds": 12.9
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": null,
+      "flags": [],
+      "duration_seconds": 15.8
+    }
+  ]
+}

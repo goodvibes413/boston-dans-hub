@@ -1,5 +1,10 @@
 {
   "available_dates": [
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-05-06",
     "2026-05-07"
   ],
   "rules": [
@@ -60,10 +65,13 @@
     }
   ],
   "summary_5day": {
-    "fresh": 0,
-    "retry": 0,
+    "fresh": 3,
+    "retry": 2,
     "fallback": 1,
     "stale": 0,
-    "most_flagged_rules": []
+    "most_flagged_rules": [
+      {"rule": 9, "count": 1, "title": "News digest personal attack"},
+      {"rule": 7, "count": 1, "title": "Fabricated statistics"}
+    ]
   }
 }

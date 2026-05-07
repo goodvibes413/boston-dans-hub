@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,300,0,0" rel="stylesheet">
   <style>
     .ms {
@@ -68,6 +68,8 @@
 
       /* Semantic */
       --danger:          #BD3039;      /* Alert, loss states (Red Sox red) */
+      --warn:            #E0B341;      /* Warm yellow — eval retry / low severity */
+      --warn-med:        #E07B2A;      /* Orange — eval medium severity */
 
       /* Shadows & Effects */
       --shadow-ambient:  0 40px 60px rgba(229, 226, 225, 0.04);
@@ -75,6 +77,7 @@
       /* Typography */
       --font-display:    'Space Grotesk', sans-serif;
       --font-body:       'Inter', sans-serif;
+      --font-mono:       'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     }
 
     *, *::before, *::after {
@@ -851,6 +854,290 @@
       .dan-intro-chips { justify-content: center; }
     }
 
+    /* =============================================
+       EVAL SURFACES — Garden Slate tokens only
+       Surfaces 1–4 for the evals dashboard
+    ============================================= */
+
+    /* Shared inline icon helper */
+    .ms-inline {
+      font-family: 'Material Symbols Outlined';
+      font-size: 0.95em;
+      vertical-align: -2px;
+      margin-right: 4px;
+      color: var(--primary);
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+    }
+
+    /* SURFACE 4 — Verdict / severity chip */
+    .vchip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 9px 4px 7px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: var(--chip-color);
+      background: color-mix(in oklab, var(--chip-color) 14%, var(--surface-low));
+      border: 1px solid color-mix(in oklab, var(--chip-color) 30%, transparent);
+      white-space: nowrap;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .vchip-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--chip-color);
+      flex-shrink: 0;
+    }
+
+    /* SURFACE 3 — 5-day pipeline summary strip */
+    .pipe-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--on-surface-muted);
+      padding: 9px 12px;
+      background: var(--surface);
+      border-radius: 6px;
+    }
+    .pipe-stat b {
+      color: var(--on-surface);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .pipe-sep { color: var(--on-surface-dim); }
+    .pipe-stat--note em {
+      font-style: normal;
+      color: var(--on-surface-variant);
+      font-weight: 500;
+    }
+    .pipe-x { color: var(--warn); font-variant-numeric: tabular-nums; }
+
+    /* SURFACE 2 — Archive picker pills */
+    .archive-pills {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+    .archive-pill {
+      appearance: none;
+      background: var(--surface-highest);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 10px 6px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      color: var(--on-surface-variant);
+      font-family: var(--font-body);
+      transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+      position: relative;
+    }
+    .archive-pill:hover { background: var(--surface-high); color: var(--on-surface); }
+    .archive-pill.is-active {
+      background: var(--surface);
+      border-color: var(--primary);
+      color: var(--on-surface);
+    }
+    .archive-pill.is-active::after {
+      content: "";
+      position: absolute;
+      inset: auto 12px -1px;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 2px 2px 0 0;
+    }
+    .archive-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--on-surface-dim);
+      margin-bottom: 2px;
+    }
+    .archive-dot.dot-fresh    { background: var(--primary); box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 22%, transparent); }
+    .archive-dot.dot-retry    { background: var(--warn);    box-shadow: 0 0 0 2px color-mix(in oklab, var(--warn) 22%, transparent); }
+    .archive-dot.dot-fallback { background: var(--danger);  box-shadow: 0 0 0 2px color-mix(in oklab, var(--danger) 22%, transparent); }
+    .archive-dot.dot-stale    { background: var(--on-surface-dim); }
+    .archive-dot.dot-unknown  { background: var(--surface-highest); border: 1px solid var(--surface-high); }
+    .archive-pill-day {
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--on-surface-muted);
+      font-weight: 700;
+    }
+    .archive-pill-num {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      color: inherit;
+      line-height: 1;
+    }
+    /* Mobile archive: horizontal scroll */
+    .archive-pills--scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .archive-pills--scroll::-webkit-scrollbar { display: none; }
+    .archive-pills--scroll .archive-pill { flex: 0 0 auto; min-width: 64px; }
+
+    /* SURFACE 1 — "How was this generated?" expandable */
+    .howgen { padding: 0; overflow: hidden; }
+    .howgen-trigger {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-family: var(--font-body);
+      color: var(--on-surface-variant);
+      transition: background 180ms ease;
+    }
+    .howgen-trigger:hover { background: var(--surface); }
+    .howgen-trigger > .ms:first-child { font-size: 18px; width: 18px; height: 18px; color: var(--primary); }
+    .howgen-trigger-label {
+      font-family: var(--font-display);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: var(--on-surface);
+      flex: 1;
+      text-align: left;
+    }
+    .howgen-caret { color: var(--on-surface-muted); font-size: 18px; width: 18px; height: 18px; }
+    .howgen.is-open .howgen-trigger { border-bottom: 1px solid var(--surface-high); }
+    .howgen-body { display: none; padding: 16px 18px 18px; flex-direction: column; gap: 16px; }
+    .howgen.is-open .howgen-body { display: flex; }
+    .howgen-note { font-size: 0.8125rem; color: var(--on-surface-muted); line-height: 1.5; }
+    .howgen-section-label {
+      font-family: var(--font-display);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+      margin-bottom: -4px;
+    }
+
+    /* Attempt timeline */
+    .attempt-strip { list-style: none; display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; }
+    .attempt {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface-highest);
+      border-radius: 6px; padding: 10px 12px; flex-wrap: wrap;
+    }
+    .attempt--fail { background: color-mix(in oklab, var(--warn) 8%, var(--surface-highest)); }
+    .attempt-n {
+      font-family: var(--font-display);
+      font-size: 0.6875rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--on-surface-muted);
+    }
+    .attempt-note { font-size: 0.75rem; color: var(--on-surface-muted); font-style: italic; flex-basis: 100%; }
+    .attempt-arrow { display: flex; align-items: center; color: var(--on-surface-dim); }
+    .attempt-arrow .ms { font-size: 16px; width: 16px; height: 16px; }
+
+    /* Rule grid (11 cells) */
+    .rule-grid { list-style: none; display: grid; grid-template-columns: repeat(11, 1fr); gap: 5px; }
+    .rule-cell {
+      position: relative;
+      background: var(--surface-highest);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 10px 4px 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: default;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+    .rule-cell:hover, .rule-cell:focus-visible { background: var(--surface-high); outline: none; }
+    .rule-cell.rule-pass { border-color: color-mix(in oklab, var(--primary) 22%, transparent); }
+    .rule-cell.rule-flag {
+      border-color: color-mix(in oklab, var(--danger) 40%, transparent);
+      background: color-mix(in oklab, var(--danger) 10%, var(--surface-highest));
+    }
+    .rule-num { font-family: var(--font-mono); font-size: 0.625rem; color: var(--on-surface-muted); font-variant-numeric: tabular-nums; }
+    .rule-icon { font-size: 16px; width: 16px; height: 16px; }
+    .rule-pass .rule-icon { color: var(--primary); }
+    .rule-flag .rule-icon { color: var(--danger); }
+    .rule-tip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%; transform: translateX(-50%);
+      background: var(--surface-base);
+      color: var(--on-surface);
+      border: 1px solid var(--surface-high);
+      border-radius: 6px;
+      padding: 8px 10px;
+      width: 200px;
+      font-size: 0.75rem;
+      line-height: 1.4;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 150ms ease;
+      z-index: 30;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .rule-tip b { font-family: var(--font-display); font-size: 0.75rem; color: var(--on-surface); }
+    .rule-tip span { color: var(--on-surface-muted); }
+    .rule-cell:hover .rule-tip,
+    .rule-cell:focus-visible .rule-tip { opacity: 1; }
+
+    /* Rubric disclosure */
+    .rubric-disclose {
+      appearance: none; background: transparent; border: 0;
+      color: var(--on-surface-muted); font-family: var(--font-body);
+      font-size: 0.75rem; display: inline-flex; align-items: center;
+      gap: 4px; padding: 6px 0; cursor: pointer; align-self: flex-start;
+      transition: color 180ms ease;
+    }
+    .rubric-disclose:hover { color: var(--primary); }
+    .rubric-table {
+      width: 100%; border-collapse: collapse; font-size: 0.75rem;
+      background: var(--surface); border-radius: 6px; overflow: hidden;
+    }
+    .rubric-table th, .rubric-table td {
+      text-align: left; padding: 8px 12px;
+      border-bottom: 1px solid var(--surface-high); vertical-align: top;
+    }
+    .rubric-table th {
+      font-family: var(--font-display); font-size: 0.625rem;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--on-surface-muted); font-weight: 700;
+      background: var(--surface-low);
+    }
+    .rubric-table tr:last-child td { border-bottom: 0; }
+    .rubric-table .rb-n { font-family: var(--font-mono); color: var(--on-surface-muted); width: 28px; }
+    .rubric-table .rb-t { font-family: var(--font-display); color: var(--on-surface); font-weight: 700; width: 120px; }
+    .rubric-table .rb-s { color: var(--on-surface-variant); }
+    .rubric-table .row-flag .rb-t { color: var(--danger); }
+    .rubric-table .row-flag .rb-n { color: var(--danger); }
+
+    /* Mobile ordering for eval surfaces */
+    @media (max-width: 767px) {
+      .archive-widget { order: 0; }
+      .howgen         { order: 2; }
+      /* rule-grid wraps at small widths */
+      .rule-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+
   </style>
 </head>
 <body>
@@ -905,6 +1192,9 @@
   </div>
 
   <script>
+    /* ================================================================
+       CONSTANTS — sport/team lookups (unchanged)
+    ================================================================ */
     const SPORT_MAP = { celtics: 'NBA', bruins: 'NHL', redsox: 'MLB', patriots: 'NFL' };
     const BOSTON_CODE = { celtics: 'CEL', bruins: 'BRU', redsox: 'SOX', patriots: 'NE' };
     const BOSTON_DISPLAY_NAME = { celtics: 'Celtics', bruins: 'Bruins', redsox: 'Red Sox', patriots: 'Patriots' };
@@ -916,10 +1206,30 @@
       'boston bruins': 'BOS', 'boston red sox': 'BOS', 'new england patriots': 'NE',
     };
 
+    /* ================================================================
+       SURFACE 4 verdict chip color map
+    ================================================================ */
+    const VERDICT_COLORS = {
+      pass:     'var(--primary)',
+      low:      '#E0B341',
+      medium:   '#E07B2A',
+      high:     'var(--danger)',
+      fallback: 'var(--danger)',
+      stale:    'var(--on-surface-dim)',
+      unknown:  'var(--on-surface-dim)',
+    };
+
+    /* ================================================================
+       UTIL HELPERS (unchanged)
+    ================================================================ */
     function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
     function oppCode(name) { if (!name) return 'OPP'; const key = String(name).toLowerCase(); if (OPP_CODE[key]) return OPP_CODE[key]; const words = String(name).trim().split(/\s+/); const last = words[words.length - 1] || 'OPP'; return last.slice(0, 3).toUpperCase(); }
     function shortDate(dateStr) { if (!dateStr) return ''; const parts = dateStr.split('-'); if (parts.length < 3) return dateStr; const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; return `${days[d.getDay()]} ${d.getDate()}`; }
+    function getTodayISO(data) { if (data && data.generated_at) { try { return new Date(data.generated_at).toISOString().slice(0, 10); } catch(e) {} } return new Date().toISOString().slice(0, 10); }
 
+    /* ================================================================
+       EXISTING CONTENT BUILDERS (unchanged)
+    ================================================================ */
     function buildHeroHeadline(text) { const words = (text || '').trim().split(/\s+/); const chunks = []; if (words.length > 0) chunks.push(words.slice(0, 4).join(' ')); if (words.length > 4) chunks.push(words.slice(4, 8).join(' ')); if (words.length > 8) chunks.push(words.slice(8).join(' ')); return chunks.map((chunk, idx) => { const cls = (idx % 2 === 0) ? 'line-odd' : 'line-even'; const cls2 = (idx === 2) ? ` line-last` : ''; return `<span class="${cls}${cls2}">${escapeHtml(chunk)}</span>`; }).join(''); }
     function trimHeadlineFromBody(text) { const words = (text || '').trim().split(/\s+/); return words.slice(20).join(' '); }
 
@@ -971,9 +1281,8 @@
         if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) return `<div class="score-row dim"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code">${bostonName}</span></div><span class="score-status">Offseason</span></div>`;
         if (g.played && g.bostonScore != null && g.oppScore != null) {
           const won = g.bostonScore > g.oppScore; const oppCodeStr = oppCode(g.opponent); const connector = g.bostonHome ? 'vs' : '@';
-          const leftName = bostonName; const leftScore = g.bostonScore; const rightName = oppCodeStr; const rightScore = g.oppScore;
           const leftWinCls = won ? 'win' : 'loss'; const rightWinCls = won ? 'loss' : 'win';
-          return `<div class="score-row"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code ${leftWinCls}">${escapeHtml(leftName)}</span><span class="team-score">${escapeHtml(leftScore)}</span><span class="vs">${connector}</span><span class="team-score">${escapeHtml(rightScore)}</span><span class="team-code ${rightWinCls}">${escapeHtml(rightName)}</span></div><span class="score-status">Final</span></div>`;
+          return `<div class="score-row"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code ${leftWinCls}">${escapeHtml(bostonName)}</span><span class="team-score">${escapeHtml(g.bostonScore)}</span><span class="vs">${connector}</span><span class="team-score">${escapeHtml(g.oppScore)}</span><span class="team-code ${rightWinCls}">${escapeHtml(oppCode(g.opponent))}</span></div><span class="score-status">Final</span></div>`;
         }
         if (!g.played && (g.seasonType === 'regular' || g.seasonType === 'playoff')) return `<div class="score-row dim"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code">${bostonName}</span></div><span class="score-status">No Game</span></div>`;
         const oppStr = g.opponent ? oppCode(g.opponent) : '—'; const connector = g.bostonHome ? 'vs' : (g.opponent ? '@' : '');
@@ -1018,25 +1327,358 @@
       return `<section class="widget" id="news"><header class="widget-header"><span class="ms">newspaper</span><span>News</span></header>${items}</section>`;
     }
 
-    function render(data) {
-      const brew = data.morning_brew || []; const para0 = brew[0] || ''; const para1 = brew[1] || ''; const para2 = brew[2] || '';
-      const headlineSource = data.headline || trimHeadlineFromBody(para0);
-      const heroHtml = buildHeroHeadline(headlineSource); const statSplash = buildStatSplash(data.box_scores);
-      const bodyHtml = `<div class="morning-brew" id="brew">${para0 ? `<p>${escapeHtml(para0)}</p>` : ''}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<p>${escapeHtml(para2)}</p>` : ''}<a href="https://forms.gle/mtXe54Kwa2HqCtpc6" target="_blank" rel="noopener noreferrer" class="feedback-button">Send Feedback</a></div>`;
-      const mobileStripHtml = buildMobileStrip(data.box_scores); const scoreboardHtml = buildScoreboardWidget(data.box_scores); const pulseHtml = buildTrendPulseWidget(data.trend_watch); const newsPulseHtml = buildNewsPulseWidget(data.news_digest); const scheduleHtml = buildScheduleSection(data.schedule);
-      const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-      const app = document.getElementById('app');
-      app.innerHTML = `<div class="page"><header class="hero"><h1 class="hero-headline">${heroHtml}</h1></header><p class="hero-date">${dateStr}</p><div class="fold-grid"><div class="main-col">${bodyHtml}${scheduleHtml}</div><aside class="rail-col" aria-label="Dashboard widgets">${scoreboardHtml}${pulseHtml}${newsPulseHtml}</aside></div>${mobileStripHtml}<footer class="site-footer">Powered by Dunks ☕ and Gemini AI &mdash; updated daily at 03:00 ET<br><a href="https://github.com/goodvibes413/boston-dans-hub" target="_blank" rel="noopener noreferrer" style="color:var(--on-surface-muted);text-decoration:none;margin-top:6px;display:inline-block;">github.com/goodvibes413/boston-dans-hub</a></footer></div>`;
+    /* ================================================================
+       EVAL SURFACE BUILDERS
+    ================================================================ */
+
+    /* SURFACE 4 — Verdict chip */
+    function buildVerdictChip(kind, label) {
+      const color = VERDICT_COLORS[kind] || 'var(--on-surface-muted)';
+      return `<span class="vchip" style="--chip-color:${color}"><span class="vchip-dot"></span>${escapeHtml(label)}</span>`;
     }
 
-    function renderError(message) { const app = document.getElementById('app'); app.innerHTML = `<div class="page"><div class="error-state"><h2 class="error-title">Couldn't load today's take</h2><p class="error-message">${escapeHtml(message)}</p></div></div>`; }
+    /* SURFACE 3 — 5-day pipeline summary strip */
+    function buildPipelineStrip(summary) {
+      if (!summary) return '';
+      const topRule = (summary.most_flagged_rules || [])[0];
+      return `<div class="pipe-strip">
+        <span class="pipe-stat"><b>${summary.fresh || 0}</b> fresh</span>
+        <span class="pipe-sep">·</span>
+        <span class="pipe-stat"><b>${summary.retry || 0}</b> retry</span>
+        <span class="pipe-sep">·</span>
+        <span class="pipe-stat"><b>${summary.fallback || 0}</b> fallbacks</span>
+        ${topRule ? `<span class="pipe-sep">·</span><span class="pipe-stat pipe-stat--note">most flagged: <em>${escapeHtml(topRule.title || 'Rule ' + topRule.rule)}</em> <span class="pipe-x">×${topRule.count}</span></span>` : ''}
+      </div>`;
+    }
 
+    /* SURFACE 2 — Archive picker rail widget */
+    function buildArchiveWidget(evalsIndex, activeDate) {
+      if (!evalsIndex || !(evalsIndex.available_dates || []).length) return '';
+      const dates = [...evalsIndex.available_dates].sort().slice(-5);
+      if (!dates.length) return '';
+      const summary = evalsIndex.summary_5day || {};
+      const DAY_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const pills = dates.map(iso => {
+        const [y, m, d] = iso.split('-').map(Number);
+        const dateObj = new Date(y, m - 1, d);
+        const evalsData = (window.__evalsCache || {})[iso];
+        const outcome = evalsData ? (evalsData.outcome || 'unknown') : 'unknown';
+        const isActive = iso === activeDate;
+        return `<button class="archive-pill${isActive ? ' is-active' : ''}" data-date="${escapeHtml(iso)}" title="${escapeHtml(iso)} — ${escapeHtml(outcome)}" role="tab" aria-selected="${isActive}">
+          <span class="archive-dot dot-${escapeHtml(outcome)}"></span>
+          <span class="archive-pill-day">${escapeHtml(DAY_SHORT[dateObj.getDay()])}</span>
+          <span class="archive-pill-num">${d}</span>
+        </button>`;
+      }).join('');
+      return `<section class="widget archive-widget" id="archive-widget">
+        <header class="widget-header"><span class="ms">history</span><span>Archive · last ${dates.length} day${dates.length !== 1 ? 's' : ''}</span></header>
+        ${buildPipelineStrip(summary)}
+        <div class="archive-pills" role="tablist" aria-label="Daily archive">${pills}</div>
+      </section>`;
+    }
+
+    /* SURFACE 1 helpers */
+    function deriveRuleStatus(evalsData, rules) {
+      const status = {};
+      (rules || []).forEach(r => { status[r.number] = 'pass'; });
+      if (!evalsData) return status;
+      if (evalsData.pre_pass && evalsData.pre_pass.repetition_check === 'fail') status[10] = 'flag';
+      (evalsData.attempts || []).forEach(a => {
+        if (a.verdict === 'PASS') return;
+        (a.flags || []).forEach(flagStr => {
+          const f = String(flagStr).toLowerCase();
+          if (f.includes('repetition') || f.includes('repeat')) status[10] = 'flag';
+          if (f.includes('off-roster') || f.includes('off_roster') || f.includes('roster') && f.includes('squad')) status[11] = 'flag';
+          if (f.includes('fabricat') && (f.includes('stat') || f.includes('score') || f.includes('record'))) status[7] = 'flag';
+          if (f.includes('fabricat') && (f.includes('histor') || f.includes('trade') || f.includes('draft') || f.includes('champion'))) status[8] = 'flag';
+          if (f.includes('profan') || (f.includes('curse') && f.includes('word'))) status[1] = 'flag';
+          if (f.includes('discrimin') || f.includes('racist') || f.includes('sexist') || f.includes('lgbtq') || f.includes('antisemit')) status[2] = 'flag';
+          if (f.includes('violence') || f.includes('hate promot')) status[6] = 'flag';
+          if (f.includes('personal news') || f.includes('divorce') || f.includes('relationship')) status[5] = 'flag';
+          if (f.includes('personal attack') && (f.includes('coach') || f.includes('official') || f.includes('ref'))) status[4] = 'flag';
+          if (f.includes('personal attack') && f.includes('player')) status[3] = 'flag';
+          if (f.includes('news_digest') || f.includes('dans_take') || (f.includes('news') && f.includes('personal attack'))) status[9] = 'flag';
+        });
+        // Severity medium is rule 11 in our system
+        if (a.severity === 'medium') status[11] = 'flag';
+      });
+      return status;
+    }
+
+    function buildRubricTable(rules, ruleStatus) {
+      if (!rules || !rules.length) return '';
+      const rows = rules.map(r => {
+        const flagged = ruleStatus[r.number] === 'flag';
+        return `<tr class="${flagged ? 'row-flag' : ''}"><td class="rb-n">${r.number}</td><td class="rb-t">${escapeHtml(r.title)}</td><td class="rb-s">${escapeHtml(r.summary || '')}</td></tr>`;
+      }).join('');
+      return `<table class="rubric-table"><thead><tr><th>#</th><th>Rule</th><th>Summary</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }
+
+    /* SURFACE 1 — "How was this generated?" expandable */
+    function buildHowGenerated(evalsData, rules) {
+      const outcome = evalsData ? (evalsData.outcome || 'unknown') : 'unknown';
+      const META = {
+        fresh:    { label:'FRESH',    icon:'verified',      kind:'pass',     note:'Passed on first attempt' },
+        retry:    { label:'RETRY',    icon:'history',       kind:'low',      note:'Regenerated and passed' },
+        fallback: { label:'FALLBACK', icon:'error',         kind:'fallback', note:'Judge could not certify — using cached fallback' },
+        stale:    { label:'STALE',    icon:'schedule',      kind:'stale',    note:'No new sources ingested' },
+        unknown:  { label:'–',        icon:'help_outline',  kind:'unknown',  note:'Eval data not available for this day' },
+      };
+      const meta = META[outcome] || META.unknown;
+      const chipLabel = outcome === 'retry'
+        ? `RETRY · ${evalsData.total_attempts || '?'} attempts`
+        : meta.label;
+
+      const attempts = evalsData ? (evalsData.attempts || []) : [];
+      const secs = evalsData ? evalsData.generation_seconds : null;
+      const ruleStatus = deriveRuleStatus(evalsData, rules);
+
+      // Attempt timeline
+      const attemptItems = attempts.map((a, i) => {
+        const vKind = a.verdict === 'PASS' ? 'pass' : (a.severity || 'high');
+        const vLabel = a.verdict === 'PASS' ? 'PASS' : `FAIL · ${a.severity || '?'}`;
+        const firstFlag = (a.flags || [])[0] || '';
+        const flagSnippet = firstFlag ? String(firstFlag).slice(0, 90) + (firstFlag.length > 90 ? '…' : '') : '';
+        const arrowHtml = i < attempts.length - 1
+          ? `<li class="attempt-arrow" aria-hidden="true"><span class="ms">arrow_forward</span></li>` : '';
+        return `<li class="attempt ${a.verdict !== 'PASS' ? 'attempt--fail' : ''}">
+          <span class="attempt-n">Attempt ${a.attempt}</span>
+          ${buildVerdictChip(vKind, vLabel)}
+          ${flagSnippet ? `<span class="attempt-note">${escapeHtml(flagSnippet)}</span>` : ''}
+        </li>${arrowHtml}`;
+      }).join('');
+
+      // Rule grid — 11 cells
+      const ruleCells = (rules || []).map(r => {
+        const st = ruleStatus[r.number] || 'pass';
+        return `<li class="rule-cell rule-${st}" tabindex="0" aria-label="Rule ${r.number}: ${r.title} — ${st}">
+          <span class="rule-num">${r.number}</span>
+          <span class="ms rule-icon">${st === 'pass' ? 'check' : 'close'}</span>
+          <span class="rule-tip"><b>Rule ${r.number} · ${escapeHtml(r.title)}</b><span>${escapeHtml(r.summary || '')}</span></span>
+        </li>`;
+      }).join('');
+
+      const hasAttempts = attempts.length > 0;
+      const hasRules = (rules || []).length > 0;
+
+      return `<section class="howgen widget" id="howgen">
+        <button class="howgen-trigger" aria-expanded="false">
+          <span class="ms">assessment</span>
+          <span class="howgen-trigger-label">How was this generated?</span>
+          ${buildVerdictChip(meta.kind, chipLabel)}
+          <span class="ms howgen-caret">expand_more</span>
+        </button>
+        <div class="howgen-body">
+          <p class="howgen-note"><span class="ms ms-inline">${meta.icon}</span>${escapeHtml(meta.note)}${secs != null ? ` Generated in ${secs}s.` : ''}</p>
+          ${hasAttempts ? `<div class="howgen-section-label">Attempt timeline</div><ol class="attempt-strip">${attemptItems}</ol>` : ''}
+          ${hasRules ? `<div class="howgen-section-label">Rule grid · ${rules.length} checks</div><ul class="rule-grid">${ruleCells}</ul>` : ''}
+          <button class="rubric-disclose" aria-expanded="false">
+            <span class="ms ms-inline">info</span>
+            What does the judge check for?
+            <span class="ms ms-inline rubric-caret">expand_more</span>
+          </button>
+        </div>
+      </section>`;
+    }
+
+    /* ================================================================
+       RENDER — builds the full page, now evals-aware
+    ================================================================ */
+    function render(data, evalsData, evalsIndex, activeDate) {
+      const brew = data.morning_brew || [];
+      const para0 = brew[0] || '', para1 = brew[1] || '', para2 = brew[2] || '';
+      const headlineSource = data.headline || trimHeadlineFromBody(para0);
+      const heroHtml = buildHeroHeadline(headlineSource);
+      const rules = (evalsIndex && evalsIndex.rules) || [];
+
+      // Main col: brew paragraphs only (button + howgen go outside)
+      const brewHtml = `<div class="morning-brew" id="brew">${para0 ? `<p>${escapeHtml(para0)}</p>` : ''}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<p>${escapeHtml(para2)}</p>` : ''}</div>`;
+      const howgenHtml = buildHowGenerated(evalsData, rules);
+      const feedbackBtn = `<a href="https://forms.gle/mtXe54Kwa2HqCtpc6" target="_blank" rel="noopener noreferrer" class="feedback-button">Send Feedback</a>`;
+      const scheduleHtml = buildScheduleSection(data.schedule);
+
+      // Rail: archive widget first, then scoreboard, trends, news
+      const archiveWidgetHtml = buildArchiveWidget(evalsIndex, activeDate || getTodayISO(data));
+      const scoreboardHtml = buildScoreboardWidget(data.box_scores);
+      const pulseHtml = buildTrendPulseWidget(data.trend_watch);
+      const newsPulseHtml = buildNewsPulseWidget(data.news_digest);
+      const mobileStripHtml = buildMobileStrip(data.box_scores);
+
+      const dateStr = (() => {
+        if (activeDate) {
+          const [y, m, d] = activeDate.split('-').map(Number);
+          return new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+        }
+        return new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      })();
+
+      document.getElementById('app').innerHTML = `<div class="page">
+        <header class="hero"><h1 class="hero-headline">${heroHtml}</h1></header>
+        <p class="hero-date">${dateStr}</p>
+        <div class="fold-grid">
+          <div class="main-col">
+            ${brewHtml}
+            ${howgenHtml}
+            ${feedbackBtn}
+            ${scheduleHtml}
+          </div>
+          <aside class="rail-col" aria-label="Dashboard widgets">
+            ${archiveWidgetHtml}
+            ${scoreboardHtml}
+            ${pulseHtml}
+            ${newsPulseHtml}
+          </aside>
+        </div>
+        ${mobileStripHtml}
+        <footer class="site-footer">Powered by Dunks ☕ and Gemini AI &mdash; updated daily at 03:00 ET<br>
+          <a href="https://github.com/goodvibes413/boston-dans-hub" target="_blank" rel="noopener noreferrer" style="color:var(--on-surface-muted);text-decoration:none;margin-top:6px;display:inline-block;">github.com/goodvibes413/boston-dans-hub</a>
+        </footer>
+      </div>`;
+    }
+
+    function renderError(message) {
+      document.getElementById('app').innerHTML = `<div class="page"><div class="error-state"><h2 class="error-title">Couldn't load today's take</h2><p class="error-message">${escapeHtml(message)}</p></div></div>`;
+    }
+
+    /* ================================================================
+       ARCHIVE PICKER — swap post content + evals without full re-render
+    ================================================================ */
+    async function switchToDate(date) {
+      window.__activeDate = date;
+
+      // Update archive pill active state
+      document.querySelectorAll('.archive-pill').forEach(p => {
+        const active = p.dataset.date === date;
+        p.classList.toggle('is-active', active);
+        p.setAttribute('aria-selected', active);
+      });
+
+      // Get post data (today uses __todayData; past days fetch from posts/)
+      const todayISO = getTodayISO(window.__todayData);
+      let postData = (date === todayISO) ? window.__todayData : null;
+      if (!postData) {
+        postData = await fetch(`./data/posts/${date}.json`).then(r => r.ok ? r.json() : null).catch(() => null);
+      }
+
+      // Get evals (may be pre-cached)
+      let evalsData = (window.__evalsCache || {})[date] || null;
+      if (!evalsData) {
+        evalsData = await fetch(`./data/evals/${date}.json`).then(r => r.ok ? r.json() : null).catch(() => null);
+        if (evalsData && window.__evalsCache) window.__evalsCache[date] = evalsData;
+      }
+
+      const rules = (window.__evalsIndex && window.__evalsIndex.rules) || [];
+
+      if (postData) {
+        // Swap headline
+        const hl = document.querySelector('.hero-headline');
+        if (hl) hl.innerHTML = buildHeroHeadline(postData.headline || '');
+
+        // Swap morning brew paragraphs
+        const brewEl = document.getElementById('brew');
+        if (brewEl) {
+          const b = postData.morning_brew || [];
+          brewEl.innerHTML = (b[0] ? `<p>${escapeHtml(b[0])}</p>` : '') + (b[1] ? `<p>${escapeHtml(b[1])}</p>` : '') + (b[2] ? `<p>${escapeHtml(b[2])}</p>` : '');
+        }
+
+        // Update date label
+        const [y, m, d] = date.split('-').map(Number);
+        const dateEl = document.querySelector('.hero-date');
+        if (dateEl) dateEl.textContent = new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      }
+
+      // Swap how-generated section (replace #howgen in place)
+      const oldHowgen = document.getElementById('howgen');
+      if (oldHowgen) {
+        const newHtml = buildHowGenerated(evalsData, rules);
+        oldHowgen.insertAdjacentHTML('afterend', newHtml);
+        oldHowgen.remove();
+        // Re-attach any needed listeners (event delegation handles it automatically)
+      }
+    }
+
+    /* ================================================================
+       INTERACTION DELEGATION — one listener on #app for all toggles
+    ================================================================ */
+    function attachInteractions() {
+      const app = document.getElementById('app');
+      if (!app) return;
+
+      app.addEventListener('click', async function handleClick(e) {
+        // Archive pill
+        const pill = e.target.closest('.archive-pill');
+        if (pill && pill.dataset.date && pill.dataset.date !== window.__activeDate) {
+          await switchToDate(pill.dataset.date);
+          return;
+        }
+
+        // HowGenerated trigger toggle
+        const trigger = e.target.closest('.howgen-trigger');
+        if (trigger) {
+          const howgen = trigger.closest('.howgen');
+          if (!howgen) return;
+          const nowOpen = howgen.classList.toggle('is-open');
+          trigger.setAttribute('aria-expanded', nowOpen);
+          const caret = trigger.querySelector('.howgen-caret');
+          if (caret) caret.textContent = nowOpen ? 'expand_less' : 'expand_more';
+          return;
+        }
+
+        // Rubric disclosure toggle
+        const rubricBtn = e.target.closest('.rubric-disclose');
+        if (rubricBtn) {
+          const body = rubricBtn.closest('.howgen-body');
+          if (!body) return;
+          const wasOpen = rubricBtn.getAttribute('aria-expanded') === 'true';
+          rubricBtn.setAttribute('aria-expanded', !wasOpen);
+          const caret = rubricBtn.querySelector('.rubric-caret');
+          if (caret) caret.textContent = wasOpen ? 'expand_more' : 'expand_less';
+          if (wasOpen) {
+            body.querySelector('.rubric-table')?.remove();
+          } else {
+            const rules = (window.__evalsIndex && window.__evalsIndex.rules) || [];
+            const ev = (window.__evalsCache || {})[window.__activeDate];
+            rubricBtn.insertAdjacentHTML('afterend', buildRubricTable(rules, deriveRuleStatus(ev, rules)));
+          }
+          return;
+        }
+      });
+    }
+
+    /* ================================================================
+       INIT — fetch data, render, attach interactions
+    ================================================================ */
     (async function init() {
       try {
-        const res = await fetch('./data/daily_output.json');
-        if (!res.ok) throw new Error(`HTTP ${res.status} — ${res.statusText}`);
-        const data = await res.json();
-        render(data);
+        const [dataRes, indexRes] = await Promise.all([
+          fetch('./data/daily_output.json'),
+          fetch('./data/evals/index.json').catch(() => null),
+        ]);
+        if (!dataRes.ok) throw new Error(`HTTP ${dataRes.status} — ${dataRes.statusText}`);
+        const data = await dataRes.json();
+        const evalsIndex = (indexRes && indexRes.ok) ? await indexRes.json().catch(() => null) : null;
+        const today = getTodayISO(data);
+
+        // Pre-fetch evals for all available dates (max 5, small files)
+        const evalsCache = {};
+        if (evalsIndex && evalsIndex.available_dates) {
+          await Promise.allSettled(
+            evalsIndex.available_dates.map(d =>
+              fetch(`./data/evals/${d}.json`)
+                .then(r => r.ok ? r.json() : null)
+                .then(ev => { if (ev) evalsCache[d] = ev; })
+                .catch(() => {})
+            )
+          );
+        }
+
+        window.__todayData   = data;
+        window.__evalsCache  = evalsCache;
+        window.__evalsIndex  = evalsIndex;
+        window.__activeDate  = today;
+
+        render(data, evalsCache[today] || null, evalsIndex, today);
+        attachInteractions();
       } catch (err) {
         console.error('[Boston Dans Hub] Failed to load data:', err);
         renderError(err.message || 'Unknown error. Try refreshing.');
