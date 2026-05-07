@@ -1,65 +1,65 @@
 {
-  "headline": "Red Sox show some fight in Detroit while the legal dust settles",
+  "headline": "Sonny Gray returns to shut down Detroit as the Red Sox finish the sweep",
   "morning_brew": [
-    "Tuesday night in Detroit was exactly what this team needed to build some momentum. Ten runs on twelve hits was a sight for sore eyes after that rough stretch we saw at Fenway Park earlier this month. Ceddanne Rafaela was the man of the hour, driving in four runs and launching a massive home run to break things open. The real fireworks happened in the fourth when Framber Valdez decided to drill Trevor Story, leading to the benches clearing and an ejection. Hear me out before you laugh, but seeing the guys stand up for each other like that shows a grit we have been missing lately.",
-    "Jaylen Brown is lighter in the wallet today after the league handed down a fifty thousand dollar fine for his comments about the officiating. It is a tough pill to swallow after that first-round exit at the Garden, but the league office does not play around when you question the integrity of the game. We are stuck watching the rest of the NBA playoffs from the couch while teams like the Timberwolves and Knicks keep grinding. It is going to be a long summer of looking at the lottery and free agency lists to see how this roster gets back to chasing Banner 19. The Hub feels a little quieter without green on the floor in May.",
-    "The legal process wrapped up for Stefon Diggs with a not guilty verdict on all counts yesterday. It is a relief for everyone to have a resolution so the focus can eventually return to the field. We will see what the league decides regarding any further review of the situation under the personal conduct policy. If he is available for the full season, he is going to be a massive part of a squad that won fourteen games last fall. We need every weapon we can get to stay competitive in a crowded AFC field as we look toward training camp in Foxborough."
+    "Wednesday night in Detroit was exactly what we needed to see from this rotation. Sonny Gray looked like his old self in his return from injury, tossing five scoreless innings and giving up only four hits. I been sayin' it all year, this rotation needs a horse, and he finally looked like one out there on the bump. The bullpen followed up with four innings of no-hit ball to secure the four to zero victory. Finishing a sweep on the road gives this squad a little bit of life before the Rays come to the Fens tonight.",
+    "Jaylen Brown is making headlines today after saying he could see himself in green for the next ten years. It is nice to hear some loyalty after the way this season ended, but talk is cheap in the offseason. Brad Stevens is already out there doing damage control, saying Jaylen has not expressed any frustration to him directly. We expect greatness in this town, and another summer of speculation is the last thing anyone wants to deal with right now. I'll believe the commitment when I see another trophy.",
+    "Down in Foxborough, Drake Maye is already acting like a leader by backing his head coach. He told reporters he is not worried about Mike Vrabel's off-field issues being a distraction this season. It is a tough spot for a young quarterback to be in, but the kid seems to have a good head on his shoulders. We are looking at a roster with some glaring holes even after the draft, and we need everyone focused if we are going to improve on last year's record. Let the league handle the process, we just need to see progress on the field."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Ceddanne Rafaela",
-      "trend": "Three hits and four RBI in the blowout win over the Tigers.",
-      "dans_take": "The kid is starting to find his stroke and his versatility in the field is a massive asset."
+      "player": "Sonny Gray",
+      "trend": "Five innings of scoreless ball in his return from the shelf",
+      "dans_take": "He is the anchor of this rotation and we need him healthy to have any prayer in the East."
     },
     {
-      "category": "Heater",
-      "player": "Brayan Bello",
-      "trend": "Seven innings of one-run ball with seven strikeouts to earn the win.",
-      "dans_take": "Coming out of the bullpen for seven frames is a legendary performance that saved the rest of the arms."
+      "category": "Bullpen Watch",
+      "player": "Tyler Samaniego",
+      "trend": "Two innings with three strikeouts to keep the Tigers bats quiet",
+      "dans_take": "The bullpen was lights out in the finale and this kid looked nasty."
     },
     {
       "category": "Cold Snap",
-      "player": "Mor\u00e1n",
-      "trend": "Lasted only one inning while giving up two earned runs and two walks.",
-      "dans_take": "A very short outing that put a lot of pressure on the staff early in the game."
+      "player": "Wilyer Abreu",
+      "trend": "Five at bats without a hit as the offense leaned on others",
+      "dans_take": "Rough night at the dish for Wilyer, but a win is a win."
     }
   ],
   "news_digest": [
     {
-      "headline": "Celtics' Jaylen Brown fined $50,000 for criticizing officials",
-      "url": "https://www.espn.com/nba/story/_/id/48689072/celtics-jaylen-brown-fined-50000-criticizing-officials",
-      "dans_take": "That is a steep price to pay for speaking your mind after a tough loss."
+      "headline": "Jaylen Brown: Could play in Boston for 'next 10 years'",
+      "url": "https://www.espn.com/nba/story/_/id/48698552/jaylen-brown-play-boston-next-10-years",
+      "dans_take": "A ten year commitment sounds great but we need to see it translate to wins."
     },
     {
-      "headline": "Jury finds Stefon Diggs not guilty of assault, strangulation",
-      "url": "https://www.espn.com/nfl/story/_/id/48685492/chef-shies-financial-questions-stefon-diggs-assault-trial",
-      "dans_take": "Glad to see a resolution in court, now we wait for the league to finish their review."
+      "headline": "Patriots QB Maye backs Vrabel, not worried about distraction",
+      "url": "https://www.espn.com/nfl/story/_/id/48697495/patriots-qb-maye-backs-vrabel-not-worried-distraction",
+      "dans_take": "Maye is saying all the right things to support his coach during a tough stretch."
     },
     {
-      "headline": "2026 NHL draft: Gavin McKenna, Ivar Stenberg top rankings",
-      "url": "https://www.espn.com/nhl/story/_/id/48666667/2026-nhl-draft-rankings-top-prospects-players-gavin-mckenna-ivar-stenberg-carson-carels",
-      "dans_take": "Always good to keep an eye on the next wave of talent for the B's."
+      "headline": "Rays visit the Red Sox to begin 4-game series",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815247",
+      "dans_take": "Tampa is coming in hot and we need to keep this momentum rolling at home."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
       "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": 100,
-      "away_score": 109,
-      "game_date": "2026-05-03",
+      "away_team": "Unknown",
+      "home_score": 0,
+      "away_score": 0,
+      "game_date": "2026-05-07",
       "played": false,
       "season_type": "offseason"
     },
     "bruins": {
       "sport": "NHL",
       "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": 1,
-      "away_score": 4,
-      "game_date": "2026-05-02",
+      "away_team": "Unknown",
+      "home_score": 0,
+      "away_score": 0,
+      "game_date": "2026-05-07",
       "played": false,
       "season_type": "offseason"
     },
@@ -67,9 +67,9 @@
       "sport": "MLB",
       "home_team": "Detroit Tigers",
       "away_team": "Boston Red Sox",
-      "home_score": 3,
-      "away_score": 10,
-      "game_date": "2026-05-05",
+      "home_score": 0,
+      "away_score": 4,
+      "game_date": "2026-05-06",
       "played": true,
       "season_type": "regular"
     },
@@ -77,19 +77,14 @@
       "sport": "NFL",
       "home_team": "New England Patriots",
       "away_team": "Unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-05",
+      "home_score": 0,
+      "away_score": 0,
+      "game_date": "2026-05-07",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-05-06",
-      "matchup": "Boston Red Sox at Detroit Tigers",
-      "time_et": "6:40 PM ET"
-    },
     {
       "date": "2026-05-07",
       "matchup": "Tampa Bay Rays at Boston Red Sox",
@@ -119,14 +114,12 @@
       "date": "2026-05-13",
       "matchup": "Philadelphia Phillies at Boston Red Sox",
       "time_et": "6:45 PM ET"
+    },
+    {
+      "date": "2026-05-14",
+      "matchup": "Philadelphia Phillies at Boston Red Sox",
+      "time_et": "6:45 PM ET"
     }
   ],
-  "generated_at": "2026-05-06T10:27:19.175710+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "Voice repetition: The commentary regarding the Stefon Diggs legal situation in the Morning Brew section uses nearly identical phrasing to the previous day's output."
-  ],
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 2 attempts: Rule 7: Fabricated game scores in box_scores (Celtics 100-109, Bruins 1-4) are not present in SOURCE_DATA; Rule 11: Off-roster player (Stefon Diggs) news linked to team prospects/roster path forward",
-  "_stale_age_hours": 27.0
+  "generated_at": "2026-05-07T14:34:40.127197+00:00"
 }
