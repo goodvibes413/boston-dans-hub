@@ -1,23 +1,13 @@
 {
   "date": "2026-05-07",
-  "generated_at": "2026-05-07T18:56:30.848763+00:00",
+  "generated_at": "2026-05-07T18:56:09.359407+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
-  "total_attempts": 1,
-  "generation_seconds": 286.9,
+  "total_attempts": 0,
+  "generation_seconds": 0.0,
   "pre_pass": {
-    "repetition_check": "pass",
+    "repetition_check": "unknown",
     "flagged_phrases": []
   },
-  "attempts": [
-    {
-      "attempt": 1,
-      "verdict": "FAIL",
-      "severity": "high",
-      "flags": [
-        "Fabricated statistics: The Red Sox record of '18-14' is not present in rolling_7day or season_memory."
-      ],
-      "duration_seconds": 61.4
-    }
-  ]
+  "attempts": []
 }

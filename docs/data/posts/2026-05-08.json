@@ -1,9 +1,28 @@
 {
+  "date": "2026-05-08",
+  "generated_at": "2026-05-08T09:29:05.781489+00:00",
   "headline": "Rays extend the misery at Fenway as the Red Sox fall further behind",
   "morning_brew": [
     "Are you kiddin' me with this? Another night at Fenway Park, another frustrating loss for this squad. Jake Bennett struggled through five and a third innings, giving up four earned runs before the bullpen let things get completely out of hand. Ryan Watson surrendered three more in his three innings of work, and the Rays cruised to their seventh straight victory with an eight to four final. We are sitting at sixteen and twenty-two now, and this home losing streak is starting to feel like a permanent cloud over the oldest yard in baseball.",
     "Stephen A. Smith is out here taking shots at Jaylen Brown, and for once, I cannot say he is completely wrong. Jaylen calling this his favorite season despite blowing a three to one lead to Philadelphia is a tough look for a guy we just watched get bounced from the Garden. This city is about winning championships, not participation trophies or good vibes after a collapse. We have a long history of excellence for a reason, and that reason is not being satisfied with a second-round exit.",
     "Caleb Lomu had his introductory day in Foxborough, and it is a reminder that the future is coming whether we are ready or not. The rookie tackle is a massive piece of the puzzle if Drake Maye is going to have any chance of staying upright this season. Seeing the new kids get their start is the only thing keeping the mood up while the rest of the Hub deals with playoff hangovers. It is a long road back to respectability for the Pats, but getting the protection right is a solid first step."
+  ],
+  "news_digest": [
+    {
+      "headline": "Caleb Lomu's day to remember at Patriots intro",
+      "url": "https://www.espn.com/video/clip/_/id/48705953/caleb-lomu-day-remember-patriots-intro",
+      "dans_take": "Caleb Lomu is exactly what we need if we want to protect the future of the franchise."
+    },
+    {
+      "headline": "Stephen A. has some words for Jaylen Brown",
+      "url": "https://www.espn.com/video/clip/_/id/48703063/stephen-some-words-jaylen-brown",
+      "dans_take": "Stephen A. is always looking for a headline, but Jaylen has to know how that sounds to a city that wants rings."
+    },
+    {
+      "headline": "Taylor Heinicke retires after improbable NFL career",
+      "url": "https://www.espn.com/nfl/story/_/id/48707133/taylor-heinicke-retires-improbable-nfl-career",
+      "dans_take": "He had a great run for an underdog, hope he enjoys the time off."
+    }
   ],
   "trend_watch": [
     {
@@ -23,23 +42,6 @@
       "player": "Wilyer Abreu",
       "trend": "Finished one for three with an RBI and a .300 season average.",
       "dans_take": "One of the few bright spots in the lineup right now, he keeps finding ways to contribute."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Caleb Lomu's day to remember at Patriots intro",
-      "url": "https://www.espn.com/video/clip/_/id/48705953/caleb-lomu-day-remember-patriots-intro",
-      "dans_take": "Caleb Lomu is exactly what we need if we want to protect the future of the franchise."
-    },
-    {
-      "headline": "Stephen A. has some words for Jaylen Brown",
-      "url": "https://www.espn.com/video/clip/_/id/48703063/stephen-some-words-jaylen-brown",
-      "dans_take": "Stephen A. is always looking for a headline, but Jaylen has to know how that sounds to a city that wants rings."
-    },
-    {
-      "headline": "Taylor Heinicke retires after improbable NFL career",
-      "url": "https://www.espn.com/nfl/story/_/id/48707133/taylor-heinicke-retires-improbable-nfl-career",
-      "dans_take": "He had a great run for an underdog, hope he enjoys the time off."
     }
   ],
   "box_scores": {
@@ -121,5 +123,6 @@
       "time_et": "7:15 PM ET"
     }
   ],
-  "generated_at": "2026-05-08T09:29:05.781489+00:00"
+  "_stale": null,
+  "_fallback": null
 }
