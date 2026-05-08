@@ -30,6 +30,9 @@
       --on-surface-dim:     #666666;
 
       --danger:          #BD3039;
+      --warn:            #E0B341;   /* eval retry / low severity */
+      --warn-med:        #E07B2A;   /* eval medium severity */
+      --accent-info:     #4A90D9;   /* info/decision chips — neutral blue */
 
       --shadow-ambient:  0 40px 60px rgba(229, 226, 225, 0.04);
 
@@ -413,6 +416,10 @@
   <div class="header">
     <h1>The Garden Slate</h1>
     <p>Design System for Boston Dan's Hub. A cohesive visual language built on bold color, clean typography, and consistent spacing.</p>
+    <p style="margin-top: 16px; font-size: 0.75rem;">
+      <a href="index.html" style="color: #00D084; text-decoration: none; margin-right: 16px;">← Morning Brew</a>
+      <a href="under-the-hood.html" style="color: #00D084; text-decoration: none;">Under the Hood →</a>
+    </p>
   </div>
 
   <!-- Main Content -->
@@ -454,6 +461,33 @@
           <div class="color-info">
             <span class="color-name">Danger</span>
             <span class="color-hex">#BD3039</span>
+          </div>
+        </div>
+
+        <!-- Warn -->
+        <div class="color-swatch">
+          <div class="color-sample" style="background-color: #E0B341; color: #1E1E1E;">Warn</div>
+          <div class="color-info">
+            <span class="color-name">Warn (retry/low)</span>
+            <span class="color-hex">#E0B341</span>
+          </div>
+        </div>
+
+        <!-- Warn Med -->
+        <div class="color-swatch">
+          <div class="color-sample" style="background-color: #E07B2A; color: #1E1E1E;">Med</div>
+          <div class="color-info">
+            <span class="color-name">Warn Med (medium)</span>
+            <span class="color-hex">#E07B2A</span>
+          </div>
+        </div>
+
+        <!-- Accent Info -->
+        <div class="color-swatch">
+          <div class="color-sample" style="background-color: #4A90D9;">Info</div>
+          <div class="color-info">
+            <span class="color-name">Accent Info</span>
+            <span class="color-hex">#4A90D9</span>
           </div>
         </div>
 
