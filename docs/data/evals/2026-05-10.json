@@ -1,0 +1,33 @@
+{
+  "date": "2026-05-10",
+  "generated_at": "2026-05-10T09:42:18.969270+00:00",
+  "outcome": "fallback",
+  "winning_attempt": null,
+  "total_attempts": 2,
+  "generation_seconds": 462.5,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "Fabricated statistic: The stat 'seven scoreless innings' for Connelly Early is not present in the required SOURCE_DATA sections (rolling_7day or season_memory)."
+      ],
+      "duration_seconds": 276.7
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "Voice repetition: The phrase \"won't stop until... on the parquet\" in the Jaylen Brown trend take is a signature phrasing match from the previous day's output.",
+        "Fabricated event: The box score for the Bruins lists the season type as \"offseason\", which contradicts the source data showing the team is currently \"in_playoffs\" and news headlines stating Round 2 is underway."
+      ],
+      "duration_seconds": 47.0
+    }
+  ]
+}
