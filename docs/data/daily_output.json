@@ -130,6 +130,6 @@
     "Voice repetition: Repeated use of the signature phrase 'oldest yard in baseball' in consecutive outputs."
   ],
   "_stale": true,
-  "_stale_reason": "safety judge FAILed after 2 attempts: Voice repetition: The phrase \"won't stop until... on the parquet\" in the Jaylen Brown trend take is a signature phrasing match from the previous day's output.; Fabricated event: The box score for the ",
-  "_stale_age_hours": 24.3
+  "_stale_reason": "safety judge FAILed after 2 attempts: Voice repetition: The 'dans_take' for the Jaylen Brown news item ('The talk won't stop until we see a different result on the parquet next season.') is an exact duplicate of the phrasing used in the w",
+  "_stale_age_hours": 25.3
 }

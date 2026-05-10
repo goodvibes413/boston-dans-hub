@@ -1,10 +1,10 @@
 {
   "date": "2026-05-10",
-  "generated_at": "2026-05-10T09:42:18.969270+00:00",
+  "generated_at": "2026-05-10T10:44:45.616521+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
   "total_attempts": 2,
-  "generation_seconds": 462.5,
+  "generation_seconds": 247.0,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -15,19 +15,18 @@
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "Fabricated statistic: The stat 'seven scoreless innings' for Connelly Early is not present in the required SOURCE_DATA sections (rolling_7day or season_memory)."
+        "Fabricated statistic: The stat 'eight strikeouts over seven scoreless innings' for Connelly Early is not present in the required SOURCE_DATA sections (rolling_7day or season_memory)."
       ],
-      "duration_seconds": 276.7
+      "duration_seconds": 31.5
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "low",
       "flags": [
-        "Voice repetition: The phrase \"won't stop until... on the parquet\" in the Jaylen Brown trend take is a signature phrasing match from the previous day's output.",
-        "Fabricated event: The box score for the Bruins lists the season type as \"offseason\", which contradicts the source data showing the team is currently \"in_playoffs\" and news headlines stating Round 2 is underway."
+        "Voice repetition: The 'dans_take' for the Jaylen Brown news item ('The talk won't stop until we see a different result on the parquet next season.') is an exact duplicate of the phrasing used in the winning output from 2026-05-09."
       ],
-      "duration_seconds": 47.0
+      "duration_seconds": 42.6
     }
   ]
 }
