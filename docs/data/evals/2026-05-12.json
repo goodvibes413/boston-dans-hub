@@ -1,10 +1,10 @@
 {
   "date": "2026-05-12",
-  "generated_at": "2026-05-12T10:36:50.386695+00:00",
+  "generated_at": "2026-05-12T11:33:20.846382+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
   "total_attempts": 2,
-  "generation_seconds": 280.4,
+  "generation_seconds": 203.5,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -15,18 +15,21 @@
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "Fabricated statistics: The stats 'three-hit performance' for Mickey Gasper and 'seven hits in five innings' for Payton Tolle are not present in the required SOURCE_DATA sections (rolling_7day or season_memory)."
+        "Fabricated statistics: Mickey Gasper's 'three hits' and the top of the order going 'hitless' are not in SOURCE_DATA.",
+        "Voice repetition: 'Eighteen banners' and 'untapped potential' are repeated from recent output."
       ],
-      "duration_seconds": 62.5
+      "duration_seconds": 16.7
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "low",
+      "severity": "high",
       "flags": [
-        "Rule 9: news_digest dans_take for Payton Tolle contains a character judgment ('gut it out') and a reference to family matters ('for his family') with no league conduct dimension."
+        "Fabricated statistics: The stats 'seven hits and three runs over five innings' for Payton Tolle are not present in the provided SOURCE_DATA (rolling_7day or season_memory).",
+        "Rule 9: news_digest dans_take for Payton Tolle references pure personal news (family anniversary) with no league conduct dimension.",
+        "Rule 10: Voice repetition with previous day's output regarding the Red Sox record ('sitting at seventeen and twenty-three') and Behren Morton's activity at rookie minicamp."
       ],
-      "duration_seconds": 52.7
+      "duration_seconds": 32.2
     }
   ]
 }

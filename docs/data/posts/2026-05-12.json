@@ -123,6 +123,6 @@
       "time_et": "7:40 PM ET"
     }
   ],
-  "_stale": null,
+  "_stale": true,
   "_fallback": null
 }

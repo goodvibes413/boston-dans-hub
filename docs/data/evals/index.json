@@ -71,13 +71,18 @@
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 3,
+        "count": 5,
         "title": "Voice repetition"
       },
       {
         "rule": 9,
         "count": 1,
         "title": "News digest personal attack"
+      },
+      {
+        "rule": 1,
+        "count": 1,
+        "title": "Profanity"
       }
     ]
   }

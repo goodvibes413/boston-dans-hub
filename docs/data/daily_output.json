@@ -123,6 +123,6 @@
   ],
   "generated_at": "2026-05-11T11:34:27.681892+00:00",
   "_stale": true,
-  "_stale_reason": "safety judge FAILed after 2 attempts: Rule 9: news_digest dans_take for Payton Tolle contains a character judgment ('gut it out') and a reference to family matters ('for his family') with no league conduct dimension.",
-  "_stale_age_hours": 23.1
+  "_stale_reason": "safety judge FAILed after 2 attempts: Fabricated statistics: The stats 'seven hits and three runs over five innings' for Payton Tolle are not present in the provided SOURCE_DATA (rolling_7day or season_memory).; Rule 9: news_digest dans_t",
+  "_stale_age_hours": 24.0
 }
