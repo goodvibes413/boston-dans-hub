@@ -1,57 +1,57 @@
 {
   "date": "2026-05-12",
-  "generated_at": "2026-05-11T11:34:27.681892+00:00",
-  "headline": "Red Sox bats go silent while rookie minicamp brings energy to Foxborough",
+  "generated_at": "2026-05-12T16:54:48.197976+00:00",
+  "headline": "Phillies arrive at Fenway Park while Patriots fans wait for the schedule",
   "morning_brew": [
-    "Mother's Day at Fenway was another tough watch as the bats went quiet in a four to one loss to the Rays. Payton Tolle put together five innings of work on an emotional day, but giving up seven hits and three runs was too much for an offense that could only muster one run on eight hits. Mickey Gasper was the lone bright spot with three hits, but it is absolutely brutal when your top of the order goes combined zero for eight. We are sitting at seventeen and twenty-three now, looking at the Phillies coming to town next.",
-    "Down in Foxborough, the news is a bit more optimistic as the young kids are getting their feet wet at rookie minicamp. Behren Morton is already making some noise, and people are starting to wonder if Eli Raridon has that untapped potential we heard about during the draft. Protecting the future is the name of the game, and seeing these guys get to work is a nice distraction from the mess at Fenway. It is early, but building that chemistry between the quarterback and his new targets is exactly what this offense needs.",
-    "The winter teams are in different spots right now, with the C's looking at mock drafts and the B's still grinding in the postseason. Seeing the lottery results come in is a reminder of how much work the front office has to do to get back to the mountaintop after that early exit on Causeway Street. Eighteen banners is a lot of history to live up to, and this fan base does not have much patience for retooling years. Front office better be on the phone right now to find that missing piece while we wait to see if the Bruins can make a deep run."
+    "Fenway Park is hosting the Phillies tonight and the squad needs a spark. A record of seventeen wins and twenty-three losses through the first stretch of the season is tough to stomach. Brandon Marsh is coming in hot for Philadelphia, and our pitching staff has to find a way to keep him off the bases. It is a long season, but these quiet nights from the lineup are starting to pile up. We need more than just one or two guys showing up if we are going to climb back into the race.",
+    "Thursday is the big day for the Patriots with the league finally dropping the full schedule. There are nine international games on the slate this year, and everyone is wondering if the local boys are headed overseas. Rookie tight end Eli Raridon is the name on everyone's lips down at minicamp right now. Just play the kid, what are we waitin' for? Drake Maye needs those big targets to develop fast so this offense can actually move the chains this fall.",
+    "Offseason talk is dominating the scene at the Garden while the winter teams figure out their next moves. Fans are still thinking about the Larry Bird era apex as a reminder of what dominant basketball looks like in this building. Looking at the mock drafts and free agency lists is fine, but the front office needs to be aggressive. This city does not do rebuilds gracefully. We expect to be in the mix every single year, and right now there are more questions than answers about the roster depth."
   ],
   "news_digest": [
     {
-      "headline": "Red Sox's Payton Tolle honors his mom, who died two years ago",
-      "url": "https://www.espn.com/mlb/story/_/id/48735327/red-sox-payton-tolle-honors-mom-died-two-years-ago",
-      "dans_take": "A deeply moving tribute on a difficult day, respect to the kid for gutting it out on the mound."
+      "headline": "Marsh leads Phillies against the Red Sox following 4-hit performance",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815309",
+      "dans_take": "Keep him in the yard or it is going to be a long night."
+    },
+    {
+      "headline": "2026 NFL schedule: What to know ahead of Thursday's release",
+      "url": "https://www.espn.com/nfl/story/_/page/nflschedulerelease-48704131/2026-nfl-schedule-release-bold-predictions-takeaways-revenge-games-all-32-teams",
+      "dans_take": "Hope the local boys do not have to travel overseas this year."
     },
     {
       "headline": "Does Patriots' rookie TE Eli Raridon have untapped potential?",
       "url": "https://www.espn.com/nfl/story/_/id/48713940/does-new-england-patriots-rookie-te-eli-raridon-untapped-potential",
-      "dans_take": "Drake Maye is going to need every weapon available if this rebuild is going to work."
-    },
-    {
-      "headline": "2026 NBA mock draft: Projecting all 60 picks post-lottery",
-      "url": "https://www.espn.com/nba/story/_/id/48713262/2026-nba-mock-draft-pick-projections-picks-post-lottery-dybantsa-peterson",
-      "dans_take": "Time to start looking at how we replenish the talent on this roster."
+      "dans_take": "He looks like he could be a real problem for defenses."
     }
   ],
   "trend_watch": [
     {
       "category": "Heater",
+      "player": "Brandon Marsh",
+      "trend": "Coming off a four-hit performance",
+      "dans_take": "He is a problem for any pitching staff right now."
+    },
+    {
+      "category": "Streak",
       "player": "Mickey Gasper",
-      "trend": "Went three for four with an RBI in the Mother's Day loss.",
-      "dans_take": "Three hits from your catcher is a gift, too bad the rest of the lineup couldn't do a thing with it."
+      "trend": "Recorded three hits in the last outing",
+      "dans_take": "One of the few guys actually putting wood on the ball."
     },
     {
-      "category": "Cold Snap",
-      "player": "Wilyer Abreu",
-      "trend": "Finished the day zero for four as the offense stalled out.",
-      "dans_take": "We need him to be a spark at the top of the order, but he looked lost at the plate yesterday."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Payton Tolle",
-      "trend": "Tagged for seven hits and three runs over five innings to take the loss.",
-      "dans_take": "Hard to be too critical on such an emotional day for the kid, but we needed a quality start to save the series."
+      "category": "Heater",
+      "player": "Eli Raridon",
+      "trend": "Showing untapped potential at rookie minicamp",
+      "dans_take": "Love the size and the hands on this kid."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
       "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
+      "away_team": "Unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-05-10",
+      "game_date": "2026-05-11",
       "played": false,
       "season_type": "offseason"
     },
@@ -61,18 +61,18 @@
       "away_team": "Unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-05-10",
+      "game_date": "2026-05-11",
       "played": false,
-      "season_type": "playoff"
+      "season_type": "offseason"
     },
     "redsox": {
       "sport": "MLB",
       "home_team": "Boston Red Sox",
-      "away_team": "Tampa Bay Rays",
-      "home_score": 1,
-      "away_score": 4,
-      "game_date": "2026-05-10",
-      "played": true,
+      "away_team": "Philadelphia Phillies",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-05-11",
+      "played": false,
       "season_type": "regular"
     },
     "patriots": {
@@ -81,7 +81,7 @@
       "away_team": "Unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-05-10",
+      "game_date": "2026-05-11",
       "played": false,
       "season_type": "offseason"
     }
@@ -121,8 +121,13 @@
       "date": "2026-05-18",
       "matchup": "Boston Red Sox at Kansas City Royals",
       "time_et": "7:40 PM ET"
+    },
+    {
+      "date": "2026-05-19",
+      "matchup": "Boston Red Sox at Kansas City Royals",
+      "time_et": "7:40 PM ET"
     }
   ],
-  "_stale": true,
+  "_stale": null,
   "_fallback": null
 }

@@ -1,10 +1,10 @@
 {
   "date": "2026-05-12",
-  "generated_at": "2026-05-12T11:33:20.846382+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
-  "total_attempts": 2,
-  "generation_seconds": 203.5,
+  "generated_at": "2026-05-12T16:38:31.001216+00:00",
+  "outcome": "retry",
+  "winning_attempt": 3,
+  "total_attempts": 3,
+  "generation_seconds": 977.2,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -15,21 +15,29 @@
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "Fabricated statistics: Mickey Gasper's 'three hits' and the top of the order going 'hitless' are not in SOURCE_DATA.",
-        "Voice repetition: 'Eighteen banners' and 'untapped potential' are repeated from recent output."
+        "Fabricated statistics: Mickey Gasper's 'three hits' and the top of the order going 'zero for eight' are not present in SOURCE_DATA.",
+        "Voice repetition: 'Eighteen banners' and the specific Red Sox record phrasing are repeated from recent output.",
+        "Voice repetition: The discussion of Eli Raridon's 'untapped potential' and 'physical tools' repeats phrasing from the previous day's output."
       ],
-      "duration_seconds": 16.7
+      "duration_seconds": 174.6
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "low",
       "flags": [
-        "Fabricated statistics: The stats 'seven hits and three runs over five innings' for Payton Tolle are not present in the provided SOURCE_DATA (rolling_7day or season_memory).",
-        "Rule 9: news_digest dans_take for Payton Tolle references pure personal news (family anniversary) with no league conduct dimension.",
-        "Rule 10: Voice repetition with previous day's output regarding the Red Sox record ('sitting at seventeen and twenty-three') and Behren Morton's activity at rookie minicamp."
+        "Voice repetition: 'sitting at seventeen and twenty-three' is a direct phrasing repetition from the 2026-05-11 output."
       ],
-      "duration_seconds": 32.2
+      "duration_seconds": 25.2
+    },
+    {
+      "attempt": 3,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [
+        "judge skipped \u2014 API error: ClientError"
+      ],
+      "duration_seconds": 52.1
     }
   ]
 }

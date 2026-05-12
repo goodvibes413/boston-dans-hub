@@ -1,45 +1,45 @@
 {
-  "headline": "Sonny Gray returns to shut down Detroit as the Red Sox finish the sweep",
+  "headline": "Phillies arrive at Fenway Park while Patriots fans wait for the schedule",
   "morning_brew": [
-    "Wednesday night in Detroit was exactly what we needed to see from this rotation. Sonny Gray looked like his old self in his return from injury, tossing five scoreless innings and giving up only four hits. I been sayin' it all year, this rotation needs a horse, and he finally looked like one out there on the bump. The bullpen followed up with four innings of no-hit ball to secure the four to zero victory. Finishing a sweep on the road gives this squad a little bit of life before the Rays come to the Fens tonight.",
-    "Jaylen Brown is making headlines today after saying he could see himself in green for the next ten years. It is nice to hear some loyalty after the way this season ended, but talk is cheap in the offseason. Brad Stevens is already out there doing damage control, saying Jaylen has not expressed any frustration to him directly. We expect greatness in this town, and another summer of speculation is the last thing anyone wants to deal with right now. I'll believe the commitment when I see another trophy.",
-    "Down in Foxborough, Drake Maye is already acting like a leader by backing his head coach. He told reporters he is not worried about Mike Vrabel's off-field issues being a distraction this season. It is a tough spot for a young quarterback to be in, but the kid seems to have a good head on his shoulders. We are looking at a roster with some glaring holes even after the draft, and we need everyone focused if we are going to improve on last year's record. Let the league handle the process, we just need to see progress on the field."
+    "Fenway Park is hosting the Phillies tonight and the squad needs a spark. A record of seventeen wins and twenty-three losses through the first stretch of the season is tough to stomach. Brandon Marsh is coming in hot for Philadelphia, and our pitching staff has to find a way to keep him off the bases. It is a long season, but these quiet nights from the lineup are starting to pile up. We need more than just one or two guys showing up if we are going to climb back into the race.",
+    "Thursday is the big day for the Patriots with the league finally dropping the full schedule. There are nine international games on the slate this year, and everyone is wondering if the local boys are headed overseas. Rookie tight end Eli Raridon is the name on everyone's lips down at minicamp right now. Just play the kid, what are we waitin' for? Drake Maye needs those big targets to develop fast so this offense can actually move the chains this fall.",
+    "Offseason talk is dominating the scene at the Garden while the winter teams figure out their next moves. Fans are still thinking about the Larry Bird era apex as a reminder of what dominant basketball looks like in this building. Looking at the mock drafts and free agency lists is fine, but the front office needs to be aggressive. This city does not do rebuilds gracefully. We expect to be in the mix every single year, and right now there are more questions than answers about the roster depth."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Sonny Gray",
-      "trend": "Five innings of scoreless ball in his return from the shelf",
-      "dans_take": "He is the anchor of this rotation and we need him healthy to have any prayer in the East."
+      "player": "Brandon Marsh",
+      "trend": "Coming off a four-hit performance",
+      "dans_take": "He is a problem for any pitching staff right now."
     },
     {
-      "category": "Bullpen Watch",
-      "player": "Tyler Samaniego",
-      "trend": "Two innings with three strikeouts to keep the Tigers bats quiet",
-      "dans_take": "The bullpen was lights out in the finale and this kid looked nasty."
+      "category": "Streak",
+      "player": "Mickey Gasper",
+      "trend": "Recorded three hits in the last outing",
+      "dans_take": "One of the few guys actually putting wood on the ball."
     },
     {
-      "category": "Cold Snap",
-      "player": "Wilyer Abreu",
-      "trend": "Five at bats without a hit as the offense leaned on others",
-      "dans_take": "Rough night at the dish for Wilyer, but a win is a win."
+      "category": "Heater",
+      "player": "Eli Raridon",
+      "trend": "Showing untapped potential at rookie minicamp",
+      "dans_take": "Love the size and the hands on this kid."
     }
   ],
   "news_digest": [
     {
-      "headline": "Jaylen Brown: Could play in Boston for 'next 10 years'",
-      "url": "https://www.espn.com/nba/story/_/id/48698552/jaylen-brown-play-boston-next-10-years",
-      "dans_take": "A ten year commitment sounds great but we need to see it translate to wins."
+      "headline": "Marsh leads Phillies against the Red Sox following 4-hit performance",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815309",
+      "dans_take": "Keep him in the yard or it is going to be a long night."
     },
     {
-      "headline": "Patriots QB Maye backs Vrabel, not worried about distraction",
-      "url": "https://www.espn.com/nfl/story/_/id/48697495/patriots-qb-maye-backs-vrabel-not-worried-distraction",
-      "dans_take": "Maye is saying all the right things to support his coach during a tough stretch."
+      "headline": "2026 NFL schedule: What to know ahead of Thursday's release",
+      "url": "https://www.espn.com/nfl/story/_/page/nflschedulerelease-48704131/2026-nfl-schedule-release-bold-predictions-takeaways-revenge-games-all-32-teams",
+      "dans_take": "Hope the local boys do not have to travel overseas this year."
     },
     {
-      "headline": "Rays visit the Red Sox to begin 4-game series",
-      "url": "http://www.espn.com/mlb/preview?gameId=401815247",
-      "dans_take": "Tampa is coming in hot and we need to keep this momentum rolling at home."
+      "headline": "Does Patriots' rookie TE Eli Raridon have untapped potential?",
+      "url": "https://www.espn.com/nfl/story/_/id/48713940/does-new-england-patriots-rookie-te-eli-raridon-untapped-potential",
+      "dans_take": "He looks like he could be a real problem for defenses."
     }
   ],
   "box_scores": {
@@ -47,9 +47,9 @@
       "sport": "NBA",
       "home_team": "Boston Celtics",
       "away_team": "Unknown",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-05-07",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-05-11",
       "played": false,
       "season_type": "offseason"
     },
@@ -57,54 +57,34 @@
       "sport": "NHL",
       "home_team": "Boston Bruins",
       "away_team": "Unknown",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-05-07",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-05-11",
       "played": false,
       "season_type": "offseason"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": "Detroit Tigers",
-      "away_team": "Boston Red Sox",
-      "home_score": 0,
-      "away_score": 4,
-      "game_date": "2026-05-06",
-      "played": true,
+      "home_team": "Boston Red Sox",
+      "away_team": "Philadelphia Phillies",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-05-11",
+      "played": false,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
       "home_team": "New England Patriots",
       "away_team": "Unknown",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-05-07",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-05-11",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-05-07",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-08",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-09",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-10",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
     {
       "date": "2026-05-12",
       "matchup": "Philadelphia Phillies at Boston Red Sox",
@@ -119,10 +99,36 @@
       "date": "2026-05-14",
       "matchup": "Philadelphia Phillies at Boston Red Sox",
       "time_et": "6:45 PM ET"
+    },
+    {
+      "date": "2026-05-15",
+      "matchup": "Boston Red Sox at Atlanta Braves",
+      "time_et": "7:15 PM ET"
+    },
+    {
+      "date": "2026-05-16",
+      "matchup": "Boston Red Sox at Atlanta Braves",
+      "time_et": "7:15 PM ET"
+    },
+    {
+      "date": "2026-05-17",
+      "matchup": "Boston Red Sox at Atlanta Braves",
+      "time_et": "1:35 PM ET"
+    },
+    {
+      "date": "2026-05-18",
+      "matchup": "Boston Red Sox at Kansas City Royals",
+      "time_et": "7:40 PM ET"
+    },
+    {
+      "date": "2026-05-19",
+      "matchup": "Boston Red Sox at Kansas City Royals",
+      "time_et": "7:40 PM ET"
     }
   ],
-  "generated_at": "2026-05-07T14:34:40.127197+00:00",
-  "_stale": true,
-  "_stale_reason": "regeneration failed: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.",
-  "_stale_age_hours": 4.4
+  "generated_at": "2026-05-12T16:54:48.197976+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
+    "Voice repetition: 'sitting at seventeen and twenty-three' is a direct phrasing repetition from the 2026-05-11 output."
+  ]
 }
