@@ -1,0 +1,32 @@
+{
+  "date": "2026-05-12",
+  "generated_at": "2026-05-12T10:36:50.386695+00:00",
+  "outcome": "fallback",
+  "winning_attempt": null,
+  "total_attempts": 2,
+  "generation_seconds": 280.4,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "Fabricated statistics: The stats 'three-hit performance' for Mickey Gasper and 'seven hits in five innings' for Payton Tolle are not present in the required SOURCE_DATA sections (rolling_7day or season_memory)."
+      ],
+      "duration_seconds": 62.5
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "Rule 9: news_digest dans_take for Payton Tolle contains a character judgment ('gut it out') and a reference to family matters ('for his family') with no league conduct dimension."
+      ],
+      "duration_seconds": 52.7
+    }
+  ]
+}

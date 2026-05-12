@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-05-07",
     "2026-05-08",
     "2026-05-09",
     "2026-05-10",
-    "2026-05-11"
+    "2026-05-11",
+    "2026-05-12"
   ],
   "rules": [
     {
@@ -73,6 +73,11 @@
         "rule": 10,
         "count": 3,
         "title": "Voice repetition"
+      },
+      {
+        "rule": 9,
+        "count": 1,
+        "title": "News digest personal attack"
       }
     ]
   }
