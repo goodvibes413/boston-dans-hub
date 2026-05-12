@@ -21,10 +21,11 @@ import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCRIPT_DIR   = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
-DATA_DIR     = PROJECT_ROOT / "data"
-OUTPUT_PATH  = DATA_DIR / "season_current.json"
+SCRIPT_DIR        = Path(__file__).resolve().parent
+PROJECT_ROOT      = SCRIPT_DIR.parent
+DATA_DIR          = PROJECT_ROOT / "data"
+OUTPUT_PATH       = DATA_DIR / "season_current.json"
+SCHEDULE_PATH     = DATA_DIR / "upcoming_schedule.json"
 
 # ESPN team endpoints return current-season record and standing summary.
 TEAM_ENDPOINTS = {
@@ -65,39 +66,97 @@ def fetch_json(url: str) -> dict:
 # Status classification (date-based)
 # ---------------------------------------------------------------------------
 
-def classify_status(sport: str, now: datetime) -> str:
+def team_has_upcoming_games(team_key: str, today_str: str) -> bool | None:
     """
-    Rough status classifier: regular_season | in_playoffs | offseason.
+    Check upcoming_schedule.json to see if a team has any games on or after
+    today.
 
-    Based on typical league calendars. Good enough for Dan's context — the
-    safety judge catches any factual mismatch downstream.
+    Returns:
+        True   — schedule file exists, has games, and this team has at least
+                 one game on/after today.
+        False  — schedule file exists, has games, and this team has NONE
+                 on/after today (i.e. they are done for the season).
+        None   — schedule file missing, empty, or unreadable (caller should
+                 treat as "unknown" — fail safe to the calendar heuristic).
+    """
+    try:
+        if not SCHEDULE_PATH.exists():
+            return None
+        schedule = json.loads(SCHEDULE_PATH.read_text())
+        games = schedule.get("games", [])
+        if not games:
+            # Fetch may have failed and written []  — can't conclude anything.
+            return None
+        for g in games:
+            if g.get("team") == team_key and (g.get("date") or "") >= today_str:
+                return True
+        return False  # Schedule loaded and has entries, but none for this team
+    except Exception:
+        return None  # Unreadable — fail safe
+
+
+def classify_status(sport: str, now: datetime, team_key: str = "") -> str:
+    """
+    Current-season status classifier: regular_season | in_playoffs | offseason.
+
+    Uses typical league-calendar windows as the first pass, then verifies
+    playoff status against upcoming_schedule.json so that eliminated teams
+    are not mis-labelled as "in_playoffs" for the rest of the postseason.
+
+    The schedule check is a *fail-safe*: if the file is missing or empty we
+    fall back to the calendar heuristic rather than incorrectly declaring
+    a team eliminated.
     """
     month = now.month
     if sport == "basketball":  # NBA
         if month in (4, 5, 6):
-            return "in_playoffs"
-        if month in (7, 8, 9):
+            calendar_status = "in_playoffs"
+        elif month in (7, 8, 9):
             return "offseason"
-        return "regular_season"
-    if sport == "hockey":  # NHL
+        else:
+            return "regular_season"
+    elif sport == "hockey":  # NHL
         if month in (4, 5, 6):
-            return "in_playoffs"
-        if month in (7, 8, 9):
+            calendar_status = "in_playoffs"
+        elif month in (7, 8, 9):
             return "offseason"
-        return "regular_season"
-    if sport == "baseball":  # MLB
+        else:
+            return "regular_season"
+    elif sport == "baseball":  # MLB
         if month in (10, 11):
-            return "in_playoffs"
-        if month in (12, 1, 2, 3):
+            calendar_status = "in_playoffs"
+        elif month in (12, 1, 2, 3):
             return "offseason"
-        return "regular_season"
-    if sport == "football":  # NFL
+        else:
+            return "regular_season"
+    elif sport == "football":  # NFL
         if month in (1, 2):
-            return "in_playoffs"
-        if month in (3, 4, 5, 6, 7, 8):
+            calendar_status = "in_playoffs"
+        elif month in (3, 4, 5, 6, 7, 8):
             return "offseason"
+        else:
+            return "regular_season"
+    else:
         return "regular_season"
-    return "regular_season"
+
+    # calendar_status is "in_playoffs" — verify the team actually has games.
+    # Only basketball and hockey have mid-season elimination; MLB/NFL playoffs
+    # are short enough that date-based is reliable. For NHL and NBA we do the
+    # extra check because teams can be eliminated weeks before the postseason ends.
+    if sport in ("hockey", "basketball") and team_key:
+        today_str = now.strftime("%Y-%m-%d")
+        has_games = team_has_upcoming_games(team_key, today_str)
+        if has_games is False:
+            # Schedule file is valid, team has no upcoming games → eliminated.
+            print(f"  [{team_key}] no upcoming games in {SCHEDULE_PATH.name} "
+                  f"→ treating as offseason (eliminated from playoffs)")
+            return "offseason"
+        if has_games is None:
+            print(f"  [{team_key}] schedule check unavailable — "
+                  f"falling back to calendar heuristic (in_playoffs)")
+        # has_games is True or None → keep calendar status
+
+    return calendar_status
 
 
 # ---------------------------------------------------------------------------
@@ -188,7 +247,7 @@ def fetch_team_record(sport: str, league: str, team_id: str) -> dict:
 def build_team_entry(team_key: str, sport: str, league: str, team_id: str,
                      now: datetime) -> dict:
     """Assemble a single team's current_season snapshot."""
-    status = classify_status(sport, now)
+    status = classify_status(sport, now, team_key)
     record = fetch_team_record(sport, league, team_id)
 
     # Status-conditional shape per the plan
