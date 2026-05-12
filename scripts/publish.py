@@ -32,7 +32,7 @@ ARCHIVE_DIR = Path(os.environ.get("DAN_ARCHIVE_PATH", "data/dan_archive"))
 SEASON_CURRENT_PATH = Path(os.environ.get("SEASON_CURRENT_PATH", "data/season_current.json"))
 ARCHIVE_RETENTION_DAYS = 9  # generate_rant reads 5; extra buffer covers UTC date boundary edge cases
 STALE_MAX_AGE_HOURS = 48
-MAX_JUDGE_ATTEMPTS = 2  # original + 1 regeneration with correction notes
+MAX_JUDGE_ATTEMPTS = 3  # original + 2 regenerations with correction notes
 
 # Evals dashboard constants
 DOCS_EVALS_DIR = Path("docs/data/evals")
@@ -618,7 +618,25 @@ def main():
         except Exception:
             pass
 
-    # All attempts failed — fall back.
+    # All attempts failed.
+    # If the final attempt was only LOW severity, publish with a quality warning
+    # rather than serving stale content. LOW flags are voice/quality issues (e.g.
+    # repeated phrasing) — not content-integrity violations. HIGH flags mean
+    # fabricated stats or rule violations that require fallback.
+    last_severity = (evals_doc["attempts"][-1].get("severity") if evals_doc["attempts"] else None)
+    if last_severity == "low":
+        print(f"  ⚠️  final attempt was LOW severity only — publishing with quality warning")
+        output = dict(raw_output)
+        output["generated_at"] = now_iso()
+        output["_quality_warning"] = True
+        output["_quality_flags"] = last_flags
+        output = patch_box_score_season_types(output)
+        success = write_json(PUBLISHED_OUTPUT_PATH, output)
+        if success:
+            archive_dan_output(output)
+            _finalize_evals("retry", winning_attempt=MAX_JUDGE_ATTEMPTS)
+        return 0 if success else 1
+
     reason = f"safety judge FAILed after {MAX_JUDGE_ATTEMPTS} attempts: {'; '.join(last_flags)[:200]}"
     _finalize_evals("fallback")
     return publish_fallback(reason)

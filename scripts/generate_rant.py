@@ -700,6 +700,18 @@ def main():
     correction_notes = os.environ.get("CORRECTION_NOTES", "").strip()
     if correction_notes:
         print(f"  correction mode: regenerating with judge feedback")
+        # Extract any numbers from the flags so Dan can't re-use them
+        import re as _re
+        flagged_numbers = sorted(set(_re.findall(r"\b\d+(?:\.\d+)?\b", correction_notes)))
+        numbers_warning = ""
+        if flagged_numbers:
+            numbers_warning = (
+                f"- The following specific numbers appeared in your rejected output and "
+                f"could NOT be verified in SOURCE_DATA — do NOT use them: "
+                f"{', '.join(flagged_numbers)}. If you cannot find an exact number in "
+                f"SOURCE_DATA, use qualitative language instead "
+                f"('solid outing', 'tough stretch', 'working innings').\n"
+            )
         user_message += (
             "\n\n---\n"
             "IMPORTANT — YOUR PREVIOUS RESPONSE WAS REJECTED BY THE SAFETY JUDGE.\n\n"
@@ -707,11 +719,16 @@ def main():
             f"{correction_notes}\n\n"
             "Regenerate your response and fix ALL of the above issues. Hard rules:\n"
             "- Every stat, score, game number, record, and date you cite MUST appear "
-            "in the rolling_7day OR season_memory data provided above. No exceptions.\n"
+            "verbatim in the rolling_7day OR season_memory data provided above. "
+            "No exceptions. Search the data before writing any number.\n"
+            f"{numbers_warning}"
             "- Do NOT reference games that haven't happened yet, or speculate on "
             "upcoming game numbers/series scores. Use 'tonight', 'later this week', "
             "'coming up' — never 'Game 3' or 'down 2-1' unless those exact figures "
             "are in the data.\n"
+            "- Do NOT repeat phrasing, sentences, or player references that appear in "
+            "RECENT_DAN_OUTPUT. Read those past outputs and avoid any phrases you used "
+            "in the last 5 days.\n"
             "- If you're unsure whether a stat is in the source data, leave it out "
             "and stick to qualitative commentary ('solid night', 'tough stretch').\n"
             "- Keep Dan's voice and the rest of the structure (headline, 3 paragraphs, "
