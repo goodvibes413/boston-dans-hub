@@ -1039,7 +1039,7 @@
       tags: ['Rule 1: Profanity', 'Rule 7: Fabricated stats', 'Rule 9: News personal attack', 'Rule 11: Off-roster player', '+7 rules', 'pre-pass: ~2ms'],
       tagStyles: { 0: 'safety', 1: 'safety', 2: 'safety', 3: 'safety', 4: 'safety', 5: 'safety' },
       timingMs: 1600,
-      what: 'Pre-pass (~2ms): 9 regex patterns check for repetitive signature phrases against the last 3 days of archives. LLM pass: the 11-rule rubric including stat grounding (every cited number must exist in <code>rolling_7day</code> or <code>season_current</code>). Severity: <code>low</code> → retry once; <code>high</code> → immediate fallback.',
+      what: 'Pre-pass (~2ms): 9 regex patterns check for repetitive signature phrases against the last 3 days of archives. LLM pass: the 11-rule rubric including stat grounding (every cited number must exist in <code>rolling_7day</code> or <code>season_current</code>). Severity: <code>high</code> → retry with correction notes (up to 2 more attempts); <code>low</code> → same retry loop, but if all attempts exhaust on <code>low</code> only, publish with a quality warning instead of falling back.',
       files: ['scripts/safety_judge.py', 'data/boston_roster.json (rule 11 cross-check)', 'data/dan_archive/ (repetition baseline)'],
       decision: 'Separate judge, not in-prompt self-evaluation. A model grading its own output has a documented bias toward PASS. An independent judge call with a different prompt and rubric catches violations the generator missed — and the rubric is independently tunable without touching the persona.',
       insight: 'If the judge API goes down (503 after all retries), it returns PASS and content still publishes. The pre-pass handles the most mechanical violations deterministically, so a judge API outage doesn\'t blank the site — it just removes the nuanced LLM layer on the rare days it fails.'
@@ -1048,13 +1048,13 @@
       id: 5,
       icon: 'replay',
       title: 'Retry Logic',
-      desc: 'On a low-severity FAIL, the judge\'s specific flags are injected as correction notes and Dan regenerates. Budget: 2 total attempts before the fallback hierarchy kicks in.',
-      tags: ['CORRECTION_NOTES env var', 'budget: 2 attempts', 'stale fallback (<48h)', 'SAFE_FALLBACK'],
-      tagStyles: { 0: 'safety', 1: 'safety', 2: 'safety', 3: 'safety' },
+      desc: 'Judge flags are injected as correction notes and Dan regenerates. Budget: 3 total attempts. If all attempts exhaust on low-severity only, content publishes with a quality warning rather than falling back.',
+      tags: ['CORRECTION_NOTES env var', 'budget: 3 attempts', 'LOW → quality warning', 'stale fallback (<48h)', 'SAFE_FALLBACK'],
+      tagStyles: { 0: 'safety', 1: 'safety', 2: 'safety', 3: 'safety', 4: 'safety' },
       timingMs: 900,
-      what: 'The judge\'s flags (e.g. "fabricated stat: Red Sox record 18-14 not in source data") are passed via <code>CORRECTION_NOTES</code> env var into a second generation call. The regenerated output goes through the judge again. Attempt 2 PASS → publish as "retry". Attempt 2 FAIL → fallback: republish yesterday\'s content if &lt;48h old, otherwise SAFE_FALLBACK.',
+      what: 'The judge\'s flags — including the specific numbers Dan invented — are passed via <code>CORRECTION_NOTES</code> env var. The regenerated output goes through the judge again (up to 3 total attempts). Any PASS → publish as "retry". If all 3 attempts FAIL with only <code>low</code> severity (voice quality issues like repeated phrasing), publish with <code>_quality_warning: true</code> rather than serving stale. A final <code>high</code> severity flag triggers the fallback hierarchy: republish yesterday if &lt;48h old, otherwise SAFE_FALLBACK.',
       files: ['scripts/publish.py (owns all retry and fallback logic)', 'data/dan_archive/ (stale fallback source)'],
-      decision: 'Retry budget capped at 2. More retries rarely change the outcome — if the LLM persistently triggers the same rule, a prompt fix is needed, not another attempt. The entire safety arbiter lives in Python (<code>publish.py</code>), not YAML, so it\'s unit-testable and versionable.',
+      decision: 'Retry budget capped at 3 after real-world data showed 2 was insufficient — Dan would fix the specific flagged stat but invent a different number on the same attempt. Severity-gated fallback was added after observing a voice-repetition LOW flag consuming the budget and serving stale content disproportionate to the infraction. HIGH always falls back; LOW publishes with a warning.',
       insight: 'The SAFE_FALLBACK message — "Dan\'s takin\' the mornin\' off. Check back tomorrow. In the meantime, go grab a Dunks." — was written in Dan\'s voice. Even the failure mode has personality.'
     },
     {
@@ -1110,6 +1110,12 @@
       title: '5-day continuity memory via archived output',
       decision: 'The last 5 days of Dan\'s actual output are injected verbatim into each generation prompt. No vector database, no embeddings — direct JSON injection.',
       tradeoff: 'Adds ~8KB to each prompt; more context tokens per call'
+    },
+    {
+      icon: 'tune',
+      title: 'LOW severity exhaustion → publish with warning, not stale',
+      decision: 'If all 3 retry attempts exhaust but the final verdict is only LOW severity (voice quality issues like repeated phrasing), the pipeline publishes with <code>_quality_warning: true</code>. Only a final HIGH severity (fabricated stats, rule violations) triggers the stale/fallback path.',
+      tradeoff: 'Rare minor quality issues may slip through on days when correction fails twice; better than serving yesterday\'s content for a repeated phrase'
     }
   ];
 
@@ -1132,8 +1138,8 @@
     {
       ver: 'v3',
       title: 'Retry Loop',
-      what: 'Correction notes injected on low-severity FAIL. Budget: 2 total attempts.',
-      why: 'Immediate fallback on borderline edge cases was too aggressive — most issues fix themselves on one regen.'
+      what: 'Correction notes injected on any FAIL. Budget: 3 total attempts. LOW-severity exhaustion publishes with quality warning rather than falling back.',
+      why: 'Immediate fallback on borderline edge cases was too aggressive — most issues fix themselves on one regen. Budget lifted to 3 after production data showed Dan fixing one fabricated stat but inventing a different one on the next attempt.'
     },
     {
       ver: 'v4',
@@ -1146,6 +1152,12 @@
       title: 'Evals Dashboard',
       what: 'Pipeline traces persisted to JSON. "How was this generated?" surface on every post.',
       why: 'Judge verdicts were ephemeral — visible only in CI logs. Persisting them makes the pipeline observable and portfolio-legible.'
+    },
+    {
+      ver: 'v6',
+      title: 'Smarter Retry',
+      what: 'Budget lifted 2→3. LOW-severity exhaustion publishes with quality warning. Correction notes now include explicit list of invented numbers to suppress.',
+      why: 'Production evals showed Dan fixing one fabricated stat but inventing a different one on retry — budget was too small. A voice-repetition LOW flag was consuming the budget and serving stale content disproportionate to the infraction.'
     }
   ];
 
@@ -1210,9 +1222,10 @@
 '  <span class="str">"box_scores"</span>:    { <span class="cm">/* per-team boxscore data */</span> },\n' +
 '  <span class="str">"schedule"</span>:      [ <span class="cm">/* upcoming games — date, matchup, time_et */</span> ],\n' +
 '  <span class="str">"generated_at"</span>: <span class="str">"2026-05-07T08:14:33Z"</span>,\n' +
-'  <span class="str">"_regenerated"</span>: <span class="kw">false</span>,   <span class="cm">/* true if output came from a retry attempt */</span>\n' +
-'  <span class="str">"_stale"</span>:       <span class="kw">false</span>,   <span class="cm">/* true if this is yesterday\'s content republished */</span>\n' +
-'  <span class="str">"_fallback"</span>:    <span class="kw">false</span>    <span class="cm">/* true if this is the SAFE_FALLBACK message */</span>\n' +
+'  <span class="str">"_regenerated"</span>:     <span class="kw">false</span>,   <span class="cm">/* true if output came from a retry attempt */</span>\n' +
+'  <span class="str">"_quality_warning"</span>: <span class="kw">false</span>,   <span class="cm">/* true if published despite exhausting budget on LOW flags only */</span>\n' +
+'  <span class="str">"_stale"</span>:           <span class="kw">false</span>,   <span class="cm">/* true if this is yesterday\'s content republished */</span>\n' +
+'  <span class="str">"_fallback"</span>:        <span class="kw">false</span>    <span class="cm">/* true if this is the SAFE_FALLBACK message */</span>\n' +
 '}'
     },
     {
