@@ -1,29 +1,11 @@
 {
+  "date": "2026-05-13",
+  "generated_at": "2026-05-13T10:33:44.867676+00:00",
   "headline": "Red Sox bats go quiet at Fenway Park while McAvoy earns a massive ban",
   "morning_brew": [
     "Another night at Fenway Park where the offense decides to take the evening off. A two to one loss to the Phillies was a missed opportunity, especially when Brayan Bello gives you six and a third innings of one-run ball out of the bullpen. Jovani Moran took the loss after a rough first inning, and Kyle Schwarber basically beat us by himself with his seventeenth home run. Seventeen wins and twenty-four losses is a deep hole to dig out of in this division. We need the bats to wake up before the Phillies sweep us right out of our own yard.",
     "The league handed down a six-game suspension to Charlie McAvoy for that slash on Zach Benson, and it is a massive blow. I been sayin' it all year, the blue line cannot afford to lose its best player for a week and a half. I respect the physical play, but you cannot be swinging the lumber like that in a series. That is for the league to handle, but the Bruins are in a real spot now. We have seen this movie before where a lack of discipline costs the team when it matters most.",
     "Thursday cannot get here fast enough with the NFL schedule release finally on the horizon. Everyone is talking about where the Patriots might travel, but I just want to see when the divisional games hit. Rookie tight end Eli Raridon is still the focal point of the conversation down in Foxborough. Drake Maye needs a reliable target, and the kid seems to have the tools to be that guy. It is a long wait until training camp, but these roster questions are keeping the sports talk lines busy."
-  ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Brayan Bello",
-      "trend": "Pitched six and a third innings with only one earned run in a relief appearance.",
-      "dans_take": "Bello did his job to keep us in it, too bad the lineup stayed on the bench."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Charlie McAvoy",
-      "trend": "Handed a six-game suspension for slashing an opponent.",
-      "dans_take": "Absolutely brutal timing to lose your top defenseman for over a week."
-    },
-    {
-      "category": "Streak",
-      "player": "Mickey Gasper",
-      "trend": "Collected another hit and maintains a five hundred season average.",
-      "dans_take": "The kid is still finding ways to get on base while everyone else is struggling."
-    }
   ],
   "news_digest": [
     {
@@ -45,6 +27,26 @@
       "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
       "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
       "dans_take": "Interesting to see where our guys land on the leaderboard this year."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Brayan Bello",
+      "trend": "Pitched six and a third innings with only one earned run in a relief appearance.",
+      "dans_take": "Bello did his job to keep us in it, too bad the lineup stayed on the bench."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Charlie McAvoy",
+      "trend": "Handed a six-game suspension for slashing an opponent.",
+      "dans_take": "Absolutely brutal timing to lose your top defenseman for over a week."
+    },
+    {
+      "category": "Streak",
+      "player": "Mickey Gasper",
+      "trend": "Collected another hit and maintains a five hundred season average.",
+      "dans_take": "The kid is still finding ways to get on base while everyone else is struggling."
     }
   ],
   "box_scores": {
@@ -131,5 +133,6 @@
       "time_et": "7:40 PM ET"
     }
   ],
-  "generated_at": "2026-05-13T10:33:44.867676+00:00"
+  "_stale": null,
+  "_fallback": null
 }
