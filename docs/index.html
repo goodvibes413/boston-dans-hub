@@ -737,12 +737,14 @@
       .main-col { display: contents; }
       .rail-col  { display: contents; }
 
-      /* Mobile order: rant → scores → feedback → trends → schedule → news */
-      .morning-brew      { order: 1; }
-      .widget.scoreboard { order: 2; }
-      .widget.pulse      { order: 3; }
-      .schedule-section  { order: 4; margin-top: 0; }
-      .widget#news       { order: 5; }
+      /* Mobile order: archive → date → rant → feedback → eval → scores → trends → schedule → news */
+      .hero-date         { order: 1; }
+      .morning-brew      { order: 1; } /* same as hero-date; DOM order puts date first */
+      .feedback-button   { order: 2; }
+      .widget.scoreboard { order: 3; }
+      .widget.pulse      { order: 4; }
+      .schedule-section  { order: 5; margin-top: 0; }
+      .widget#news       { order: 6; }
 
       /* Hide mobile strip — scoreboard widget handles scores */
       .mobile-strip { display: none; }
@@ -1133,7 +1135,7 @@
     /* Mobile ordering for eval surfaces */
     @media (max-width: 767px) {
       .archive-widget { order: 0; }
-      .howgen         { order: 2; }
+      .howgen         { order: 2; } /* after feedback-button (2), before scoreboard (3) — same order, DOM puts howgen after feedback */
       /* rule-grid wraps at small widths */
       .rule-grid { grid-template-columns: repeat(6, 1fr); }
     }
@@ -1515,12 +1517,12 @@
 
       document.getElementById('app').innerHTML = `<div class="page">
         <header class="hero"><h1 class="hero-headline">${heroHtml}</h1></header>
-        <p class="hero-date">${dateStr}</p>
         <div class="fold-grid">
           <div class="main-col">
+            <p class="hero-date">${dateStr}</p>
             ${brewHtml}
-            ${howgenHtml}
             ${feedbackBtn}
+            ${howgenHtml}
             ${scheduleHtml}
           </div>
           <aside class="rail-col" aria-label="Dashboard widgets">
