@@ -1,0 +1,270 @@
+# Release Notes — Boston Dan's Hub
+
+Running log of what shipped and why. Reverse-chronological. Updated after each session.
+`CLAUDE.md` holds architecture and conventions; this file holds decisions, rationale, and context.
+
+---
+
+## 2026-05-13 — Season Overrides + Playoff Audit
+
+**Commits:** `2f73401`, `517d992`
+
+**What shipped:**
+- New `data/season_overrides.json` — manually maintained git-tracked file that records playoff eliminations with explicit prose rebuttals
+- Both 2026 Bruins and Celtics eliminations recorded with full series context
+- `generate_rant.py` loads and injects as `SEASON_OVERRIDES` block before `SEASON_MEMORY`
+- `prompts/boston_dan_system.txt` — new section with explicit correct/wrong framing examples
+
+**Why:** Dan kept writing "McAvoy can't miss games in the thick of it" even after the Bruins were eliminated. Root cause: he was inferring playoff stakes from news story language, not from team status. The schedule-based `classify_status()` fix (see below) was too fragile — it depended on timing between pipeline steps and could fail silently. A manually-maintained file with direct prose rebuttals ("this is an off-season footnote, not a crisis") is deterministic and can't be overridden by a news story's framing. Same issue applied to the Celtics after their 3-1 collapse.
+
+**Key design decision:** Override file uses prose notes (`season_over_note`) rather than raw JSON flags. Dan reads sentences; a data field like `"status": "eliminated"` doesn't prevent narrative drift the way "Do NOT frame Bruins stories with playoff urgency" does.
+
+**Maintenance:** Edit `data/season_overrides.json` when a Boston team is eliminated. Clear the `eliminations` object at the start of next season. One file, one push.
+
+**Bruins series:** Lost 4-2 to Buffalo Sabres in Round 1 (eliminated May 1). Wild Card 1 seed. Lost all three home games at TD Garden. Jeremy Swayman was a Vezina finalist but no secondary scoring support.
+
+**Celtics series:** Lost 4-3 to Philadelphia 76ers in Round 1 (eliminated May 2). 2nd seed, 56-26. Blew a 3-1 series lead — first time in franchise history. Jayson Tatum returned from torn Achilles in March but couldn't close it in Game 7 at home.
+
+---
+
+## 2026-05-12 — Stat Fabrication Fix (RECENT_DAN_OUTPUT as fact source)
+
+**Commits:** `3de753b`
+
+**What shipped:**
+- New section in `boston_dan_system.txt`: "RECENT_DAN_OUTPUT is NOT a source of stats"
+- Enhanced Stats Discipline section with explicit reminder about past output
+- `generate_rant.py` correction notes now extract specific numbers from judge flags and tell Dan explicitly: "do NOT use these: [list]"
+
+**Why:** Attempt 1 failed because Dan cited "Mickey Gasper had three hits and the top of the order went zero for eight" — stats not present in ROLLING_7DAY. Attempt 2 had correction notes but Dan invented different stats for the same narrative. Root cause: Dan was reading RECENT_DAN_OUTPUT (his own past commentary) and treating it as a fact source. He wrote the Gasper stats yesterday, saw them in his archive today, and repeated them as verified. The fix draws a hard line: RECENT_DAN_OUTPUT is phrasing reference only, not fact reference. Every stat must be verified in ROLLING_7DAY or SEASON_MEMORY.
+
+---
+
+## 2026-05-12 — Fallback Aggression Fix + Retry Budget
+
+**Commits:** `a33657c`, `docs sync a9d0d28`
+
+**What shipped:**
+- `publish.py`: `MAX_JUDGE_ATTEMPTS` raised from 2 → 3
+- New LOW-severity publish path: if all attempts exhaust with only LOW severity, publish with `_quality_warning: true` flag instead of triggering fallback
+- Only HIGH severity triggers stale fallback
+- Correction notes now extract flagged numbers and explicitly block re-use
+- `under-the-hood.html` synced to reflect these changes
+
+**Why:** May 10 pipeline fell back to stale content over a single voice-repetition flag (`sitting at seventeen and twenty-three` — a phrasing repeat from the prior day). That's a LOW severity violation and shouldn't serve day-old content to readers. HIGH severity (fabricated stats, profanity, character attacks) is a content integrity issue worth falling back for. LOW severity is a voice quality issue — better to publish with a warning than not publish.
+
+---
+
+## 2026-05-11 — Playoff Status Fix (classify_status)
+
+**Commits:** `d1dae84`
+
+**What shipped:**
+- `fetch_season_memory.py`: added `team_has_upcoming_games()` helper that cross-references `upcoming_schedule.json`
+- `classify_status()` now verifies NHL/NBA teams actually have upcoming games before labeling them "in_playoffs"
+- Fail-safe: if schedule file is missing or empty, falls back to calendar heuristic rather than incorrectly declaring elimination
+
+**Why:** Calendar-based classifier treated all of April-June as "in_playoffs" for NHL/NBA regardless of whether a team was eliminated. Bruins were out but their status still said "in_playoffs" in SEASON_MEMORY, which Dan picked up and ran with. The fix uses the already-fetched `upcoming_schedule.json` as a secondary signal. Note: this fix was necessary but not sufficient — news-story-level playoff framing required the `season_overrides.json` approach (see above).
+
+---
+
+## 2026-05-08 — Evals Dashboard + Under the Hood Page
+
+**Commits:** `de41dd6`, `ab2e707`, `6de6297`
+
+**What shipped:**
+- Evals dashboard backend: `publish.py` now writes `data/dan_archive/YYYY-MM-DD.evals.json` capturing full pipeline trace (outcome, per-attempt judge verdicts, timing, pre-pass results)
+- `docs/data/evals/` published to GitHub Pages: `index.json` (5-day summary + rule rubric) and per-day evals files
+- Evals dashboard frontend: "How was this generated?" surface inline with each post — outcome chip (fresh/retry/fallback), judge flags per attempt, 5-day stats strip
+- `docs/under-the-hood.html`: full portfolio architecture page with 7 pipeline stages, "Simulate a Run" animation, Architecture Decision Records, Evolution Timeline, Data Schema Visualizer, and live stats strip
+
+**Why:** No visibility into why a given day's output passed or failed made debugging slow. The evals dashboard makes pipeline health observable without digging into GitHub Actions logs. The Under the Hood page is the "click here and I'll narrate the whole system" artifact for interviews — walk through each stage, the design decisions, and how the system evolved.
+
+---
+
+## 2026-05-07 — Roster Discipline
+
+**Commits:** `2c7a8db`, `619d298`, `dcebe65`, `52c6f2e`, `aef5f1d`, `15659a6`
+
+**What shipped:**
+- `fetch_roster.py`: daily active roster fetch for all 4 Boston teams (ESPN + NHL API)
+- `CURRENT_ROSTER` injected into prompt; Roster Discipline persona rule added
+- Judge rule 11: flags MEDIUM severity when Dan implies an unlisted player is on the team
+- Rosters loaded into safety judge `source_data` for cross-checking
+- Eval fixture for off-roster player scenario
+
+**Why:** Dan was writing about released or unsigned players as if they were on the current roster — treating any name in LATEST_NEWS as a team member. The fix injects an authoritative roster and adds an explicit rule: unlisted = not on the team, do not link their news to team strategy or prospects.
+
+---
+
+## 2026-05-04 — Continuity Memory, Caller Flavor, Repetition Pre-pass, Draft Freshness
+
+**Commits:** `896e9b7`, `068b5fc`, `0b67007`, `c93a8ce`, `d54f5a3`, `caller/grudge 068b5fc`
+
+**What shipped:**
+- Memory window extended 3 → 5 days; historical facts rotation rule added (don't cite same championship/moment in consecutive days)
+- `callers_and_voices.json` and `grudge_book.json` — voice flavor pool and rivalry context injected daily
+- Deterministic repetition pre-pass: regex-based check for exact phrase repetition before LLM judge runs (~2ms, free)
+- Judge rule 10: LLM-level repetition check for subtler voice repetition
+- Event freshness pre-pass: draft coverage decays from active → fresh → aging → stale; `DRAFT_PICKS` omitted once stale
+- Regression fixtures for freshness and repetition scenarios
+
+**Why:** Dan was reusing "18 banners" and other historical factoids almost every day on a 3-day memory. Extending to 5 days caught weekly crutches. Caller archetypes and grudge book gave Dan raw material for texture instead of generic takes. The pre-pass catches cheap repetition without burning LLM tokens on the judge. Draft decay prevented week-long NFL draft recaps.
+
+---
+
+## 2026-04-27 — Continuity Memory v1
+
+**Commits:** `3a848e4`
+
+**What shipped:**
+- Dan reads last 3 days of his own `morning_brew` + `news_digest` before writing
+- `data/dan_archive/` stores slim daily snapshots; `publish.py` writes them after each fresh publish
+- Continuity rules in persona: don't re-introduce stories, evolve takes, vary signature phrases
+
+**Why:** Dan was re-introducing the Cora firing as if it were new news three days running. No memory of what he'd already said meant the same narrative arc, same closing phrases, same historical factoids every day.
+
+---
+
+## 2026-04-26 — Safety Judge Retry + Pipeline Reliability
+
+**Commits:** `5fadd49`, `1adc9b5`, `b59f8b6`, `e264078`, `e410840`
+
+**What shipped:**
+- Retry on safety judge FAIL: correction notes injected via `CORRECTION_NOTES` env var, Dan regenerates
+- Sentinel fallback pattern: `generate_rant.py` writes `_generation_failed` JSON instead of exiting 1, so `publish.py` is always the fallback decision point
+- `generated_at` timestamps on all published output
+- Concurrency guard (`concurrency: morning-brew`) prevents duplicate runs
+- Safety-net cron at 04:30 ET catches failed 03:00 ET runs
+- Gemini retry budgets capped so retries can't burn the full job timeout
+- Draft coverage deepened; firing tone fixed; same-day causation rule added
+
+**Why:** Single-attempt pipeline meant one bad output = stale fallback. Multiple failure modes (Gemini 503, bad JSON, judge FAIL) were all routing to the same undifferentiated failure. Separating sentinel from real failure gave `publish.py` the information it needed to make the right call. Causation rule added after Dan wrote "the team responded to the firing with a 7-2 win" when the game happened before the firing.
+
+---
+
+## 2026-04-24 — Season Memory Module
+
+**Commits:** `3db33fc`
+
+**What shipped:**
+- `fetch_season_memory.py`: daily ESPN fetch for current-season record, seed, status for all 4 teams
+- `season_static.json`: hand-curated last 5 seasons per team (checked into git)
+- `SEASON_MEMORY` injected into prompt; judge loads it as source_data for stat verification
+- Status-conditional output shape: `regular_season` / `in_playoffs` / `offseason`
+
+**Why:** Dan was treating every game as context-free. No awareness of standings, seeds, or whether a team was in a rebuild or a championship window. Season memory gave him historical grounding — "3rd straight first-round exit" instead of just reacting to last night's score.
+
+---
+
+## 2026-04-24 — Historical Facts Module
+
+**Commits:** `170cae2`
+
+**What shipped:**
+- `historical_facts.json`: curated championships, dynasties, iconic moments, curses, rivalries for all 4 teams (checked into git)
+- `HISTORICAL_FACTS` injected into prompt; judge validates historical claims against it
+- Persona rule: history is color (20% of a paragraph), not primary content
+
+**Why:** Dan was either inventing history (wrong championship years, nonexistent moments) or ignoring it entirely. Curated facts give him accurate color without hallucination. Judge cross-references so invented historical claims fail.
+
+---
+
+## 2026-04-24 — Draft Coverage
+
+**Commits:** `357ec9d`, `5409c17` (fetch_draft), `eade7e2` (prompt rules)
+
+**What shipped:**
+- `fetch_draft.py`: daily ESPN draft fetch for all 4 Boston teams
+- `DRAFT_PICKS` injected into prompt with round/pick/player/position/college
+- Persona rules: mandatory per-pick coverage when active, grade each pick in Dan's voice
+- `last_active_date` differential to detect when draft is actually live (not just when ESPN serves old picks)
+
+**Why:** The NFL draft is the biggest off-season event and Dan was either skipping it or making up player details. Explicit pick data with names, positions, and colleges gives him accurate raw material. The `last_active_date` trick was needed because ESPN serves completed picks year-round — pick count growing is the only reliable "draft is live" signal.
+
+---
+
+## 2026-04-23 — Safety Judge + Retry Infrastructure
+
+**Commits:** `d6c5d28`, `1e53eb8`, `c649a35` (model switching)
+
+**What shipped:**
+- Safety judge timeout raised 60s → 300s; timeout treated as PASS (don't block publication over API latency)
+- Extended retry backoff for Gemini 503s
+- Model switched to `gemini-flash-latest` alias for higher daily quota vs. pinned versions
+- `force` workflow input to bypass freshness gate for manual reruns
+
+**Why:** Judge was timing out at 60s during Gemini load spikes and blocking publication. Treating timeout as PASS was the right call — the deterministic pre-pass still catches obvious violations, and losing occasional nuanced violations is better than serving no content. `gemini-flash-latest` alias gets higher free-tier quota than pinned model versions.
+
+---
+
+## 2026-04-22 — Frontend Polish Sprint
+
+**Commits:** `4783f9a`, `42690bf`, `be33e8b`, `511afdb`, `d9a3c07`, `8dc43bc`, `7774ecc`, `049cc48`, `a4f1c29`
+
+**What shipped:**
+- Schedule built from fetcher data (not Gemini) — Celtics playoff games were being dropped
+- Celtics playoff schedule fetch (seasontype=3 alongside regular season)
+- Fenway/Yawkey Way persona fix — Dan was conflating the stadium name with the street
+- Scoreboard: Boston always on left, headline truncation fixed, proportional mobile scaling
+- Widget cards full-width on mobile and tablet
+- Material Symbols icons replace emoji
+
+**Why:** Gemini was selectively omitting the Celtics from the schedule during playoffs — it didn't understand that playoff games were still "upcoming." Building schedule from the authoritative fetcher data fixed this permanently. UI fixes came from mobile testing revealing multiple layout breaks.
+
+---
+
+## 2026-04-21 — v4 Frontend + Garden Slate Design System
+
+**Commits:** `d55d73b`, `5e594af`, `3d71943`
+
+**What shipped:**
+- "The Broadsheet Columnist" layout: Morning Brew as the lead story, scores and schedule as supporting rail
+- Garden Slate design system: CSS tokens (`--primary`, `--surface-*`, `--font-*`), Anton headlines, Inter body, JetBrains Mono for code
+- README rewrite with pipeline diagram
+
+**Why:** Earlier frontend iterations were too generic. The broadsheet layout prioritizes the thing that makes the site unique — Dan's voice — rather than treating it as a dashboard with equal-weight widgets.
+
+---
+
+## 2026-04-21 — Week 3 Infrastructure
+
+**Commits:** `d08a58d`, `1cdc7ae`, `fda3a42`, `7279354`
+
+**What shipped:**
+- `publish.py`: safety gate, fallback logic, writes to `docs/data/daily_output.json`
+- `healthcheck.py`: final validation before workflow succeeds
+- `morning_brew.yml`: GitHub Actions cron pipeline
+- Frontend moved to `/docs` for GitHub Pages
+
+**Why:** Without `publish.py` as the single decision point, failures at any pipeline step would produce no output. The safety gate ensures either Dan's content or a clean fallback always reaches the site.
+
+---
+
+## 2026-04-19 — Week 2: Persona, Generation, Safety Judge
+
+**Commits:** `9e989bc`
+
+**What shipped:**
+- `boston_dan_system.txt`: full persona definition — voice rules, stats discipline, off-field conduct framework, safety rules
+- `generate_rant.py`: assembles context, calls Gemini Flash, writes structured JSON
+- `safety_judge.py`: 11-rule rubric, PASS/FAIL + severity verdict
+- Eval harness (`eval_voice.py`) for manual testing with fixtures
+
+**Why:** The core product. Everything else is infrastructure around making Dan's voice consistent, factually grounded, and safe enough to publish without human review.
+
+---
+
+## 2026-04-17 — Week 1: Data Foundation
+
+**Commits:** `bfa4aa2` through `6c6dc2d`
+
+**What shipped:**
+- `fetch_nhl.py`, `fetch_mlb.py`, `fetch_nfl.py`, `fetch_nba.py` — boxscores, schedules, news from ESPN + NHL + MLB APIs
+- `update_store.py` — rolling 7-day aggregator
+- `fetch_schedule.py` — unified upcoming schedule
+- `fetch_news.py` — unified news feed
+- Playoff mode detection across all fetchers
+- `CLAUDE.md` with full project context and build plan
+
+**Why:** Dan needs a 7-day memory window, not just last night's score. Scores alone miss the stories — trades, injuries, suspensions come through news, not boxscores. All fetchers write empty-but-valid JSON on failure so downstream scripts don't crash regardless of API availability.
