@@ -672,6 +672,45 @@
       scrollbar-width: thin;
       scrollbar-color: var(--surface-high) transparent;
     }
+    /* Edge-fade overlays hint at scrollable content */
+    .timeline-wrap::before,
+    .timeline-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 4px; /* match padding-bottom */
+      width: 72px;
+      pointer-events: none;
+      z-index: 2;
+      transition: opacity 0.25s ease;
+    }
+    .timeline-wrap::before {
+      left: 0;
+      background: linear-gradient(to right, var(--surface-base), transparent);
+      opacity: 0; /* hidden until user scrolls right */
+    }
+    .timeline-wrap::after {
+      right: 0;
+      background: linear-gradient(to left, var(--surface-base), transparent);
+      opacity: 1;
+    }
+    .timeline-wrap.tl-scrolled::before  { opacity: 1; }
+    .timeline-wrap.tl-at-end::after     { opacity: 0; }
+    .timeline-scroll-hint {
+      font-size: 0.6875rem;
+      color: var(--on-surface-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+      user-select: none;
+      pointer-events: none;
+    }
+    .timeline-scroll-hint.tl-hint-hidden { opacity: 0; }
     .timeline-track {
       display: flex;
       min-width: max-content;
@@ -948,11 +987,15 @@
   <section class="uth-section" aria-labelledby="timelineTitle">
     <h2 class="uth-section-title" id="timelineTitle">How It Evolved</h2>
     <p class="uth-section-desc">Boston Dan didn't ship with safety gates and continuity memory. Each version fixed a real failure mode discovered in production.</p>
-    <div class="timeline-wrap">
+    <div class="timeline-wrap" id="timelineWrap">
       <div class="timeline-track" id="timelineTrack" role="list">
         <!-- Built by JS -->
       </div>
     </div>
+    <p class="timeline-scroll-hint" id="timelineScrollHint" aria-hidden="true">
+      <span class="ms" style="font-size:14px;width:14px;height:14px;">arrow_forward</span>
+      scroll to explore
+    </p>
   </section>
 
   <!-- ── DATA SCHEMAS ── -->
@@ -1168,8 +1211,8 @@
     {
       ver: 'v7',
       title: 'Playoff Context Control',
-      what: 'Manual <code>season_overrides.json</code> injects explicit elimination notices. <code>RECENT_DAN_OUTPUT</code> clarified as phrasing reference only, never a fact source.',
-      why: 'Dan was writing "McAvoy can\'t miss games in the thick of it" after the Bruins were eliminated — inferring playoff stakes from news story language. Automated schedule-based inference was fragile. Manual prose overrides are deterministic and directly counter the bad framing.'
+      what: 'Manual <code>season_overrides.json</code> injects explicit elimination notices. <code>RECENT_DAN_OUTPUT</code> clarified as phrasing reference, never a fact source.',
+      why: 'Dan inferred playoff stakes from news language even after teams were eliminated. Schedule-based inference was fragile — manual prose overrides directly counter the bad framing.'
     }
   ];
 
@@ -1366,11 +1409,40 @@
         '    <div class="num">' + escHtml(m.ver) + '</div>',
         '  </div>',
         '  <div class="milestone-title">' + escHtml(m.title) + '</div>',
-        '  <div class="milestone-what">' + escHtml(m.what) + '</div>',
-        '  <div class="milestone-why">&ldquo;' + escHtml(m.why) + '&rdquo;</div>',
+        '  <div class="milestone-what">' + m.what + '</div>',
+        '  <div class="milestone-why">&ldquo;' + m.why + '&rdquo;</div>',
         '</div>'
       ].join('\n');
     }).join('');
+  }
+
+  /* ========================================================
+     TIMELINE SCROLL HINT
+  ======================================================== */
+  function initTimelineScroll() {
+    var wrap = document.getElementById('timelineWrap');
+    var hint = document.getElementById('timelineScrollHint');
+    if (!wrap) return;
+
+    function updateFades() {
+      var atStart = wrap.scrollLeft <= 4;
+      var atEnd   = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 4;
+      wrap.classList.toggle('tl-scrolled', !atStart);
+      wrap.classList.toggle('tl-at-end',   atEnd);
+    }
+
+    wrap.addEventListener('scroll', function () {
+      updateFades();
+      if (hint) hint.classList.add('tl-hint-hidden'); // fade out after first interaction
+    }, { passive: true });
+
+    updateFades(); // set initial state (may already be tl-at-end on wide viewports)
+
+    // Also hide hint if timeline fits without scrolling
+    if (wrap.scrollWidth <= wrap.clientWidth + 4) {
+      if (hint) hint.classList.add('tl-hint-hidden');
+      wrap.classList.add('tl-at-end');
+    }
   }
 
   /* ========================================================
@@ -1523,6 +1595,7 @@
   buildPipeline();
   buildAdrs();
   buildTimeline();
+  initTimelineScroll();
   buildSchemas();
 
 }());
