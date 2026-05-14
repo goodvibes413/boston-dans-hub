@@ -1,5 +1,8 @@
 # CLAUDE.md — Boston Dan's Hub
 
+> **Project history, design decisions, and session rationale:** [`RELEASE_NOTES.md`](./RELEASE_NOTES.md)
+> This file covers architecture and conventions. Read RELEASE_NOTES.md to understand *why* things are built the way they are.
+
 ## What This Project Is
 
 Boston Dan's Hub is a public-facing static website featuring an AI-generated Boston sports fan persona ("Boston Dan") that produces daily automated commentary, box scores, trend analysis, and schedules for the Celtics, Bruins, Red Sox, and Patriots. All content is pre-generated and cached — the site is fully static.
