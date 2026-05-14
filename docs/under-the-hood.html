@@ -1011,10 +1011,10 @@
       id: 2,
       icon: 'layers',
       title: 'Context Assembly',
-      desc: 'Raw sports data is merged with 8 memory sources into a single grounded prompt — 7-day game history, 5-day voice memory, persona archetypes, rivalries, and curated history.',
-      tags: ['rolling_7day.json', 'dan_archive/ (5-day)', 'callers_and_voices.json', 'grudge_book.json', 'season_static.json', 'historical_facts.json', 'boston_roster.json', 'boston_drafts.json'],
+      desc: 'Raw sports data is merged with 9 memory sources into a single grounded prompt — 7-day game history, 5-day voice memory, persona archetypes, rivalries, curated history, and manual playoff overrides.',
+      tags: ['rolling_7day.json', 'dan_archive/ (5-day)', 'callers_and_voices.json', 'grudge_book.json', 'season_static.json', 'historical_facts.json', 'boston_roster.json', 'boston_drafts.json', 'season_overrides.json'],
       timingMs: 600,
-      what: '<code>update_store.py</code> appends today\'s data to the 7-day window (oldest entry dropped). <code>generate_rant.py</code> builds a structured prompt injecting all 8 sources. The 5-day continuity memory (<code>dan_archive/</code>) tells Dan what he already said — preventing repetition without any fine-tuning or vector search.',
+      what: '<code>update_store.py</code> appends today\'s data to the 7-day window (oldest entry dropped). <code>generate_rant.py</code> builds a structured prompt injecting all 9 sources. The 5-day continuity memory (<code>dan_archive/</code>) tells Dan what he already said — preventing repetition without any fine-tuning or vector search. <code>season_overrides.json</code> injects explicit prose elimination notices that override any playoff framing Dan might infer from news stories.',
       files: ['scripts/update_store.py', 'scripts/generate_rant.py', 'data/dan_archive/ (last 5 days)'],
       decision: 'A monolithic prompt over 8 sources was chosen over multi-agent retrieval. At the $0 budget with one Gemini call per day, filling the context window is free. Injecting all sources as structured JSON gives Dan grounding without live search — which would require separate API calls and break the cost model.',
       insight: 'Draft data stays "always present" in ESPN\'s API year-round, but it\'s only relevant during active windows. A <code>last_active_date</code> field — updated only when pick counts actually increase — drives three injection modes: full mandatory coverage → slim recap note → omit entirely. This prevents Dan from recapping the NFL Draft every day in November.'
@@ -1116,6 +1116,12 @@
       title: 'LOW severity exhaustion → publish with warning, not stale',
       decision: 'If all 3 retry attempts exhaust but the final verdict is only LOW severity (voice quality issues like repeated phrasing), the pipeline publishes with <code>_quality_warning: true</code>. Only a final HIGH severity (fabricated stats, rule violations) triggers the stale/fallback path.',
       tradeoff: 'Rare minor quality issues may slip through on days when correction fails twice; better than serving yesterday\'s content for a repeated phrase'
+    },
+    {
+      icon: 'edit_note',
+      title: 'Manual override file over automated inference for playoff elimination',
+      decision: 'A hand-edited <code>season_overrides.json</code> records team eliminations with explicit prose rebuttals ("this is an off-season footnote, not a crisis"). The alternative — inferring elimination from schedule availability — was fragile and depended on pipeline step timing.',
+      tradeoff: 'Requires one manual edit per elimination (~6–8 per playoff run); in exchange, the override is deterministic and cannot be overridden by news story framing'
     }
   ];
 
@@ -1158,6 +1164,12 @@
       title: 'Smarter Retry',
       what: 'Budget lifted 2→3. LOW-severity exhaustion publishes with quality warning. Correction notes now include explicit list of invented numbers to suppress.',
       why: 'Production evals showed Dan fixing one fabricated stat but inventing a different one on retry — budget was too small. A voice-repetition LOW flag was consuming the budget and serving stale content disproportionate to the infraction.'
+    },
+    {
+      ver: 'v7',
+      title: 'Playoff Context Control',
+      what: 'Manual <code>season_overrides.json</code> injects explicit elimination notices. <code>RECENT_DAN_OUTPUT</code> clarified as phrasing reference only, never a fact source.',
+      why: 'Dan was writing "McAvoy can\'t miss games in the thick of it" after the Bruins were eliminated — inferring playoff stakes from news story language. Automated schedule-based inference was fragile. Manual prose overrides are deterministic and directly counter the bad framing.'
     }
   ];
 
