@@ -12,3 +12,4 @@ data/*
 !data/dan_archive/
 !data/dan_archive/**
 !data/boston_drafts.json
+!data/season_overrides.json

@@ -1,0 +1,14 @@
+{
+  "_comment": "Manually maintained. Update when a Boston team is eliminated from playoffs or their season ends. Injected into Dan's prompt as SEASON_OVERRIDES — takes precedence over any playoff framing Dan might infer from news stories. Checked into git via !data/season_overrides.json exception in .gitignore.",
+  "updated": "2026-05-13",
+  "eliminations": {
+    "bruins": {
+      "sport": "NHL",
+      "eliminated_from": "2026 NHL Playoffs",
+      "eliminated_date": "2026-05-02",
+      "eliminated_by": "Florida Panthers",
+      "series_result": "Lost 4-0 in Round 1",
+      "season_over_note": "The Bruins' 2025-26 season is completely over. There are no upcoming playoff games. Do NOT frame any Bruins story with playoff urgency, series stakes, or language like 'he can't miss these games', 'in the thick of it', 'with the playoffs on the line', or 'this hurts the run'. Any Bruins news — suspensions, injuries, trades, signings — carries zero playoff consequence. Example: if McAvoy is suspended, that is an off-season footnote, not a crisis. If a Bruin is injured, it is a next-year concern. Treat all Bruins coverage as off-season context only."
+    }
+  }
+}

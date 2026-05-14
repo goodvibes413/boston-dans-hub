@@ -38,6 +38,7 @@ DEFAULT_CALLERS = REPO / "data" / "callers_and_voices.json"
 DEFAULT_GRUDGE_BOOK = REPO / "data" / "grudge_book.json"
 DEFAULT_ROSTER = REPO / "data" / "boston_roster.json"
 DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
+DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
 # Caller flavor: how many archetypes to inject per day. 2-3 keeps the prompt
@@ -466,7 +467,44 @@ def select_daily_callers(callers_data: dict, today_iso: str, n: int = CALLERS_PE
     return pool[:n]
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, today_iso: str | None = None) -> str:
+def _build_overrides_block(season_overrides: dict) -> str:
+    """
+    Render season_overrides.json into plain-prose override text for the prompt.
+
+    Converts each elimination entry into direct, imperative language that
+    counteracts the playoff framing Dan might infer from news stories.
+    Returns empty string if no eliminations are active.
+    """
+    eliminations = season_overrides.get("eliminations") or {}
+    if not eliminations:
+        return ""
+
+    lines = []
+    for team_key, info in eliminations.items():
+        team_label = f"{team_key.upper()} ({info.get('sport', '')})"
+        elim_from = info.get("eliminated_from", "playoffs")
+        elim_date = info.get("eliminated_date", "recently")
+        elim_by = info.get("eliminated_by", "")
+        series = info.get("series_result", "")
+        note = info.get("season_over_note", "")
+
+        line = (
+            f"{team_label}: ELIMINATED from {elim_from} on {elim_date}."
+        )
+        if elim_by:
+            line += f" Lost to {elim_by}"
+            if series:
+                line += f" ({series})"
+            line += "."
+        lines.append(line)
+        if note:
+            lines.append(note)
+        lines.append("")  # blank line between teams
+
+    return "\n".join(lines).strip()
+
+
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None) -> str:
     if today_iso is None:
         today_iso = datetime.now(timezone.utc).date().isoformat()
 
@@ -518,6 +556,14 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
             f"{json.dumps(slim, indent=2)}\n\n"
         )
     # freshness in ("stale", None): omit DRAFT_PICKS entirely.
+    if season_overrides:
+        overrides_text = _build_overrides_block(season_overrides)
+        if overrides_text:
+            message += (
+                "SEASON_OVERRIDES (authoritative — takes precedence over any playoff "
+                "framing you might infer from news stories or LATEST_NEWS):\n"
+                f"{overrides_text}\n\n"
+            )
     message += (
         "SEASON_MEMORY:\n"
         f"{json.dumps(season_memory, indent=2)}\n\n"
@@ -653,6 +699,8 @@ def main():
     grudges = load_json(grudge_path)
     roster_path = Path(os.environ.get("ROSTER_PATH", DEFAULT_ROSTER))
     roster = load_json(roster_path)
+    season_overrides_path = Path(os.environ.get("SEASON_OVERRIDES_PATH", DEFAULT_SEASON_OVERRIDES))
+    season_overrides = load_json(season_overrides_path)
     season_memory = build_season_memory(season_static, season_current)
 
     archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
@@ -676,6 +724,7 @@ def main():
         callers=todays_callers,
         grudges=grudges,
         roster=roster,
+        season_overrides=season_overrides,
         today_iso=today_iso,
     )
 
