@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-05-11",
     "2026-05-12",
     "2026-05-13",
     "2026-05-14",
-    "2026-05-15"
+    "2026-05-15",
+    "2026-05-16"
   ],
   "rules": [
     {
@@ -64,15 +64,25 @@
     }
   ],
   "summary_5day": {
-    "fresh": 4,
-    "retry": 1,
+    "fresh": 3,
+    "retry": 2,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 3,
+        "count": 4,
         "title": "Voice repetition"
+      },
+      {
+        "rule": 8,
+        "count": 1,
+        "title": "Fabricated historical events"
+      },
+      {
+        "rule": 1,
+        "count": 1,
+        "title": "Profanity"
       }
     ]
   }

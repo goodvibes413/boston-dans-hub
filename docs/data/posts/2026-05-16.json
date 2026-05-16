@@ -1,9 +1,28 @@
 {
+  "date": "2026-05-16",
+  "generated_at": "2026-05-16T09:51:56.222144+00:00",
   "headline": "Extra innings heartbreak in Atlanta as the bats go cold once again",
   "morning_brew": [
     "Tough night down in Atlanta for the local nine. Connelly Early gave us a solid five innings of work and kept the game within reach. Mickey Gasper stayed hot with two hits and a big run batted in, but the offense just could not find that one extra spark when it mattered most. It is frustrating to watch the bullpen throw zeros for four straight innings only to lose it in the tenth. We had our chances to steal one on the road, but a loss is a loss.",
     "This team is sitting at eighteen wins and twenty-six losses, which is simply not good enough for this city. One night after a tough home loss where the lineup only managed one run, we go and drop another heartbreaker in extras. It feels like every time the pitching holds up, the lineup disappears. We need more consistency from the top of the order if we want to climb out of this hole. The road trip continues tonight and we need a win badly.",
     "Football season feels closer with the schedule finally out, but the pundits are already counting out our squad. Ryan Clark thinks the schedule is too tough for a playoff run, but that is why they play the games. Drake Maye has a lot of work to do this summer to prove the doubters wrong. Meanwhile, the rumors about major trades for the basketball team are everywhere. We will see if the front office actually makes a move or just stays the course while the rivals get better."
+  ],
+  "news_digest": [
+    {
+      "headline": "NBA offseason: What 10 Giannis trade contenders can offer Bucks",
+      "url": "https://www.espn.com/nba/story/_/id/48762977/nba-draft-2026-10-giannis-bucks-trade-contenders-warriors-heat-rockets-celtics",
+      "dans_take": "The trade rumors are flying, but let's see some actual action before we get our hopes up."
+    },
+    {
+      "headline": "Ryan Clark: Patriots will miss playoffs due to tough schedule",
+      "url": "https://www.espn.com/video/clip/_/id/48777054/patriots-miss-playoffs-due-tough-schedule",
+      "dans_take": "The schedule looks brutal on paper, but I am not ready to throw in the towel before camp even starts."
+    },
+    {
+      "headline": "NHL teams' offseason keys, including free agency, draft needs",
+      "url": "https://www.espn.com/nhl/story/_/id/48475221/nhl-2026-offseason-schedule-keys-draft-picks-trades-free-agency-cap-space",
+      "dans_take": "Management has a lot of holes to fill in the scoring depth before the puck drops next season."
+    }
   ],
   "trend_watch": [
     {
@@ -23,23 +42,6 @@
       "player": "Jovani Moran",
       "trend": "Three strikeouts in one and two-thirds innings of scoreless relief.",
       "dans_take": "He did his job and kept us in it through the middle innings. Solid outing."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "NBA offseason: What 10 Giannis trade contenders can offer Bucks",
-      "url": "https://www.espn.com/nba/story/_/id/48762977/nba-draft-2026-10-giannis-bucks-trade-contenders-warriors-heat-rockets-celtics",
-      "dans_take": "The trade rumors are flying, but let's see some actual action before we get our hopes up."
-    },
-    {
-      "headline": "Ryan Clark: Patriots will miss playoffs due to tough schedule",
-      "url": "https://www.espn.com/video/clip/_/id/48777054/patriots-miss-playoffs-due-tough-schedule",
-      "dans_take": "The schedule looks brutal on paper, but I am not ready to throw in the towel before camp even starts."
-    },
-    {
-      "headline": "NHL teams' offseason keys, including free agency, draft needs",
-      "url": "https://www.espn.com/nhl/story/_/id/48475221/nhl-2026-offseason-schedule-keys-draft-picks-trades-free-agency-cap-space",
-      "dans_take": "Management has a lot of holes to fill in the scoring depth before the puck drops next season."
     }
   ],
   "box_scores": {
@@ -121,10 +123,6 @@
       "time_et": "4:10 PM ET"
     }
   ],
-  "generated_at": "2026-05-16T09:51:56.222144+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "Fabricated event: Reference to the Buffalo Sabres advancing in the playoffs is not present in SOURCE_DATA (Rule 8)",
-    "Voice repetition: Multiple signature phrases ('Things are quiet at the Garden', 'I been watchin' this team since seventy-eight', and 'can actually close out a series') are repeated from the 2026-05-15 output (Rule 10)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
