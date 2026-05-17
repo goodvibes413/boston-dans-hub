@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-05-12",
     "2026-05-13",
     "2026-05-14",
     "2026-05-15",
-    "2026-05-16"
+    "2026-05-16",
+    "2026-05-17"
   ],
   "rules": [
     {
@@ -70,19 +70,19 @@
     "stale": 0,
     "most_flagged_rules": [
       {
+        "rule": 1,
+        "count": 3,
+        "title": "Profanity"
+      },
+      {
         "rule": 10,
-        "count": 4,
+        "count": 2,
         "title": "Voice repetition"
       },
       {
-        "rule": 8,
+        "rule": 11,
         "count": 1,
-        "title": "Fabricated historical events"
-      },
-      {
-        "rule": 1,
-        "count": 1,
-        "title": "Profanity"
+        "title": "Off-roster player"
       }
     ]
   }
