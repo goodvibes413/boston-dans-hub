@@ -1,0 +1,13 @@
+{
+  "date": "2026-05-18",
+  "generated_at": "2026-05-18T11:49:13.923398+00:00",
+  "outcome": "fallback",
+  "winning_attempt": null,
+  "total_attempts": 0,
+  "generation_seconds": 0.0,
+  "pre_pass": {
+    "repetition_check": "unknown",
+    "flagged_phrases": []
+  },
+  "attempts": []
+}
