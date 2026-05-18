@@ -1,13 +1,33 @@
 {
   "date": "2026-05-18",
-  "generated_at": "2026-05-18T11:49:13.923398+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
-  "total_attempts": 0,
-  "generation_seconds": 0.0,
+  "generated_at": "2026-05-18T12:52:42.452934+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 277.8,
   "pre_pass": {
-    "repetition_check": "unknown",
+    "repetition_check": "pass",
     "flagged_phrases": []
   },
-  "attempts": []
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "Fabricated historical event: Dan cites a 'first-round exit' for the Celtics, which is not supported by season_memory (2025 was a Semifinal exit) or current news (Rule 8)",
+        "Voice repetition: Repeated citation of 'banners' and 'trade for a superstar' theme from the previous day's output (Rule 10)"
+      ],
+      "duration_seconds": 93.9
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [
+        "judge skipped \u2014 API error: ServerError"
+      ],
+      "duration_seconds": 55.0
+    }
+  ]
 }

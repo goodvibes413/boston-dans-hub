@@ -65,24 +65,24 @@
   ],
   "summary_5day": {
     "fresh": 2,
-    "retry": 2,
-    "fallback": 1,
+    "retry": 3,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 1,
-        "count": 3,
+        "count": 4,
         "title": "Profanity"
       },
       {
         "rule": 10,
-        "count": 2,
+        "count": 3,
         "title": "Voice repetition"
       },
       {
-        "rule": 11,
-        "count": 1,
-        "title": "Off-roster player"
+        "rule": 8,
+        "count": 2,
+        "title": "Fabricated historical events"
       }
     ]
   }
