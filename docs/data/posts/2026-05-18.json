@@ -1,5 +1,4 @@
 {
-  "date": "2026-05-18",
   "generated_at": "2026-05-18T12:57:20.228459+00:00",
   "headline": "Bello gets tagged in Atlanta as the local nine drops another series",
   "morning_brew": [
@@ -24,100 +23,5 @@
       "dans_take": "The front office has a lot of work to do if they want to avoid another early exit."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Bullpen Watch",
-      "player": "Ryan Watson",
-      "trend": "Three innings with zero hits and four strikeouts",
-      "dans_take": "A bright spot in a dark game. He provided some much needed length out of the pen."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Brayan Bello",
-      "trend": "Seven earned runs and eight hits in five innings",
-      "dans_take": "Absolutely brutal outing. He could not find his rhythm and the Braves took advantage early."
-    },
-    {
-      "category": "Slump",
-      "player": "Wilyer Abreu",
-      "trend": "Zero for four in the series finale",
-      "dans_take": "The average is still solid but we need him to find gaps when the bases are occupied."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-17",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-17",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Atlanta Braves",
-      "away_team": "Boston Red Sox",
-      "home_score": 8,
-      "away_score": 1,
-      "game_date": "2026-05-17",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Opponent",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-17",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-05-18",
-      "matchup": "Boston Red Sox at Kansas City Royals",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-05-19",
-      "matchup": "Boston Red Sox at Kansas City Royals",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-05-20",
-      "matchup": "Boston Red Sox at Kansas City Royals",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-05-22",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-23",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-24",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-05-18"
 }
