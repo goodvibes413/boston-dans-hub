@@ -1,10 +1,10 @@
 {
-  "date": "2026-05-15",
-  "generated_at": "2026-05-15T10:31:30.590456+00:00",
+  "date": "2026-05-20",
+  "generated_at": "2026-05-20T10:55:57.849661+00:00",
   "outcome": "fresh",
   "winning_attempt": 1,
   "total_attempts": 1,
-  "generation_seconds": 272.5,
+  "generation_seconds": 13.4,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -14,10 +14,8 @@
       "attempt": 1,
       "verdict": "PASS",
       "severity": "low",
-      "flags": [
-        "judge skipped \u2014 API error: ReadError"
-      ],
-      "duration_seconds": 272.5
+      "flags": [],
+      "duration_seconds": 13.4
     }
   ]
 }

@@ -1,5 +1,4 @@
 {
-  "date": "2026-05-19",
   "generated_at": "2026-05-19T11:30:51.531224+00:00",
   "headline": "Sonny Gray dominates and Contreras goes deep to lead the local nine over Kansas City",
   "morning_brew": [
@@ -24,100 +23,5 @@
       "dans_take": "Gronk is going to be Gronk, hope everyone at the track has a safe and fun time."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Sonny Gray",
-      "trend": "Six innings with nine strikeouts to earn the win.",
-      "dans_take": "Exactly the kind of veteran performance we need to settle the rotation."
-    },
-    {
-      "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Hit his team-leading tenth home run of the season.",
-      "dans_take": "He is the only one consistently driving the ball right now."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Justin Slaten",
-      "trend": "Struck out two in a clean seventh inning.",
-      "dans_take": "The bullpen looks much better when the starters actually go deep."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-18",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-18",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Kansas City Royals",
-      "away_team": "Boston Red Sox",
-      "home_score": 1,
-      "away_score": 3,
-      "game_date": "2026-05-18",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-18",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-05-19",
-      "matchup": "Boston Red Sox at Kansas City Royals",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-05-20",
-      "matchup": "Boston Red Sox at Kansas City Royals",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-05-22",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-23",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-24",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-05-26",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-05-19"
 }
