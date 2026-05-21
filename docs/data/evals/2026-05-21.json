@@ -1,0 +1,30 @@
+{
+  "date": "2026-05-21",
+  "generated_at": "2026-05-21T11:31:04.958446+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 170.8,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "Fabricated historical event: Dan claims 'first-round exits' for both the Celtics and Bruins, which is not supported or verifiable by season_memory or historical_facts (Rule 8)"
+      ],
+      "duration_seconds": 11.2
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 11.6
+    }
+  ]
+}

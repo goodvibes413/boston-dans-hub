@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-05-16",
     "2026-05-17",
     "2026-05-18",
     "2026-05-19",
-    "2026-05-20"
+    "2026-05-20",
+    "2026-05-21"
   ],
   "rules": [
     {
@@ -71,12 +71,12 @@
     "most_flagged_rules": [
       {
         "rule": 1,
-        "count": 6,
+        "count": 5,
         "title": "Profanity"
       },
       {
         "rule": 10,
-        "count": 5,
+        "count": 4,
         "title": "Voice repetition"
       },
       {

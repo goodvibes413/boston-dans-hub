@@ -1,5 +1,4 @@
 {
-  "date": "2026-05-20",
   "generated_at": "2026-05-20T10:56:11.291287+00:00",
   "headline": "Duran and Contreras smash the Royals as the bats finally wake up",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "The front office has a massive summer ahead of them to get this team back to contending status."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Jarren Duran",
-      "trend": "Duran went deep, doubled, and drove in three runs in Tuesday's 7-1 victory.",
-      "dans_take": "This kid is the engine of the offense, and when he is flying around the bases, the rest of the lineup follows."
-    },
-    {
-      "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Contreras drove in three runs on two hits last night and has been a force in the middle of the order.",
-      "dans_take": "He has been worth every penny so far, and we need him to keep driving the ball if we are going to climb out of the basement."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Jovani Moran",
-      "trend": "Moran struck out three batters in a perfect ninth inning to close out the Royals.",
-      "dans_take": "Striking out the side is a fantastic way to finish a game, and that is the kind of shut-down stuff we need from the pen."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-19",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-19",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Kansas City Royals",
-      "away_team": "Boston Red Sox",
-      "home_score": 1,
-      "away_score": 7,
-      "game_date": "2026-05-19",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-19",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-05-20",
-      "matchup": "Boston Red Sox at Kansas City Royals",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-05-22",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-23",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-24",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-05-26",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-05-27",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-05-20"
 }
