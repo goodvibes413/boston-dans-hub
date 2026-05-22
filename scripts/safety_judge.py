@@ -35,6 +35,7 @@ DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
 DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
 DEFAULT_ROSTER = REPO / "data" / "boston_roster.json"
 DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
+DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
 DEFAULT_MODEL = "gemini-flash-latest"
 
 # Signature-phrase patterns that should never recur in 3+ consecutive
@@ -308,6 +309,7 @@ def main():
     historical_facts_path = Path(os.environ.get("HISTORICAL_FACTS_PATH", DEFAULT_HISTORICAL_FACTS))
     roster_path = Path(os.environ.get("ROSTER_PATH", DEFAULT_ROSTER))
     archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
+    season_overrides_path = Path(os.environ.get("SEASON_OVERRIDES_PATH", DEFAULT_SEASON_OVERRIDES))
     recent_archives = _load_recent_archives(archive_dir, REPETITION_LOOKBACK_DAYS)
     source_data = {
         "rolling_7day": _safe_load(rolling_path),
@@ -318,6 +320,7 @@ def main():
         "draft_picks": _safe_load(draft_picks_path),
         "historical_facts": _safe_load(historical_facts_path),
         "rosters": _safe_load(roster_path),
+        "season_overrides": _safe_load(season_overrides_path),
         "recent_dan_output": recent_archives,
     }
 
