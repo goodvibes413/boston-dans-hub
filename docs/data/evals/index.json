@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-05-17",
     "2026-05-18",
     "2026-05-19",
     "2026-05-20",
-    "2026-05-21"
+    "2026-05-21",
+    "2026-05-22"
   ],
   "rules": [
     {
@@ -65,13 +65,13 @@
   ],
   "summary_5day": {
     "fresh": 1,
-    "retry": 4,
-    "fallback": 0,
+    "retry": 3,
+    "fallback": 1,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 1,
-        "count": 5,
+        "count": 4,
         "title": "Profanity"
       },
       {
@@ -81,7 +81,7 @@
       },
       {
         "rule": 8,
-        "count": 3,
+        "count": 4,
         "title": "Fabricated historical events"
       }
     ]

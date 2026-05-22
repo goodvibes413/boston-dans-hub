@@ -1,0 +1,42 @@
+{
+  "date": "2026-05-22",
+  "generated_at": "2026-05-22T10:55:57.129381+00:00",
+  "outcome": "fallback",
+  "winning_attempt": null,
+  "total_attempts": 3,
+  "generation_seconds": 316.7,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "Fabricated historical event: Claimed the Celtics suffered a seven-game first-round exit against the 76ers, which is not supported by the source data (the 2025 season ended in a Semifinals loss to the Knicks).",
+        "Fabricated statistics: Cited 'five hits and three runs batted in' for Willson Contreras and 'two home runs' for Jarren Duran, neither of which are present in the source data."
+      ],
+      "duration_seconds": 9.3
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "Voice repetition: Today's commentary repeats the signature phrasing 'the front office better be on the phones daily', which is nearly identical to yesterday's closing thought 'the front offices better be working the phones daily' (Rule 10)."
+      ],
+      "duration_seconds": 13.1
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "Fabricated historical event: Claiming the Bruins had a 'first-round exit to Buffalo' which is not supported or verifiable by the source data (Rule 8)"
+      ],
+      "duration_seconds": 6.8
+    }
+  ]
+}

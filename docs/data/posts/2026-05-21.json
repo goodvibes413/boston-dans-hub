@@ -1,5 +1,4 @@
 {
-  "date": "2026-05-21",
   "generated_at": "2026-05-21T11:33:55.771033+00:00",
   "headline": "Duran Sparks A Thrilling Late Rally To Slay The Royals",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "Technology is fine, but I still want to see the umpires make the right calls."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Jarren Duran",
-      "trend": "Hit a game-winning opposite-field two-run home run in the seventh inning against the Royals.",
-      "dans_take": "This kid is showing real star power when we need it most."
-    },
-    {
-      "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Went three for four at the plate on Wednesday night to keep his batting average strong.",
-      "dans_take": "He is proving to be a highly reliable bat in the middle of this order."
-    },
-    {
-      "category": "Streak",
-      "player": "Connelly Early",
-      "trend": "Pitched six and a third innings, allowing three runs and striking out five to earn the victory.",
-      "dans_take": "Exactly the kind of gritty performance our starting rotation desperately needs."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-20",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-20",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Kansas City Royals",
-      "away_team": "Boston Red Sox",
-      "home_score": 3,
-      "away_score": 4,
-      "game_date": "2026-05-20",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Seattle Seahawks",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-20",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-05-22",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-23",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-24",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-05-26",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-05-27",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-05-28",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-05-21"
 }
