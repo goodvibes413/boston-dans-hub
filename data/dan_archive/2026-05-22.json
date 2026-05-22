@@ -1,5 +1,4 @@
 {
-  "date": "2026-05-22",
   "generated_at": "2026-05-22T18:34:51.588306+00:00",
   "headline": "Sox Return To Fenway Looking To Keep The Streak Alive",
   "morning_brew": [
@@ -23,100 +22,5 @@
       "url": "https://www.espn.com/nba/story/_/id/48838667/nba-free-agency-rankings-2026-harden-lebron-reaves-bobby-marks-top-20-contracts",
       "dans_take": "The offseason is here and the pressure is on to make this roster better."
     }
-  ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Jarren Duran",
-      "trend": "Driving the offense with clutch extra-base hits during this winning streak.",
-      "dans_take": "This kid is showing everyone why he belongs at the top of the lineup."
-    },
-    {
-      "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Racking up multiple hits and runs batted in over the road trip.",
-      "dans_take": "He is carrying the middle of the order right now and giving this team some serious punch."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-21",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-21",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-21",
-      "played": false,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-21",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-05-22",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-23",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-24",
-      "matchup": "Minnesota Twins at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-05-26",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-05-27",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-05-28",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-29",
-      "matchup": "Boston Red Sox at Cleveland Guardians",
-      "time_et": "7:10 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  ]
 }

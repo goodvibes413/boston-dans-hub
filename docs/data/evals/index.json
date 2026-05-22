@@ -65,8 +65,8 @@
   ],
   "summary_5day": {
     "fresh": 1,
-    "retry": 3,
-    "fallback": 1,
+    "retry": 4,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
@@ -81,7 +81,7 @@
       },
       {
         "rule": 8,
-        "count": 4,
+        "count": 3,
         "title": "Fabricated historical events"
       }
     ]

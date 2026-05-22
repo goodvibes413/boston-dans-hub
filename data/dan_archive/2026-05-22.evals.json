@@ -1,10 +1,10 @@
 {
   "date": "2026-05-22",
-  "generated_at": "2026-05-22T12:05:44.793902+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
-  "total_attempts": 3,
-  "generation_seconds": 314.9,
+  "generated_at": "2026-05-22T18:32:00.734273+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 170.9,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -13,31 +13,18 @@
     {
       "attempt": 1,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "low",
       "flags": [
-        "Fabricated historical event: Claimed 'first-round exits' for the Celtics and Bruins, which is not supported by the season memory (Celtics lost in the Conference Semifinals and Bruins missed the playoffs in 2025).",
-        "Fabricated statistics: Cited 'five hits' for Willson Contreras, which is not present in the source data."
+        "Voice repetition (Rule 10): Today's commentary repeats the 'front office on the phone' concept and closely mirrors yesterday's phrasing and structure regarding Kyle Williams' offseason adjustments and Drake Maye."
       ],
-      "duration_seconds": 12.4
+      "duration_seconds": 15.9
     },
     {
       "attempt": 2,
-      "verdict": "FAIL",
-      "severity": "high",
-      "flags": [
-        "Fabricated historical event: Claimed the Celtics finished their run with a heartbreaking seven-game loss to the Philadelphia 76ers, which is not supported by the source data (the 2025 season ended in a Semifinals loss to the Knicks).",
-        "Voice repetition: Today's commentary repeats the signature phrasing 'The front office better be on the phone right now', which is nearly identical to yesterday's closing thought 'the front offices better be working the phones daily' (Rule 10)."
-      ],
-      "duration_seconds": 8.8
-    },
-    {
-      "attempt": 3,
-      "verdict": "FAIL",
-      "severity": "high",
-      "flags": [
-        "Fabricated historical event: Claiming the Bruins had a 'first round exit' and that both winter teams suffered 'early exits' is not supported or verifiable by the source data (Rule 8)."
-      ],
-      "duration_seconds": 14.8
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 8.0
     }
   ]
 }
