@@ -117,6 +117,6 @@
     "Fabricated historical event: Dan claims 'first-round exits' for both the Celtics and Bruins, which is not supported or verifiable by season_memory or historical_facts (Rule 8)"
   ],
   "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: Fabricated historical event: Claiming the Bruins had a 'first-round exit to Buffalo' which is not supported or verifiable by the source data (Rule 8)",
-  "_stale_age_hours": 23.5
+  "_stale_reason": "safety judge FAILed after 3 attempts: Fabricated historical event: Claiming the Bruins had a 'first round exit' and that both winter teams suffered 'early exits' is not supported or verifiable by the source data (Rule 8).",
+  "_stale_age_hours": 24.6
 }

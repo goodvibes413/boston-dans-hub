@@ -113,6 +113,6 @@
       "time_et": "4:10 PM ET"
     }
   ],
-  "_stale": null,
+  "_stale": true,
   "_fallback": null
 }

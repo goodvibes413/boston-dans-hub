@@ -1,10 +1,10 @@
 {
   "date": "2026-05-22",
-  "generated_at": "2026-05-22T10:55:57.129381+00:00",
+  "generated_at": "2026-05-22T12:05:44.793902+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
   "total_attempts": 3,
-  "generation_seconds": 316.7,
+  "generation_seconds": 314.9,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -15,28 +15,29 @@
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "Fabricated historical event: Claimed the Celtics suffered a seven-game first-round exit against the 76ers, which is not supported by the source data (the 2025 season ended in a Semifinals loss to the Knicks).",
-        "Fabricated statistics: Cited 'five hits and three runs batted in' for Willson Contreras and 'two home runs' for Jarren Duran, neither of which are present in the source data."
+        "Fabricated historical event: Claimed 'first-round exits' for the Celtics and Bruins, which is not supported by the season memory (Celtics lost in the Conference Semifinals and Bruins missed the playoffs in 2025).",
+        "Fabricated statistics: Cited 'five hits' for Willson Contreras, which is not present in the source data."
       ],
-      "duration_seconds": 9.3
+      "duration_seconds": 12.4
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "low",
+      "severity": "high",
       "flags": [
-        "Voice repetition: Today's commentary repeats the signature phrasing 'the front office better be on the phones daily', which is nearly identical to yesterday's closing thought 'the front offices better be working the phones daily' (Rule 10)."
+        "Fabricated historical event: Claimed the Celtics finished their run with a heartbreaking seven-game loss to the Philadelphia 76ers, which is not supported by the source data (the 2025 season ended in a Semifinals loss to the Knicks).",
+        "Voice repetition: Today's commentary repeats the signature phrasing 'The front office better be on the phone right now', which is nearly identical to yesterday's closing thought 'the front offices better be working the phones daily' (Rule 10)."
       ],
-      "duration_seconds": 13.1
+      "duration_seconds": 8.8
     },
     {
       "attempt": 3,
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "Fabricated historical event: Claiming the Bruins had a 'first-round exit to Buffalo' which is not supported or verifiable by the source data (Rule 8)"
+        "Fabricated historical event: Claiming the Bruins had a 'first round exit' and that both winter teams suffered 'early exits' is not supported or verifiable by the source data (Rule 8)."
       ],
-      "duration_seconds": 6.8
+      "duration_seconds": 14.8
     }
   ]
 }
