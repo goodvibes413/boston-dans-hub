@@ -1,5 +1,4 @@
 {
-  "date": "2026-05-25",
   "generated_at": "2026-05-25T11:57:33.264342+00:00",
   "headline": "Soggy Fenway Sweep Leaves Red Sox Searching For Answers After Bullpen Meltdown",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "No Celtics on the first team is a tough look, but we have bigger issues to worry about this offseason after that first-round exit."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Cold Snap",
-      "player": "Tyron Guerrero",
-      "trend": "Gave up two runs on two hits in less than an inning to take the loss on Sunday.",
-      "dans_take": "Absolutely brutal showing from the bullpen when we needed a shutdown performance to salvage the series."
-    },
-    {
-      "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Had two hits, including a home run and two RBIs, in the loss to the Twins.",
-      "dans_take": "The big bat is doing everything he can at the plate, but he cannot pitch the late innings too."
-    },
-    {
-      "category": "Slump",
-      "player": "Sonny Gray",
-      "trend": "Lasted just four innings while giving up three runs on six hits on Sunday.",
-      "dans_take": "We need our veteran starter to eat more than twelve outs if we are going to keep this bullpen fresh."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-24",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-24",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Minnesota Twins",
-      "home_score": 5,
-      "away_score": 6,
-      "game_date": "2026-05-24",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "New York Jets",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-24",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-05-26",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-05-27",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-05-28",
-      "matchup": "Atlanta Braves at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-29",
-      "matchup": "Boston Red Sox at Cleveland Guardians",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-05-30",
-      "matchup": "Boston Red Sox at Cleveland Guardians",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-05-31",
-      "matchup": "Boston Red Sox at Cleveland Guardians",
-      "time_et": "1:40 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-05-25"
 }

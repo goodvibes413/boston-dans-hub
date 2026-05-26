@@ -1,0 +1,30 @@
+{
+  "date": "2026-05-26",
+  "generated_at": "2026-05-26T14:54:10.155904+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 177.0,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "Fabricated statistics: The claims that Jovani Moran lasted 'one inning' and gave up 'two early runs' in a 'weekend start' are not supported by the source data."
+      ],
+      "duration_seconds": 20.3
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 10.6
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-05-21",
     "2026-05-22",
     "2026-05-23",
     "2026-05-24",
-    "2026-05-25"
+    "2026-05-25",
+    "2026-05-26"
   ],
   "rules": [
     {
@@ -78,11 +78,6 @@
         "rule": 10,
         "count": 1,
         "title": "Voice repetition"
-      },
-      {
-        "rule": 8,
-        "count": 1,
-        "title": "Fabricated historical events"
       }
     ]
   }
