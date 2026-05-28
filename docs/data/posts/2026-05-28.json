@@ -1,9 +1,28 @@
 {
+  "date": "2026-05-28",
+  "generated_at": "2026-05-28T11:42:59.794999+00:00",
   "headline": "Early Shuts Down Braves As Sox Finally Snap Ugly Slide",
   "morning_brew": [
     "Thank goodness. The Red Sox finally gave us something to smile about at Fenway last night, blowing out the Braves eight to zero to snap that miserable five-game losing streak. Connelly Early was absolutely brilliant on the mound, tossing seven shutout innings and racking up seven strikeouts to keep Atlanta completely off balance. The offense finally woke up from its slumber too, pounding out fifteen hits in total. Jarren Duran launched a home run to get things moving, and Ceddanne Rafaela was all over the place with three hits and two runs batted in.",
     "Down in Foxborough, head coach Mike Vrabel addressed the media for the first time since stepping away on the third day of the draft. He made it clear he has no regrets about prioritizing his family, which is exactly the kind of leadership you love to see. On the field, Vrabel had some massive praise for rookie offensive tackle Caleb Lomu during OTAs. Just play the kid, what are we waitin' for? Protecting our young quarterback is the only path back to relevance, and Lomu needs to be ready to go.",
     "With the Celtics and Bruins both enjoying a very early summer after their respective first-round exits, the focus shifts entirely to front-office execution. Now that Joe Mazzulla has his Coach of the Year trophy on the mantle, the front office at the Garden needs to focus on roster construction. We cannot have another offseason of standing pat while our rivals in the East get stronger. It is time to make some aggressive phone calls, because another early exit next year will not be tolerated in this town."
+  ],
+  "news_digest": [
+    {
+      "headline": "Red Sox snap 5-game losing streak, beat Braves 8-0 behind Early's pitching effort",
+      "url": "http://www.espn.com/mlb/recap?gameId=401815515",
+      "dans_take": "A masterful performance from Early to finally put an end to that ugly skid."
+    },
+    {
+      "headline": "Patriots' Mike Vrabel: No regrets stepping away during draft",
+      "url": "https://www.espn.com/nfl/story/_/id/48892784/patriots-mike-vrabel-no-regrets-stepping-away-draft",
+      "dans_take": "Family comes first, and Vrabel showing that leadership is why the locker room respects him."
+    },
+    {
+      "headline": "Celtics' Joe Mazzulla named 2025-26 NBA Coach of the Year",
+      "url": "https://www.espn.com/nba/story/_/id/48885593/boston-celtics-joe-mazzulla-named-nba-coach-year",
+      "dans_take": "A great honor for Joe, but now the real work begins to fix this roster for next season."
+    }
   ],
   "trend_watch": [
     {
@@ -23,23 +42,6 @@
       "player": "Jarren Duran",
       "trend": "Hit a home run in the shutout victory.",
       "dans_take": "We need his spark at the top of the order to keep this momentum going into the next series."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Red Sox snap 5-game losing streak, beat Braves 8-0 behind Early's pitching effort",
-      "url": "http://www.espn.com/mlb/recap?gameId=401815515",
-      "dans_take": "A masterful performance from Early to finally put an end to that ugly skid."
-    },
-    {
-      "headline": "Patriots' Mike Vrabel: No regrets stepping away during draft",
-      "url": "https://www.espn.com/nfl/story/_/id/48892784/patriots-mike-vrabel-no-regrets-stepping-away-draft",
-      "dans_take": "Family comes first, and Vrabel showing that leadership is why the locker room respects him."
-    },
-    {
-      "headline": "Celtics' Joe Mazzulla named 2025-26 NBA Coach of the Year",
-      "url": "https://www.espn.com/nba/story/_/id/48885593/boston-celtics-joe-mazzulla-named-nba-coach-year",
-      "dans_take": "A great honor for Joe, but now the real work begins to fix this roster for next season."
     }
   ],
   "box_scores": {
@@ -121,5 +123,6 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-05-28T11:42:59.794999+00:00"
+  "_stale": null,
+  "_fallback": null
 }
