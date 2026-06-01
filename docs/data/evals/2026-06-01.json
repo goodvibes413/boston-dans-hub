@@ -1,0 +1,23 @@
+{
+  "date": "2026-06-01",
+  "generated_at": "2026-06-01T13:42:14.212902+00:00",
+  "outcome": "fallback",
+  "winning_attempt": null,
+  "total_attempts": 1,
+  "generation_seconds": 178.4,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "Voice repetition: The news digest take on the NBA draft lottery reform ('The league can tweak the lottery all they want, but Boston just needs to focus on...') closely repeats the signature phrasing from the 2026-05-30 history ('The league can tweak the lottery all they want, but the Celtics just need to focus on...')."
+      ],
+      "duration_seconds": 20.1
+    }
+  ]
+}
