@@ -1,29 +1,10 @@
 {
+  "generated_at": "2026-06-01T15:11:02.320118+00:00",
   "headline": "Sox Clinch Cleveland Series With Massive Seventh Inning Comeback",
   "morning_brew": [
     "What a weekend out in Cleveland. We went into their park and actually took two out of three, finishing it off with a stellar nine to four victory on Sunday. Ranger Suarez was dealing early, racking up ten strikeouts over five innings of work, although he did surrender four earned runs. The real magic happened in the seventh inning when the bats exploded for six runs to break the game wide open. Masataka Yoshida came through with the huge go-ahead single, and Wilyer Abreu knocked in two runs to help secure the win. Jovani Moran got the victory after throwing over an inning of perfect relief, and the rest of the bullpen shut the door.",
     "I don't care what the sabermetric guys say, winning tough series on the road is how you build a real ballclub. This win puts us at twenty-five and thirty-three, and while we are still at the bottom of the division, you can feel a little bit of life in this dugout. Now we head back home to Fenway Park for a massive series against Baltimore starting tomorrow night. If we want to make any noise this summer, we have to start dominant play at our own yard. We cannot keep playing catch-up in the AL East, so let's hope the boys carry this momentum right onto the field at Fenway.",
     "Off the diamond, the Patriots are keeping everyone talking even in the dead of the offseason. Rumors are still swirling about a potential trade with Philadelphia for star receiver A.J. Brown, and adding that kind of weapon would be huge for New England's offense. Meanwhile, Drake Maye is already showing what he is about in this community, hosting a charity softball game over the weekend to benefit Boston Children's Hospital. Seeing the young quarterback step up like that off the field makes you proud to have him leading the franchise, but everyone in the Hub is counting down the days until training camp opens."
-  ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Ranger Suarez",
-      "trend": "Racked up ten strikeouts over five innings of work on Sunday.",
-      "dans_take": "He gave up four earned runs, but those ten punchouts show his stuff is absolutely electric."
-    },
-    {
-      "category": "Streak",
-      "player": "Wilyer Abreu",
-      "trend": "Went two for four with two RBIs in Sunday's victory.",
-      "dans_take": "Abreu has been a massive spark plug for this lineup when we need key hits."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Jovani Moran",
-      "trend": "Tossed one and a third innings of perfect relief to earn the win on Sunday.",
-      "dans_take": "Moran came out of the pen and completely shut down the Cleveland bats when the game was on the line."
-    }
   ],
   "news_digest": [
     {
@@ -41,85 +22,5 @@
       "url": "https://www.espn.com/mlb/story/_/id/47684227/2026-top-10-prospect-rankings-all-30-mlb-teams-kiley-mcdaniel",
       "dans_take": "We need to keep developing these young guys if we want to build a sustainable winner in Boston."
     }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-31",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-31",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Cleveland Guardians",
-      "away_team": "Boston Red Sox",
-      "home_score": 4,
-      "away_score": 9,
-      "game_date": "2026-05-31",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "New York Jets",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-05-31",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-06-02",
-      "matchup": "Baltimore Orioles at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-06-03",
-      "matchup": "Baltimore Orioles at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-06-04",
-      "matchup": "Baltimore Orioles at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-06-05",
-      "matchup": "Boston Red Sox at New York Yankees",
-      "time_et": "7:05 PM ET"
-    },
-    {
-      "date": "2026-06-06",
-      "matchup": "Boston Red Sox at New York Yankees",
-      "time_et": "7:35 PM ET"
-    },
-    {
-      "date": "2026-06-07",
-      "matchup": "Boston Red Sox at New York Yankees",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-06-08",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "6:40 PM ET"
-    }
-  ],
-  "generated_at": "2026-06-01T15:11:02.320118+00:00"
+  ]
 }
