@@ -532,6 +532,7 @@ def main():
 
     # Step 2: Judge, regenerate on FAIL, re-judge (up to MAX_JUDGE_ATTEMPTS times)
     last_flags: list[str] = []
+    original_raw_output = dict(raw_output)  # save before any retry overwrites it
     try:
         for attempt in range(1, MAX_JUDGE_ATTEMPTS + 1):
             print(f"\n[2.{attempt}] Running safety judge (attempt {attempt}/{MAX_JUDGE_ATTEMPTS})...")
@@ -607,9 +608,9 @@ def main():
                 break
             if raw_output.get("_generation_failed"):
                 reason = raw_output.get("reason", "unknown")
-                print(f"  regeneration produced a sentinel ({reason}); falling back")
-                _finalize_evals("fallback")
-                return publish_fallback(f"regeneration failed: {reason}")
+                print(f"  regeneration produced a sentinel ({reason}); checking severity before fallback")
+                raw_output = original_raw_output  # restore original so LOW severity path can publish it
+                break
 
     finally:
         # Clean up the temp file regardless of how we exit
