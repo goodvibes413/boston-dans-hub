@@ -1,9 +1,23 @@
 {
+  "date": "2026-06-05",
+  "generated_at": "2026-06-05T11:32:55.837282+00:00",
   "headline": "Bello Sent Packin' To Worcester After Brutal Outing Against Orioles",
   "morning_brew": [
     "Fenway was a tough place to watch a ballgame last night as the Sox dropped a painful eight to two decision to the Baltimore Orioles. Brayan Bello had a nightmare of a start, lasting five innings and getting absolutely shelled for eight earned runs on seven hits. That six-run first inning for Baltimore put us in a hole before most of the crowd had even finished their first coffee. Willson Contreras was the only real bright spot on offense, picking up two hits including a two-run homer, but you simply cannot win when your starter digs a ditch that deep.",
     "The big news breaking after the final out is that the front office is optioning Brayan Bello to Triple-A Worcester. I don't care what the sabermetric guys say, this move is long overdue. You cannot keep trotting a guy out there to take these kinds of beatings when the club is already sitting at twenty-six and thirty-five. He needs to go down to the WooSox, find his sinker, and get his head straight because our rotation is held together by dental floss right now.",
     "There is no time to feel sorry for ourselves because tonight we head to New York for a massive three-game weekend series. The Yankees are sitting in second place at thirty-seven and twenty-five, and they would love nothing more than to bury us even deeper in the divisional standings. Playing in the Bronx is always a pressure cooker, but maybe a dose of our biggest rival will finally wake this team up. The pitching has to be better from the very first pitch or it is going to be a long trip back down the Pike."
+  ],
+  "news_digest": [
+    {
+      "headline": "Reports: Red Sox optioning Bello after another poor start",
+      "url": "https://www.espn.com/mlb/story/_/id/48970457/reports-red-sox-optioning-bello-another-poor-start",
+      "dans_take": "He has a lot of talent, but some time in Worcester to clear his head is exactly what he needs."
+    },
+    {
+      "headline": "Yankees take on the Red Sox in first of 3-game series",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815629",
+      "dans_take": "It is time to see what this team is made of against our biggest rival."
+    }
   ],
   "trend_watch": [
     {
@@ -17,18 +31,6 @@
       "player": "Willson Contreras",
       "trend": "Went two for four with a two-run home run against Baltimore.",
       "dans_take": "He continues to be one of the few guys in this lineup who actually shows up ready to produce."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Reports: Red Sox optioning Bello after another poor start",
-      "url": "https://www.espn.com/mlb/story/_/id/48970457/reports-red-sox-optioning-bello-another-poor-start",
-      "dans_take": "He has a lot of talent, but some time in Worcester to clear his head is exactly what he needs."
-    },
-    {
-      "headline": "Yankees take on the Red Sox in first of 3-game series",
-      "url": "http://www.espn.com/mlb/preview?gameId=401815629",
-      "dans_take": "It is time to see what this team is made of against our biggest rival."
     }
   ],
   "box_scores": {
@@ -110,5 +112,6 @@
       "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-06-05T11:32:55.837282+00:00"
+  "_stale": null,
+  "_fallback": null
 }
