@@ -1,5 +1,4 @@
 {
-  "date": "2026-06-05",
   "generated_at": "2026-06-05T11:32:55.837282+00:00",
   "headline": "Bello Sent Packin' To Worcester After Brutal Outing Against Orioles",
   "morning_brew": [
@@ -19,99 +18,5 @@
       "dans_take": "It is time to see what this team is made of against our biggest rival."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Slump",
-      "player": "Brayan Bello",
-      "trend": "Gave up eight earned runs on seven hits in five innings of work.",
-      "dans_take": "Sending him down to Worcester is the right call because his confidence is completely gone."
-    },
-    {
-      "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Went two for four with a two-run home run against Baltimore.",
-      "dans_take": "He continues to be one of the few guys in this lineup who actually shows up ready to produce."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-04",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-04",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Baltimore Orioles",
-      "home_score": 2,
-      "away_score": 8,
-      "game_date": "2026-06-04",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "New York Jets",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-04",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-06-05",
-      "matchup": "Boston Red Sox at New York Yankees",
-      "time_et": "7:05 PM ET"
-    },
-    {
-      "date": "2026-06-06",
-      "matchup": "Boston Red Sox at New York Yankees",
-      "time_et": "7:35 PM ET"
-    },
-    {
-      "date": "2026-06-07",
-      "matchup": "Boston Red Sox at New York Yankees",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-06-08",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-06-09",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-06-10",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "1:10 PM ET"
-    },
-    {
-      "date": "2026-06-12",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-06-05"
 }
