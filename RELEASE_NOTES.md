@@ -5,6 +5,32 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## TODO — Audit All Past Season Data in `season_static.json`
+
+**Priority: High.** The 2025 Patriots entry was wrong (recorded as "8-9, Missed playoffs" when they went 14-3 and lost Super Bowl LX). This slipped through because `season_static.json` is hand-curated and there's no automated validation against a source of truth.
+
+**Action required:** Manually verify every entry in `season_static.json` against ESPN/Pro-Football-Reference/Basketball-Reference/Hockey-Reference/Baseball-Reference. Check wins, losses, and result strings for all teams, all years. Pay special attention to the most recent season (2025) for each team — this is the one most likely to be stale if the rollover procedure was missed or done incorrectly.
+
+**Teams to audit:** Patriots, Celtics, Bruins, Red Sox — past 5 seasons each (years 2021–2025).
+
+---
+
+## 2026-06-07 — Patriots 2025 Season Data Fix + Guardrail Gap Documentation
+
+**Commits:** `0568c46`
+
+**What shipped:**
+- `season_static.json` corrected: 2025 Patriots entry updated from "8-9, Missed playoffs" to "14-3, Lost Super Bowl LX to Seattle Seahawks 29-13 — Vrabel's breakthrough year"
+- `updated` timestamp bumped to 2026-06-07
+
+**What went wrong:** Dan wrote "after a couple of lean years where we missed the postseason entirely" about the Patriots. The safety judge let it through — Rule 8 (Fabricated historical events) cross-references Dan's claims against `season_static.json`, but `season_static.json` itself had the wrong result for 2025. Dan's (incorrect) claim matched the (also incorrect) source data. No mismatch → PASS.
+
+**Guardrail gap:** Rule 8 is only as reliable as the source data it checks against. When `season_static.json` is stale, it can't catch factual errors — it will actively corroborate them. The rollover procedure (CLAUDE.md) requires manual updates after each season concludes; this entry was missed after the February 2026 Super Bowl.
+
+**Mitigation:** No code change needed — the guardrail logic is correct. The fix is data hygiene: update `season_static.json` promptly after each season ends. See the TODO above for a full audit of all entries.
+
+---
+
 ## 2026-05-13 — Season Overrides + Playoff Audit
 
 **Commits:** `2f73401`, `517d992`
