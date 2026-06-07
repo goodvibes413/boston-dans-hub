@@ -1,10 +1,10 @@
 {
   "date": "2026-06-07",
-  "generated_at": "2026-06-07T10:33:18.511296+00:00",
-  "outcome": "retry",
-  "winning_attempt": 2,
-  "total_attempts": 2,
-  "generation_seconds": 168.9,
+  "generated_at": "2026-06-07T15:52:28.891836+00:00",
+  "outcome": "fresh",
+  "winning_attempt": 1,
+  "total_attempts": 1,
+  "generation_seconds": 12.1,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -12,21 +12,10 @@
   "attempts": [
     {
       "attempt": 1,
-      "verdict": "FAIL",
-      "severity": "high",
-      "flags": [
-        "Fabricated statistic: The game score 'five to three' (5-3) is cited but does not appear in rolling_7day or season_memory.",
-        "Fabricated statistic: The pitching stat 'six and a third innings' is cited for Sonny Gray but does not appear in rolling_7day or season_memory.",
-        "Off-roster player: Brayan Bello is not listed in the Red Sox roster, and his roster move (optioning) is linked to team prospects ('the rotation is still incredibly thin')."
-      ],
-      "duration_seconds": 17.5
-    },
-    {
-      "attempt": 2,
       "verdict": "PASS",
       "severity": "low",
       "flags": [],
-      "duration_seconds": 9.3
+      "duration_seconds": 12.1
     }
   ]
 }

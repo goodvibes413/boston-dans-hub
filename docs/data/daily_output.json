@@ -1,34 +1,45 @@
 {
-  "headline": "Rain Dampens Red Sox Momentum While Offseason Patriots Focus On A.J. Brown",
+  "headline": "Rain Dampens Sox Momentum In The Bronx While Football Rumors Heat Up",
   "morning_brew": [
-    "Mother Nature postpones the Saturday matchup in New York? Are you kiddin' me with this? We finally get a little road winning streak going, and then the rain ruins the fun. Sitting at twenty-seven wins and thirty-five losses, we need every single game we can get to dig out of this hole in the AL East. Now we have to wait around to get back on the field against our biggest rivals.",
-    "Meanwhile, over in Foxborough, the excitement around A.J. Brown is the only thing keeping me sane this week. The guy is genuinely thrilled to be catching passes from Drake Maye, and frankly, I am still in awe that we actually pulled this off. After a couple of lean years where we missed the postseason entirely, this offense finally has a true top option who can stretch the field. If Maye can get the protection he needs, this rebuilding era under Mike Vrabel might actually bear some fruit sooner than we think.",
-    "As for the winter teams, the sting of those early playoff exits is still fresh. The Celtics bowing out to Philadelphia and the Bruins getting bounced by Buffalo in the first round made for a brutal spring. Now we are watching other teams play for championships while we debate trade rumors and draft needs. The front office has to find some scoring help this offseason because standing pat is not going to cut it after missing the second round again. We need some major moves before October rolls around."
+    "Mother Nature decided to play spoiler in the Bronx on Saturday night. The matchup between the Sox and the Yankees got postponed, which is absolutely brutal timing for a club that finally built up some positive momentum. We were riding a nice three-game road winning streak after Friday night's win, and now everything gets put on ice. It is always frustrating to lose a game to the weather, especially when you are trying to climb out of a twenty-seven and thirty-five hole in the AL East. Now we just have to wait for the next opportunity to get back on the dirt and keep pushing.",
+    "Over in Foxborough, there is plenty of chatter about our new weapon on the outside. People are already drawing comparisons between A.J. Brown and Randy Moss when he arrived in New England nearly twenty years ago. That is some incredibly heavy praise, but the motivation seems to be exactly the same. Brown is looking to prove a point after leaving Philadelphia, and having a guy with that kind of chip on his shoulder is exactly what Drake Maye needs. If he can bring even a fraction of that classic Moss dominance to this offense, this team is going to be incredibly fun to watch in the fall.",
+    "Meanwhile, the offseason is officially underway for the winter teams, and the rumors are already flying. After the Bruins got bounced in the first round by Buffalo, general manager Sweeney has to be looking at every possible avenue to upgrade this roster. Some intriguing trade candidates are starting to pop up on the market, and the front office cannot afford to stand pat after a disappointing exit. We need to see some real aggression this summer because the fans in this town are not going to tolerate another year of early exits. The standard is always championships in the Hub, and it is time to start building back toward that level."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "A.J. Brown",
-      "trend": "Genuinely thrilled after his first official day in New England",
-      "dans_take": "Getting a proven top-tier target is exactly what we needed to help Drake Maye take the next step."
+      "player": "Willson Contreras",
+      "trend": "Blasting home runs and carrying the middle of the order during the recent road trip.",
+      "dans_take": "He has been an absolute force at the plate, and we need him to keep this up if we are going to climb back into the race."
+    },
+    {
+      "category": "Streak",
+      "player": "Drake Maye",
+      "trend": "Gearing up for his sophomore season with major new targets on the outside.",
+      "dans_take": "Getting A.J. Brown is a massive win for the kid's development, and I cannot wait to see them connect in training camp."
     },
     {
       "category": "Cold Snap",
-      "player": "Jayson Tatum",
-      "trend": "Watching the finals from home after an early first-round exit",
-      "dans_take": "He has to use this quiet June as fuel to get back to championship form next season."
+      "player": "Jeremy Swayman",
+      "trend": "Facing a long offseason of speculation after an early exit against Buffalo.",
+      "dans_take": "He is still the guy in net for us, but the front office has to build a better defense in front of him this summer."
     }
   ],
   "news_digest": [
     {
-      "headline": "A.J. Brown elated to join Patriots, 'moving forward' from Eagles",
-      "url": "https://www.espn.com/nfl/story/_/id/48949971/aj-brown-elated-join-pats-moving-forward-eagles",
-      "dans_take": "It is beautiful to see a superstar who actually wants to be here and catch balls in New England."
+      "headline": "Similar motivations for A.J. Brown now and Randy Moss then",
+      "url": "https://www.espn.com/nfl/story/_/id/48978408/nfl-new-england-patriots-similar-motivations-aj-brown-now-2026-randy-moss-2007",
+      "dans_take": "If Brown can channel even half of that 2007 Moss energy, our offense is going to be absolutely electric."
     },
     {
       "headline": "NHL trade candidate rankings: Which players could be on the move?",
       "url": "https://www.espn.com/nhl/story/_/id/48968493/nhl-2026-offseason-trades-rankings-targets-market-draft-picks-contracts",
-      "dans_take": "The Bruins front office needs to be active on the phones because this roster needs a serious shakeup."
+      "dans_take": "The Bruins need to be major players in the trade market this summer because this roster needs a serious shakeup."
+    },
+    {
+      "headline": "Red Sox visit the Yankees on 3-game road win streak",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815659",
+      "dans_take": "Playing in the Bronx is always a battle, but we have to keep this road streak alive once the weather clears."
     }
   ],
   "box_scores": {
@@ -65,7 +76,7 @@
     "patriots": {
       "sport": "NFL",
       "home_team": "New England Patriots",
-      "away_team": "New York Jets",
+      "away_team": "Seattle Seahawks",
       "home_score": null,
       "away_score": null,
       "game_date": "2026-06-06",
@@ -110,11 +121,5 @@
       "time_et": "7:20 PM ET"
     }
   ],
-  "generated_at": "2026-06-07T10:36:07.442633+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "Fabricated statistic: The game score 'five to three' (5-3) is cited but does not appear in rolling_7day or season_memory.",
-    "Fabricated statistic: The pitching stat 'six and a third innings' is cited for Sonny Gray but does not appear in rolling_7day or season_memory.",
-    "Off-roster player: Brayan Bello is not listed in the Red Sox roster, and his roster move (optioning) is linked to team prospects ('the rotation is still incredibly thin')."
-  ]
+  "generated_at": "2026-06-07T15:52:41.027995+00:00"
 }
