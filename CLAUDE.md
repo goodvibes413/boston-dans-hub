@@ -1031,3 +1031,42 @@ python3 scripts/healthcheck.py
 ```
 
 Requires `GEMINI_API_KEY` in the environment. Set once in `~/.zshrc` — never commit it.
+
+---
+
+## Memory Layer
+
+This project ships a Claude Code memory layer (installed 2026-06-08) that turns the `memory/` folder into an auditable brain with in-loop schema enforcement and session-end consolidation.
+
+The memory root is `memory/` with a promotion map in `memory/.memory-config.md`. Evidence flows: `source/` (immutable copy) → `ingestion/` (working memory) → `decisions/` and `hypotheses/` (durable). Promotion is judgment-gated — you decide what becomes durable — so noise doesn't accumulate.
+
+### Hard rules
+
+1. **Ambient capture, not a command.** Capture meets the session you're already having.
+2. **Pre-task load, post-task update.** Load relevant files before work; update them after.
+3. **Source preservation.** Always copy raw artifacts to `source/` before synthesizing.
+4. **Provenance tags.** Every evidence row wears a tag: `(observation|interpretation|hypothesis|decision|assumption, source, date)`. See `memory/PROVENANCE.md`.
+5. **Promotion discipline.** Only recurring patterns (2+ sources), decision-relevant, or clearly useful beyond one session graduate to durable. One-offs stay in `ingestion/` until they accumulate.
+6. **INDEX maintenance.** Update the area's INDEX whenever you create a file in `decisions/`, `hypotheses/`, or any durable folder.
+
+### The four verbs
+
+- **`/ingest`** — route a raw artifact: copy to `source/`, synthesize into `ingestion/`, promote what crosses the bar.
+- **`/recall`** — read-only query across the brain, answer with citations.
+- **`/prep <topic>`** — briefing from the relevant files + open threads before a meeting.
+- **`/review`** — Friday maintenance sweep (six checks).
+
+### Hook enforcement
+
+- **PostToolUse hook** (Write/Edit): Validates schema at write time. Blocks orphan evidence rows that lack a provenance tag.
+- **Stop hook** (session end): Nudges consolidation and commit before the session closes. The session does not end with the brain dirty.
+
+### Escalation
+
+**Act autonomously:** routing, cross-linking, drafting, synthesis, cleanup, promotion within the bar above, anything reversible in `ingestion/`.
+
+**Ask before:** changing strategy, promoting/killing major hypotheses, rewriting durable knowledge, deleting historical facts, making external commitments.
+
+### What this is not
+
+Not maximum capture — it deliberately throws one-offs out. Not a fact-checker — garbage in is citation-laden garbage out. The brain preserves provenance and contradictions; it does not resolve ambiguous reality for you.
