@@ -1,29 +1,10 @@
 {
+  "generated_at": "2026-06-08T12:38:47.544201+00:00",
   "headline": "Late Bullpen Meltdown Costs Red Sox In Painful Sunday Loss To Yankees",
   "morning_brew": [
     "Sunday's matchup with the Yankees was going so well until the wheels completely fell off in the eighth inning. Ranger Suarez was absolutely fantastic on the mound, giving us six and a third innings of one-run ball. Then the bullpen came in and turned a tight ballgame into a total disaster. Justin Slaten had an incredibly rough outing, giving up four earned runs in just two-thirds of an inning. I been sayin' it all year, you cannot expect to win in this division when your relief pitching crumbles like a stale cider donut. Seeing Jazz Chisholm Jr. blast a three-run homer with Aaron Judge's bat to cap a five-run eighth inning for New York is just salt in the wound.",
     "With both of our winter teams already home for the summer, the offseason rumor mill is the only thing keeping us warm. The Celtics are still licking their wounds after that seven-game collapse against Philadelphia, and the Bruins are trying to figure out how to rebuild after getting bounced by Buffalo in the first round. General manager Don Sweeney has some massive decisions to make with the roster this summer. There is plenty of chatter about some young trade targets on the market, and this front office cannot afford to sit on its hands. We need a major injection of talent if we are going to see another parade down Tremont Street anytime soon.",
     "Meanwhile, football season is slowly creeping back into the picture with minicamps getting underway in Foxborough. Coming off that tough Super Bowl loss to Seattle, the expectations around Drake Maye and this offense are sky-high heading into his third year. The addition of A.J. Brown has everyone excited, and seeing how they connect during these summer sessions is going to be the main storyline to watch. This team proved they belong on the big stage last season, but now they have to show they can finish the job. The grind starts right now on the practice fields."
-  ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Ranger Suarez",
-      "trend": "Gave up just one earned run over six and a third innings with six strikeouts against New York.",
-      "dans_take": "He gave us a magnificent start and deserved a much better result than a no-decision."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Justin Slaten",
-      "trend": "Surrendered four earned runs on three hits in two-thirds of an inning to take the loss on Sunday.",
-      "dans_take": "This was an absolute disaster of an eighth inning for a guy we usually rely on to lock things down."
-    },
-    {
-      "category": "Heater",
-      "player": "Ceddanne Rafaela",
-      "trend": "Picked up two hits in Sunday's game to keep his season average at a solid .286.",
-      "dans_take": "He is showing real maturity at the plate and has been a bright spot in a tough stretch."
-    }
   ],
   "news_digest": [
     {
@@ -41,80 +22,5 @@
       "url": "https://www.espn.com/nhl/story/_/id/48968493/nhl-2026-offseason-trades-rankings-targets-market-draft-picks-contracts",
       "dans_take": "The front office needs to make a splash because this current roster is not cutting it."
     }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-07",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-07",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "New York Yankees",
-      "away_team": "Boston Red Sox",
-      "home_score": 6,
-      "away_score": 1,
-      "game_date": "2026-06-07",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Seattle Seahawks",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-07",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-06-08",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-06-09",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-06-10",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "1:10 PM ET"
-    },
-    {
-      "date": "2026-06-12",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-06-13",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-06-14",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "7:20 PM ET"
-    }
-  ],
-  "generated_at": "2026-06-08T12:38:47.544201+00:00"
+  ]
 }
