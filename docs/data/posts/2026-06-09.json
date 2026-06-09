@@ -1,9 +1,23 @@
 {
+  "date": "2026-06-09",
+  "generated_at": "2026-06-09T11:21:11.823565+00:00",
   "headline": "Sox Offense Put To Sleep In Depressing Monday Night Loss To Rays",
   "morning_brew": [
     "Monday night down in Tampa was another absolute chore to watch. The bats decided to take the night off, scraping together just four hits in a miserable three to one loss to the Rays. Connelly Early took the loss on the mound, giving up two runs in four and two-thirds innings. You simply cannot win ballgames when your offense cannot even muster a whisper of support to help out a young starter.",
     "This team is now sitting at twenty-seven wins and thirty-seven losses, buried at the bottom of the division. Same movie, different remake with this lineup lately. We saw Ceddanne Rafaela and Wilyer Abreu pick up a hit apiece, but Willson Contreras went hitless in three at-bats. That is just not going to cut it when you are trying to climb out of a deep hole in the American League East.",
     "Over in Foxborough, the focus shifts to mandatory minicamps starting up this week. After that crushing Super Bowl loss to Seattle last season, the grind to get back to the big stage begins right now on the practice fields. Drake Maye has some serious expectations on his shoulders, but having a healthy roster out there for these June workouts is the first step. Let's hope the coaching staff can get these guys pulling in the same direction before the real heat of summer camp hits."
+  ],
+  "news_digest": [
+    {
+      "headline": "How June 1 turned into a blockbuster trade day in the NFL",
+      "url": "https://www.espn.com/nfl/story/_/id/48976999/how-june-1-2026-blockbuster-trade-day-nfl-myles-garrett-aj-brown-jared-verse",
+      "dans_take": "The front office made their move for A.J. Brown, and now it is time to see that blockbuster trade pay off on the practice field."
+    },
+    {
+      "headline": "NHL trade candidate rankings: Which players could be on the move?",
+      "url": "https://www.espn.com/nhl/story/_/id/48968493/nhl-2026-offseason-trades-rankings-targets-market-draft-picks-contracts",
+      "dans_take": "Don Sweeney needs to be working the phones constantly because this Bruins roster needs some serious adjustments this summer."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Tyron Guerrero",
       "trend": "Tyron Guerrero looked sharp out of the bullpen, tossing one and a third scoreless innings with two strikeouts.",
       "dans_take": "He was one of the few bright spots on a bleak night for the pitching staff."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "How June 1 turned into a blockbuster trade day in the NFL",
-      "url": "https://www.espn.com/nfl/story/_/id/48976999/how-june-1-2026-blockbuster-trade-day-nfl-myles-garrett-aj-brown-jared-verse",
-      "dans_take": "The front office made their move for A.J. Brown, and now it is time to see that blockbuster trade pay off on the practice field."
-    },
-    {
-      "headline": "NHL trade candidate rankings: Which players could be on the move?",
-      "url": "https://www.espn.com/nhl/story/_/id/48968493/nhl-2026-offseason-trades-rankings-targets-market-draft-picks-contracts",
-      "dans_take": "Don Sweeney needs to be working the phones constantly because this Bruins roster needs some serious adjustments this summer."
     }
   ],
   "box_scores": {
@@ -111,5 +113,6 @@
       "time_et": "6:45 PM ET"
     }
   ],
-  "generated_at": "2026-06-09T11:21:11.823565+00:00"
+  "_stale": null,
+  "_fallback": null
 }

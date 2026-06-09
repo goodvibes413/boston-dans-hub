@@ -1,5 +1,4 @@
 {
-  "date": "2026-06-08",
   "generated_at": "2026-06-08T12:38:47.544201+00:00",
   "headline": "Late Bullpen Meltdown Costs Red Sox In Painful Sunday Loss To Yankees",
   "morning_brew": [
@@ -24,100 +23,5 @@
       "dans_take": "The front office needs to make a splash because this current roster is not cutting it."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Ranger Suarez",
-      "trend": "Gave up just one earned run over six and a third innings with six strikeouts against New York.",
-      "dans_take": "He gave us a magnificent start and deserved a much better result than a no-decision."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Justin Slaten",
-      "trend": "Surrendered four earned runs on three hits in two-thirds of an inning to take the loss on Sunday.",
-      "dans_take": "This was an absolute disaster of an eighth inning for a guy we usually rely on to lock things down."
-    },
-    {
-      "category": "Heater",
-      "player": "Ceddanne Rafaela",
-      "trend": "Picked up two hits in Sunday's game to keep his season average at a solid .286.",
-      "dans_take": "He is showing real maturity at the plate and has been a bright spot in a tough stretch."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-07",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-07",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "New York Yankees",
-      "away_team": "Boston Red Sox",
-      "home_score": 6,
-      "away_score": 1,
-      "game_date": "2026-06-07",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Seattle Seahawks",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-07",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-06-08",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-06-09",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-06-10",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "1:10 PM ET"
-    },
-    {
-      "date": "2026-06-12",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-06-13",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-06-14",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "7:20 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-06-08"
 }
