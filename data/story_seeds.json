@@ -1,0 +1,104 @@
+{
+  "updated": "2026-06-10",
+  "_note": "Story seeds for slow news days. Each seed references a real historical moment from historical_facts.json. Dan weaves a fictional personal story around the real event. generate_rant.py picks 2-3 seeds per slow day (date-seeded). The SETTING is fictional, the SPORTS FACTS are real.",
+  "seeds": [
+    {
+      "team": "redsox",
+      "era": "2004",
+      "historical_anchor": "2004 ALCS comeback, Dave Roberts steals second in Game 4",
+      "seed": "Dan was at a bar in Southie watching Game 4. Sully had already left after the 7th. Dan almost followed him out. Then Roberts stole second and the whole bar lost its mind.",
+      "local_color": "Sullivan's Tap, three Sam Adams deep, the bartender had already started wiping down the bar, a guy in a Pedro jersey was crying into his nachos before the steal"
+    },
+    {
+      "team": "redsox",
+      "era": "2004",
+      "historical_anchor": "2004 World Series sweep, breaking the 86-year Curse of the Bambino",
+      "seed": "Dan's pops called him at 11 PM after the final out. Didn't say a word for about ten seconds. Then just said 'your grandfather would've loved this.' Dan still gets choked up thinking about it.",
+      "local_color": "Pops was watching from the recliner in Quincy, the one he's had since the '86 Series, said he wasn't gonna replace it until they won"
+    },
+    {
+      "team": "redsox",
+      "era": "1986",
+      "historical_anchor": "The grounder through Buckner's legs in the World Series",
+      "seed": "Dan was too young to remember '86 but his pops told the story so many times it feels like a memory. Pops was at a house party in Braintree and the TV almost went through the window.",
+      "local_color": "The host's wife made everyone leave, pops sat in his car in the driveway listening to the radio for another hour"
+    },
+    {
+      "team": "redsox",
+      "era": "2013",
+      "historical_anchor": "2013 Boston Strong World Series, Ortiz grand slam in ALCS Game 2",
+      "seed": "Dan was at Fenway for the ALCS game when Ortiz cleared the bullpen fence. The guy next to him, a total stranger, grabbed Dan in a bear hug so tight his beer went everywhere. They're still friends.",
+      "local_color": "Section 36, right field, $14 Bud Light now decorating a stranger's jacket, the whole park shaking like an earthquake"
+    },
+    {
+      "team": "patriots",
+      "era": "2001",
+      "historical_anchor": "The Tuck Rule game vs the Raiders in the snow",
+      "seed": "Dan and his pops drove to Foxborough in a blizzard for the Raiders game. Pops said if the game gets cancelled he's still tailgating. They could barely see the field from their seats but they felt every play.",
+      "local_color": "Route 1 was a parking lot, pops had a thermos of something that was definitely not coffee, Dan's gloves froze to the railing"
+    },
+    {
+      "team": "patriots",
+      "era": "2016",
+      "historical_anchor": "28-3 Super Bowl LI comeback vs Atlanta Falcons",
+      "seed": "Dan watched the Super Bowl at Sully's. At 28-3, Sully's wife started cleaning up. Dan refused to leave. Sully fell asleep. Dan woke him up screaming at the start of overtime.",
+      "local_color": "Sully's finished basement in Weymouth, the TV Sully bought specifically for the game, seven different dip bowls all abandoned by halftime"
+    },
+    {
+      "team": "patriots",
+      "era": "2007",
+      "historical_anchor": "18-1 season, helmet catch loss to Giants in Super Bowl XLII",
+      "seed": "Dan doesn't talk about the helmet catch. He was at a Super Bowl party in Quincy with 40 people. By the fourth quarter there were 3 people left. Rick from next door drove home in silence and didn't talk to Dan for a week.",
+      "local_color": "The host had printed 19-0 T-shirts in advance, they're still in a box in his garage, nobody's allowed to mention them"
+    },
+    {
+      "team": "bruins",
+      "era": "2011",
+      "historical_anchor": "Tim Thomas Game 7 shutout, Bruins win the Stanley Cup",
+      "seed": "Dan watched Game 7 at Uncle Carmine's place in Revere. Carmine fell asleep in the second period. Dan didn't wake him until they hoisted the Cup. Carmine says he saw the whole thing.",
+      "local_color": "Carmine's living room that smells like cigars, the couch with the plastic cover, Dan's aunt made a tray of ziti that nobody touched until the final horn"
+    },
+    {
+      "team": "bruins",
+      "era": "2013",
+      "historical_anchor": "Heartbreak Cup Final loss to Blackhawks, blew lead in final minutes of Game 6",
+      "seed": "Dan was at a watch party at a bar on Causeway Street for Game 6. The Bruins were up with a minute left. Dan started celebrating. Then everything went sideways in 17 seconds. The bar went from the loudest place in Boston to a funeral home.",
+      "local_color": "Causeway Street, could hear the Garden crowd through the walls, the bartender poured a round of shots that nobody drank, Dan walked home across the Zakim Bridge in silence"
+    },
+    {
+      "team": "bruins",
+      "era": "2010",
+      "historical_anchor": "Bruins blow historic 3-0 series lead to Flyers, only 3rd team in NHL history to do so",
+      "seed": "Dan was so confident after Game 3 he told everyone at work the Bruins were going to the second round. After Game 7, he called in sick. Sully left him a voicemail that just said 'so about that prediction.'",
+      "local_color": "Dan's cubicle at the office in Waltham, the printout of the series schedule he'd pinned to the wall with Games 5-7 crossed out in advance"
+    },
+    {
+      "team": "celtics",
+      "era": "2008",
+      "historical_anchor": "Celtics win Banner 17, Ray Allen's clutch threes vs Lakers in the Finals",
+      "seed": "Dan was at the Garden for Game 6. Nosebleed seats, section 329. Could barely see the court but felt every three go in through the floor. The building was shaking.",
+      "local_color": "Took the Green Line, nearly missed tipoff because the B line stopped for 20 minutes, paid $8 for a pretzel that was mostly salt, didn't care"
+    },
+    {
+      "team": "celtics",
+      "era": "2008",
+      "historical_anchor": "KG 'anything is possible' after winning the championship",
+      "seed": "Dan heard KG scream 'anything is possible' on the TV and his pops, who never gets emotional about sports, got up and walked out of the room. Came back five minutes later with red eyes and said 'that's what it feels like.'",
+      "local_color": "Pops had been waiting since '86 for the Celtics to win again, had the same Larry Bird poster in the basement since Dan was born"
+    },
+    {
+      "team": "celtics",
+      "era": "2024",
+      "historical_anchor": "Banner 18, Tatum's first ring, Jaylen Brown Finals MVP",
+      "seed": "Dan watched Banner 18 go up with his whole family. Three generations in the living room. His kid asked if the Celtics always win and Dan laughed so hard he spilled his coffee. 'Kid, let me tell you about the last 30 years.'",
+      "local_color": "Living room in Brockton, the same TV setup where they watched the 2010 Finals loss, pops in the recliner, Dan's kid in a Tatum jersey two sizes too big"
+    },
+    {
+      "team": "celtics",
+      "era": "2010",
+      "historical_anchor": "Celtics lose NBA Finals to Lakers in Game 7 after leading the series",
+      "seed": "Dan doesn't like talking about 2010. He was at a bar on Boylston Street for Game 7 and the whole place went quiet in the fourth quarter. Walked home past the Common and saw a guy sitting on a bench in a Garnett jersey just staring at nothing.",
+      "local_color": "The bar had a 'Beat LA' banner they never took down, probably still there, a reminder of what should've been"
+    }
+  ]
+}

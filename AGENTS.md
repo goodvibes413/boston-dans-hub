@@ -582,6 +582,14 @@ Curated Boston-vs-rival storylines for color when news surfaces a rival. `genera
 
 These ARE facts — judge cross-references the `history` field. Don't invent rivalries that aren't in the file. Curation: hand-edit. Checked into git via `!data/grudge_book.json` exception.
 
+### `data/dan_stories.json` (in git — recurring fictional characters)
+
+Dan's fictional world: 6 recurring characters (cousin Jimmy, Sully, Uncle Carmine, Dan's pops, neighbor Rick, Dan's ma) with comparison templates for slumps, bullpen meltdowns, hot streaks, blowout wins/losses, rival games, bad defense, great performances. `generate_rant.py` picks 3 characters per day (date-seeded) and injects as `DAN_STORIES` block. These are FLAVOR, not FACTS — the safety judge does not cross-reference them.
+
+### `data/story_seeds.json` (in git — slow-day storytelling anchors)
+
+14 story seeds, each referencing a real `historical_facts.json` entry. Only injected when `detect_slow_day()` returns True (no games + minimal news). Each seed has: team, era, historical_anchor, narrative seed, and local_color details. Dan weaves a fictional personal story around the real historical event. `generate_rant.py` picks 3 seeds per slow day (date-seeded).
+
 ### `data/dan_archive/YYYY-MM-DD.json` (in git — Dan's continuity memory)
 
 Slim copies of past `daily_output.json` files, written by `publish.py` after every successful fresh publish. `generate_rant.py` reads the last 3 entries and injects them as a `RECENT_DAN_OUTPUT` block in the prompt so Dan can avoid repeating yesterday's phrasing. Checked into git via `!data/dan_archive/` exception in `.gitignore`. Retention: 9 days (older files pruned automatically).
@@ -740,6 +748,8 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `CALLERS_PATH` | `generate_rant.py` | Default: `data/callers_and_voices.json`; override in evals |
 | `GRUDGE_BOOK_PATH` | `generate_rant.py` | Default: `data/grudge_book.json`; override in evals |
 | `ROSTER_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_roster.json`; override in evals to point at fixture-specific roster |
+| `DAN_STORIES_PATH` | `generate_rant.py` | Default: `data/dan_stories.json`; recurring fictional characters and comparison templates |
+| `STORY_SEEDS_PATH` | `generate_rant.py` | Default: `data/story_seeds.json`; historical-anchor story seeds for slow news days |
 | `TODAY_OVERRIDE` | `generate_rant.py` | Pin "today" to a specific date (YYYY-MM-DD) for freshness-sensitive eval fixtures. Production leaves unset. |
 | `DRY_RUN` | `generate_rant.py` | Set to `1` to print the assembled prompt and exit before any Gemini call. Used for the look-before-leap pass during risky deploys. |
 | `JUDGE_RESULT_PATH` | `safety_judge.py` | Optional. If set, writes an enriched verdict JSON (with `pre_pass_flags`, `llm_flags`, `rule_titles`) to this path alongside the normal stdout output. Used by `publish.py` to build the `*.evals.json` artifact for the dashboard. Does not affect exit code or stdout. |

@@ -39,12 +39,18 @@ DEFAULT_GRUDGE_BOOK = REPO / "data" / "grudge_book.json"
 DEFAULT_ROSTER = REPO / "data" / "boston_roster.json"
 DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
+DEFAULT_DAN_STORIES = REPO / "data" / "dan_stories.json"
+DEFAULT_STORY_SEEDS = REPO / "data" / "story_seeds.json"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
 # Caller flavor: how many archetypes to inject per day. 2-3 keeps the prompt
 # focused without locking Dan into a single voice. Picked deterministically
 # from today's date so a given day always sees the same archetypes.
 CALLERS_PER_DAY = 3
+
+# Story flavor: how many recurring characters + story seeds to inject per day.
+STORIES_PER_DAY = 3
+SEEDS_PER_DAY = 3
 
 # Draft freshness windows (days since last_active_date — the date when
 # fetch_draft.py last saw new picks arrive). Tunable; matches Boston sports
@@ -467,6 +473,250 @@ def select_daily_callers(callers_data: dict, today_iso: str, n: int = CALLERS_PE
     return pool[:n]
 
 
+def select_daily_stories(stories_data: dict, today_iso: str, n: int = STORIES_PER_DAY) -> list[dict]:
+    """
+    Deterministically pick N recurring characters for today, seeded by date.
+    Same pattern as select_daily_callers.
+    """
+    if not stories_data or not isinstance(stories_data, dict):
+        return []
+    characters = stories_data.get("recurring_characters", []) or []
+    if not characters:
+        return []
+
+    import hashlib
+    # Use a different seed offset than callers so they don't correlate
+    seed = int(hashlib.sha256(("stories:" + today_iso).encode()).hexdigest()[:8], 16)
+    pool = list(characters)
+    for i in range(len(pool) - 1, 0, -1):
+        j = (seed + i * 2654435761) % (i + 1)
+        pool[i], pool[j] = pool[j], pool[i]
+    return pool[:n]
+
+
+def select_daily_seeds(seeds_data: dict, today_iso: str, n: int = SEEDS_PER_DAY) -> list[dict]:
+    """
+    Deterministically pick N story seeds for today, seeded by date.
+    Only used on slow news days.
+    """
+    if not seeds_data or not isinstance(seeds_data, dict):
+        return []
+    seeds = seeds_data.get("seeds", []) or []
+    if not seeds:
+        return []
+
+    import hashlib
+    seed = int(hashlib.sha256(("seeds:" + today_iso).encode()).hexdigest()[:8], 16)
+    pool = list(seeds)
+    for i in range(len(pool) - 1, 0, -1):
+        j = (seed + i * 2654435761) % (i + 1)
+        pool[i], pool[j] = pool[j], pool[i]
+    return pool[:n]
+
+
+def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
+    """
+    Pre-compute emotional signals from rolling_7day data so the prompt gets
+    explicit mood direction instead of relying on Gemini to infer it.
+
+    Returns a dict keyed by team with: last_result, margin, streak, rival_game,
+    rival, emotional_register.
+    """
+    context = {}
+    # Build a lookup of rivals from grudge_book
+    rival_lookup = {}
+    if grudges and isinstance(grudges, dict):
+        for team_key, entries in grudges.items():
+            if isinstance(entries, list):
+                for entry in entries:
+                    rival_name = entry.get("rival", "")
+                    if rival_name:
+                        rival_lookup.setdefault(team_key.lower(), []).append(rival_name.lower())
+
+    for team_key in TEAM_KEYS:
+        team_data = rolling.get(team_key) if isinstance(rolling, dict) else None
+        if not team_data:
+            continue
+
+        games = team_data.get("games", []) if isinstance(team_data, dict) else []
+        if not games:
+            continue
+
+        # Find most recent played game
+        played_games = [g for g in games if g.get("played")]
+        if not played_games:
+            continue
+
+        # Sort by date descending
+        played_games.sort(key=lambda g: g.get("game_date", ""), reverse=True)
+        latest = played_games[0]
+
+        # Determine win/loss and margin
+        home = latest.get("home_score", 0) or 0
+        away = latest.get("away_score", 0) or 0
+        home_team = (latest.get("home_team") or "").lower()
+        away_team = (latest.get("away_team") or "").lower()
+
+        # Figure out which side is our Boston team
+        boston_names = {
+            "celtics": ["celtics", "boston celtics"],
+            "bruins": ["bruins", "boston bruins"],
+            "redsox": ["red sox", "boston red sox"],
+            "patriots": ["patriots", "new england patriots"],
+        }
+        is_home = any(name in home_team for name in boston_names.get(team_key, []))
+        our_score = home if is_home else away
+        their_score = away if is_home else home
+        opponent = away_team if is_home else home_team
+
+        won = our_score > their_score
+        margin = abs(our_score - their_score)
+
+        # Count streak
+        streak_count = 0
+        streak_type = "W" if won else "L"
+        for g in played_games:
+            g_home = g.get("home_score", 0) or 0
+            g_away = g.get("away_score", 0) or 0
+            g_is_home = any(name in (g.get("home_team") or "").lower() for name in boston_names.get(team_key, []))
+            g_our = g_home if g_is_home else g_away
+            g_their = g_away if g_is_home else g_home
+            g_won = g_our > g_their
+            if (g_won and streak_type == "W") or (not g_won and streak_type == "L"):
+                streak_count += 1
+            else:
+                break
+
+        # Check if rival game
+        rival_game = False
+        rival_name = ""
+        team_rivals = rival_lookup.get(team_key, [])
+        for r in team_rivals:
+            if r in opponent:
+                rival_game = True
+                rival_name = r
+                break
+
+        # Determine emotional register
+        sport = {"celtics": "NBA", "bruins": "NHL", "redsox": "MLB", "patriots": "NFL"}.get(team_key, "")
+        blowout_thresholds = {"NBA": 15, "NHL": 3, "MLB": 5, "NFL": 14}
+        nail_biter_thresholds = {"NBA": 3, "NHL": 1, "MLB": 1, "NFL": 3}
+        is_blowout = margin >= blowout_thresholds.get(sport, 5)
+        is_nail_biter = margin <= nail_biter_thresholds.get(sport, 1)
+
+        register_parts = []
+        if won:
+            register_parts.append("euphoric" if is_blowout else ("agonized relief" if is_nail_biter else "satisfied"))
+        else:
+            register_parts.append("disgusted" if is_blowout else ("heartbroken" if is_nail_biter else "frustrated"))
+        if streak_count >= 3:
+            register_parts.append(f"{'momentum' if streak_type == 'W' else 'despair'} ({streak_type}{streak_count})")
+        if rival_game:
+            register_parts.append(f"rival game vs {rival_name}")
+
+        context[team_key] = {
+            "last_result": "win" if won else "loss",
+            "margin": margin,
+            "streak": f"{streak_type}{streak_count}",
+            "rival_game": rival_game,
+            "rival": rival_name,
+            "emotional_register": ", ".join(register_parts),
+        }
+
+    return context
+
+
+def compute_coverage_allocation(
+    season_overrides: dict | None,
+    season_current: dict | None,
+    rolling: dict | None,
+) -> dict:
+    """
+    Classify each Boston team as PRIMARY, SECONDARY, or MINIMAL based on
+    season status, recent game activity, and news relevance.
+
+    Returns {"primary": [...], "secondary": [...], "minimal": [...]}.
+    """
+    primary = []
+    secondary = []
+    minimal = []
+
+    eliminations = (season_overrides or {}).get("eliminations", {})
+
+    for team_key in TEAM_KEYS:
+        is_eliminated = team_key in eliminations
+
+        # Check if team played recently (within rolling_7day)
+        played_recently = False
+        if rolling and isinstance(rolling, dict):
+            team_data = rolling.get(team_key)
+            if team_data and isinstance(team_data, dict):
+                games = team_data.get("games", [])
+                played_recently = any(g.get("played") for g in games)
+
+        # Check season_current status
+        status = "offseason"
+        if season_current and isinstance(season_current, dict):
+            team_season = season_current.get(team_key)
+            if team_season and isinstance(team_season, dict):
+                status = team_season.get("status", "offseason")
+
+        if is_eliminated:
+            minimal.append(team_key)
+        elif status == "offseason" and not played_recently:
+            secondary.append(team_key)
+        else:
+            primary.append(team_key)
+
+    return {"primary": primary, "secondary": secondary, "minimal": minimal}
+
+
+def detect_slow_day(rolling: dict | None, news: dict | list | None, schedule: dict | list | None) -> bool:
+    """
+    Detect a slow news day: no Boston team played yesterday AND fewer than 2
+    relevant news headlines AND no games today.
+    """
+    # Check if any team played (has a played:true game in most recent day)
+    any_played = False
+    if rolling and isinstance(rolling, dict):
+        for team_key in TEAM_KEYS:
+            team_data = rolling.get(team_key)
+            if team_data and isinstance(team_data, dict):
+                games = team_data.get("games", [])
+                # Check most recent game only
+                if games:
+                    sorted_games = sorted(games, key=lambda g: g.get("game_date", ""), reverse=True)
+                    if sorted_games and sorted_games[0].get("played"):
+                        any_played = True
+                        break
+
+    if any_played:
+        return False
+
+    # Check news count
+    news_items = []
+    if isinstance(news, list):
+        news_items = news
+    elif isinstance(news, dict):
+        news_items = news.get("stories", []) or news.get("headlines", []) or []
+    if len(news_items) >= 2:
+        return False
+
+    # Check if any games today
+    games_today = []
+    if isinstance(schedule, list):
+        games_today = schedule
+    elif isinstance(schedule, dict):
+        games_today = schedule.get("games", []) or []
+    # If schedule has games for today, it's not a slow day
+    today_str = datetime.now(timezone.utc).date().isoformat()
+    today_games = [g for g in games_today if g.get("date", "").startswith(today_str)]
+    if today_games:
+        return False
+
+    return True
+
+
 def _build_overrides_block(season_overrides: dict) -> str:
     """
     Render season_overrides.json into plain-prose override text for the prompt.
@@ -504,16 +754,33 @@ def _build_overrides_block(season_overrides: dict) -> str:
     return "\n".join(lines).strip()
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None) -> str:
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None) -> str:
     if today_iso is None:
         today_iso = datetime.now(timezone.utc).date().isoformat()
 
     message = (
         f"TODAY: {today_iso}\n\n"
+    )
+    if slow_day:
+        message += (
+            "SLOW_DAY_MODE: TRUE\n"
+            "No Boston team played yesterday and there is minimal news. This is a slow news day.\n"
+            "Instead of stretching thin material, tell a SHORT FICTIONAL STORY woven around REAL stats.\n"
+            "See the Slow Day Storytelling section in the system prompt for rules.\n\n"
+        )
+    message += (
         "Here is the structured data for the last 7 days of Boston sports.\n"
         "Use ONLY the numbers and facts in this data — never invent stats.\n\n"
         "ROLLING_7DAY:\n"
         f"{json.dumps(rolling, indent=2)}\n\n"
+    )
+    if emotional_context:
+        message += (
+            "EMOTIONAL_CONTEXT (pre-computed mood signals — use these to calibrate "
+            "emotional intensity per team; see Emotional Range in the system prompt):\n"
+            f"{json.dumps(emotional_context, indent=2)}\n\n"
+        )
+    message += (
         "UPCOMING_SCHEDULE:\n"
         f"{json.dumps(schedule, indent=2)}\n\n"
         "LATEST_NEWS:\n"
@@ -564,6 +831,16 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
                 "framing you might infer from news stories or LATEST_NEWS):\n"
                 f"{overrides_text}\n\n"
             )
+    if coverage_allocation:
+        primary = ", ".join(coverage_allocation.get("primary", [])) or "none"
+        secondary = ", ".join(coverage_allocation.get("secondary", [])) or "none"
+        minimal = ", ".join(coverage_allocation.get("minimal", [])) or "none"
+        message += (
+            "COVERAGE_ALLOCATION (follow these priorities for morning_brew airtime):\n"
+            f"- PRIMARY (bulk of morning_brew): {primary}\n"
+            f"- SECONDARY (1-2 sentences if news warrants): {secondary}\n"
+            f"- MINIMAL (skip unless breaking news in LATEST_NEWS): {minimal}\n\n"
+        )
     message += (
         "SEASON_MEMORY:\n"
         f"{json.dumps(season_memory, indent=2)}\n\n"
@@ -583,6 +860,18 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
             "CALLER_FLAVOR (today's archetypes — use AT MOST one phrasing per "
             "morning_brew, only if it fits the moment; do not stack):\n"
             f"{json.dumps(callers, indent=2)}\n\n"
+        )
+    if stories:
+        message += (
+            "DAN_STORIES (today's recurring characters — use AT MOST one character "
+            "reference per morning_brew. Adapt to the actual story, don't force it):\n"
+            f"{json.dumps(stories, indent=2)}\n\n"
+        )
+    if slow_day and story_seeds:
+        message += (
+            "STORY_SEEDS (historical anchors for today's slow-day story — pick one "
+            "as your starting point, weave a fictional personal story around it):\n"
+            f"{json.dumps(story_seeds, indent=2)}\n\n"
         )
     if roster and roster.get("rosters"):
         message += (
@@ -701,6 +990,10 @@ def main():
     roster = load_json(roster_path)
     season_overrides_path = Path(os.environ.get("SEASON_OVERRIDES_PATH", DEFAULT_SEASON_OVERRIDES))
     season_overrides = load_json(season_overrides_path)
+    stories_path = Path(os.environ.get("DAN_STORIES_PATH", DEFAULT_DAN_STORIES))
+    stories_data = load_json(stories_path)
+    seeds_path = Path(os.environ.get("STORY_SEEDS_PATH", DEFAULT_STORY_SEEDS))
+    seeds_data = load_json(seeds_path)
     season_memory = build_season_memory(season_static, season_current)
 
     archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
@@ -713,8 +1006,19 @@ def main():
     # as the real calendar moves forward. Production leaves this unset.
     today_iso = os.environ.get("TODAY_OVERRIDE") or datetime.now(timezone.utc).date().isoformat()
     todays_callers = select_daily_callers(callers_data, today_iso)
+    todays_stories = select_daily_stories(stories_data, today_iso)
     print(f"  today:          {today_iso}")
     print(f"  callers:        {len(todays_callers)} archetype(s) picked")
+    print(f"  stories:        {len(todays_stories)} character(s) picked")
+
+    # Pre-compute emotional context, coverage allocation, and slow-day detection
+    emotional_context = compute_emotional_context(rolling, grudges)
+    coverage_allocation = compute_coverage_allocation(season_overrides, season_current, rolling)
+    slow_day = detect_slow_day(rolling, news, schedule)
+    todays_seeds = select_daily_seeds(seeds_data, today_iso) if slow_day else []
+    print(f"  emotional:      {len(emotional_context)} team(s) with context")
+    print(f"  coverage:       primary={coverage_allocation['primary']}, minimal={coverage_allocation['minimal']}")
+    print(f"  slow_day:       {slow_day}")
 
     user_message = build_user_message(
         rolling, schedule, news, season_memory,
@@ -726,6 +1030,11 @@ def main():
         roster=roster,
         season_overrides=season_overrides,
         today_iso=today_iso,
+        emotional_context=emotional_context,
+        coverage_allocation=coverage_allocation,
+        slow_day=slow_day,
+        stories=todays_stories,
+        story_seeds=todays_seeds,
     )
 
     # DRY_RUN=1 prints the assembled prompt and exits before any LLM call.

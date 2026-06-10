@@ -1,29 +1,49 @@
 {
-  "_notes": "Boston sports historical facts for Dan's color references. Hand-curated. Add sparingly — Dan should use history for flavor, not content. 3-6 entries per category. Every fact is verifiable.",
-  "updated": "2026-04-24",
+  "_notes": "Boston sports historical facts for Dan's color references and humor comparisons. Hand-curated, every entry verifiable. Comprehensive coverage from 1980s through present. The humor_angle field suggests how Dan might use each moment in a comparison or story.",
+  "updated": "2026-06-10",
   "celtics": {
     "total_championships": 18,
     "championships": [
       {"year": 2024, "opponent": "Dallas Mavericks", "series": "4-1", "note": "Banner 18, Tatum's first ring, Jaylen Brown Finals MVP"},
       {"year": 2008, "opponent": "Los Angeles Lakers", "series": "4-2", "note": "The Big Three's one and only, Pierce Finals MVP"},
-      {"year": 1986, "opponent": "Houston Rockets", "series": "4-2", "note": "Larry Bird era apex"},
+      {"year": 1986, "opponent": "Houston Rockets", "series": "4-2", "note": "Larry Bird era apex, widely considered greatest Celtics team ever"},
+      {"year": 1984, "opponent": "Los Angeles Lakers", "series": "4-3", "note": "Bird vs Magic Finals round 1, the 'Heat Game' in the old Garden"},
       {"year": 1981, "opponent": "Houston Rockets", "series": "4-2", "note": "Bird's first title"},
       {"year": 1969, "opponent": "Los Angeles Lakers", "series": "4-3", "note": "Russell's 11th and final ring as player-coach"}
     ],
     "dynasties": [
       {"name": "Russell Era", "years": "1957-1969", "note": "11 titles in 13 years, Bill Russell never cared about stats"},
       {"name": "Larry Bird Era", "years": "1979-1992", "note": "3 titles, Celtics-Lakers defines the 80s"},
-      {"name": "Big Three", "years": "2007-2012", "note": "Pierce, Garnett, Allen, 1 title but always a threat"}
+      {"name": "Big Three", "years": "2007-2012", "note": "Pierce, Garnett, Allen, 1 title but always a threat"},
+      {"name": "Jayson and Jaylen Era", "years": "2017-present", "note": "Multiple ECF appearances, Banner 18 in 2024"}
     ],
     "iconic_moments": [
-      {"year": 2008, "moment": "Ray Allen's clutch threes in the Finals vs the Lakers"},
-      {"year": 1987, "moment": "Bird steals the inbounds pass in Game 5 vs the Pistons"},
-      {"year": 1986, "moment": "The Green Team wire-to-wire, maybe the greatest Celtics team ever"}
+      {"year": 2024, "moment": "Jaylen Brown named Finals MVP as Celtics win Banner 18 in dominant fashion over Dallas", "humor_angle": "Dan watched with three generations of family, his kid asked if the Celtics always win"},
+      {"year": 2022, "moment": "Celtics reach the Finals for first time since 2010, lose to Warriors in 6 games", "humor_angle": "So close you could taste it, then Steph happened"},
+      {"year": 2020, "moment": "Jayson Tatum's buzzer-beater to beat the Raptors in the bubble playoffs", "humor_angle": "Nobody was in the arena but Dan screamed so loud his neighbors called"},
+      {"year": 2017, "moment": "Isaiah Thomas plays through grief after his sister's death, scores 53 against the Wizards in the playoffs", "humor_angle": "One of the most gutsy performances Dan has ever seen, IT4 left everything on the floor"},
+      {"year": 2012, "moment": "LeBron eliminates the Celtics in Game 7 of the ECF, ending the Big Three era", "humor_angle": "Dan still gets a twitch when someone mentions South Beach"},
+      {"year": 2010, "moment": "Celtics blow the Finals to the Lakers in Game 7, Kobe wins his 5th ring at Boston's expense", "humor_angle": "Dan walked home past the Common and saw a guy in a Garnett jersey staring at nothing"},
+      {"year": 2008, "moment": "KG screams 'Anything is possible!' after winning Banner 17", "humor_angle": "Dan's pops, who never gets emotional about sports, walked out of the room and came back with red eyes"},
+      {"year": 2008, "moment": "Paul Pierce leaves the game in a wheelchair in the Finals, returns and hits a three", "humor_angle": "The wheelchair game. Dan thought it was over. Pierce had other ideas."},
+      {"year": 2008, "moment": "Ray Allen's clutch shooting buries the Lakers in the Finals", "humor_angle": "Dan was in the nosebleeds at the Garden and felt every three through the floor"},
+      {"year": 2002, "moment": "Celtics reach the ECF for first time in years, lose to the Nets. Pierce-Walker era revival", "humor_angle": "Brief hope before the dark years"},
+      {"year": 1993, "moment": "Reggie Lewis collapses during a playoff game, later dies in the offseason. Franchise-altering tragedy", "humor_angle": "Not for humor. Dan mentions this only with reverence. A loss that transcended basketball."},
+      {"year": 1992, "moment": "Larry Bird retires due to chronic back pain after 13 seasons", "humor_angle": "Dan's pops said the Garden got quieter the day Bird retired and never got that loud again until 2008"},
+      {"year": 1987, "moment": "Bird steals the inbounds pass from Isiah Thomas in Game 5 of the ECF, feeds DJ for the layup", "humor_angle": "The steal. Dan's pops acted it out in the living room so many times he knocked over a lamp."},
+      {"year": 1986, "moment": "Len Bias, 2nd overall pick, dies of cocaine overdose two days after being drafted. Dynasty that never was", "humor_angle": "Not for humor. The biggest what-if in franchise history. Dan mentions this with respect only."},
+      {"year": 1986, "moment": "The 1985-86 Celtics go 67-15, widely considered the greatest team in franchise history", "humor_angle": "When Dan's pops says 'you should've seen the '86 team,' he means it"},
+      {"year": 1984, "moment": "The Heat Game: Game 5 of the Finals at Boston Garden with no air conditioning, 97 degrees at tipoff", "humor_angle": "Dan's pops claims he was there and survived on sheer willpower and a warm Coke"}
+    ],
+    "collapses": [
+      {"year": 2026, "event": "Celtics blow 3-1 series lead to 76ers in first round, eliminated as 2-seed", "humor_angle": "Too fresh to be funny. Dan is still processing."},
+      {"year": 2023, "event": "Celtics lose Game 7 of ECF to Heat at home after being heavy favorites", "humor_angle": "Dan had the parade route bookmarked on his phone. Had to delete the bookmark."},
+      {"year": 2010, "event": "Celtics blow Finals lead to Lakers, lose Game 7 at home", "humor_angle": "Perkins' injury, Kobe's smirk, Dan's broken remote control"}
     ],
     "rivalries": [
-      {"rival": "Lakers", "note": "12 Finals meetings, defines the NBA"},
-      {"rival": "76ers", "note": "Bird vs Doctor J, modern Tatum vs Embiid"},
-      {"rival": "Heat", "note": "Playoff nemesis through the 2010s and 2020s"}
+      {"rival": "Lakers", "note": "12 Finals meetings, defines the NBA. Bird vs Magic, Pierce vs Kobe, the rivalry that built the league."},
+      {"rival": "76ers", "note": "Bird vs Doctor J, modern Tatum vs Embiid, 2026 first-round upset still stings"},
+      {"rival": "Heat", "note": "Playoff nemesis through the 2010s and 2020s, LeBron's villain era, Butler's dominance"}
     ]
   },
   "bruins": {
@@ -35,40 +55,78 @@
     ],
     "dynasties": [
       {"name": "Big Bad Bruins", "years": "1967-1979", "note": "Orr, Esposito, Bucyk, physical and dominant"},
+      {"name": "Neely-Bourque Era", "years": "1986-2000", "note": "Cam Neely's physicality, Bourque's leadership, heartbreak but beloved"},
       {"name": "Bergeron-Marchand-Pastrnak", "years": "2011-2023", "note": "Presidents' Trophies, 1 Cup, perennial contender"}
     ],
     "iconic_moments": [
-      {"year": 1970, "moment": "Bobby Orr's airborne Cup-winning goal"},
-      {"year": 2011, "moment": "Tim Thomas robs the Sedins in the Cup Final"},
-      {"year": 2013, "moment": "Heartbreak loss to the Blackhawks in the Final"}
+      {"year": 2023, "moment": "Record-setting 65-win regular season (133 points) ends with first-round elimination by Panthers in 7 games", "humor_angle": "The most dominant regular season in NHL history and it meant absolutely nothing in April"},
+      {"year": 2021, "moment": "Bergeron and Marchand partnership era, Bruins a perennial playoff team but couldn't get past the second round", "humor_angle": "Always the bridesmaid, never the bride, unless you count 2011"},
+      {"year": 2019, "moment": "Bruins reach the Stanley Cup Final, lose to Blues in 7 games. No goal controversy in Game 5", "humor_angle": "Dan is still mad about that hand pass. Rick next door wrote a 3-page letter to the league."},
+      {"year": 2013, "moment": "Bruins blow 2-1 lead in the Cup Final, Blackhawks score twice in 17 seconds in Game 6 to win it", "humor_angle": "17 seconds. Dan was celebrating. Then he wasn't. The fastest heartbreak in sports history."},
+      {"year": 2011, "moment": "Tim Thomas posts a .940 save percentage in the playoffs, shutout in Game 7 of the Cup Final", "humor_angle": "Thomas was a brick wall. Dan watched at Uncle Carmine's place. Carmine slept through the second period."},
+      {"year": 2010, "moment": "Bruins become only the 3rd team in NHL history to blow a 3-0 series lead, losing to Flyers in 7 games", "humor_angle": "Dan told everyone at work the Bruins were a lock after Game 3. Called in sick after Game 7."},
+      {"year": 2004, "moment": "Joe Thornton wins Hart Trophy then gets traded to San Jose. Beginning of a rebuild.", "humor_angle": "Trading your best player is a special kind of pain. Dan still thinks about what could've been."},
+      {"year": 2000, "moment": "Ray Bourque traded to Colorado after 21 years in Boston, finally wins the Cup in 2001", "humor_angle": "Dan cried when Bourque lifted the Cup in an Avalanche jersey. Happy tears, but still. Should've been in black and gold."},
+      {"year": 1996, "moment": "Cam Neely retires at 31 due to chronic knee injuries. One of the great what-ifs.", "humor_angle": "Neely healthy for a full career is 600 goals easy. Dan's pops still gets mad about the Ulf Samuelsson hit."},
+      {"year": 1994, "moment": "Bruins' last season at the old Boston Garden before moving to the Fleet Center", "humor_angle": "Dan's pops took him to the last game at the old Garden. Says the new place never smelled right."},
+      {"year": 1992, "moment": "Bruins reach the Cup Final, lose to Penguins (Lemieux) in 4 games. Outclassed by greatness.", "humor_angle": "Nothing you can do when Mario Lemieux decides he's the best player on earth that week"},
+      {"year": 1990, "moment": "Bruins reach the Cup Final for first time since 1978, lose to Edmonton in 5 games with a power failure at Boston Garden in Game 4", "humor_angle": "The lights literally went out at the Garden during a Cup Final game. You can't make this stuff up."},
+      {"year": 1988, "moment": "Bruins-Canadiens playoff brawl and power failure at Montreal Forum during Game 4 of the Adams Division Final", "humor_angle": "Original Six hockey at its finest, or worst, depending on who you ask"}
+    ],
+    "collapses": [
+      {"year": 2026, "event": "Bruins eliminated in first round by Buffalo Sabres 4-2", "humor_angle": "Buffalo. Of all teams. Dan needs time."},
+      {"year": 2023, "event": "Historic 65-win season ends in first-round exit to Florida Panthers", "humor_angle": "Best regular season ever, worst possible ending. Dan's blood pressure hasn't recovered."},
+      {"year": 2010, "event": "Blew 3-0 series lead to Flyers, only 3rd team in NHL history to collapse that badly", "humor_angle": "Dan told everyone at work it was over after Game 3. Called in sick after Game 7."}
     ],
     "rivalries": [
       {"rival": "Canadiens", "note": "Original Six, most playoff meetings in NHL history"},
-      {"rival": "Maple Leafs", "note": "Playoff nemesis, Bruins own the recent head-to-head"}
+      {"rival": "Maple Leafs", "note": "Playoff nemesis, Bruins own the recent head-to-head"},
+      {"rival": "Panthers", "note": "New rivalry born from 2023 first-round upset after record season"}
     ]
   },
   "redsox": {
     "total_championships": 9,
     "championships": [
-      {"year": 2018, "opponent": "Los Angeles Dodgers", "series": "4-1", "note": "108-win juggernaut, Mookie Betts MVP"},
-      {"year": 2013, "opponent": "St. Louis Cardinals", "series": "4-2", "note": "Boston Strong after the Marathon bombing"},
-      {"year": 2007, "opponent": "Colorado Rockies", "series": "4-0", "note": "Papi and Manny still rolling, Pedroia ROY"},
-      {"year": 2004, "opponent": "St. Louis Cardinals", "series": "4-0", "note": "Broke the 86-year curse, came back from 0-3 vs the Yankees"}
+      {"year": 2018, "opponent": "Los Angeles Dodgers", "series": "4-1", "note": "108-win juggernaut, Mookie Betts MVP season, Steve Pearce WS MVP"},
+      {"year": 2013, "opponent": "St. Louis Cardinals", "series": "4-2", "note": "Boston Strong after the Marathon bombing, Ortiz WS MVP"},
+      {"year": 2007, "opponent": "Colorado Rockies", "series": "4-0", "note": "Papi and Manny still rolling, Pedroia ROY, dominant sweep"},
+      {"year": 2004, "opponent": "St. Louis Cardinals", "series": "4-0", "note": "Broke the 86-year curse, came back from 0-3 vs the Yankees in ALCS"}
     ],
     "curses_and_droughts": [
       {"name": "Curse of the Bambino", "years": "1918-2004", "note": "86-year title drought after selling Babe Ruth to the Yankees"}
     ],
     "dynasties": [
-      {"name": "Papi Era", "years": "2003-2016", "note": "3 titles, Ortiz became the face of Boston"}
+      {"name": "Papi Era", "years": "2003-2016", "note": "3 titles, Ortiz became the face of Boston"},
+      {"name": "2018 Machine", "years": "2018", "note": "108-54, best record in MLB, bulldozed through October"}
     ],
     "iconic_moments": [
-      {"year": 2004, "moment": "Dave Roberts steals second in ALCS Game 4, the turning point"},
-      {"year": 1986, "moment": "The grounder through Buckner's legs (we don't talk about it)"},
-      {"year": 1978, "moment": "Bucky Dent's home run at Fenway (also don't talk about it)"},
-      {"year": 1975, "moment": "Fisk waves it fair in Game 6 vs the Reds"}
+      {"year": 2021, "moment": "Kiké Hernandez's walk-off sacrifice fly in ALDS vs Rays, grand slam in ALCS vs Astros", "humor_angle": "Kiké was a one-man wrecking crew in October. Dan couldn't sit down for the entire ALCS."},
+      {"year": 2018, "moment": "Red Sox win 108 games and dominate the postseason, Mookie Betts at his peak", "humor_angle": "That team was so good even Sully's predictions came true for once"},
+      {"year": 2013, "moment": "Ortiz hits go-ahead grand slam in ALCS Game 2 vs Tigers, Torii Hunter flips over the bullpen wall", "humor_angle": "The grand slam. The bullpen cop's face. Dan grabbed a total stranger in a bear hug and his beer went everywhere."},
+      {"year": 2013, "moment": "Red Sox win World Series at Fenway for first time since 1918, Boston Strong season after Marathon bombing", "humor_angle": "That season meant more than baseball. Dan's pops said it was the most important championship any Boston team ever won."},
+      {"year": 2011, "moment": "September collapse: Red Sox blow 9-game wild card lead in final month, go 7-20 in September. Worst collapse in MLB history at the time.", "humor_angle": "Dan doesn't talk about September 2011. It's like a family secret. They were in. Then they weren't. 7-and-20."},
+      {"year": 2011, "moment": "Game 162: Orioles walk off against Red Sox while Rays complete miracle comeback. Sox eliminated on final night.", "humor_angle": "Dan watched two TVs at once. Both broke his heart at the exact same time."},
+      {"year": 2012, "moment": "Bobby Valentine era: 69-93 record, worst Red Sox season in decades. Valentine fired after one season.", "humor_angle": "The Bobby V year. Dan blocked it from his memory. Sully still brings it up to torture him."},
+      {"year": 2008, "moment": "Manny Ramirez traded mid-season to Dodgers. End of Manny Being Manny in Boston.", "humor_angle": "Manny was Manny until he wasn't. Dan was sad but not surprised."},
+      {"year": 2007, "moment": "Red Sox sweep the World Series, Papelbon dances on the mound, second title in 4 years", "humor_angle": "Papelbon's Riverdance on the mound. Dan tried to replicate it at a cookout. Nearly broke his ankle."},
+      {"year": 2004, "moment": "Dave Roberts steals second in ALCS Game 4, sparking the greatest comeback in baseball history", "humor_angle": "The Steal. Dan was at a bar in Southie. Sully had already left. Then Roberts took off and everything changed."},
+      {"year": 2004, "moment": "Curt Schilling pitches Game 6 of the ALCS with a bloody sock, sutured ankle tendon", "humor_angle": "The Bloody Sock. Dan's pops said that's what it looks like when a man refuses to lose."},
+      {"year": 2004, "moment": "Ortiz walk-off homer in ALCS Game 4 and walk-off single in Game 5 vs Yankees", "humor_angle": "Big Papi with the city on his back. Dan still gets chills thinking about those at-bats."},
+      {"year": 2003, "moment": "Aaron Boone's walk-off homer in ALCS Game 7 sends Yankees to World Series. Grady Little leaves Pedro in too long.", "humor_angle": "Grady Little. Pedro. The 8th inning. Dan threw the remote at the TV and had to buy a new one."},
+      {"year": 1999, "moment": "Pedro Martinez strikes out 17 in one-hitter vs Yankees at Yankee Stadium. 'Who's your daddy?' came later, but this was the night Pedro was God.", "humor_angle": "Dan watched with his pops. Pops said he'd never seen anything like it. He was right."},
+      {"year": 1999, "moment": "Pedro Martinez ALDS Game 5 relief appearance vs Indians, pitches 6 no-hit innings on 3 days rest", "humor_angle": "Pedro came out of the bullpen and threw six innings of zeros. On three days' rest. In a do-or-die game."},
+      {"year": 1986, "moment": "Bill Buckner lets the grounder go through his legs in Game 6 of the World Series", "humor_angle": "Not for humor. Dan's pops told the story so many times it feels like a memory. The ball, the legs, the silence."},
+      {"year": 1986, "moment": "Roger Clemens strikes out 20 batters in a single game vs Seattle, first pitcher ever to do so", "humor_angle": "Before the bad blood, Clemens was untouchable. Twenty K's. Dan's pops called it the greatest game he ever watched."},
+      {"year": 1978, "moment": "Bucky Dent's homer at Fenway in the one-game playoff, Yankees win the AL East", "humor_angle": "Dan's family has a different middle name for Bucky Dent. They're not the only ones."},
+      {"year": 1975, "moment": "Fisk waves it fair in Game 6 of the World Series vs the Reds", "humor_angle": "The wave. Fisk willing the ball fair. Dan's pops says it's the most iconic moment in Fenway history."}
+    ],
+    "collapses": [
+      {"year": 2011, "event": "Blew 9-game wild card lead in September, went 7-20 to miss playoffs on final day", "humor_angle": "The worst September in baseball history. Dan watched two TVs on the last night. Both broke his heart."},
+      {"year": 2012, "event": "Bobby Valentine's 69-93 disaster season", "humor_angle": "The year that shall not be named. Sully still brings it up."},
+      {"year": 2003, "event": "Grady Little leaves Pedro in too long, Aaron Boone ends it in Game 7 of ALCS", "humor_angle": "Dan threw the remote at the TV. Had to buy a new TV."}
     ],
     "rivalries": [
-      {"rival": "Yankees", "note": "The rivalry. 100-plus years, defines baseball in the Northeast"}
+      {"rival": "Yankees", "note": "The rivalry. 100-plus years, defines baseball in the Northeast. Roberts, Boone, Dent, Fisk. Every game matters more."}
     ]
   },
   "patriots": {
@@ -82,17 +140,38 @@
       {"year": 2001, "opponent": "St. Louis Rams", "series": "Super Bowl XXXVI", "note": "Brady's first, Tuck Rule changed history"}
     ],
     "dynasties": [
-      {"name": "Brady-Belichick", "years": "2001-2019", "note": "6 rings, 9 Super Bowl appearances, greatest dynasty in NFL history"}
+      {"name": "Brady-Belichick", "years": "2001-2019", "note": "6 rings, 9 Super Bowl appearances, greatest dynasty in NFL history"},
+      {"name": "Post-Brady Rebuild", "years": "2020-present", "note": "Finding a new identity, Drake Maye era begins"}
     ],
     "iconic_moments": [
-      {"year": 2001, "moment": "The Tuck Rule game vs the Raiders"},
-      {"year": 2016, "moment": "28-3, the comeback in Super Bowl LI"},
-      {"year": 2014, "moment": "Malcolm Butler's goal-line interception vs Seattle"}
+      {"year": 2025, "moment": "Patriots reach Super Bowl LX with Drake Maye, lose to Lions. Best post-Brady season at 14-3.", "humor_angle": "So close. Maye showed the future is real but the present still hurts."},
+      {"year": 2021, "moment": "Mac Jones rookie season, Patriots make playoffs. Brief hope before regression.", "humor_angle": "Dan was optimistic for about 6 months. A personal record."},
+      {"year": 2019, "moment": "Brady's final game as a Patriot: wild card loss to Titans at home. End of an era.", "humor_angle": "Dan knew it was over when Brady walked off the field. Didn't want to say it out loud."},
+      {"year": 2018, "moment": "Super Bowl LIII: 13-3 win over Rams, lowest scoring Super Bowl ever. Brady's 6th ring.", "humor_angle": "Sully fell asleep during the first half. Dan can't blame him. But a win is a win. Six rings."},
+      {"year": 2017, "moment": "Eagles beat Patriots 41-33 in Super Bowl LII. Nick Foles and the Philly Special.", "humor_angle": "The Philly Special. Dan still can't watch the replay. Lost to a backup quarterback running a trick play."},
+      {"year": 2016, "moment": "28-3 comeback in Super Bowl LI vs Falcons, greatest comeback in Super Bowl history", "humor_angle": "At 28-3, Sully's wife started cleaning up. Dan refused to leave. Woke Sully up screaming at the start of overtime."},
+      {"year": 2014, "moment": "Malcolm Butler intercepts Russell Wilson at the goal line to win Super Bowl XLIX", "humor_angle": "Dan was on his knees in Sully's living room. The play call. The pick. Dan hugged the TV."},
+      {"year": 2013, "moment": "AFC Championship loss to Broncos. Peyton Manning revenge game.", "humor_angle": "Peyton got his. Dan respects it. Doesn't like it, but respects it."},
+      {"year": 2011, "moment": "Patriots lose Super Bowl XLVI to Giants again. Manningham catch echoes Tyree.", "humor_angle": "The Giants again. A different miracle catch. Dan seriously considered becoming a hockey-only fan."},
+      {"year": 2007, "moment": "18-1: Perfect regular season ends with Super Bowl loss to Giants. Tyree's helmet catch.", "humor_angle": "Dan doesn't talk about the helmet catch. He had a Super Bowl party with 40 people. By the 4th quarter there were 3."},
+      {"year": 2007, "moment": "Patriots go 16-0 in the regular season, first undefeated regular season since 1972 Dolphins", "humor_angle": "The regular season was a freight train. Then the freight train hit a wall named Eli Manning."},
+      {"year": 2006, "moment": "AFC Championship loss to Colts. Peyton Manning finally beats the Patriots in the playoffs.", "humor_angle": "Manning's face when he won. Dan's face when he lost. Two very different expressions."},
+      {"year": 2004, "moment": "Patriots win 21 consecutive games spanning 2003-2004 seasons", "humor_angle": "Twenty-one straight. Dan's pops said the dynasty was official. He was right."},
+      {"year": 2001, "moment": "The Tuck Rule game: Brady fumble reversed in snowy AFC Divisional vs Raiders", "humor_angle": "Dan and pops drove to Foxborough in a blizzard. Pops had a thermos of something that was definitely not coffee."},
+      {"year": 2001, "moment": "Drew Bledsoe goes down, unknown 6th-round pick Tom Brady takes over and changes NFL history", "humor_angle": "Dan felt bad for Bledsoe. Then Brady started winning. Dan stopped feeling bad pretty quick."},
+      {"year": 1996, "moment": "Patriots reach Super Bowl XXXI, lose to Packers. Parcells era peak.", "humor_angle": "Dan was just happy to be there. The Pats hadn't been relevant since the '80s."},
+      {"year": 1985, "moment": "Patriots reach Super Bowl XX, get destroyed 46-10 by the Bears. The Fridge scored.", "humor_angle": "Dan's pops took him to a Super Bowl party and they left at halftime. The fridge scored a touchdown. An actual refrigerator-sized human."}
+    ],
+    "collapses": [
+      {"year": 2007, "event": "18-1. Perfect season ends in Super Bowl loss to Giants on Tyree's helmet catch", "humor_angle": "19-0 T-shirts printed in advance. They're still in someone's garage in Quincy."},
+      {"year": 2019, "event": "Wild card loss to Titans at home, Brady's last game as a Patriot", "humor_angle": "The end. Dan knew it. Everyone knew it. Nobody wanted to say it."},
+      {"year": 2017, "event": "Lost Super Bowl LII to Eagles and Nick Foles despite Brady throwing for 505 yards", "humor_angle": "Brady threw for 505 yards and lost. Dan has never been more confused by a football game."}
     ],
     "rivalries": [
-      {"rival": "Jets", "note": "Divisional nemesis, Brady owned them"},
-      {"rival": "Colts", "note": "Brady vs Manning, era-defining QB duels"},
-      {"rival": "Ravens", "note": "Playoff heartbreaks, physical AFC matchup"}
+      {"rival": "Jets", "note": "Divisional nemesis, Brady owned them. Belichick's origin story."},
+      {"rival": "Colts", "note": "Brady vs Manning, era-defining QB duels. The rivalry that defined the 2000s AFC."},
+      {"rival": "Ravens", "note": "Playoff heartbreaks, physical AFC matchup. Ray Lewis, Ed Reed, Suggs."},
+      {"rival": "Giants", "note": "Two Super Bowl losses, two miracle catches. The one team that had Brady's number."}
     ]
   }
 }

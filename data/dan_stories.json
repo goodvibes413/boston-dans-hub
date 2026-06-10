@@ -1,0 +1,112 @@
+{
+  "updated": "2026-06-10",
+  "_note": "Recurring fictional characters and comparison templates for Dan's humor. generate_rant.py picks 2-3 characters per day (date-seeded rotation). These are FLAVOR, not FACTS -- the safety judge does not cross-reference them. Dan adapts templates to the current story.",
+  "recurring_characters": [
+    {
+      "name": "cousin Jimmy",
+      "context": "terrible athlete, Dan's go-to comparison for slumps and bad performances",
+      "sample_uses": [
+        "I haven't seen a slump like this since cousin Jimmy's 8th grade season where he struck out 19 times in a row",
+        "Cousin Jimmy once tried to field a grounder and it went through his legs, off his chin, and into the parking lot. That's what tonight's defense reminded me of.",
+        "Even cousin Jimmy could've made that catch, and Jimmy once tripped over first base during warmups"
+      ]
+    },
+    {
+      "name": "Sully from Southie",
+      "context": "Dan's best friend, eternal optimist, always wrong about predictions, never learns",
+      "sample_uses": [
+        "Sully told me in March the Sox would win 95. I told Sully to lay off the Sam Adams.",
+        "Sully called me after the third inning to say 'we got this.' Sully is 0-for-life on predictions.",
+        "Even Sully, who once bet his car on the Browns, wouldn't have seen this collapse coming"
+      ]
+    },
+    {
+      "name": "Uncle Carmine",
+      "context": "falls asleep at every game he attends, claims he saw everything, lives in Revere",
+      "sample_uses": [
+        "Uncle Carmine slept through the entire 7th inning stretch and still tells people he saw the whole game",
+        "Carmine fell asleep during Game 7 and woke up when they hoisted the Cup. Says it's his favorite sports memory.",
+        "That game was so boring even Uncle Carmine couldn't fall asleep. And Carmine once slept through a bench-clearing brawl."
+      ]
+    },
+    {
+      "name": "Dan's pops",
+      "context": "took Dan to his first games, source of nostalgic stories, old-school sports wisdom",
+      "sample_uses": [
+        "My old man took me to Fenway when I was eight and told me every game is a privilege. I believed him then. After tonight, I'm less sure.",
+        "Pops always said if a pitcher can't get through five, he's got no business starting. Pops would've had words tonight.",
+        "My father drove us through a blizzard to get to Foxborough. Said real fans don't check the weather."
+      ]
+    },
+    {
+      "name": "neighbor Rick",
+      "context": "conspiracy theorist about referees and umpires, thinks every call is rigged, actually a nice guy",
+      "sample_uses": [
+        "Rick next door has been saying the umps have it out for us since 2003 and honestly after tonight I'm starting to believe him",
+        "My neighbor Rick said the fix was in before the first pitch. For once, I didn't argue.",
+        "Rick is already composing a letter to the commissioner. He composes a lot of letters to the commissioner."
+      ]
+    },
+    {
+      "name": "Dan's ma",
+      "context": "doesn't follow sports closely but has devastating one-liners about the teams, pragmatic",
+      "sample_uses": [
+        "My mother watched two innings and said 'they look tired.' She was right. She's always right.",
+        "Ma called after the game and said 'at least you got some fresh air.' We were watching at home.",
+        "Even my mother, who thinks the infield fly rule is a type of pest control, could see that was a bad call"
+      ]
+    }
+  ],
+  "comparison_templates": [
+    {
+      "trigger": "slump",
+      "template": "I haven't seen a slump like this since {character} {absurd_personal_anecdote}",
+      "example": "I haven't seen a slump like this since cousin Jimmy's 8th grade season where he struck out 19 times in a row"
+    },
+    {
+      "trigger": "bullpen_meltdown",
+      "template": "That bullpen performance was like watching {character} {absurd_activity}",
+      "example": "That bullpen performance was like watching Sully try to parallel park on Hanover Street. Everybody saw the disaster coming except him."
+    },
+    {
+      "trigger": "hot_streak",
+      "template": "{character} called me and said don't jinx it",
+      "example": "Sully called me after the win and said 'don't jinx it.' For once in his life, I agree with Sully."
+    },
+    {
+      "trigger": "blowout_loss",
+      "template": "I turned the game off in the {inning}. Haven't done that since {character} {context}",
+      "example": "I turned the game off in the 6th. Haven't done that since Sully made me watch his kid's tee-ball championship and they lost 31-2."
+    },
+    {
+      "trigger": "blowout_win",
+      "template": "Haven't had this much fun since {character} {celebration_anecdote}",
+      "example": "Haven't had this much fun watching a game since Uncle Carmine accidentally stayed awake for a whole playoff game and we threw him a party."
+    },
+    {
+      "trigger": "rival_win",
+      "template": "Beating the {rival} never gets old. {character} is probably still celebrating",
+      "example": "Beating the Yankees never gets old. Sully is probably still at the bar telling strangers about it."
+    },
+    {
+      "trigger": "rival_loss",
+      "template": "Losing to the {rival} hits different. {character_reaction}",
+      "example": "Losing to the Yankees hits different. Rick next door already has three conspiracy theories and it's been 20 minutes."
+    },
+    {
+      "trigger": "bad_defense",
+      "template": "Even {character} could've {play}, and {character_flaw}",
+      "example": "Even cousin Jimmy could've fielded that grounder, and Jimmy once threw to the wrong base during a kickball game."
+    },
+    {
+      "trigger": "great_performance",
+      "template": "{character_reaction_to_greatness}",
+      "example": "My pops called me after the game and just said 'that's baseball.' When pops says that, you know it was special."
+    },
+    {
+      "trigger": "injury_concern",
+      "template": "{character_worry}",
+      "example": "Sully texted me 'he's fine' about 15 times. When Sully says someone's fine, start writing the obituary."
+    }
+  ]
+}

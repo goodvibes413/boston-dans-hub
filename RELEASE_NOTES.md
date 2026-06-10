@@ -5,6 +5,36 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-06-10 — Dan Voice Overhaul: Emotional Range, Humor, Slow-Day Stories
+
+**Problem:** Dan's output was consistently flat — uniform emotional tone regardless of outcome, zero humor, a full paragraph every day on eliminated teams with no news, and slow news days stretched thin with generic offseason filler. Reading a week of archives, wins and losses sounded the same, there were no jokes or comparisons, and the Celtics/Bruins playoff exits were being rehashed daily.
+
+**What shipped:**
+
+1. **Emotional Range** (system prompt): New section teaching Dan to modulate intensity based on game outcomes. Wins are euphoric, losses are agonizing, streaks build momentum, slumps escalate despair, blowouts are amplified, nail-biters are cardiac events, rival games get extra intensity.
+
+2. **Coverage Allocation** (system prompt + pre-pass): Eliminated teams now get 1-2 sentences MAX unless there's breaking news. Active in-season teams get the bulk of morning_brew. A deterministic `compute_coverage_allocation()` pre-pass classifies each team as PRIMARY/SECONDARY/MINIMAL.
+
+3. **Humor and Comparisons** (system prompt + data): Two humor modes — invented personal comparisons (cousin Jimmy, Sully, Uncle Carmine, Dan's pops, neighbor Rick) and real historical comparisons from HISTORICAL_FACTS. New `data/dan_stories.json` with 6 recurring characters and 10 comparison templates. Target: at least one genuinely funny line per brew.
+
+4. **Slow Day Storytelling** (system prompt + pre-pass + data): When `detect_slow_day()` finds no games and minimal news, Dan tells a fictional personal story woven around real historical stats. New `data/story_seeds.json` with 14 historical-anchor seeds (2004 ALCS at a bar in Southie, 28-3 at Sully's basement, Game 7 at Uncle Carmine's). Stories are fictional but sports facts must be verifiable.
+
+5. **Emotional Context Pre-Pass** (`generate_rant.py`): New `compute_emotional_context()` computes streaks, score margins, and rivalry flags from rolling_7day data. Injected as `EMOTIONAL_CONTEXT` block so Gemini gets explicit mood direction.
+
+6. **Historical Facts Deepening** (`data/historical_facts.json`): Expanded from 3 iconic moments per team to 15-25 comprehensive entries covering 1980s through present. Added collapses, humor_angle fields, and new dynasties. Covers heartbreaks (Buckner, 18-1, 17 seconds), triumphs (Roberts' steal, 28-3, Banner 18), and memorable performances (Pedro's 17K, Bloody Sock, KG's "anything is possible").
+
+7. **Quality Roadmap Update**: Added Tier 2 pre-passes (emotional, coverage, slow-day), Tier 3 quality checks (humor, offseason coverage), Tier 4 data files (dan_stories, story_seeds), and new Tier 6 (Voice Evolution — recurring characters building Dan's persistent world).
+
+**Design decisions:**
+- All changes are $0/month — pure prompt engineering + deterministic Python pre-passes
+- Recurring fictional characters (cousin Jimmy, Sully, etc.) build Dan's world over time. Readers who come back daily will recognize them.
+- Slow-day stories are a treat, not a daily feature. Only activate when `SLOW_DAY_MODE` is True.
+- Stats discipline still absolute — even fictional stories must reference real verifiable data from HISTORICAL_FACTS or SEASON_MEMORY.
+
+**Files changed:** `prompts/boston_dan_system.txt` (4 new sections), `scripts/generate_rant.py` (4 new functions + expanded build_user_message), `data/dan_stories.json` (new), `data/story_seeds.json` (new), `data/historical_facts.json` (deepened), `docs/QUALITY_ROADMAP.md` (updated)
+
+---
+
 ## TODO — Audit All Past Season Data in `season_static.json`
 
 **Priority: High.** The 2025 Patriots entry was wrong (recorded as "8-9, Missed playoffs" when they went 14-3 and lost Super Bowl LX). This slipped through because `season_static.json` is hand-curated and there's no automated validation against a source of truth.

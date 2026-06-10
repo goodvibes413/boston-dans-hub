@@ -185,10 +185,11 @@ Until any of these trip, Tiers 1–4 are cheaper and faster.
 | Tier | Description | Status | Effort | Cost |
 |---|---|---|---|---|
 | 1 | Eval-driven prompt iteration (regression fixtures + gating) | **Pursuing** | ~half day | $0 |
-| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; **draft freshness shipped 2026-05-04** with DRY_RUN gate; causation pending; facts chunking deferred) | **In progress** | 1–2 days | $0 |
-| 3 | Voice/quality rubric expansion in `safety_judge.py` (**repetition pre-pass + bullet 10 shipped 2026-05-04**) | **Pursuing** | 2–3 days | +0–1 calls/day |
-| 4 | Richer source data (callers_and_voices + grudge_book **shipped 2026-05-04**; deeper history ongoing) | **Partial** | Ongoing | $0 |
+| 2 | Deterministic structured pre-passes (continuity memory **shipped 2026-04-27**; **draft freshness shipped 2026-05-04**; **emotional context, coverage allocation, slow-day detection shipped 2026-06-10**; causation pending; facts chunking deferred) | **In progress** | 1–2 days | $0 |
+| 3 | Voice/quality rubric expansion in `safety_judge.py` (**repetition pre-pass + bullet 10 shipped 2026-05-04**; humor check + offseason coverage check pending) | **Pursuing** | 2–3 days | +0–1 calls/day |
+| 4 | Richer source data (callers_and_voices + grudge_book **shipped 2026-05-04**; **dan_stories + story_seeds + historical_facts deepening shipped 2026-06-10**) | **Shipped** | Ongoing | $0 |
 | 5 | Product & UX (readable archive, eval data drill-down) | **Backlog** | 2–3 days | $0 |
+| 6 | Voice Evolution — recurring characters build Dan's persistent world across posts | **New** | Ongoing | $0 |
 | Multi-agent | 2+ Gemini calls collaborating on generation | **Conditional** | — | Breaks $0 |
 
 ---
@@ -204,9 +205,11 @@ Until any of these trip, Tiers 1–4 are cheaper and faster.
 - `prompts/boston_dan_system.txt` — add references to verbatim blocks and facts inventory
 
 ### Source data (Tier 4)
-- `data/historical_facts.json` — deepen (Tier 4)
-- `data/callers_and_voices.json` — new (Tier 4)
-- `data/grudge_book.json` — new (Tier 4)
+- `data/historical_facts.json` — comprehensive iconic moments since 1980s (15-25 per team, shipped 2026-06-10)
+- `data/callers_and_voices.json` — shipped 2026-05-04
+- `data/grudge_book.json` — shipped 2026-05-04
+- `data/dan_stories.json` — recurring fictional characters and comparison templates (shipped 2026-06-10)
+- `data/story_seeds.json` — historical-anchor story seeds for slow news days (shipped 2026-06-10)
 
 ### Evals (Tier 1)
 - `evals/fixtures/` — add fixtures for firing-tone, draft-collapse, same-day-causation regression tests
