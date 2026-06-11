@@ -1,5 +1,4 @@
 {
-  "date": "2026-06-10",
   "generated_at": "2026-06-10T11:43:11.318621+00:00",
   "headline": "Sox Drop Another Tough One In Tampa As Bats Remain Cold",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "Don Sweeney has a massive summer ahead of him to fix this Bruins roster after that early exit."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Cold Snap",
-      "player": "Payton Tolle",
-      "trend": "Took the loss after giving up four earned runs on nine hits in six innings of work against the Rays.",
-      "dans_take": "He battled out there, but giving up nine hits is playing with fire against a first-place division rival."
-    },
-    {
-      "category": "Slump",
-      "player": "Willson Contreras",
-      "trend": "Went zero for four on Tuesday night, continuing a tough stretch at the plate.",
-      "dans_take": "We brought him in to be a run producer, and right now the middle of the order is just leaving too many guys on base."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Garrett Whitlock",
-      "trend": "Tossed a clean eighth inning with one hit and one strikeout.",
-      "dans_take": "Whitlock did his job out of the pen, but the offense couldn't reward the solid relief work."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-09",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-09",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Tampa Bay Rays",
-      "away_team": "Boston Red Sox",
-      "home_score": 4,
-      "away_score": 3,
-      "game_date": "2026-06-09",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Seattle Seahawks",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-09",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-06-10",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "1:10 PM ET"
-    },
-    {
-      "date": "2026-06-12",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-06-13",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-06-14",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "7:20 PM ET"
-    },
-    {
-      "date": "2026-06-16",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-06-17",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-06-10"
 }
