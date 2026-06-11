@@ -1,29 +1,40 @@
 {
-  "headline": "Quiet Day In The Hub Means Reliving Ultimate Red Sox Glory",
+  "headline": "Sox Rally Falls Short In Tampa After Another Tough Outing On The Mound",
   "morning_brew": [
-    "Quiet day in the Hub, which reminds me of a night back in October 2004 during the ALCS. We were down three games to zero against the Yankees, and I was sitting at a bar in Southie watching Game 4. Uncle Carmine had actually fallen asleep on his barstool by the sixth inning, and when he woke up in the seventh, he grumbled and headed home to Revere because he thought the season was completely over. I almost followed him out the door, feeling that old familiar knot in my stomach, while the bartender started wiping down the counter and some guy in a Pedro Martinez jersey was literally crying into his plate of nachos.",
-    "Then came the bottom of the ninth, we got a guy on first base, and Dave Roberts came in to pinch run. Everyone in the building knew he was going, and he still slid into second just ahead of the tag. The entire bar absolutely lost its mind, beer was flying, and Uncle Carmine apparently heard the scream all the way on the Southeast Expressway. We went on to break that eighty-six-year Curse of the Bambino, but it all started with that one slide.",
-    "Looking ahead to tomorrow, the Red Sox are finally back at Fenway Park to open up a series against the Texas Rangers. Ranger Suarez is slated to get the ball, and we desperately need a win to snap this brutal four-game losing streak. The Patriots are still wrapping up minicamp down in Foxborough, where Drake Maye is busy building chemistry with A.J. Brown, so at least there is some hope on the horizon."
+    "I watched that eighth inning through my fingers like a horror movie. The Red Sox dropped a frustrating seven to five decision down in Tampa yesterday, and I am officially sick of watching this team find new ways to break our hearts. Jake Bennett struggled on the mound, giving up four earned runs on seven hits in five innings of work. This offense was so quiet for the first seven frames that Uncle Carmine slept right through his usual third-inning hot dog, only waking up when we finally put some runs on the board.",
+    "We tried to make a game of it in the eighth inning with a three-run homer from Ceddanne Rafaela, but the mountain was just too high to climb. Justin Slaten came out of the bullpen and got hit hard, giving up two earned runs on three hits in less than an inning. That completely deflated the comeback bid. With this loss, the season record drops to twenty-seven wins and thirty-nine losses, and the division race is looking more and more like a pipe dream.",
+    "Over in Foxborough, the news is a lot more positive as Drake Maye is reportedly embracing the team culture during these minicamp sessions. The young quarterback has a massive opportunity ahead of him, and seeing him put in the work with the guys in June is exactly what we need to see. Let's hope he keeps this momentum going when the real workouts begin in July."
   ],
   "trend_watch": [
     {
+      "category": "Cold Snap",
+      "player": "Justin Slaten",
+      "trend": "Gave up two earned runs on three hits in less than an inning on Wednesday",
+      "dans_take": "Absolutely brutal outing from Slaten, giving up two runs and destroying our momentum."
+    },
+    {
       "category": "Heater",
       "player": "Ceddanne Rafaela",
-      "trend": "Hit a big three-run home run in the eighth inning against the Rays",
-      "dans_take": "Rafaela is showing some real life with that bat, but he needs some help from the rest of this lineup."
+      "trend": "Hit a three-run home run in the eighth inning against the Rays",
+      "dans_take": "Rafaela is showing some serious pop, but we need the rest of the bats to wake up."
     },
     {
       "category": "Cold Snap",
-      "player": "Justin Slaten",
-      "trend": "Allowed three hits and two earned runs in less than an inning of work",
-      "dans_take": "Absolutely brutal outing for Slaten, who just could not find his spots in the eighth."
+      "player": "Willson Contreras",
+      "trend": "Went zero for three in Wednesday's loss and is batting .284",
+      "dans_take": "We need our big bat to start delivering with runners on base."
     }
   ],
   "news_digest": [
     {
+      "headline": "Red Sox's Garrett Crochet: Lat strain 'lot worse' than thought",
+      "url": "https://www.espn.com/mlb/story/_/id/49022900/red-sox-garrett-crochet-lat-strain-lot-worse-thought",
+      "dans_take": "A tough break for the kid, hopefully he gets back on a mound soon."
+    },
+    {
       "headline": "Drake Maye embracing Patriots team culture",
       "url": "https://www.espn.com/video/clip/_/id/49022705/drake-maye-embracing-patriots-team-culture",
-      "dans_take": "Love seeing the young quarterback step up and lead by example down in Foxborough."
+      "dans_take": "Love seeing the kid buy into the system early during minicamp."
     }
   ],
   "box_scores": {
@@ -100,5 +111,5 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-06-11T12:14:53.029322+00:00"
+  "generated_at": "2026-06-11T17:41:18.330315+00:00"
 }
