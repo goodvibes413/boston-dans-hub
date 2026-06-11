@@ -5,6 +5,25 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-06-11 — Game Coverage Gap Fix: Slow-Day Detection Bug + Judge Rule 12
+
+**Problem:** First run with the voice overhaul (June 11). Dan told a fictional 2004 ALCS story instead of covering a real Red Sox game that happened on June 10. All judges passed because no rule checked game coverage completeness.
+
+**Root causes:**
+1. `detect_slow_day()` accessed `rolling.get("redsox")` but rolling_7day structure is `{"days": [{"date": "...", "redsox": {"boxscore": {...}}}]}`. The function never found the game data and incorrectly returned `True`.
+2. Same structural bug affected `compute_emotional_context()` and `compute_coverage_allocation()` — all three misread the rolling_7day nesting.
+3. No judge rule required Dan to cover games that actually happened.
+
+**What shipped:**
+1. **`_extract_team_games()` helper** (`generate_rant.py`): New function that correctly navigates the rolling_7day `days → team → boxscore → games` structure. All three pre-pass functions now use it.
+2. **`detect_slow_day()` fix**: Now checks specifically for yesterday's date (not just "most recent game"), uses the helper, and accepts `today_iso` parameter for testability.
+3. **Judge rule 12 — Game coverage gap** (`safety_judge.py`): MEDIUM severity if rolling_7day shows a team played yesterday but morning_brew doesn't mention the game. Exception: 3+ teams on one day, covering 2 is acceptable.
+4. **System prompt — "Game Coverage Is Mandatory"** (`boston_dan_system.txt`): Explicit instruction that yesterday's game results always take priority over slow-day stories, offseason speculation, or historical anecdotes. SLOW_DAY_MODE cannot override game coverage.
+
+**Lesson learned:** Pre-pass functions must be tested against the actual data structure from `update_store.py`, not assumed. The rolling_7day nesting (`days[]` → team key → `boxscore` → `games[]`) is non-obvious and all three new functions from the voice overhaul got it wrong.
+
+---
+
 ## 2026-06-10 — Dan Voice Overhaul: Emotional Range, Humor, Slow-Day Stories
 
 **Problem:** Dan's output was consistently flat — uniform emotional tone regardless of outcome, zero humor, a full paragraph every day on eliminated teams with no news, and slow news days stretched thin with generic offseason filler. Reading a week of archives, wins and losses sounded the same, there were no jokes or comparisons, and the Celtics/Bruins playoff exits were being rehashed daily.

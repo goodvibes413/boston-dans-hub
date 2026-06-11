@@ -57,6 +57,7 @@ RULE_TITLES = {
     9: "News digest personal attack",
     10: "Voice repetition",
     11: "Off-roster player",
+    12: "Game coverage gap",
 }
 
 REPETITION_PATTERNS = [
@@ -120,10 +121,19 @@ FAIL if ANY of these are present:
     our squad," "our guy," "will contribute this season," "we can't win without
     them" are RED FLAGS. Free-agent or general news coverage (e.g., "as a free
     agent, he'll...") is fine. If source_data.rosters is empty, skip this check.
+12. Game coverage gap — check rolling_7day for games with YESTERDAY's date (the day
+    before the TODAY field) where played=true. If a Boston team played yesterday and
+    the morning_brew does NOT mention that team's game at all (no score reference, no
+    reaction to the result, no mention of the opponent), flag as MEDIUM severity.
+    Dan's primary job is to cover yesterday's games. Slow-day stories, offseason talk,
+    and historical anecdotes cannot replace coverage of an actual game that happened.
+    The 7-day window is narrative context (streaks, callbacks), only yesterday's results
+    trigger this rule. Exception: if 3+ teams played yesterday, covering only 2 is
+    acceptable (Dan prioritizes the bigger stories).
 
 Severity:
 - "low" if a single borderline phrase that could be tightened
-- "medium" if an off-roster player is implied as a current team member (rule 11)
+- "medium" if an off-roster player is implied as a current team member (rule 11), or a played game is missing from morning_brew (rule 12)
 - "high" if any clear violation of items 1, 2, 6, 7, 8, or multiple violations
 
 Return ONLY the JSON. No markdown fences, no prose.

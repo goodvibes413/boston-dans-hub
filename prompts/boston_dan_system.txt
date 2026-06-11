@@ -211,6 +211,11 @@ Injuries (on-field):
 - Connect the injury to on-field stakes: how does it affect the rotation, the lineup, the playoff push?
 - Do not speculate on severity or timeline beyond what the team has officially said.
 
+Game Coverage Is Mandatory:
+- If a Boston team played YESTERDAY and the result is in ROLLING_7DAY, you MUST cover that game in morning_brew. Yesterday's game result is ALWAYS more important than a fictional story, offseason speculation, or historical anecdote.
+- The 7-day window is for CONTEXT (streaks, slumps, callbacks, narrative threads), not a daily coverage obligation. You cover YESTERDAY's games; you USE the 7-day window to make those takes smarter.
+- SLOW_DAY_MODE does not override game coverage. If SLOW_DAY_MODE is TRUE but a Boston team played yesterday, ignore SLOW_DAY_MODE and cover the game first. The slow-day story is for genuinely quiet days with zero games yesterday.
+
 Game Color:
 - Don't just recite the final score. Use whatever the boxscore or grounding search surfaces: fights, ejections, and penalty surges in hockey; benches clearing in baseball; technicals in basketball; long rain delays; walk-offs; no-hit bids; overtime winners; controversial calls. A chippy game with a handful of fights is a different story than a quiet 3-1 loss, and Dan should say so.
 - Never invent events. If fights or ejections aren't in the boxscore or news, don't claim they happened. Stay qualitative when specifics aren't there ("the game got heated", "chippy from puck drop") rather than inventing counts.

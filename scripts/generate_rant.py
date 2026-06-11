@@ -22,7 +22,7 @@ import json
 import os
 import sys
 import time
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -514,6 +514,46 @@ def select_daily_seeds(seeds_data: dict, today_iso: str, n: int = SEEDS_PER_DAY)
     return pool[:n]
 
 
+def _extract_team_games(rolling: dict | None, team_key: str) -> list[dict]:
+    """
+    Extract boxscore game entries for a team from rolling_7day.
+
+    rolling_7day structure: {"days": [{"date": "...", "redsox": {"boxscore": {"played": true, "games": [...]}}, ...}]}
+    Each day's team entry is: {team_key: {"boxscore": {"game_date": "...", "played": bool, "games": [...]}}}
+
+    Returns a flat list of game dicts across all days, each annotated with
+    "played" and "game_date" from the parent boxscore entry if not already present.
+    """
+    if not rolling or not isinstance(rolling, dict):
+        return []
+    days = rolling.get("days", [])
+    if not isinstance(days, list):
+        return []
+
+    all_games = []
+    for day_entry in days:
+        if not isinstance(day_entry, dict):
+            continue
+        team_data = day_entry.get(team_key)
+        if not team_data or not isinstance(team_data, dict):
+            continue
+        boxscore = team_data.get("boxscore")
+        if not boxscore or not isinstance(boxscore, dict):
+            continue
+        played = boxscore.get("played", False)
+        game_date = boxscore.get("game_date", day_entry.get("date", ""))
+        games = boxscore.get("games", [])
+        if played and isinstance(games, list) and games:
+            for g in games:
+                enriched = dict(g)
+                enriched.setdefault("played", played)
+                enriched.setdefault("game_date", game_date)
+                all_games.append(enriched)
+        elif played:
+            all_games.append({"played": True, "game_date": game_date})
+    return all_games
+
+
 def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
     """
     Pre-compute emotional signals from rolling_7day data so the prompt gets
@@ -534,11 +574,7 @@ def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
                         rival_lookup.setdefault(team_key.lower(), []).append(rival_name.lower())
 
     for team_key in TEAM_KEYS:
-        team_data = rolling.get(team_key) if isinstance(rolling, dict) else None
-        if not team_data:
-            continue
-
-        games = team_data.get("games", []) if isinstance(team_data, dict) else []
+        games = _extract_team_games(rolling, team_key)
         if not games:
             continue
 
@@ -647,12 +683,8 @@ def compute_coverage_allocation(
         is_eliminated = team_key in eliminations
 
         # Check if team played recently (within rolling_7day)
-        played_recently = False
-        if rolling and isinstance(rolling, dict):
-            team_data = rolling.get(team_key)
-            if team_data and isinstance(team_data, dict):
-                games = team_data.get("games", [])
-                played_recently = any(g.get("played") for g in games)
+        games = _extract_team_games(rolling, team_key)
+        played_recently = len(games) > 0
 
         # Check season_current status
         status = "offseason"
@@ -671,27 +703,23 @@ def compute_coverage_allocation(
     return {"primary": primary, "secondary": secondary, "minimal": minimal}
 
 
-def detect_slow_day(rolling: dict | None, news: dict | list | None, schedule: dict | list | None) -> bool:
+def detect_slow_day(rolling: dict | None, news: dict | list | None, schedule: dict | list | None, today_iso: str | None = None) -> bool:
     """
-    Detect a slow news day: no Boston team played yesterday AND fewer than 2
+    Detect a slow news day: no Boston team played YESTERDAY AND fewer than 2
     relevant news headlines AND no games today.
-    """
-    # Check if any team played (has a played:true game in most recent day)
-    any_played = False
-    if rolling and isinstance(rolling, dict):
-        for team_key in TEAM_KEYS:
-            team_data = rolling.get(team_key)
-            if team_data and isinstance(team_data, dict):
-                games = team_data.get("games", [])
-                # Check most recent game only
-                if games:
-                    sorted_games = sorted(games, key=lambda g: g.get("game_date", ""), reverse=True)
-                    if sorted_games and sorted_games[0].get("played"):
-                        any_played = True
-                        break
 
-    if any_played:
-        return False
+    Uses _extract_team_games() to correctly navigate the rolling_7day structure.
+    """
+    if today_iso is None:
+        today_iso = datetime.now(timezone.utc).date().isoformat()
+    yesterday = (date.fromisoformat(today_iso) - timedelta(days=1)).isoformat()
+
+    # Check if any team played yesterday
+    for team_key in TEAM_KEYS:
+        games = _extract_team_games(rolling, team_key)
+        for g in games:
+            if g.get("game_date", "").startswith(yesterday) and g.get("played"):
+                return False
 
     # Check news count
     news_items = []
@@ -708,9 +736,7 @@ def detect_slow_day(rolling: dict | None, news: dict | list | None, schedule: di
         games_today = schedule
     elif isinstance(schedule, dict):
         games_today = schedule.get("games", []) or []
-    # If schedule has games for today, it's not a slow day
-    today_str = datetime.now(timezone.utc).date().isoformat()
-    today_games = [g for g in games_today if g.get("date", "").startswith(today_str)]
+    today_games = [g for g in games_today if g.get("date", "").startswith(today_iso)]
     if today_games:
         return False
 
@@ -1014,7 +1040,7 @@ def main():
     # Pre-compute emotional context, coverage allocation, and slow-day detection
     emotional_context = compute_emotional_context(rolling, grudges)
     coverage_allocation = compute_coverage_allocation(season_overrides, season_current, rolling)
-    slow_day = detect_slow_day(rolling, news, schedule)
+    slow_day = detect_slow_day(rolling, news, schedule, today_iso=today_iso)
     todays_seeds = select_daily_seeds(seeds_data, today_iso) if slow_day else []
     print(f"  emotional:      {len(emotional_context)} team(s) with context")
     print(f"  coverage:       primary={coverage_allocation['primary']}, minimal={coverage_allocation['minimal']}")
