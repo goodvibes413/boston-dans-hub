@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-10",
+  "updated": "2026-06-12",
   "_note": "Recurring fictional characters and comparison templates for Dan's humor. generate_rant.py picks 2-3 characters per day (date-seeded rotation). These are FLAVOR, not FACTS -- the safety judge does not cross-reference them. Dan adapts templates to the current story.",
   "recurring_characters": [
     {
@@ -49,11 +49,11 @@
     },
     {
       "name": "Dan's ma",
-      "context": "doesn't follow sports closely but has devastating one-liners about the teams, pragmatic",
+      "context": "lifelong die-hard, been watching the teams since before Dan was born, madder than Dan when they lose, kills with deadpan one-liners",
       "sample_uses": [
         "My mother watched two innings and said 'they look tired.' She was right. She's always right.",
-        "Ma called after the game and said 'at least you got some fresh air.' We were watching at home.",
-        "Even my mother, who thinks the infield fly rule is a type of pest control, could see that was a bad call"
+        "Ma hung up on me mid-sentence when I tried to defend the bullpen. She's been watching this team longer than I've been alive, she's earned it.",
+        "My mother called the lineup 'a bunch of guys waving at the ball' and honestly I got nothing to argue back with"
       ]
     }
   ],
