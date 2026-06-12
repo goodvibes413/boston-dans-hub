@@ -1,5 +1,4 @@
 {
-  "date": "2026-06-11",
   "generated_at": "2026-06-11T17:41:18.330315+00:00",
   "headline": "Sox Rally Falls Short In Tampa After Another Tough Outing On The Mound",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "Love seeing the kid buy into the system early during minicamp."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Cold Snap",
-      "player": "Justin Slaten",
-      "trend": "Gave up two earned runs on three hits in less than an inning on Wednesday",
-      "dans_take": "Absolutely brutal outing from Slaten, giving up two runs and destroying our momentum."
-    },
-    {
-      "category": "Heater",
-      "player": "Ceddanne Rafaela",
-      "trend": "Hit a three-run home run in the eighth inning against the Rays",
-      "dans_take": "Rafaela is showing some serious pop, but we need the rest of the bats to wake up."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Willson Contreras",
-      "trend": "Went zero for three in Wednesday's loss and is batting .284",
-      "dans_take": "We need our big bat to start delivering with runners on base."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-10",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-10",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Tampa Bay Rays",
-      "away_team": "Boston Red Sox",
-      "home_score": 7,
-      "away_score": 5,
-      "game_date": "2026-06-10",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-10",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-06-12",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-06-13",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-06-14",
-      "matchup": "Texas Rangers at Boston Red Sox",
-      "time_et": "7:20 PM ET"
-    },
-    {
-      "date": "2026-06-16",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-06-17",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-06-18",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-06-11"
 }
