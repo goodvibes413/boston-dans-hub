@@ -1,10 +1,10 @@
 {
-  "date": "2026-06-08",
-  "generated_at": "2026-06-08T12:38:33.314932+00:00",
+  "date": "2026-06-13",
+  "generated_at": "2026-06-13T10:34:26.317333+00:00",
   "outcome": "fresh",
   "winning_attempt": 1,
   "total_attempts": 1,
-  "generation_seconds": 14.2,
+  "generation_seconds": 11.5,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -15,7 +15,7 @@
       "verdict": "PASS",
       "severity": "low",
       "flags": [],
-      "duration_seconds": 14.2
+      "duration_seconds": 11.5
     }
   ]
 }
