@@ -4,9 +4,16 @@ on:
   schedule:
     # Primary: 03:00 ET = 08:00 UTC. Moved from 06:00 ET to avoid peak Gemini demand.
     - cron: '0 8 * * *'
-    # Safety net: 04:30 ET = 09:30 UTC. Runs only if the primary didn't already
-    # publish today's content (see "Skip if already published" step below).
-    - cron: '30 9 * * *'
+    # Safety nets: each runs only if no fresh content has been published for today yet
+    # (see "Skip if already published" step below), so successful days short-circuit in
+    # seconds. The slots are spread across the morning/midday because a transient Gemini
+    # demand/quota spike can last 1–2h — independent, widely-spaced attempts are the only
+    # thing that reliably rides one out (a single run's in-process backoff cannot). Note:
+    # GitHub's scheduler can delay a scheduled run by hours, so these are best-effort times.
+    - cron: '30 9 * * *'   # 04:30 ET
+    - cron: '0 11 * * *'   # 06:00 ET
+    - cron: '0 13 * * *'   # 08:00 ET
+    - cron: '0 15 * * *'   # 10:00 ET
   # Allow manual trigger for testing
   workflow_dispatch:
     inputs:
@@ -233,6 +240,37 @@ jobs:
       - name: Skip summary
         if: steps.freshness.outputs.skip == 'true'
         run: echo "✅ Skipped — today's content already published"
+
+      - name: Open/update degraded-publish issue (stale or fallback)
+        # A stale/fallback republish keeps the workflow green (intended graceful
+        # degradation), so the failure() issue step below never fires for it. Without
+        # this, a day of stale content is silently invisible. Surface it as an issue so
+        # someone can re-trigger with force=true once Gemini recovers. Runs after a
+        # successful push so a push failure (which fires the failure() issue) doesn't
+        # also create a duplicate degraded issue.
+        if: success() && steps.freshness.outputs.skip != 'true' && (steps.kind.outputs.kind == 'stale' || steps.kind.outputs.kind == 'fallback')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          kind="${{ steps.kind.outputs.kind }}"
+          title="Morning Brew degraded ($kind): $(date +%Y-%m-%d)"
+          body="The pipeline published **$kind** content instead of fresh commentary — generation did not succeed (usually a transient Gemini 429/503 spike).
+
+          Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          Event: ${{ github.event_name }}
+          Attempt: ${{ github.run_attempt }}
+
+          The site is still readable (showing the most recent good content). If Gemini has recovered, re-run with:
+          \`gh workflow run \"Morning Brew — Daily Dan Commentary\" --ref main -f force=true\`
+
+          Later safety-net cron slots will also retry automatically."
+          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number' || true)
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body" --label "pipeline-degraded" || \
+              gh issue create --title "$title" --body "$body"
+          fi
 
       - name: Open/update failure issue
         if: failure()

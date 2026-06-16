@@ -7,7 +7,7 @@ back, writes data/raw_dan_output.json.
 
 Env vars:
   GEMINI_API_KEY        required
-  GEMINI_MODEL          optional, default "gemini-1.5-flash"
+  GEMINI_MODEL          optional, default "gemini-flash-latest"
   ROLLING_STORE_PATH    optional, lets eval_voice.py swap in a fixture
   SCHEDULE_PATH         optional
   NEWS_PATH             optional
