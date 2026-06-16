@@ -915,6 +915,17 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
     return message
 
 
+def _strip_json_fence(text: str) -> str:
+    """Strip a leading/trailing markdown code fence that some models emit even
+    when asked for raw JSON (Gemma does this). Already-clean JSON is untouched."""
+    s = (text or "").strip()
+    if s.startswith("```"):
+        s = s.split("\n", 1)[1] if "\n" in s else s[3:]
+        if s.rstrip().endswith("```"):
+            s = s.rstrip()[:-3]
+    return s.strip()
+
+
 def call_gemini(system_prompt: str, user_message: str, model_name: str,
                 use_grounding: bool = True, force_json: bool = False) -> str:
     try:
@@ -928,6 +939,22 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
         sys.exit("error: GEMINI_API_KEY not set")
 
     client = genai.Client(api_key=api_key)
+
+    # Gemma open models are served through the same Gemini API + GEMINI_API_KEY,
+    # but unlike the Gemini models they reject system_instruction, tools (Google
+    # Search grounding), and response_mime_type JSON mode. So fold the system
+    # prompt into the user turn, call plain, and strip any stray markdown fence.
+    # This lets eval_models.py A/B a free open model against Gemini with no extra
+    # dependency. use_grounding/force_json are intentionally ignored for Gemma.
+    if model_name.lower().startswith("gemma"):
+        resp = call_with_retry(
+            lambda: client.models.generate_content(
+                model=model_name,
+                contents=f"{system_prompt}\n\n{user_message}",
+                config=types.GenerateContentConfig(temperature=0.9),
+            )
+        )
+        return _strip_json_fence(resp.text)
 
     config_kwargs = dict(system_instruction=system_prompt, temperature=0.9)
     if use_grounding:
@@ -987,7 +1014,9 @@ def main():
     season_static_path = Path(os.environ.get("SEASON_STATIC_PATH", DEFAULT_SEASON_STATIC))
     season_current_path = Path(os.environ.get("SEASON_CURRENT_PATH", DEFAULT_SEASON_CURRENT))
     output_path = Path(os.environ.get("OUTPUT_PATH", DEFAULT_OUTPUT))
-    model_name = os.environ.get("GEMINI_MODEL", DEFAULT_MODEL)
+    # LLM_MODEL overrides GEMINI_MODEL for isolated model evals (e.g. testing a
+    # Gemma open model) without clobbering the production GEMINI_MODEL knob.
+    model_name = os.environ.get("LLM_MODEL") or os.environ.get("GEMINI_MODEL", DEFAULT_MODEL)
 
     print(f"generate_rant: model={model_name}")
     print(f"  store:          {store_path}")
