@@ -5,7 +5,7 @@ Returns JSON {verdict, severity, flags} on stdout. Exit 0 = PASS, 1 = FAIL.
 
 Env vars:
   GEMINI_API_KEY        required
-  JUDGE_MODEL           optional, default "gemini-1.5-flash"
+  JUDGE_MODEL           optional, default "gemini-flash-latest"
   INPUT_PATH            optional, default data/raw_dan_output.json
   SEASON_STATIC_PATH    optional, past-seasons JSON (cross-referenced for stat claims)
   SEASON_CURRENT_PATH   optional, current-season JSON (cross-referenced for stat claims)

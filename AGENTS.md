@@ -63,9 +63,9 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 **Why:**
 - **Higher daily request limit**: Google's free tier grants higher daily request quotas to `gemini-flash-latest` (the officially recommended latest model) compared to older pinned versions. This allows our pipeline (generation + safety judge = 2 calls/day, plus retries on transient failures) to stay within free tier limits.
 - **Pinned versions have lower quotas**: Once a Flash model is pinned (e.g., `gemini-2.5-flash`), Google allocates it a lower daily quota. Using pinned versions would exhaust our quota faster and force paid upgrades.
-- **API demand spike resilience**: When `gemini-flash-latest` experiences high load (503 UNAVAILABLE), the retry logic in `generate_rant.py` and `safety_judge.py` (7 retries, up to 180s backoff) handles transient spikes. These are expected during peak times — the system is designed to wait it out.
+- **API demand spike resilience**: When `gemini-flash-latest` experiences high load (503 UNAVAILABLE) or rate-limiting (429), the in-process retry logic in `generate_rant.py` (4 retries, `[5, 15, 30, 60]`s, ~110s/call) and `safety_judge.py` (3 retries, `[5, 15, 30]`s) absorbs short spikes. **These budgets are intentionally capped** at ~110s/call so that `publish.py` chaining up to 3 Gemini calls (judge → correction generate → judge) stays well inside the 25-min job timeout — see the `call_with_retry` docstring. Demand spikes can last 1–2h, which is longer than any single run's in-process backoff can cover; **cross-day/cross-run resilience comes from the spaced safety-net cron slots** in `morning_brew.yml` (multiple independent attempts across the morning), not from longer in-process backoff.
 
-**Do not change this** — it directly impacts our free tier quota and ability to run the daily pipeline. If you see a 503 error in the logs, it's a transient spike; check the logs for retry backoff messages. The pipeline will succeed on the next attempt.
+**Do not change the model alias** — it directly impacts our free tier quota and ability to run the daily pipeline. If you see a 503/429 in the logs, it's usually a transient spike; the in-process retries cover short ones, and the later cron slots retry longer ones. If a whole day's slots fail, re-trigger manually with `force=true` once Gemini recovers (see Troubleshooting Rule #6). A degraded (stale/fallback) publish now opens a `pipeline-degraded` GitHub issue so it is not silently green.
 
 **Note**: Both `gemini-flash-latest` and pinned versions are free — the difference is in the daily request quota allocation.
 
@@ -270,9 +270,10 @@ resp = client.models.generate_content(
 **Two-attempt strategy**: first call with grounding ON (no mime type), retry with grounding OFF + `force_json=True` if JSON parse fails.
 
 ### Retry logic (503/429)
-Both `generate_rant.py` and `safety_judge.py` use `call_with_retry()`:
-- 503 UNAVAILABLE: 7 retries with exponential backoff `[5, 15, 30, 60, 90, 120, 180]` seconds (covers demand spikes up to ~8 minutes)
-- 429 QUOTA_EXCEEDED: parse `retryDelay` from the error response and wait that duration; otherwise fall back to the same backoff schedule
+Both `generate_rant.py` and `safety_judge.py` use `call_with_retry()`, with intentionally
+capped budgets (so `publish.py` chaining up to 3 calls stays inside the 25-min job timeout):
+- 503 UNAVAILABLE: `generate_rant.py` retries 4× with backoff `[5, 15, 30, 60]` seconds (~110s/call); `safety_judge.py` retries 3× with `[5, 15, 30]`. Longer (1–2h) spikes are covered by the spaced safety-net cron slots in `morning_brew.yml`, not by extending these.
+- 429 QUOTA_EXCEEDED: parse `retryDelay` from the error response and wait that duration; otherwise fall back to the same backoff schedule. (Note: the Google-Search-grounded generation call has hit 429 even when the non-grounded fallback only sees 503 — grounding appears to draw on a stricter quota; the two-attempt grounding→no-grounding fallback in `generate_rant.py` handles this.)
 - Other errors (400, 401): fail immediately, no retry
 - On exhaustion:
   - `safety_judge.py` treats API failure as PASS (prints a `judge skipped — API error` flag) so the pipeline still publishes
@@ -905,7 +906,7 @@ If the most recent `chore: daily Dan output for YYYY-MM-DD` commit is not today'
 
 ### `.github/workflows/morning_brew.yml` — Daily Cron
 
-**Trigger**: `0 8 * * *` (03:00 ET = 08:00 UTC) — moved from 06:00 ET to reduce Gemini API contention
+**Trigger**: primary `0 8 * * *` (03:00 ET = 08:00 UTC) plus spaced safety-net slots `30 9`, `0 11`, `0 13`, `0 15` UTC. Each slot honors the freshness gate (skips in seconds if today's content is already fresh), so successful days only do real work once; failing days get up to 5 independent, widely-spaced attempts so a 1–2h Gemini demand/quota spike no longer takes out the whole day. (GitHub's scheduler can delay scheduled runs by hours, so the spacing also de-correlates the actual fire times.)
 
 **Pipeline** (runs all steps in order):
 ```
@@ -925,9 +926,10 @@ healthcheck.py
 **Success criteria**: `healthcheck.py` exits 0
 
 **On failure**: 
-- Workflow exits 1 (shows red ❌ in GitHub)
+- Hard failure (e.g. push fails): workflow exits 1 (red ❌), opens/updates a `Morning Brew failed: <date>` issue
+- Degraded publish (generation failed → stale/fallback content): workflow stays green (intended graceful degradation) but opens/updates a `Morning Brew degraded (stale|fallback): <date>` issue (`pipeline-degraded` label) so it is not silently invisible
 - Logs visible for debugging
-- Next day's run will retry
+- Later cron slots that day, and the next day's run, will retry
 
 ---
 
