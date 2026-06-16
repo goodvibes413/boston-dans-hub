@@ -1,0 +1,80 @@
+name: Model Eval — A/B open models vs Gemini
+
+# Manual-only. Runs scripts/eval_models.py against a fixture through several
+# models (Gemini baseline + Gemma open models, all via the same GEMINI_API_KEY),
+# prints the comparison table to the run summary, and uploads the per-model JSON
+# outputs as an artifact to download and read. This is a dev/eval tool — it does
+# NOT touch the site, commit anything, or affect the daily pipeline.
+on:
+  workflow_dispatch:
+    inputs:
+      fixture:
+        description: 'Fixture path (under evals/fixtures/)'
+        type: string
+        required: true
+        default: 'evals/fixtures/voice_rivalry.json'
+      models:
+        description: 'Comma-separated model ids to compare'
+        type: string
+        required: true
+        default: 'gemini-flash-latest,gemma-3-27b-it,gemma-3-12b-it'
+      n:
+        description: 'Generations per model (keep small — free-tier rate limits)'
+        type: string
+        required: true
+        default: '2'
+
+# Read-only eval; multiple manual runs may overlap harmlessly.
+permissions:
+  contents: read
+
+jobs:
+  eval:
+    name: Run model comparison eval
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install google-genai pydantic
+
+      - name: Run model eval
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -o pipefail
+          python3 scripts/eval_models.py \
+            --fixture "${{ inputs.fixture }}" \
+            --n "${{ inputs.n }}" \
+            --models "${{ inputs.models }}" | tee eval_output.txt
+          {
+            echo "## Model eval — \`$(basename "${{ inputs.fixture }}")\`"
+            echo ""
+            echo "Models: \`${{ inputs.models }}\` · n=${{ inputs.n }}"
+            echo ""
+            echo '```'
+            cat eval_output.txt
+            echo '```'
+            echo ""
+            echo "_Download the **eval-outputs** artifact and read the per-model JSON to judge voice — the table is only triage._"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload per-model outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-outputs
+          path: |
+            evals/runs/**
+            !evals/runs/*_tmp/**
+          if-no-files-found: warn
