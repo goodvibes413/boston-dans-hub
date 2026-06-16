@@ -74,6 +74,75 @@ TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
 DEFAULT_MODEL = "gemini-flash-latest"
 
 
+def describe_api_error(e) -> str:
+    """
+    Pull structured fields out of a Gemini API error so logs show WHICH limit
+    was hit — a grounding (Google Search) daily quota vs. a generation
+    per-minute rate limit vs. transient overload — instead of an opaque
+    'ClientError'. Reads the QuotaFailure violations (quotaMetric/quotaId) and
+    RetryInfo (retryDelay) that Gemini returns on 429 RESOURCE_EXHAUSTED. Falls
+    back to parsing str(e) when the SDK doesn't expose structured attributes.
+    Never raises.
+    """
+    import re as _re
+    import ast as _ast
+
+    code = getattr(e, "code", None)
+    status = getattr(e, "status", None)
+    message = getattr(e, "message", None)
+    details = getattr(e, "details", None)
+
+    # google-genai stringifies the full error body; parse it as a fallback when
+    # the structured attributes aren't populated (older/!= SDK versions).
+    if details is None:
+        match = _re.search(r"\{.*\}", str(e), _re.DOTALL)
+        if match:
+            try:
+                details = _ast.literal_eval(match.group(0))
+            except Exception:
+                details = None
+
+    err_obj = details.get("error", details) if isinstance(details, dict) else None
+    detail_list = []
+    if isinstance(err_obj, dict):
+        code = code or err_obj.get("code")
+        status = status or err_obj.get("status")
+        message = message or err_obj.get("message")
+        detail_list = err_obj.get("details", []) or []
+    elif isinstance(details, list):
+        detail_list = details
+
+    quotas = []
+    retry_delay = None
+    for d in detail_list:
+        if not isinstance(d, dict):
+            continue
+        dtype = d.get("@type", "")
+        if "QuotaFailure" in dtype:
+            for v in d.get("violations", []) or []:
+                metric = v.get("quotaMetric") or v.get("quotaId") or ""
+                dims = v.get("quotaDimensions") or {}
+                model = dims.get("model") if isinstance(dims, dict) else None
+                bit = metric + (f" (model={model})" if model else "")
+                if bit:
+                    quotas.append(bit)
+        elif "RetryInfo" in dtype:
+            retry_delay = d.get("retryDelay")
+
+    parts = []
+    if code:
+        parts.append(f"code={code}")
+    if status:
+        parts.append(f"status={status}")
+    if quotas:
+        parts.append("quota=[" + "; ".join(quotas) + "]")
+    if retry_delay:
+        parts.append(f"retryDelay={retry_delay}")
+    if message and not quotas:
+        parts.append(f"msg={message[:160]}")
+    return " | ".join(parts) if parts else str(e)[:200]
+
+
 def call_with_retry(fn, max_retries=4):
     """
     Call fn() with exponential backoff retry on 503/429 errors.
@@ -105,9 +174,11 @@ def call_with_retry(fn, max_retries=4):
 
             # Don't retry permanent errors
             if status_code not in [503, 429]:
+                print(f"  non-retryable API error: {describe_api_error(e)}", file=sys.stderr)
                 raise
 
             if attempt >= max_retries:
+                print(f"  retries exhausted after {attempt} attempt(s): {describe_api_error(e)}", file=sys.stderr)
                 raise  # Exhausted retries
 
             # Calculate wait time
@@ -120,7 +191,7 @@ def call_with_retry(fn, max_retries=4):
             else:
                 wait_sec = backoff_delays[attempt]
 
-            print(f"  retry: {status_code}, waiting {wait_sec}s...", file=sys.stderr)
+            print(f"  retry: {status_code}, waiting {wait_sec}s... [{describe_api_error(e)}]", file=sys.stderr)
             time.sleep(wait_sec)
 
 
@@ -1130,7 +1201,7 @@ def main():
         except json.JSONDecodeError:
             print("  warn: grounding response was not valid JSON, retrying without grounding", file=sys.stderr)
     except Exception as e:
-        print(f"  warn: grounding call failed ({type(e).__name__}), retrying without grounding", file=sys.stderr)
+        print(f"  warn: grounding call failed ({type(e).__name__}: {describe_api_error(e)}), retrying without grounding", file=sys.stderr)
 
     # Attempt 2: grounding OFF, force JSON mime type
     if parsed is None:
