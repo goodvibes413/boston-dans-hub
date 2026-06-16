@@ -119,5 +119,5 @@
   "generated_at": "2026-06-15T14:00:39.762083+00:00",
   "_stale": true,
   "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 23.0
+  "_stale_age_hours": 24.6
 }
