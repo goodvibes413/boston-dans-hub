@@ -126,9 +126,8 @@
       "time_et": "3:10 PM ET"
     }
   ],
-  "generated_at": "2026-06-17T13:04:51.441401+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "Fabricated statistic: 'zero for six with runners in scoring position' is cited but does not appear in the SOURCE_DATA."
-  ]
+  "generated_at": "2026-06-15T14:00:39.762083+00:00",
+  "_stale": true,
+  "_stale_reason": "safety judge FAILed after 3 attempts: Fabricated historical/career timeline: The commentary refers to the upcoming 2026 season as Drake Maye's 'sophomore season', but source data indicates 2025 was his 'Year 2', making 2026 his third seas",
+  "_stale_age_hours": 47.2
 }

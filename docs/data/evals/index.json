@@ -65,8 +65,8 @@
   ],
   "summary_5day": {
     "fresh": 3,
-    "retry": 1,
-    "fallback": 1,
+    "retry": 0,
+    "fallback": 2,
     "stale": 0,
     "most_flagged_rules": []
   }
