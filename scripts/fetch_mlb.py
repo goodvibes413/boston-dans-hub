@@ -127,7 +127,7 @@ def fetch_news() -> None:
             NEWS_PATH.write_text(json.dumps(err, indent=2))
         except Exception:
             pass
-        sys.exit(1)
+        return  # graceful degradation — error sentinel already written; don't crash the pipeline
 
 
 def safe_float(val, default=0.0) -> float:
@@ -478,7 +478,7 @@ def fetch_boxscore() -> None:
             BOXSCORE_PATH.write_text(json.dumps(error_result, indent=2))
         except Exception:
             pass
-        sys.exit(1)
+        return  # graceful degradation — error sentinel already written; don't crash the pipeline
 
 
 # ---------------------------------------------------------------------------
@@ -553,7 +553,7 @@ def fetch_schedule() -> None:
             SCHEDULE_PATH.write_text(json.dumps(error_result, indent=2))
         except Exception:
             pass
-        sys.exit(1)
+        return  # graceful degradation — error sentinel already written; don't crash the pipeline
 
 
 # ---------------------------------------------------------------------------

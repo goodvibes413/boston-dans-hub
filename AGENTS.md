@@ -889,6 +889,12 @@ git show origin/main:docs/data/daily_output.json | jq '.generated_at, .headline'
 
 If the most recent `chore: daily Dan output for YYYY-MM-DD` commit is not today's date, the run did not actually publish — say so plainly instead of reporting whatever `jq` happened to print.
 
+### Rule #9: Fetchers must degrade gracefully — never `sys.exit(1)` on a single section failure
+
+The four data fetchers (`fetch_nba/nhl/mlb/nfl.py`) each fetch three independent sections (boxscore, schedule, news). On a section failure they write an **error-sentinel JSON** (`{"error": ..., ...}`) and must then **`return`, not `sys.exit(1)`** — a non-zero exit fails the whole workflow step and kills the entire pipeline, defeating the graceful-degradation design. `update_store.py`'s `load_sport_data()` already skips error-sentinel files, and `update_store.py` is the real hard-failure gate (it aborts only if *no* sport data loaded at all). A transient upstream blip (e.g. a one-off ESPN **HTTP 502** on the supplementary news endpoint) must never take down a day's run.
+
+This was the root cause of the **2026-06-17** all-runs-failed incident: `fetch_mlb.py`'s news section hit an ESPN 502 *after* boxscore + schedule had already succeeded, but the `sys.exit(1)` crashed the step. Fixed by replacing the per-section `sys.exit(1)` calls with `return` in all four fetchers. If you add a new fetcher or section, follow the same pattern: write the error sentinel, print the error, `return`.
+
 ---
 
 ## Week 3: Publish & Health Check Infrastructure
