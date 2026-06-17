@@ -173,18 +173,48 @@ def print_previews(order: list, results: dict) -> None:
         print(f"  PARA 1:   {first}")
 
 
+def list_models() -> None:
+    """Print every model this GEMINI_API_KEY can call with generateContent, so we
+    use real model ids instead of guessing (the API's 404 says to ListModels)."""
+    from google import genai
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        sys.exit("error: GEMINI_API_KEY not set")
+    client = genai.Client(api_key=api_key)
+    rows = []
+    for m in client.models.list():
+        actions = list(getattr(m, "supported_actions", None) or [])
+        if "generateContent" in actions:
+            rows.append(m.name)
+    rows.sort()
+    gemma = [n for n in rows if "gemma" in n.lower()]
+    print(f"generateContent-capable models for this key: {len(rows)}")
+    print("\n=== GEMMA models ===")
+    print("\n".join(gemma) if gemma else "  (none available to this key)")
+    print("\n=== all generateContent models ===")
+    print("\n".join(rows))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--fixture", help="Path to a fixture JSON (omit with --live)")
     ap.add_argument("--live", action="store_true",
                     help="Run against today's REAL data (the data/*.json the "
                          "fetchers produced) instead of a fixture")
+    ap.add_argument("--list-models", action="store_true",
+                    help="List model ids this key can call, then exit")
     ap.add_argument("--n", type=int, default=2, help="Generations per model")
-    ap.add_argument("--models", required=True,
+    ap.add_argument("--models",
                     help="Comma-separated model ids, e.g. "
                          "'gemini-flash-latest,gemma-3-27b-it'")
     ap.add_argument("--label", help="Output filename label")
     args = ap.parse_args()
+
+    if args.list_models:
+        list_models()
+        return
+    if not args.models:
+        sys.exit("error: --models is required (or use --list-models)")
 
     if not args.live and not args.fixture:
         sys.exit("error: pass --fixture <path> or --live")

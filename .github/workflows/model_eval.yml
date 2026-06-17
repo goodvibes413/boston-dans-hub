@@ -10,13 +10,14 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'live = run against today''s real fetched data; fixture = run against a fixture'
+        description: 'live = today''s real data; fixture = a fixture; list = list callable model ids'
         type: choice
         required: true
         default: 'live'
         options:
           - live
           - fixture
+          - list
       fixture:
         description: 'Fixture path (fixture mode only)'
         type: string
@@ -92,7 +93,10 @@ jobs:
           LLM_DEBUG_RAW: ${{ inputs.debug && '1' || '' }}
         run: |
           set -o pipefail
-          if [ "$MODE" = "live" ]; then
+          if [ "$MODE" = "list" ]; then
+            python3 scripts/eval_models.py --list-models | tee eval_output.txt
+            title="list — callable model ids"
+          elif [ "$MODE" = "live" ]; then
             python3 scripts/eval_models.py --live --n "$N" --models "$MODELS" | tee eval_output.txt
             title="live — today's real data"
           else
