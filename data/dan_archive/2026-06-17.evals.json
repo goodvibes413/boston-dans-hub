@@ -1,0 +1,30 @@
+{
+  "date": "2026-06-17",
+  "generated_at": "2026-06-17T13:02:01.230366+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 170.2,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "Fabricated statistic: 'zero for six with runners in scoring position' is cited but does not appear in the SOURCE_DATA."
+      ],
+      "duration_seconds": 14.8
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 13.0
+    }
+  ]
+}
