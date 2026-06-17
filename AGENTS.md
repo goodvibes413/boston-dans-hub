@@ -69,6 +69,31 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 
 **Note**: Both `gemini-flash-latest` and pinned versions are free — the difference is in the daily request quota allocation.
 
+### Evaluating open models (dev-only) with `eval_models.py`
+
+To gauge whether a free/open model could replace Gemini, you can A/B candidate
+models in isolation against the existing fixtures — **production and CI stay on
+`gemini-flash-latest`; this is a dev/eval-only path.**
+
+- **Gemma rides the existing setup.** Google serves its open Gemma models
+  (`gemma-3-27b-it`, `gemma-3-12b-it`, …) through the **same `google-genai` SDK
+  and the same `GEMINI_API_KEY`** — so testing them adds **no new dependency and
+  no new key**. `generate_rant.py` detects a `gemma*` model id and adjusts the
+  call (Gemma rejects `system_instruction`, grounding `tools`, and JSON mode, so
+  the system prompt is folded into the user turn and a stray code fence is
+  stripped from the reply).
+- `LLM_MODEL` overrides the model for an eval run without touching `GEMINI_MODEL`.
+- `scripts/eval_models.py` runs a fixture through several models (reusing
+  `eval_voice.py`'s fixture-split + `summarize`), writes outputs to
+  `evals/runs/<model>/`, and prints a comparison table. As with `eval_voice.py`,
+  the table is triage — **read the JSON yourself to judge voice.** Example:
+  `python3 scripts/eval_models.py --fixture evals/fixtures/voice_rivalry.json --n 2 --models "gemini-flash-latest,gemma-3-27b-it"`
+- This measures voice + structure + fidelity to injected data, **not** Gemini's
+  live Google-Search grounding (open models can't ground). To later test
+  non-Google open models (Llama/Qwen/DeepSeek) point an OpenAI-compatible client
+  at a free hosted API — the `LLM_MODEL`/`eval_models.py` design already
+  accommodates adding that transport.
+
 ---
 
 ## The Daily Pipeline (in order)
@@ -737,6 +762,7 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 |---|---|---|
 | `GEMINI_API_KEY` | `generate_rant.py`, `safety_judge.py` | Set in `~/.zshrc` locally; GitHub Actions secret in CI |
 | `GEMINI_MODEL` | `generate_rant.py` | Default: `gemini-flash-latest` (see Model Strategy — do not pin) |
+| `LLM_MODEL` | `generate_rant.py`, `eval_models.py` | Eval-only override of the model (e.g. `gemma-3-27b-it`); takes precedence over `GEMINI_MODEL`. Leave unset in production |
 | `JUDGE_MODEL` | `safety_judge.py` | Default: `gemini-flash-latest` (see Model Strategy — do not pin) |
 | `ROLLING_STORE_PATH` | `generate_rant.py` | Default: `data/rolling_7day.json`; override in evals to point at fixtures |
 | `OUTPUT_PATH` | `generate_rant.py` | Default: `data/raw_dan_output.json`; override in evals |
