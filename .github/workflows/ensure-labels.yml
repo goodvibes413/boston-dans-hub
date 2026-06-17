@@ -1,0 +1,31 @@
+name: Ensure issue labels
+
+# Idempotently create the labels the Morning Brew pipeline applies to the
+# issues it opens. Without these, the `gh issue create --label ...` calls in
+# morning_brew.yml emit a "label not found" warning and fall back to a
+# label-less issue. Run manually (workflow_dispatch) whenever a label is
+# missing; safe to re-run — `gh label create --force` updates in place.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ensure_labels:
+    name: Ensure pipeline issue labels exist
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Create/update labels
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh label create pipeline-failure \
+            --color d73a4a \
+            --description "Morning Brew pipeline run failed" \
+            --force
+          gh label create pipeline-degraded \
+            --color fbca04 \
+            --description "Morning Brew published stale/fallback content (graceful degradation)" \
+            --force
