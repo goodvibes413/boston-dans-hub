@@ -1,48 +1,63 @@
 {
-  "headline": "Sox Offense Puts Us To Sleep In A Brutal Six To One Loss To Toronto",
+  "headline": "Sox Bats Fall Silent In Depressing Six To One Loss At Fenway",
   "morning_brew": [
-    "We're right back in the mud after a brutal six to one loss to the Blue Jays at Fenway last night. Payton Tolle gave us five innings on the mound, but he took the loss after giving up three earned runs. The offense just couldn't pick him up, scratching out only one run despite finishing the night with eight hits. I watched that ninth inning through my fingers as Toronto tacked on two more runs to put this one completely out of reach.",
-    "That offense was so quiet last night at Fenway that Uncle Carmine actually stayed awake for all nine innings. Carmine lives in Revere and usually dozes off by the third, but even he was too stunned by our lack of run support to sleep. Ceddanne Rafaela had a decent night with two hits, but we didn't string anything together. You're not going to win many ballgames in this league when you can only muster a single run.",
-    "Down in Foxborough, Robert Kraft and the Pats are suing the town over nearly one million dollars in security-related license fees. Are you kiddin' me with this? We're trying to build on that Super Bowl appearance from last season, and instead we're reading about lawsuits over Gillette Stadium entertainment licenses. Let the lawyers handle the paperwork so we can focus on getting Drake Maye and this defense ready for training camp."
+    "That was an absolutely brutal night at Fenway Park. We drop a six to one dud to Toronto, and my head is spinning. Payton Tolle actually battled through five innings, but you can't win baseball games when your lineup decides to take the night off. We scraped together eight hits but only managed a single run. I watched us leave runner after runner on base, and it felt like watching rush hour traffic crawl on the Pike.",
+    "Ceddanne Rafaela had a decent night with two hits, but the rest of the bats were completely asleep. Willson Contreras went zero for four and Wilyer Abreu went zero for three, which is just not going to cut it. My old man always said that hits are like city buses, because you wait forever for one and then three show up at once, but last night the bus never even left the station. Then Ryan Watson comes out and serves up two more runs in the ninth to put the game completely out of reach. It's just depressing.",
+    "Down in Foxborough, the Patriots are in the news for suing the town over nearly a million dollars in entertainment license fees. Robert Kraft is fighting over security costs at Gillette, which is a classic offseason distraction when we should be focusing on Drake Maye and mandatory minicamp. Still, I'd rather talk about stadium licensing gripes than watch this baseball team lose another series opener. We need a bounce-back tonight or this season is going down the drain."
   ],
   "trend_watch": [
     {
       "category": "Cold Snap",
-      "player": "Payton Tolle",
-      "trend": "Took the loss after giving up three earned runs over five innings",
-      "dans_take": "Struck out six batters, but he needs to limit the damage when our bats are this quiet."
+      "player": "Willson Contreras",
+      "trend": "Went zero for four with no production last night.",
+      "dans_take": "We need his bat to stay hot if we're going to climb out of the basement."
     },
     {
       "category": "Heater",
       "player": "Ceddanne Rafaela",
-      "trend": "Collected two hits in five at-bats last night",
-      "dans_take": "Two hits on a night where the rest of the lineup went cold shows the kid is trying to spark something."
+      "trend": "Collected two of the team's eight hits last night.",
+      "dans_take": "The kid is seeing the ball well, but he needs some help from the rest of this quiet lineup."
     },
     {
       "category": "Bullpen Watch",
       "player": "Ryan Watson",
-      "trend": "Surrendered two runs over two innings of relief work",
-      "dans_take": "Gave up two runs to close out the game, making a tough night look even worse."
+      "trend": "Gave up two runs on one hit and a walk in late relief.",
+      "dans_take": "Giving up late runs when we're already struggling to score is just salt in the wound."
     }
   ],
   "news_digest": [
     {
-      "headline": "Ranking top 2026 MLB trade deadline candidates: Skubal, more",
-      "url": "https://www.espn.com/mlb/story/_/id/49082474/ranking-mlb-trade-deadline-candidates-top-100-skubal-chapman-peralta-arraez",
-      "dans_take": "With this team sitting twelve games under five hundred, the front office better be on the phone making some calls."
-    },
-    {
       "headline": "Kraft, Pats file complaint against Foxborough over license fees",
       "url": "https://www.espn.com/soccer/story/_/id/49086428/kraft-patriots-sue-town-foxborough-gillette-license",
-      "dans_take": "Fighting over a million bucks is a bad look when we've got a championship to chase."
+      "dans_take": "Fighting over nearly a million bucks in security fees is a classic offseason headache we don't need."
     },
     {
-      "headline": "Would Giannis be a bad fit in Boston?",
-      "url": "https://www.espn.com/video/clip/_/id/49081384/would-giannis-bad-fit-boston",
-      "dans_take": "Offseason talk is already getting silly, but I'd take him in a heartbeat."
+      "headline": "Ranking top 2026 MLB trade deadline candidates: Skubal, more",
+      "url": "https://www.espn.com/mlb/story/_/id/49082474/ranking-mlb-trade-deadline-candidates-top-100-skubal-chapman-peralta-arraez",
+      "dans_take": "The front office better be making calls because this roster needs a serious jolt before July."
     }
   ],
   "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Boston Celtics",
+      "away_team": "Philadelphia 76ers",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-06-16",
+      "played": false,
+      "season_type": "offseason"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Boston Bruins",
+      "away_team": "Buffalo Sabres",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-06-16",
+      "played": false,
+      "season_type": "offseason"
+    },
     "redsox": {
       "sport": "MLB",
       "home_team": "Boston Red Sox",
@@ -53,32 +68,12 @@
       "played": true,
       "season_type": "regular"
     },
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-06-16",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-06-16",
-      "played": false,
-      "season_type": "offseason"
-    },
     "patriots": {
       "sport": "NFL",
       "home_team": "New England Patriots",
       "away_team": "Seattle Seahawks",
-      "home_score": 0,
-      "away_score": 0,
+      "home_score": null,
+      "away_score": null,
       "game_date": "2026-06-16",
       "played": false,
       "season_type": "offseason"
@@ -126,8 +121,5 @@
       "time_et": "3:10 PM ET"
     }
   ],
-  "generated_at": "2026-06-15T14:00:39.762083+00:00",
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: Fabricated historical/career timeline: The commentary refers to the upcoming 2026 season as Drake Maye's 'sophomore season', but source data indicates 2025 was his 'Year 2', making 2026 his third seas",
-  "_stale_age_hours": 47.2
+  "generated_at": "2026-06-17T14:27:54.055479+00:00"
 }

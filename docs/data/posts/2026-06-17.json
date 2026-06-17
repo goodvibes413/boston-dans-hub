@@ -1,52 +1,52 @@
 {
   "date": "2026-06-17",
-  "generated_at": "2026-06-15T14:00:39.762083+00:00",
-  "headline": "Rangers Ruin The Sweep At Fenway As Connelly Early Gets Rocked Early",
+  "generated_at": "2026-06-17T14:27:54.055479+00:00",
+  "headline": "Sox Bats Fall Silent In Depressing Six To One Loss At Fenway",
   "morning_brew": [
-    "The dream of a sweep at Fenway went up in smoke on Sunday, and it didn't take long to happen. Connelly Early served up a home run to Wyatt Langford on his very first pitch of the game, and things just went downhill from there. Early got absolutely hammered for eleven hits and six earned runs before getting pulled in the fifth. I watched Kyle Higashioka launch that three-run homer in the second and felt my chest tighten up. We fought back a bit with some late runs, but you can't spot a team like Texas a big lead and expect to walk away happy.",
-    "Willson Contreras did everything he could to keep us in this one, going three for four with two solo shots. The guy has been an absolute beast, but he can't carry this entire lineup when Ceddanne Rafaela is putting up an oh for four night. My neighbor Rick was screaming at the television about the strike zone, claiming the umpires had it out for us from the jump. Honestly, after watching some of those low calls, I'm almost ready to help him write his weekly letter to the league commissioner. We ended up with nine hits but couldn't string them together when we needed that one big hit to tie it up.",
-    "Down in Foxborough, the wait continues for Gabe Jacas to sign his rookie contract and get his rear end into minicamp. We need everyone on the field if we're going to build on last year's Super Bowl appearance, so the front office has to get this sorted out. Meanwhile, the Celtics are sitting with the third-best odds for next year's title, which is nice, but I'm still too sour about the Philadelphia collapse to care about next winter's betting lines."
+    "That was an absolutely brutal night at Fenway Park. We drop a six to one dud to Toronto, and my head is spinning. Payton Tolle actually battled through five innings, but you can't win baseball games when your lineup decides to take the night off. We scraped together eight hits but only managed a single run. I watched us leave runner after runner on base, and it felt like watching rush hour traffic crawl on the Pike.",
+    "Ceddanne Rafaela had a decent night with two hits, but the rest of the bats were completely asleep. Willson Contreras went zero for four and Wilyer Abreu went zero for three, which is just not going to cut it. My old man always said that hits are like city buses, because you wait forever for one and then three show up at once, but last night the bus never even left the station. Then Ryan Watson comes out and serves up two more runs in the ninth to put the game completely out of reach. It's just depressing.",
+    "Down in Foxborough, the Patriots are in the news for suing the town over nearly a million dollars in entertainment license fees. Robert Kraft is fighting over security costs at Gillette, which is a classic offseason distraction when we should be focusing on Drake Maye and mandatory minicamp. Still, I'd rather talk about stadium licensing gripes than watch this baseball team lose another series opener. We need a bounce-back tonight or this season is going down the drain."
   ],
   "news_digest": [
     {
-      "headline": "Why was Patriots rookie Gabe Jacas absent from minicamp?",
-      "url": "https://www.espn.com/nfl/story/_/id/49046571/why-new-england-patriots-gabe-jacas-contract-absent-team",
-      "dans_take": "Sign the contract and get to work, the defense needs you."
+      "headline": "Kraft, Pats file complaint against Foxborough over license fees",
+      "url": "https://www.espn.com/soccer/story/_/id/49086428/kraft-patriots-sue-town-foxborough-gillette-license",
+      "dans_take": "Fighting over nearly a million bucks in security fees is a classic offseason headache we don't need."
     },
     {
-      "headline": "Three teams ahead of champion Knicks in 2027 NBA title odds",
-      "url": "https://www.espn.com/nba/story/_/id/49061191/three-teams-ahead-champion-knicks-2027-title-odds",
-      "dans_take": "I don't care about next year's odds when we just blew a three to one lead to Philly."
+      "headline": "Ranking top 2026 MLB trade deadline candidates: Skubal, more",
+      "url": "https://www.espn.com/mlb/story/_/id/49082474/ranking-mlb-trade-deadline-candidates-top-100-skubal-chapman-peralta-arraez",
+      "dans_take": "The front office better be making calls because this roster needs a serious jolt before July."
     }
   ],
   "trend_watch": [
     {
       "category": "Cold Snap",
-      "player": "Connelly Early",
-      "trend": "Early lasted only four and two-thirds innings after getting battered for eleven hits.",
-      "dans_take": "You can't give up a home run on your very first pitch of the afternoon and expect to survive."
+      "player": "Willson Contreras",
+      "trend": "Went zero for four with no production last night.",
+      "dans_take": "We need his bat to stay hot if we're going to climb out of the basement."
     },
     {
       "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Contreras smashed two home runs and went three for four at the plate.",
-      "dans_take": "This guy is trying to carry the offense on his back, but he needs some help."
+      "player": "Ceddanne Rafaela",
+      "trend": "Collected two of the team's eight hits last night.",
+      "dans_take": "The kid is seeing the ball well, but he needs some help from the rest of this quiet lineup."
     },
     {
       "category": "Bullpen Watch",
       "player": "Ryan Watson",
-      "trend": "Watson threw two scoreless frames of relief with one strikeout.",
-      "dans_take": "Nice to see the bullpen hold the line after the starter put us in a massive hole."
+      "trend": "Gave up two runs on one hit and a walk in late relief.",
+      "dans_take": "Giving up late runs when we're already struggling to score is just salt in the wound."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
       "home_team": "Boston Celtics",
-      "away_team": "New York Knicks",
+      "away_team": "Philadelphia 76ers",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-06-14",
+      "game_date": "2026-06-16",
       "played": false,
       "season_type": "offseason"
     },
@@ -56,17 +56,17 @@
       "away_team": "Buffalo Sabres",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-06-14",
+      "game_date": "2026-06-16",
       "played": false,
       "season_type": "offseason"
     },
     "redsox": {
       "sport": "MLB",
       "home_team": "Boston Red Sox",
-      "away_team": "Texas Rangers",
-      "home_score": 4,
+      "away_team": "Toronto Blue Jays",
+      "home_score": 1,
       "away_score": 6,
-      "game_date": "2026-06-14",
+      "game_date": "2026-06-16",
       "played": true,
       "season_type": "regular"
     },
@@ -76,17 +76,12 @@
       "away_team": "Seattle Seahawks",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-06-14",
+      "game_date": "2026-06-16",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-06-16",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
     {
       "date": "2026-06-17",
       "matchup": "Toronto Blue Jays at Boston Red Sox",
@@ -116,8 +111,18 @@
       "date": "2026-06-22",
       "matchup": "Boston Red Sox at Colorado Rockies",
       "time_et": "8:40 PM ET"
+    },
+    {
+      "date": "2026-06-23",
+      "matchup": "Boston Red Sox at Colorado Rockies",
+      "time_et": "8:40 PM ET"
+    },
+    {
+      "date": "2026-06-24",
+      "matchup": "Boston Red Sox at Colorado Rockies",
+      "time_et": "3:10 PM ET"
     }
   ],
-  "_stale": true,
+  "_stale": null,
   "_fallback": null
 }
