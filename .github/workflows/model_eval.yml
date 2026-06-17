@@ -32,6 +32,11 @@ on:
         type: string
         required: true
         default: '2'
+      debug:
+        description: 'Verbose model diagnostics (finish_reason + raw response on failure)'
+        type: boolean
+        required: false
+        default: false
 
 # Read-only eval; multiple manual runs may overlap harmlessly.
 permissions:
@@ -84,6 +89,7 @@ jobs:
           FIXTURE: ${{ inputs.fixture }}
           MODELS: ${{ inputs.models }}
           N: ${{ inputs.n }}
+          LLM_DEBUG_RAW: ${{ inputs.debug && '1' || '' }}
         run: |
           set -o pipefail
           if [ "$MODE" = "live" ]; then

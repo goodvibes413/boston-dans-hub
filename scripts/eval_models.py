@@ -119,6 +119,18 @@ def run_model(model: str, base_env: dict, label: str, n: int) -> list:
             print(f"    FAIL: {result.stderr.strip()[:300]}", file=sys.stderr)
             rows.append({"run": i, "error": result.stderr.strip()[:200]})
             continue
+        s = summarize(out_path)
+        keys = set(s.get("keys", []))
+        # generate_rant exits 0 even when it writes a _generation_failed sentinel
+        # or otherwise produces output without the required keys. Treat that as a
+        # failure (not a silent "ok") and surface the subprocess stderr tail so
+        # the reason (parse error, quota, safety block, …) is visible.
+        if "_generation_failed" in keys or not REQUIRED_KEYS.issubset(keys):
+            print(f"    EMPTY/INVALID output (keys={sorted(keys)}). stderr tail:", file=sys.stderr)
+            for ln in result.stderr.strip().splitlines()[-12:]:
+                print(f"      {ln}", file=sys.stderr)
+            rows.append({"run": i, "error": "empty/invalid output", "path": str(out_path), **s})
+            continue
         rows.append({"run": i, "path": str(out_path), **summarize(out_path)})
     return rows
 

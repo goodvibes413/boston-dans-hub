@@ -951,10 +951,36 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
             lambda: client.models.generate_content(
                 model=model_name,
                 contents=f"{system_prompt}\n\n{user_message}",
-                config=types.GenerateContentConfig(temperature=0.9),
+                config=types.GenerateContentConfig(
+                    temperature=0.9,
+                    max_output_tokens=8192,
+                ),
             )
         )
-        return _strip_json_fence(resp.text)
+        # resp.text can be empty/None when a candidate is blocked or truncated;
+        # accessing .text may even raise. Capture defensively and, under
+        # LLM_DEBUG_RAW, log finish_reason + a snippet so eval failures are
+        # diagnosable (the model returning prose vs being cut off vs blocked).
+        try:
+            text = resp.text or ""
+        except Exception as e:
+            text = ""
+            if os.environ.get("LLM_DEBUG_RAW"):
+                print(f"  [gemma-debug] resp.text raised: {e}", file=sys.stderr)
+        if os.environ.get("LLM_DEBUG_RAW"):
+            finish = prompt_fb = None
+            try:
+                finish = resp.candidates[0].finish_reason
+            except Exception:
+                pass
+            try:
+                prompt_fb = resp.prompt_feedback
+            except Exception:
+                pass
+            print(f"  [gemma-debug] finish_reason={finish} prompt_feedback={prompt_fb} "
+                  f"text_len={len(text)}", file=sys.stderr)
+            print(f"  [gemma-debug] raw head: {text[:600]!r}", file=sys.stderr)
+        return _strip_json_fence(text)
 
     config_kwargs = dict(system_instruction=system_prompt, temperature=0.9)
     if use_grounding:
