@@ -1,9 +1,23 @@
 {
+  "date": "2026-06-18",
+  "generated_at": "2026-06-18T11:55:12.925505+00:00",
   "headline": "Sox Get Shut Out By Toronto As Offensive Slump Reaches Three Games",
   "morning_brew": [
     "Another night at Fenway Park, another complete blank job. I watched us get shut out three to zero by Toronto, and it was just painful. The Blue Jays literally put their scheduled starter on the injured list right before the game, and we still couldn't scratch across a single run against their bullpen day. Jake Bennett actually threw a decent game, giving up only two runs in five and a third innings, but he gets stuck with the loss because our bats decided to take another night off.",
     "We finished the night with seven hits and absolutely nothing to show for it. I been sayin' it all year, this lineup has no clutch gene whatsoever. My ma called the lineup a bunch of guys waving at the ball, and I couldn't even argue with her. Wilyer Abreu had two hits, but Ceddanne Rafaela went one for five, and we left way too many guys stranded. That's three losses in a row now, and we're sitting at twenty-nine and forty-two, dead last in the division.",
     "Down in Foxborough, the Patriots are wrapping up minicamp, and everyone is talking about what final offseason moves the front office has left in the tank. Drake Maye is looking good, but we need this front office to lock in some more protection up front before training camp kicks off. As for the baseball team, we've got one more afternoon matchup with Toronto today before heading out west, and they better find some offense fast."
+  ],
+  "news_digest": [
+    {
+      "headline": "Final NFL offseason moves for 32 teams: Trades, signings, more",
+      "url": "https://www.espn.com/nfl/story/_/id/49096789/2026-nfl-offseason-final-moves-trades-signings-extensions-32-teams",
+      "dans_take": "Let's make a splash and get Drake Maye another target before the summer ends."
+    },
+    {
+      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
+      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
+      "dans_take": "The challenge system is fine, but it doesn't help if you can't hit the ball in the first place."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Greg Weissert",
       "trend": "Gave up two hits and an earned run in his one inning of relief.",
       "dans_take": "He has to clean up the mistake pitches in the late innings when we're already fighting uphill."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Final NFL offseason moves for 32 teams: Trades, signings, more",
-      "url": "https://www.espn.com/nfl/story/_/id/49096789/2026-nfl-offseason-final-moves-trades-signings-extensions-32-teams",
-      "dans_take": "Let's make a splash and get Drake Maye another target before the summer ends."
-    },
-    {
-      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
-      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
-      "dans_take": "The challenge system is fine, but it doesn't help if you can't hit the ball in the first place."
     }
   ],
   "box_scores": {
@@ -121,5 +123,6 @@
       "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-06-18T11:55:12.925505+00:00"
+  "_stale": null,
+  "_fallback": null
 }
