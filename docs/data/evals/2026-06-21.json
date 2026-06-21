@@ -1,0 +1,30 @@
+{
+  "date": "2026-06-21",
+  "generated_at": "2026-06-21T11:20:41.589735+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 180.6,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "voice_repetition"
+      ],
+      "duration_seconds": 24.0
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 16.0
+    }
+  ]
+}
