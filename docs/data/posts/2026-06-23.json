@@ -1,9 +1,28 @@
 {
+  "date": "2026-06-23",
+  "generated_at": "2026-06-23T11:22:10.699686+00:00",
   "headline": "Red Sox Blow A Masterpiece In Denver As Bullpen Collapses In Ninth",
   "morning_brew": [
     "Absolutely brutal night in Denver. I watched that ninth inning through my fingers like a horror movie, and I'm still sick to my stomach. Jake Bennett was fantastic on the mound, giving us six scoreless innings with nine strikeouts, but the bullpen completely spit the bit at the end. Leading two to zero in the ninth, we let the Rockies walk off with a three to two victory after Jake McCarthy hit a three-run triple. That's the kind of heartbreaking loss that makes you want to throw your Dunks right at the television.",
     "My neighbor Rick is already composing another angry letter to the league about the officiating out in Colorado, and honestly, after watching that strike zone in the ninth, I might help him mail it. The bats only mustered five hits all night, which just isn't going to get it done, even when your starter is throwing a masterpiece. Now we're sitting at thirty-one and forty-five, dead last in the division, and the Yankees are coming to Fenway Park later this week. We can't keep giving games away like this if we want to have any self-respect left by July.",
     "Hear me out before you laugh, but the rumor mill is spinning out of control with reports that the Celtics are finalists to land Giannis Antetokounmpo. If Brad Stevens actually pulls that off, the Hub will absolutely erupt, though we'll have to see if they can beat out the Heat. Down in Foxborough, the competition for the wide receiver spots is already heating up ahead of training camp. Drake Maye is going to need every single playmaker we can find on that roster."
+  ],
+  "news_digest": [
+    {
+      "headline": "Sources: Giannis Antetokounmpo trade finalists are Celtics, Heat",
+      "url": "https://www.espn.com/nba/story/_/id/49143752/sources-giannis-antetokounmpo-trade-finalists-celtics-heat",
+      "dans_take": "If Brad Stevens actually brings Giannis to the Garden, the rest of the league can just pack up and go home."
+    },
+    {
+      "headline": "Will the Patriots keep seven wide receivers on their roster?",
+      "url": "https://www.espn.com/nfl/story/_/id/49120823/new-england-patriots-wide-receiver-too-many-53-man-roster-aj-brown-troy-brown",
+      "dans_take": "We need all the targets we can get for Drake Maye, so keeping seven is fine by me."
+    },
+    {
+      "headline": "Bruins to retire Patrice Bergeron's No. 37 next season",
+      "url": "https://www.espn.com/nhl/story/_/id/49108950/bruins-retire-patrice-bergeron-no-37-next-season",
+      "dans_take": "That is a well-deserved honor for the ultimate leader, and nobody else should ever wear that number in Boston."
+    }
   ],
   "trend_watch": [
     {
@@ -23,23 +42,6 @@
       "player": "Wilyer Abreu",
       "trend": "Had only one hit as the lineup finished with just five hits total.",
       "dans_take": "The offense has gone completely cold, and we cannot expect our starting pitching to be flawless every night."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Sources: Giannis Antetokounmpo trade finalists are Celtics, Heat",
-      "url": "https://www.espn.com/nba/story/_/id/49143752/sources-giannis-antetokounmpo-trade-finalists-celtics-heat",
-      "dans_take": "If Brad Stevens actually brings Giannis to the Garden, the rest of the league can just pack up and go home."
-    },
-    {
-      "headline": "Will the Patriots keep seven wide receivers on their roster?",
-      "url": "https://www.espn.com/nfl/story/_/id/49120823/new-england-patriots-wide-receiver-too-many-53-man-roster-aj-brown-troy-brown",
-      "dans_take": "We need all the targets we can get for Drake Maye, so keeping seven is fine by me."
-    },
-    {
-      "headline": "Bruins to retire Patrice Bergeron's No. 37 next season",
-      "url": "https://www.espn.com/nhl/story/_/id/49108950/bruins-retire-patrice-bergeron-no-37-next-season",
-      "dans_take": "That is a well-deserved honor for the ultimate leader, and nobody else should ever wear that number in Boston."
     }
   ],
   "box_scores": {
@@ -126,5 +128,6 @@
       "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-06-23T11:22:10.699686+00:00"
+  "_stale": null,
+  "_fallback": null
 }

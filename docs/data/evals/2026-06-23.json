@@ -1,0 +1,23 @@
+{
+  "date": "2026-06-23",
+  "generated_at": "2026-06-23T11:22:07.046632+00:00",
+  "outcome": "fresh",
+  "winning_attempt": 1,
+  "total_attempts": 1,
+  "generation_seconds": 3.7,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [
+        "judge skipped \u2014 API error: ServerError"
+      ],
+      "duration_seconds": 3.7
+    }
+  ]
+}
