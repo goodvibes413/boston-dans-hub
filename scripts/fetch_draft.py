@@ -40,8 +40,10 @@ BOSTON_TEAMS = {
     "mlb": {"redsox", "bos"},
 }
 
-# Current year for draft queries
-CURRENT_YEAR = 2026
+# Current year for draft queries. All four drafts (NFL April, NBA/NHL June,
+# MLB July) fall inside the calendar year, so the current UTC year is always the
+# right draft year — no annual manual bump needed.
+CURRENT_YEAR = datetime.now(timezone.utc).year
 
 # ESPN draft endpoints
 ESPN_DRAFT_URLS = {

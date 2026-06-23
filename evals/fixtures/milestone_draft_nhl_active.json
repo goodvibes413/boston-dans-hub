@@ -1,0 +1,59 @@
+{
+  "_fixture_notes": "Generalization test: NHL draft, active state (Bruins drafting). today == last_active_date so compute_draft_freshness returns ('active', 0). The NHL draft is 7 rounds, so the Bruins have ~7 picks — at/under the detail cap, so EVERY pick is named (collapse tier empty). KEY CHECK: NHL draftees come from junior/European leagues, NOT colleges. The 'college' field carries values like 'London Knights (OHL)', 'Frolunda (Sweden)', 'USNTDP'. PASS criteria: morning_brew names every Bruins pick with its origin phrased NATURALLY (e.g. 'out of the OHL', 'over from Sweden') — Dan must NOT call these 'college' or invent an NCAA school. Players are fictional. Use: python3 scripts/eval_voice.py --fixture evals/fixtures/milestone_draft_nhl_active.json --n 1",
+  "today": "2026-06-26",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-06-25",
+        "celtics": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "bruins":  {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-06-25",
+            "home_team": "Boston Red Sox",
+            "away_team": "New York Yankees",
+            "home_score": 3,
+            "away_score": 5,
+            "result": "Red Sox lost 3-5"
+          },
+          "news": {"articles": []}
+        },
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "bruins": {"past_seasons": [{"year": 2026, "record": "44-26-12", "result": "Lost Round 1 vs Maple Leafs 4-3"}]},
+      "redsox": {"past_seasons": [{"year": 2025, "wins": 78, "losses": 84, "result": "Missed playoffs"}]}
+    },
+    "current_season": {
+      "bruins": {"status": "offseason", "last_season_summary": "44-26-12"},
+      "redsox": {"status": "regular_season", "wins": 44, "losses": 34, "win_pct": 0.564, "streak": "L1"},
+      "patriots": {"status": "offseason"}
+    }
+  },
+  "boston_drafts": {
+    "generated_at": "2026-06-26T23:00:00+00:00",
+    "last_active_date": "2026-06-26",
+    "active_drafts": [
+      {
+        "sport": "NHL",
+        "year": 2026,
+        "team": "bruins",
+        "picks": [
+          {"round": 1, "pick_overall": 13, "player_name": "Lars Bergstrom", "position": "C", "college": "Frolunda (Sweden)"},
+          {"round": 2, "pick_overall": 45, "player_name": "Cole Tremblay", "position": "D", "college": "London Knights (OHL)"},
+          {"round": 3, "pick_overall": 77, "player_name": "Mikko Rautio", "position": "RW", "college": "Tappara (Finland)"},
+          {"round": 4, "pick_overall": 109, "player_name": "Brady Sorensen", "position": "LW", "college": "USNTDP"},
+          {"round": 5, "pick_overall": 141, "player_name": "Anton Vasiliev", "position": "G", "college": "Loko Yaroslavl (Russia)"},
+          {"round": 6, "pick_overall": 173, "player_name": "Will Doucette", "position": "D", "college": "Rimouski Oceanic (QMJHL)"},
+          {"round": 7, "pick_overall": 205, "player_name": "Henry Aalto", "position": "C", "college": "HV71 (Sweden)"}
+        ]
+      }
+    ]
+  },
+  "recent_dan_output": []
+}
