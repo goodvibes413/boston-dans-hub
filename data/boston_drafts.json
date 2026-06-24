@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-23T11:19:28.277556+00:00",
-  "last_active_date": "2026-04-25",
+  "generated_at": "2026-06-24T10:52:28.343279+00:00",
+  "last_active_date": "2026-06-24",
   "active_drafts": [
     {
       "sport": "NFL",
@@ -78,6 +78,21 @@
           "position": "EDGE",
           "college": "Boston College",
           "team": "patriots"
+        }
+      ]
+    },
+    {
+      "sport": "NBA",
+      "year": 2026,
+      "team": "celtics",
+      "picks": [
+        {
+          "round": 1,
+          "pick_overall": 27,
+          "player_name": "Chris Cenac Jr.",
+          "position": "F",
+          "college": "Houston",
+          "team": "celtics"
         }
       ]
     }

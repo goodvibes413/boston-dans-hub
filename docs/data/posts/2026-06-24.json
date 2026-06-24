@@ -1,9 +1,28 @@
 {
+  "date": "2026-06-24",
+  "generated_at": "2026-06-24T10:55:01.474645+00:00",
   "headline": "Sonny Gray Dominates In Denver While Brad Stevens Stirs The Celtics Trade Pot",
   "morning_brew": [
     "That is exactly how you bounce back from a heartbreak. Sonny Gray was absolutely dealin' in Denver last night, giving us seven innings of one-run ball with eleven strikeouts to lead the way. Wilyer Abreu provided the big blow with a two-run homer, and Nate Eaton stayed red-hot with three hits and two RBI. We finally looked like a professional baseball team out there, taking a five to two victory and setting ourselves up with a chance to win the series this afternoon.",
     "Sonny Gray was so dominant, even Uncle Carmine woke up from his recliner in Revere to cheer. I been sayin' it all year, if we can just get this level of starting pitching consistently, we can actually build something here. Garrett Whitlock gave up a run in the ninth, but we held on to secure the win. We are sitting at thirty-two and forty-five, and we need to grab another win today before heading back to Fenway Park for a massive four-game set against the Yankees.",
     "Off the court, the Celtics grabbed Chris Cenac Jr. with the twenty-seventh pick in the draft, but all anyone in the Hub can talk about are these Jaylen Brown trade rumors. Brad Stevens is playing his cards close to his chest, but moving Jaylen would be a massive gamble for this franchise. Down in Foxborough, the focus is on contract extensions as the front office tries to secure the core around Drake Maye for the long haul."
+  ],
+  "news_digest": [
+    {
+      "headline": "Stevens: Brown 'big part' of Celtics, but won't predict future",
+      "url": "https://www.espn.com/nba/story/_/id/49162273/stevens-brown-big-part-celtics-predict-future",
+      "dans_take": "If we trade Jaylen, the return better be historic, because you do not just give away a guy of his caliber."
+    },
+    {
+      "headline": "2026 NBA draft: Round 1 winners, surprise picks, questions",
+      "url": "https://www.espn.com/nba/story/_/id/49085674/2026-nba-draft-round-1-winners-surprises-teams-picks-questions-washington-jazz-memphis",
+      "dans_take": "The draft is officially in the books and now the real work of rebuilding our depth begins."
+    },
+    {
+      "headline": "2026 NFL contract extension updates for all 32 teams",
+      "url": "https://www.espn.com/nfl/story/_/id/49153923/2026-nfl-contract-extensions-signings-negotiations-all-32-teams",
+      "dans_take": "Locking up key pieces now is the smart play to keep things stable for Drake Maye."
+    }
   ],
   "trend_watch": [
     {
@@ -23,23 +42,6 @@
       "player": "Wilyer Abreu",
       "trend": "Two hits including a crucial two-run home run",
       "dans_take": "We need his power in the middle of the order to keep opposing pitchers honest."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Stevens: Brown 'big part' of Celtics, but won't predict future",
-      "url": "https://www.espn.com/nba/story/_/id/49162273/stevens-brown-big-part-celtics-predict-future",
-      "dans_take": "If we trade Jaylen, the return better be historic, because you do not just give away a guy of his caliber."
-    },
-    {
-      "headline": "2026 NBA draft: Round 1 winners, surprise picks, questions",
-      "url": "https://www.espn.com/nba/story/_/id/49085674/2026-nba-draft-round-1-winners-surprises-teams-picks-questions-washington-jazz-memphis",
-      "dans_take": "The draft is officially in the books and now the real work of rebuilding our depth begins."
-    },
-    {
-      "headline": "2026 NFL contract extension updates for all 32 teams",
-      "url": "https://www.espn.com/nfl/story/_/id/49153923/2026-nfl-contract-extensions-signings-negotiations-all-32-teams",
-      "dans_take": "Locking up key pieces now is the smart play to keep things stable for Drake Maye."
     }
   ],
   "box_scores": {
@@ -126,5 +128,6 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-06-24T10:55:01.474645+00:00"
+  "_stale": null,
+  "_fallback": null
 }
