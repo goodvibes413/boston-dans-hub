@@ -66,10 +66,11 @@ DRAFT_AGING_DAYS = 7
 # coverage. Picks beyond this count are collapsed into a one-sentence summary by
 # the persona (see the Major Milestones draft rule in boston_dan_system.txt).
 # Keyed on pick COUNT, not sport — so deep drafts (MLB, ~20 Red Sox picks) get
-# capped while shallow ones (NBA ~1–2, NHL ~7, NFL ~7–11) name every pick. The
-# value is injected into the DRAFT_PICKS block as "detail_pick_count" so the
-# prompt and the data agree on the number.
-DRAFT_DETAIL_PICKS = 10
+# capped while shallow ones (NBA ~1–2, NHL ~7, NFL ~7–11) name every pick. Set to
+# 12 so a compensatory-heavy NFL draft (up to ~11 picks) still names every pick;
+# only MLB's ~20 reliably trips the collapse tier. The value is injected into the
+# DRAFT_PICKS block as "detail_pick_count" so the prompt and the data agree.
+DRAFT_DETAIL_PICKS = 12
 
 # Continuity memory: number of past Dan outputs to inject into the prompt.
 # 5 days gives Dan a long enough memory to spot recurring crutches (e.g. "18
