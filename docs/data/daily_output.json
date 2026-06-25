@@ -1,46 +1,46 @@
 {
-  "headline": "Celtics and Patriots Draft While Sox Blow Another Late Lead in Denver",
+  "headline": "Sox Bullpen Disaster In Denver Screams For Help Ahead Of Yankees Arrival",
   "morning_brew": [
-    "What a gut punch out in Denver last night. Ranger Suarez was absolutely stellar on the mound, giving us six strong innings with only one earned run and striking out nine. But then our bullpen completely fell apart. It's the same movie, just a different remake with this relief staff. Tyron Guerrero, Danny Coulombe, and Justin Slaten combined to give up five late runs, turning a comfortable lead into an agonizing eight to six loss. I haven't seen a bullpen cough up a game like that since September 2011 when the team went seven and twenty to miss the playoffs on the final night.",
-    "Even with Ceddanne Rafaela turning in a great performance with three hits and an RBI, we just can't secure a win when the pitching staff throws away a masterpiece. We're now sitting at thirty-two and forty-six, dead last in the AL East, and the first-place Yankees are coming to Fenway Park tonight for a massive four-game series. If there's ever a time for this team to show some pride and turn things around, it's right now against our biggest rivals.",
-    "While the baseball team struggles, the Celtics wrapped up their draft and added some fresh young talent to the mix. Here's how their class looks:\nRound 1, Pick 27: Chris Cenac Jr., F out of Houston. We desperately need size and frontcourt depth off the bench. Love it.\nRound 2, Pick 40: Dillon Mitchell, F out of St. John's. Athletic wing prospect but a bit of a project. Head-scratcher.",
-    "Down in Foxborough, the front office focused heavily on building around Drake Maye during their draft. Here's the breakdown:\nRound 1, Pick 28: Caleb Lomu, OT out of Utah. Protecting our franchise quarterback has to be the top priority. Love it.\nRound 2, Pick 55: Gabe Jacas, EDGE out of Illinois. You can never have enough athletic pass rushers. Love it.\nRound 3, Pick 95: Eli Raridon, TE out of Notre Dame. A massive target to help Maye over the middle. About time.\nRound 5, Pick 171: Karon Prunty, CB out of Wake Forest. Secondary depth is a constant need in this league. Love it.\nRound 6, Pick 196: Dametrious Crownover, OT out of Texas A&M. More protection up front for the offense. Love it.\nRound 6, Pick 212: Namdi Obiazor, LB out of TCU. A developmental linebacker who can fly down the field on special teams. Love it.\nRound 7, Pick 234: Behren Morton, QB out of Texas Tech. Taking a flyer on a developmental signal-caller. Head-scratcher.\nRound 7, Pick 245: Jam Miller, RB out of Alabama. A physical runner to push the guys in training camp. Love it.\nRound 7, Pick 247: Quintayvious Hutchins, EDGE out of Boston College. Keeping the local kid in New England. Love it."
+    "We had them right where we wanted them, and then the bullpen completely spit the bit again. Ranger Suarez threw a gem, giving us six innings of one-earned-run ball with nine strikeouts, but the late innings turned into an absolute circus in Colorado. Leading six to three in the seventh, everything fell apart. Tyron Guerrero and Danny Coulombe couldn't lock it down, and Justin Slaten got tagged with the loss after giving up two runs in the eighth. Getting eleven hits and Ceddanne Rafaela going three-for-five doesn't mean a thing when you blow a three-run lead on the road.",
+    "This loss sits right in your chest like a bad order of home fries from the local diner. We're sitting at thirty-two and forty-six, dead last in the division, and now the first-place Yankees are coming to Fenway Park tonight for a massive four-game set. I don't care what the standings say, this is the rivalry that defines baseball in the Northeast, and the boys need to show some pride. If the bullpen keeps serving up batting practice like they did in Denver, it's going to be a long, miserable weekend on Yawkey Way.",
+    "Over at the Garden, Brad Stevens is busy trying to reload for next year while the talk shows scream about trading Jaylen Brown. The green team added some size in the draft, picking up Chris Cenac Jr. out of Houston at twenty-seven and Dillon Mitchell out of St. John's at forty. Love the Cenac pick, because we need frontcourt depth after that brutal first-round exit against Philly, and Mitchell brings some serious athletic energy. They can talk all they want about moving Jaylen, but I'll believe it when I see it.",
+    "Down in Foxborough, the analysts are already ranking the skill position groups, and they aren't giving our guys any respect. My buddy Sully from Southie called me up raging because some national writer ranked the Patriots playmakers near the bottom of the league. Drake Maye has plenty of talent to work with, especially with Rhamondre Stevenson and Kayshon Boutte in the mix, but the front office needs to keep focus on locking up our core with those contract extensions."
   ],
   "trend_watch": [
     {
       "category": "Heater",
+      "player": "Ranger Suarez",
+      "trend": "Pitched six innings, allowing just one earned run with nine strikeouts.",
+      "dans_take": "Suarez was absolutely dealin' out there. Six innings of one-earned-run ball with nine strikeouts is a masterpiece in that thin Denver air."
+    },
+    {
+      "category": "Streak",
       "player": "Ceddanne Rafaela",
-      "trend": "Ceddanne Rafaela had three hits and drove in a run last night.",
-      "dans_take": "Rafaela is swinging a hot bat, we just need the rest of the lineup to follow his lead."
+      "trend": "Went three-for-five with an RBI in Denver.",
+      "dans_take": "Rafaela was a bright spot with three hits. The kid is finding his stroke, now we just need the rest of the lineup to follow his lead."
     },
     {
       "category": "Cold Snap",
-      "player": "Justin Slaten",
-      "trend": "Justin Slaten gave up four hits and two earned runs in the eighth to take the loss.",
-      "dans_take": "Slaten has to find his command because we can't have the bullpen throwing away gems."
-    },
-    {
-      "category": "Heater",
-      "player": "Ranger Suarez",
-      "trend": "Ranger Suarez struck out nine over six strong innings while giving up just one earned run.",
-      "dans_take": "Suarez did his job and deserved a win, but the bullpen let him down."
+      "player": "Tyron Guerrero",
+      "trend": "Allowed three unearned runs while recording only two outs.",
+      "dans_take": "Guerrero completely lost the handle in the seventh. You can't give up three runs in a relief appearance and expect to win ballgames."
     }
   ],
   "news_digest": [
     {
-      "headline": "Stephen A.: The Celtics have to trade Jaylen Brown",
-      "url": "https://www.espn.com/video/clip/_/id/49165827/celtics-trade-jaylen-brown",
-      "dans_take": "Stephen A. needs to quiet down because trading Jaylen after everything he's done for this city is a massive mistake."
+      "headline": "Red Sox begin 4-game series at home against the Yankees",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815900",
+      "dans_take": "Forget the standings, when the Bronx Bombers come to Fenway, it is time to put up a fight."
+    },
+    {
+      "headline": "2026 NBA draft grades: Winners, losers for all 30 teams",
+      "url": "https://www.espn.com/nba/story/_/id/49147426/2026-nba-draft-grades-winners-losers-sleepers-best-picks-value-reaches-all-30-teams-classes",
+      "dans_take": "The draft experts are giving out grades, but the only grade that matters is how these kids look on the hardwood."
     },
     {
       "headline": "Ranking WR, TE, RB groups for 2026: Best and worst NFL teams",
       "url": "https://www.espn.com/nfl/story/_/id/49154825/ranking-nfl-teams-offensive-groups-wr-rb-te-2026-season-best-playmakers",
-      "dans_take": "Our skill groups have a lot to prove, but these rookies we just drafted are gonna help Drake Maye in a big way."
-    },
-    {
-      "headline": "Final 2026 NHL draft rankings: Projections for top prospects",
-      "url": "https://www.espn.com/nhl/story/_/id/49154008/2026-nhl-draft-rankings-big-board-prospects-projections-players-mckenna-stenberg-carels",
-      "dans_take": "With the draft starting Friday, the front office needs to hit a home run to get us back into the mix next season."
+      "dans_take": "The national media can rank our skill groups wherever they want, but Drake Maye is going to shock some people."
     }
   ],
   "box_scores": {
@@ -122,9 +122,5 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-06-25T10:50:47.424029+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "Contains borderline profanity ('damn') in the draft picks commentary"
-  ]
+  "generated_at": "2026-06-25T12:50:35.189514+00:00"
 }
