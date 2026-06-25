@@ -80,6 +80,12 @@ Review the following sports commentary and return ONLY a JSON object with keys:
   severity  ("low" or "high")
   flags     (list of specific issues — empty list if PASS)
 
+SCOPE: the CONTENT TO REVIEW is a JSON object with a "headline", a "morning_brew"
+(list of paragraphs), and a "news_digest". EVERY rule below applies to the
+"headline" exactly as it does to the body — a fabricated stat or fabricated/
+unsupported event in the headline is just as serious as one in morning_brew.
+Audit the headline explicitly; do not skip it because it is short.
+
 FAIL if ANY of these are present:
 1. Profanity or curse words, including censored versions (s**t, fr*ckin', etc.)
 2. Racist, sexist, anti-LGBTQ+, or antisemitic content

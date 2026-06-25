@@ -485,29 +485,30 @@ def load_recent_dan_output(archive_dir: Path, days: int = DEFAULT_MEMORY_DAYS) -
     return entries
 
 
-def compute_draft_freshness(draft_picks: dict | None, today: date) -> tuple[str | None, int | None]:
+def compute_draft_freshness(last_active: str | None, today: date) -> tuple[str | None, int | None]:
     """
-    Classify how fresh the draft news cycle is, so generate_rant.py can decide
-    how much DRAFT_PICKS context to hand Dan.
+    Classify how fresh a SINGLE draft's news cycle is from its own
+    last_active_date, so generate_rant.py can decide how much context to hand
+    Dan for that sport's draft.
+
+    Each draft in active_drafts carries its own last_active_date (stamped by
+    fetch_draft.py only when THAT draft's pick count grows). Freshness is
+    computed per draft so one sport's live draft never revives another sport's
+    months-old completed draft — that global-date bug made Dan recap the stale
+    NFL draft on NBA draft day.
 
     Returns (freshness, days_since_active):
       ("active",  0)        last_active_date == today (new picks added today)
       ("fresh",   N)        1–DRAFT_FRESH_DAYS days post-active
       ("aging",   N)        DRAFT_FRESH_DAYS+1 to DRAFT_AGING_DAYS
-      ("stale",   N)        >DRAFT_AGING_DAYS — DRAFT_PICKS omitted entirely
-      (None,      None)     no draft to discuss (no last_active_date or
-                            unparseable date) — caller should omit DRAFT_PICKS.
+      ("stale",   N)        >DRAFT_AGING_DAYS — this draft omitted entirely
+      (None,      None)     no/unparseable date — caller omits this draft.
 
-    NOTE: active_drafts presence is intentionally NOT used as the "active" signal.
-    ESPN serves completed draft picks year-round, so active_drafts is always
-    non-empty after a draft has concluded. The sole source of truth is
-    last_active_date, which fetch_draft.py stamps only when the pick count
-    GROWS relative to the prior file (i.e., new picks actually arrived today).
+    NOTE: a draft's presence in active_drafts is intentionally NOT the "active"
+    signal. ESPN serves completed draft picks year-round, so a draft stays in
+    active_drafts after it concludes. last_active_date is the sole source of
+    truth.
     """
-    if not draft_picks:
-        return None, None
-
-    last_active = draft_picks.get("last_active_date")
     if not last_active:
         return None, None
 
@@ -901,36 +902,49 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
             f"{json.dumps(recent_output, indent=2)}\n\n"
         )
 
-    # Freshness-aware DRAFT_PICKS injection. See compute_draft_freshness() and
-    # the Major Milestones section of boston_dan_system.txt for the rules per state.
-    freshness, days_since = compute_draft_freshness(draft_picks, date.fromisoformat(today_iso))
-    if freshness in ("active", "fresh"):
-        annotated = dict(draft_picks)
-        annotated["freshness"] = freshness
-        annotated["days_since_active"] = days_since
-        annotated["detail_pick_count"] = DRAFT_DETAIL_PICKS
-        message += (
-            "DRAFT_PICKS:\n"
-            f"{json.dumps(annotated, indent=2)}\n\n"
+    # Freshness-aware DRAFT_PICKS injection, computed PER DRAFT from each draft's
+    # own last_active_date. One sport's live draft must never revive another
+    # sport's stale completed draft (the global-date bug that made Dan recap the
+    # months-old NFL draft on NBA draft day). See compute_draft_freshness() and
+    # the Major Milestones section of boston_dan_system.txt for the per-state rules.
+    today_date = date.fromisoformat(today_iso)
+    included_drafts = []
+    for draft in (draft_picks or {}).get("active_drafts", []):
+        if not isinstance(draft, dict):
+            continue
+        freshness, days_since = compute_draft_freshness(
+            draft.get("last_active_date"), today_date
         )
-    elif freshness == "aging":
-        # Slim block — keep player names available for the safety judge's
-        # source-data check, but tell Dan explicitly NOT to recap the draft.
-        slim = {
-            "freshness": "aging",
-            "days_since_active": days_since,
-            "active_drafts": (draft_picks or {}).get("active_drafts", []),
-            "_note": (
-                "Draft is OVER and the news cycle has moved on. "
-                "Do NOT proactively recap picks. Reference a specific draftee "
+        if freshness in ("active", "fresh"):
+            entry = dict(draft)
+            entry["freshness"] = freshness
+            entry["days_since_active"] = days_since
+            included_drafts.append(entry)
+        elif freshness == "aging":
+            # Keep this draft's player names available for the safety judge's
+            # source-data check, but tell Dan explicitly NOT to recap it.
+            entry = dict(draft)
+            entry["freshness"] = "aging"
+            entry["days_since_active"] = days_since
+            entry["_note"] = (
+                "Draft is OVER and the news cycle has moved on. Do NOT "
+                "proactively recap these picks. Reference a specific draftee "
                 "only if LATEST_NEWS surfaces them by name."
-            ),
+            )
+            included_drafts.append(entry)
+        # freshness in ("stale", None): omit THIS draft entirely.
+
+    if included_drafts:
+        block = {
+            "generated_at": (draft_picks or {}).get("generated_at"),
+            "detail_pick_count": DRAFT_DETAIL_PICKS,
+            "active_drafts": included_drafts,
         }
         message += (
             "DRAFT_PICKS:\n"
-            f"{json.dumps(slim, indent=2)}\n\n"
+            f"{json.dumps(block, indent=2)}\n\n"
         )
-    # freshness in ("stale", None): omit DRAFT_PICKS entirely.
+    # No non-stale drafts: omit DRAFT_PICKS entirely.
     if season_overrides:
         overrides_text = _build_overrides_block(season_overrides)
         if overrides_text:

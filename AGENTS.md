@@ -457,27 +457,31 @@ Shape is status-conditional. `fetch_season_memory.py` writes one entry per team 
 ```
 The safety judge also loads both files as `source_data` — any stat Dan cites must appear in `rolling_7day` OR `season_memory`, otherwise it's flagged as a fabricated stat (HIGH severity).
 
-### `data/boston_drafts.json` (gitignored — fetched daily during draft seasons)
+### `data/boston_drafts.json` (in git — tracked via `!data/boston_drafts.json` exception; fetched daily)
 
-Fetched daily by `fetch_draft.py`, which queries ESPN's draft API for all 4 Boston teams.
+Fetched daily by `fetch_draft.py`, which queries ESPN's draft API for all 4 Boston teams. **Committed to git each day** (the workflow's `git add -A`) so the freshness differential has a prior file to compare against — CI runners are ephemeral, so without the committed file every run would be a cold start.
 
 ```json
 {
-  "generated_at": "2026-04-24T16:30:00+00:00",
-  "last_active_date": "2026-04-25",
+  "generated_at": "2026-06-25T16:30:00+00:00",
+  "last_active_date": "2026-06-25",
   "active_drafts": [
+    {
+      "sport": "NBA",
+      "year": 2026,
+      "team": "celtics",
+      "last_active_date": "2026-06-25",
+      "picks": [
+        { "round": 1, "pick_overall": 27, "player_name": "Chris Cenac Jr.", "position": "F", "college": "Houston" }
+      ]
+    },
     {
       "sport": "NFL",
       "year": 2026,
       "team": "patriots",
+      "last_active_date": "2026-04-25",
       "picks": [
-        {
-          "round": 1,
-          "pick_overall": 17,
-          "player_name": "Saquon Barkley",
-          "position": "RB",
-          "college": "Penn State"
-        }
+        { "round": 1, "pick_overall": 28, "player_name": "Caleb Lomu", "position": "OT", "college": "Utah" }
       ]
     }
   ]
@@ -486,19 +490,22 @@ Fetched daily by `fetch_draft.py`, which queries ESPN's draft API for all 4 Bost
 
 **Shape:**
 - `generated_at`: ISO timestamp of fetch
-- `last_active_date`: ISO date (YYYY-MM-DD) of the most recent day when `fetch_draft.py` observed the total pick count *grow* relative to the prior file (i.e., new picks were actually added — the draft was live). **Important:** ESPN serves completed draft picks year-round, so `active_drafts` being non-empty is NOT a reliable "draft is live" signal. Only `last_active_date` (updated via differential pick-count) tells you when the draft was actually happening. Migration default: `"1970-01-01"` if the prior file lacked the field and today's pick count didn't grow → freshness becomes `stale` immediately.
 - `active_drafts[]`: array of draft objects, one per Boston team's current-year draft. Present year-round as ESPN serves the completed record; do NOT use its presence as a "draft in progress" indicator.
-- Each draft object: `sport`, `year`, `team`, `picks[]`
-- Each pick: `round`, `pick_overall`, `player_name`, `position`, `college`
+- Each draft object: `sport`, `year`, `team`, **`last_active_date`** (per-draft), `picks[]`
+- **`last_active_date` (per draft — authoritative for freshness):** the most recent day `fetch_draft.py` observed *that draft's* pick count *grow* relative to the same draft in the prior file (new picks actually arrived — that draft was live). Computed **per draft**, keyed by `(sport, team)`. **Important:** ESPN serves completed picks year-round, so a draft staying in `active_drafts` is NOT a "draft is live" signal — only its `last_active_date` is. Migration default: `"1970-01-01"` if the prior entry lacked the field and that draft's count didn't grow → it becomes `stale` immediately. (We deliberately do NOT fall back to the top-level date — see below.)
+- **Top-level `last_active_date`:** retained for backward compatibility only; set to the max across all per-draft dates. **Per-draft dates are authoritative.**
+- Each pick: `round`, `pick_overall`, `player_name`, `position`, `college` (`college` is the origin — may be a college, a junior/European club for NHL, or an international/pro team).
 
-**Usage in prompt:** `generate_rant.py` computes a freshness label purely from `last_active_date` (days since), then injects `boston_drafts.json` as a `DRAFT_PICKS` block in three different shapes:
-- **active** (`last_active_date == today`) or **fresh** (1–2 days post): full block, MANDATORY pick-by-pick coverage.
-- **aging** (3–7 days post): slim block with a `_note` telling Dan not to recap.
-- **stale** (> 7 days) or no `last_active_date`: block omitted entirely; Dan does not introduce draft commentary unless `LATEST_NEWS` surfaces a pick.
+**Why per-draft and not one global date:** the four sports draft at different times (NFL April, NBA/NHL June, MLB July). A single global `last_active_date` meant any sport's live draft growing the *total* pick count revived every other sport's months-old completed draft as "active." This shipped a stale 9-pick Patriots draft recap on NBA draft day (2026-06-25). Per-draft dates keep each sport's freshness isolated.
 
-Constants `DRAFT_FRESH_DAYS=2` and `DRAFT_AGING_DAYS=7` in `generate_rant.py` define the boundaries. Tunable; matches Boston sports talk-radio cycles.
+**Usage in prompt:** `generate_rant.py` computes freshness **per draft** from each entry's own `last_active_date` (`compute_draft_freshness(last_active, today)`), then assembles a `DRAFT_PICKS` block containing only the non-stale drafts, each annotated with its own `freshness`/`days_since_active`, plus a block-level `detail_pick_count`:
+- **active** (`last_active_date == today`) or **fresh** (1–2 days post): full entry, MANDATORY pick-by-pick coverage (first `detail_pick_count` picks detailed; rest collapsed).
+- **aging** (3–7 days post): slim entry with a `_note` telling Dan not to recap.
+- **stale** (> 7 days) or no `last_active_date`: that draft is omitted from the block. If every draft is stale, the block is omitted entirely.
 
-**Post-draft offseason:** `active_drafts` retains the completed picks (ESPN keeps serving them); freshness decays through fresh → aging → stale based on `last_active_date` alone. Once stale, the block is omitted and Dan ignores draft history unless news surfaces it.
+Constants `DRAFT_FRESH_DAYS=2`, `DRAFT_AGING_DAYS=7`, and `DRAFT_DETAIL_PICKS=12` in `generate_rant.py` define the boundaries. Tunable; matches Boston sports talk-radio cycles.
+
+**Post-draft offseason:** each draft retains its completed picks (ESPN keeps serving them); its freshness decays through fresh → aging → stale based on its own `last_active_date`. Once stale, it is dropped from the block and Dan ignores it unless news surfaces a pick.
 
 ### `data/boston_roster.json` (gitignored — fetched daily)
 

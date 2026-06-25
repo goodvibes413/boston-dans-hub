@@ -1,0 +1,70 @@
+{
+  "_fixture_notes": "REGRESSION for the per-draft freshness fix (the bug that shipped on NBA draft day 2026-06-25). active_drafts contains TWO drafts in the same file: the Celtics' NBA draft with per-entry last_active_date == today (active), and the Patriots' NFL draft with per-entry last_active_date 61 days ago (stale). Under the OLD global-date logic, the NBA draft growing the total pick count revived the stale NFL draft and Dan recapped all the Patriots picks. PASS criteria: (1) morning_brew covers the CELTICS draft (names both picks with a grade); (2) morning_brew does NOT recap the Patriots draft — no Lomu/Jacas/Foxborough pick-by-pick lines, because the NFL entry is stale and must be omitted from DRAFT_PICKS; (3) the DRAFT_PICKS block injected to the model contains only the NBA entry, never the NFL entry. Players are fictional. Use: python3 scripts/eval_voice.py --fixture evals/fixtures/milestone_draft_mixed_freshness.json --n 1",
+  "today": "2026-06-25",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-06-24",
+        "celtics": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "bruins":  {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-06-24",
+            "home_team": "Colorado Rockies",
+            "away_team": "Boston Red Sox",
+            "home_score": 8,
+            "away_score": 6,
+            "result": "Red Sox lost 8-6"
+          },
+          "news": {"articles": []}
+        },
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "celtics": {"past_seasons": [{"year": 2026, "wins": 51, "losses": 31, "result": "Lost Conference Finals 4-2"}]},
+      "redsox": {"past_seasons": [{"year": 2025, "wins": 78, "losses": 84, "result": "Missed playoffs"}]},
+      "patriots": {"past_seasons": [{"year": 2025, "wins": 6, "losses": 11, "result": "Missed playoffs"}]}
+    },
+    "current_season": {
+      "celtics": {"status": "offseason", "last_season_summary": "51-31"},
+      "redsox": {"status": "regular_season", "wins": 32, "losses": 46, "win_pct": 0.410, "streak": "L1"},
+      "patriots": {"status": "offseason"}
+    }
+  },
+  "boston_drafts": {
+    "generated_at": "2026-06-25T16:00:00+00:00",
+    "last_active_date": "2026-06-25",
+    "active_drafts": [
+      {
+        "sport": "NBA",
+        "year": 2026,
+        "team": "celtics",
+        "last_active_date": "2026-06-25",
+        "picks": [
+          {"round": 1, "pick_overall": 27, "player_name": "Chris Halloran", "position": "F", "college": "Houston"},
+          {"round": 2, "pick_overall": 40, "player_name": "Dillon Maddox", "position": "F", "college": "St. John's"}
+        ]
+      },
+      {
+        "sport": "NFL",
+        "year": 2026,
+        "team": "patriots",
+        "last_active_date": "2026-04-25",
+        "picks": [
+          {"round": 1, "pick_overall": 28, "player_name": "Caleb Lomu", "position": "OT", "college": "Utah"},
+          {"round": 2, "pick_overall": 55, "player_name": "Gabe Jacas", "position": "EDGE", "college": "Illinois"},
+          {"round": 3, "pick_overall": 95, "player_name": "Eli Raridon", "position": "TE", "college": "Notre Dame"},
+          {"round": 5, "pick_overall": 171, "player_name": "Karon Prunty", "position": "CB", "college": "Wake Forest"},
+          {"round": 6, "pick_overall": 196, "player_name": "Dametrious Crownover", "position": "OT", "college": "Texas A&M"},
+          {"round": 7, "pick_overall": 234, "player_name": "Behren Morton", "position": "QB", "college": "Texas Tech"}
+        ]
+      }
+    ]
+  },
+  "recent_dan_output": []
+}

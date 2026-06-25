@@ -1489,13 +1489,15 @@
     ================================================================ */
     function render(data, evalsData, evalsIndex, activeDate) {
       const brew = data.morning_brew || [];
-      const para0 = brew[0] || '', para1 = brew[1] || '', para2 = brew[2] || '';
+      const para0 = brew[0] || '';
       const headlineSource = data.headline || trimHeadlineFromBody(para0);
       const heroHtml = buildHeroHeadline(headlineSource);
       const rules = (evalsIndex && evalsIndex.rules) || [];
 
-      // Main col: brew paragraphs only (button + howgen go outside)
-      const brewHtml = `<div class="morning-brew" id="brew">${para0 ? `<p>${escapeHtml(para0)}</p>` : ''}${para1 ? `<p>${escapeHtml(para1)}</p>` : ''}${para2 ? `<p>${escapeHtml(para2)}</p>` : ''}</div>`;
+      // Main col: brew paragraphs only (button + howgen go outside).
+      // Render EVERY paragraph — the persona may expand to 4–5 on milestone
+      // days (drafts, trades), so never hardcode a 3-paragraph cap here.
+      const brewHtml = `<div class="morning-brew" id="brew">${brew.map(p => p ? `<p>${escapeHtml(p)}</p>` : '').join('')}</div>`;
       const howgenHtml = buildHowGenerated(evalsData, rules);
       const feedbackBtn = `<a href="https://forms.gle/mtXe54Kwa2HqCtpc6" target="_blank" rel="noopener noreferrer" class="feedback-button">Send Feedback</a>`;
       const scheduleHtml = buildScheduleSection(data.schedule);

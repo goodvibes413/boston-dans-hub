@@ -1,12 +1,28 @@
 {
-  "_fixture_notes": "KEY generalization test: MLB draft, active state (Red Sox drafting). today == last_active_date so compute_draft_freshness returns ('active', 0) and DRAFT_PICKS is injected with detail_pick_count (default 10). The MLB draft is ~20 rounds, so the Red Sox have 20 picks here — FAR more than the detail cap. PASS criteria: (1) the FIRST ~10 picks (up to detail_pick_count) get individual detail lines with a grade in Dan's voice; (2) the remaining picks are COLLAPSED into a single summary sentence grouped by theme (e.g. 'a run of college arms and prep bats') — NOT 20 individual lines, and NOT silently dropped; (3) no fabricated bios; origins are colleges and high schools, phrased naturally. FAIL if Dan tries to name all 20 individually (wall of text) OR ignores the back half entirely. Players are fictional. Use: python3 scripts/eval_voice.py --fixture evals/fixtures/milestone_draft_mlb_active.json --n 1",
+  "_fixture_notes": "KEY generalization test: MLB draft, active state (Red Sox drafting). today == last_active_date so compute_draft_freshness returns ('active', 0) and DRAFT_PICKS is injected with detail_pick_count (default 10). The MLB draft is ~20 rounds, so the Red Sox have 20 picks here \u2014 FAR more than the detail cap. PASS criteria: (1) the FIRST ~10 picks (up to detail_pick_count) get individual detail lines with a grade in Dan's voice; (2) the remaining picks are COLLAPSED into a single summary sentence grouped by theme (e.g. 'a run of college arms and prep bats') \u2014 NOT 20 individual lines, and NOT silently dropped; (3) no fabricated bios; origins are colleges and high schools, phrased naturally. FAIL if Dan tries to name all 20 individually (wall of text) OR ignores the back half entirely. Players are fictional. Use: python3 scripts/eval_voice.py --fixture evals/fixtures/milestone_draft_mlb_active.json --n 1",
   "today": "2026-07-13",
   "rolling_7day": {
     "days": [
       {
         "date": "2026-07-12",
-        "celtics": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
-        "bruins":  {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "celtics": {
+          "boxscore": {
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "articles": []
+          }
+        },
+        "bruins": {
+          "boxscore": {
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "articles": []
+          }
+        },
         "redsox": {
           "boxscore": {
             "played": true,
@@ -18,21 +34,53 @@
             "away_score": 4,
             "result": "Red Sox won 7-4"
           },
-          "news": {"articles": []}
+          "news": {
+            "articles": []
+          }
         },
-        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+        "patriots": {
+          "boxscore": {
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "articles": []
+          }
+        }
       }
     ]
   },
   "season_memory": {
     "past_seasons": {
-      "redsox": {"past_seasons": [{"year": 2025, "wins": 78, "losses": 84, "result": "Missed playoffs"}]}
+      "redsox": {
+        "past_seasons": [
+          {
+            "year": 2025,
+            "wins": 78,
+            "losses": 84,
+            "result": "Missed playoffs"
+          }
+        ]
+      }
     },
     "current_season": {
-      "redsox": {"status": "regular_season", "wins": 52, "losses": 41, "win_pct": 0.559, "playoff_seed": 5, "streak": "W2"},
-      "celtics": {"status": "offseason"},
-      "bruins": {"status": "offseason"},
-      "patriots": {"status": "offseason"}
+      "redsox": {
+        "status": "regular_season",
+        "wins": 52,
+        "losses": 41,
+        "win_pct": 0.559,
+        "playoff_seed": 5,
+        "streak": "W2"
+      },
+      "celtics": {
+        "status": "offseason"
+      },
+      "bruins": {
+        "status": "offseason"
+      },
+      "patriots": {
+        "status": "offseason"
+      }
     }
   },
   "boston_drafts": {
@@ -44,27 +92,148 @@
         "year": 2026,
         "team": "redsox",
         "picks": [
-          {"round": 1, "pick_overall": 12, "player_name": "Jaylen Whitcomb", "position": "SS", "college": "Vanderbilt"},
-          {"round": 2, "pick_overall": 49, "player_name": "Diego Marchetti", "position": "RHP", "college": "Wake Forest"},
-          {"round": 3, "pick_overall": 85, "player_name": "Brock Ainsley", "position": "OF", "college": "Tennessee"},
-          {"round": 4, "pick_overall": 115, "player_name": "Cooper Vance", "position": "LHP", "college": "Texas A&M"},
-          {"round": 5, "pick_overall": 145, "player_name": "Mateo Reyes", "position": "C", "college": "Miami"},
-          {"round": 6, "pick_overall": 175, "player_name": "Eli Brunner", "position": "3B", "college": "Oregon State"},
-          {"round": 7, "pick_overall": 205, "player_name": "Tanner Wexford", "position": "RHP", "college": "LSU"},
-          {"round": 8, "pick_overall": 235, "player_name": "Owen Castellano", "position": "2B", "college": "Arkansas"},
-          {"round": 9, "pick_overall": 265, "player_name": "Gavin Holloway", "position": "RHP", "college": "Stanford"},
-          {"round": 10, "pick_overall": 295, "player_name": "Silas Mboto", "position": "OF", "college": "Florida"},
-          {"round": 11, "pick_overall": 325, "player_name": "Drew Hammond", "position": "LHP", "college": "Ole Miss"},
-          {"round": 12, "pick_overall": 355, "player_name": "Caleb Ironwood", "position": "C", "college": "Cypress Ridge HS (TX)"},
-          {"round": 13, "pick_overall": 385, "player_name": "Nico Ferraro", "position": "SS", "college": "Coastal Carolina"},
-          {"round": 14, "pick_overall": 415, "player_name": "Jonah Pruett", "position": "RHP", "college": "Dallas Baptist"},
-          {"round": 15, "pick_overall": 445, "player_name": "Ryder Calloway", "position": "OF", "college": "Liberty HS (NV)"},
-          {"round": 16, "pick_overall": 475, "player_name": "Beckett Lowery", "position": "1B", "college": "East Carolina"},
-          {"round": 17, "pick_overall": 505, "player_name": "Amir Dawson", "position": "RHP", "college": "Southern Miss"},
-          {"round": 18, "pick_overall": 535, "player_name": "Wyatt Penrose", "position": "LHP", "college": "Oklahoma State"},
-          {"round": 19, "pick_overall": 565, "player_name": "Kai Sorensen", "position": "OF", "college": "Long Beach State"},
-          {"round": 20, "pick_overall": 595, "player_name": "Felix Aguilar", "position": "3B", "college": "Westview HS (CA)"}
-        ]
+          {
+            "round": 1,
+            "pick_overall": 12,
+            "player_name": "Jaylen Whitcomb",
+            "position": "SS",
+            "college": "Vanderbilt"
+          },
+          {
+            "round": 2,
+            "pick_overall": 49,
+            "player_name": "Diego Marchetti",
+            "position": "RHP",
+            "college": "Wake Forest"
+          },
+          {
+            "round": 3,
+            "pick_overall": 85,
+            "player_name": "Brock Ainsley",
+            "position": "OF",
+            "college": "Tennessee"
+          },
+          {
+            "round": 4,
+            "pick_overall": 115,
+            "player_name": "Cooper Vance",
+            "position": "LHP",
+            "college": "Texas A&M"
+          },
+          {
+            "round": 5,
+            "pick_overall": 145,
+            "player_name": "Mateo Reyes",
+            "position": "C",
+            "college": "Miami"
+          },
+          {
+            "round": 6,
+            "pick_overall": 175,
+            "player_name": "Eli Brunner",
+            "position": "3B",
+            "college": "Oregon State"
+          },
+          {
+            "round": 7,
+            "pick_overall": 205,
+            "player_name": "Tanner Wexford",
+            "position": "RHP",
+            "college": "LSU"
+          },
+          {
+            "round": 8,
+            "pick_overall": 235,
+            "player_name": "Owen Castellano",
+            "position": "2B",
+            "college": "Arkansas"
+          },
+          {
+            "round": 9,
+            "pick_overall": 265,
+            "player_name": "Gavin Holloway",
+            "position": "RHP",
+            "college": "Stanford"
+          },
+          {
+            "round": 10,
+            "pick_overall": 295,
+            "player_name": "Silas Mboto",
+            "position": "OF",
+            "college": "Florida"
+          },
+          {
+            "round": 11,
+            "pick_overall": 325,
+            "player_name": "Drew Hammond",
+            "position": "LHP",
+            "college": "Ole Miss"
+          },
+          {
+            "round": 12,
+            "pick_overall": 355,
+            "player_name": "Caleb Ironwood",
+            "position": "C",
+            "college": "Cypress Ridge HS (TX)"
+          },
+          {
+            "round": 13,
+            "pick_overall": 385,
+            "player_name": "Nico Ferraro",
+            "position": "SS",
+            "college": "Coastal Carolina"
+          },
+          {
+            "round": 14,
+            "pick_overall": 415,
+            "player_name": "Jonah Pruett",
+            "position": "RHP",
+            "college": "Dallas Baptist"
+          },
+          {
+            "round": 15,
+            "pick_overall": 445,
+            "player_name": "Ryder Calloway",
+            "position": "OF",
+            "college": "Liberty HS (NV)"
+          },
+          {
+            "round": 16,
+            "pick_overall": 475,
+            "player_name": "Beckett Lowery",
+            "position": "1B",
+            "college": "East Carolina"
+          },
+          {
+            "round": 17,
+            "pick_overall": 505,
+            "player_name": "Amir Dawson",
+            "position": "RHP",
+            "college": "Southern Miss"
+          },
+          {
+            "round": 18,
+            "pick_overall": 535,
+            "player_name": "Wyatt Penrose",
+            "position": "LHP",
+            "college": "Oklahoma State"
+          },
+          {
+            "round": 19,
+            "pick_overall": 565,
+            "player_name": "Kai Sorensen",
+            "position": "OF",
+            "college": "Long Beach State"
+          },
+          {
+            "round": 20,
+            "pick_overall": 595,
+            "player_name": "Felix Aguilar",
+            "position": "3B",
+            "college": "Westview HS (CA)"
+          }
+        ],
+        "last_active_date": "2026-07-13"
       }
     ]
   },

@@ -295,21 +295,29 @@ def main():
                   f"{type(e).__name__}: {e}", file=sys.stderr)
             continue
 
-    # Persist last_active_date so generate_rant.py can compute freshness
-    # (active / fresh / aging / stale) per the Major Milestones rule.
+    # Persist last_active_date PER DRAFT so generate_rant.py can compute
+    # freshness (active / fresh / aging / stale) independently for each sport.
     #
     # Key insight: ESPN serves completed draft picks year-round, so
-    # active_drafts is ALWAYS non-empty after the draft has concluded. We
-    # cannot use "active_drafts non-empty" as the signal for "draft is live."
-    # Instead, we compare today's total pick count to the prior file's total.
-    # If picks GREW today, new selections actually arrived → stamp today as
-    # last_active_date. If the count is unchanged, the draft ended (ESPN is
-    # just serving the completed record) → preserve the prior last_active_date.
+    # active_drafts is ALWAYS non-empty after a draft has concluded. We cannot
+    # use "active_drafts non-empty" as the signal for "draft is live." Instead,
+    # for EACH draft (keyed by sport+team) we compare its pick count to the
+    # SAME draft's count in the prior file. If that draft's picks GREW today,
+    # new selections arrived → stamp today on THAT draft. Otherwise preserve
+    # that draft's own prior date.
     #
-    # Migration default: if the prior file lacks last_active_date AND today
-    # has no new picks (count unchanged from prior), stamp "1970-01-01" so
-    # freshness computes as "stale" immediately. Real drafts will overwrite
-    # this on their first active day.
+    # Why per-draft and not a single global date: the four sports draft at
+    # different times (NFL April, NBA/NHL June, MLB July). A single global
+    # last_active_date meant the NBA draft growing the TOTAL pick count would
+    # revive the months-old NFL draft as "active" — Dan then recapped a stale
+    # draft. Per-draft dates keep each sport's freshness isolated.
+    #
+    # Migration default: if a prior draft entry lacks its own last_active_date
+    # (file written by the old global-date code) AND its count didn't grow
+    # today, stamp "1970-01-01" so it computes as "stale" immediately. A real
+    # in-progress draft overwrites this on its first active day. We intentionally
+    # do NOT fall back to the old global last_active_date here — that is exactly
+    # the value that incorrectly revived stale drafts.
     prior: dict = {}
     if OUTPUT_PATH.exists():
         try:
@@ -318,24 +326,37 @@ def main():
             prior = {}
 
     today_iso = datetime.now(timezone.utc).date().isoformat()
-    prior_total_picks = sum(
-        len(d.get("picks", [])) for d in prior.get("active_drafts", [])
-    )
-    today_total_picks = sum(len(d.get("picks", [])) for d in active_drafts)
 
-    if today_total_picks > prior_total_picks:
-        # New picks arrived today — draft is actively running right now
-        last_active_date = today_iso
-        print(f"  draft active: {today_total_picks} picks today vs "
-              f"{prior_total_picks} yesterday → last_active_date={today_iso}")
-    else:
-        # Pick count unchanged — draft has concluded (ESPN is serving the
-        # completed record) or hasn't started yet. Preserve prior date.
-        last_active_date = prior.get("last_active_date")
-        if last_active_date is None:
-            last_active_date = "1970-01-01"
-        print(f"  draft inactive: {today_total_picks} picks (same as prior) "
-              f"→ last_active_date preserved as {last_active_date}")
+    def _draft_key(d: dict) -> tuple:
+        return (d.get("sport"), d.get("team"))
+
+    prior_by_key = {
+        _draft_key(d): d
+        for d in prior.get("active_drafts", [])
+        if isinstance(d, dict)
+    }
+
+    for draft in active_drafts:
+        prior_draft = prior_by_key.get(_draft_key(draft), {})
+        prior_count = len(prior_draft.get("picks", []))
+        today_count = len(draft.get("picks", []))
+        if today_count > prior_count:
+            # This draft's picks grew today — it is actively running right now.
+            draft["last_active_date"] = today_iso
+            print(f"  [{draft['sport']}/{draft['team']}] active: {today_count} "
+                  f"picks today vs {prior_count} prior → last_active_date={today_iso}")
+        else:
+            # Unchanged — concluded (ESPN serving the record) or not started.
+            # Preserve this draft's own prior date; migrate missing → 1970.
+            draft["last_active_date"] = prior_draft.get("last_active_date") or "1970-01-01"
+            print(f"  [{draft['sport']}/{draft['team']}] inactive: {today_count} "
+                  f"picks (same as prior) → last_active_date={draft['last_active_date']}")
+
+    # Top-level last_active_date retained for backward compatibility = the most
+    # recent across all drafts. Per-draft dates are authoritative for freshness.
+    last_active_date = max(
+        (d["last_active_date"] for d in active_drafts), default="1970-01-01"
+    )
 
     # Write output
     output = {

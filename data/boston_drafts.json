@@ -79,7 +79,8 @@
           "college": "Boston College",
           "team": "patriots"
         }
-      ]
+      ],
+      "last_active_date": "2026-04-25"
     },
     {
       "sport": "NBA",
@@ -102,7 +103,8 @@
           "college": "St. John's",
           "team": "celtics"
         }
-      ]
+      ],
+      "last_active_date": "2026-06-25"
     }
   ]
 }

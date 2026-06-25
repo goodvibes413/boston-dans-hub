@@ -1,12 +1,28 @@
 {
-  "_fixture_notes": "Generalization test: NBA draft, active state (Celtics drafting). today == last_active_date so compute_draft_freshness returns ('active', 0) and DRAFT_PICKS is injected with detail_pick_count. The NBA draft is only 2 rounds, so the Celtics have just 2 picks — well under the detail cap. PASS criteria: morning_brew names BOTH Celtics picks individually (round, pick_overall, position, college) with a grade in Dan's voice — the collapse tier must be empty (no 'depth pieces' summary, since there's nothing to collapse). Origins are colleges here, phrased naturally. Players are fictional. Use: python3 scripts/eval_voice.py --fixture evals/fixtures/milestone_draft_nba_active.json --n 1",
+  "_fixture_notes": "Generalization test: NBA draft, active state (Celtics drafting). today == last_active_date so compute_draft_freshness returns ('active', 0) and DRAFT_PICKS is injected with detail_pick_count. The NBA draft is only 2 rounds, so the Celtics have just 2 picks \u2014 well under the detail cap. PASS criteria: morning_brew names BOTH Celtics picks individually (round, pick_overall, position, college) with a grade in Dan's voice \u2014 the collapse tier must be empty (no 'depth pieces' summary, since there's nothing to collapse). Origins are colleges here, phrased naturally. Players are fictional. Use: python3 scripts/eval_voice.py --fixture evals/fixtures/milestone_draft_nba_active.json --n 1",
   "today": "2026-06-25",
   "rolling_7day": {
     "days": [
       {
         "date": "2026-06-24",
-        "celtics": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
-        "bruins":  {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "celtics": {
+          "boxscore": {
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "articles": []
+          }
+        },
+        "bruins": {
+          "boxscore": {
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "articles": []
+          }
+        },
         "redsox": {
           "boxscore": {
             "played": true,
@@ -18,21 +34,60 @@
             "away_score": 2,
             "result": "Red Sox won 6-2"
           },
-          "news": {"articles": []}
+          "news": {
+            "articles": []
+          }
         },
-        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+        "patriots": {
+          "boxscore": {
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "articles": []
+          }
+        }
       }
     ]
   },
   "season_memory": {
     "past_seasons": {
-      "celtics": {"past_seasons": [{"year": 2026, "wins": 51, "losses": 31, "result": "Lost Conference Finals 4-2"}]},
-      "redsox": {"past_seasons": [{"year": 2025, "wins": 78, "losses": 84, "result": "Missed playoffs"}]}
+      "celtics": {
+        "past_seasons": [
+          {
+            "year": 2026,
+            "wins": 51,
+            "losses": 31,
+            "result": "Lost Conference Finals 4-2"
+          }
+        ]
+      },
+      "redsox": {
+        "past_seasons": [
+          {
+            "year": 2025,
+            "wins": 78,
+            "losses": 84,
+            "result": "Missed playoffs"
+          }
+        ]
+      }
     },
     "current_season": {
-      "celtics": {"status": "offseason", "last_season_summary": "51-31"},
-      "redsox": {"status": "regular_season", "wins": 44, "losses": 33, "win_pct": 0.571, "streak": "W3"},
-      "patriots": {"status": "offseason"}
+      "celtics": {
+        "status": "offseason",
+        "last_season_summary": "51-31"
+      },
+      "redsox": {
+        "status": "regular_season",
+        "wins": 44,
+        "losses": 33,
+        "win_pct": 0.571,
+        "streak": "W3"
+      },
+      "patriots": {
+        "status": "offseason"
+      }
     }
   },
   "boston_drafts": {
@@ -44,9 +99,22 @@
         "year": 2026,
         "team": "celtics",
         "picks": [
-          {"round": 1, "pick_overall": 18, "player_name": "Damon Castille", "position": "SG", "college": "Duke"},
-          {"round": 2, "pick_overall": 47, "player_name": "Theo Vandermeer", "position": "PF", "college": "Gonzaga"}
-        ]
+          {
+            "round": 1,
+            "pick_overall": 18,
+            "player_name": "Damon Castille",
+            "position": "SG",
+            "college": "Duke"
+          },
+          {
+            "round": 2,
+            "pick_overall": 47,
+            "player_name": "Theo Vandermeer",
+            "position": "PF",
+            "college": "Gonzaga"
+          }
+        ],
+        "last_active_date": "2026-06-25"
       }
     ]
   },

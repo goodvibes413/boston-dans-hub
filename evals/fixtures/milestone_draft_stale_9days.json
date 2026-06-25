@@ -1,5 +1,5 @@
 {
-  "_fixture_notes": "Regression for generate_rant.py freshness: stale draft state (9 days post-draft). boston_drafts.last_active_date='2026-04-25', active_drafts=[], today='2026-05-04' → days_since=9 → compute_draft_freshness returns ('stale', 9). Pass criteria: (1) DRAFT_PICKS block is NOT injected into the user message at all (verify via DRY_RUN=1 or eval output); (2) morning_brew contains zero draft pick enumeration; (3) Dan does not introduce draft commentary unless LATEST_NEWS surfaces a pick name — and this fixture has no such news. This is the real production scenario as of 2026-05-04. Manual usage: python3 scripts/eval_voice.py --fixture evals/fixtures/milestone_draft_stale_9days.json --n 2",
+  "_fixture_notes": "Regression for generate_rant.py freshness: stale draft state (9 days post-draft). boston_drafts.last_active_date='2026-04-25', active_drafts=[], today='2026-05-04' \u2192 days_since=9 \u2192 compute_draft_freshness returns ('stale', 9). Pass criteria: (1) DRAFT_PICKS block is NOT injected into the user message at all (verify via DRY_RUN=1 or eval output); (2) morning_brew contains zero draft pick enumeration; (3) Dan does not introduce draft commentary unless LATEST_NEWS surfaces a pick name \u2014 and this fixture has no such news. This is the real production scenario as of 2026-05-04. Manual usage: python3 scripts/eval_voice.py --fixture evals/fixtures/milestone_draft_stale_9days.json --n 2",
   "today": "2026-05-04",
   "rolling_7day": {
     "days": [
@@ -16,9 +16,19 @@
             "away_score": 105,
             "result": "Celtics won 110-105"
           },
-          "news": {"articles": []}
+          "news": {
+            "articles": []
+          }
         },
-        "bruins":   {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "bruins": {
+          "boxscore": {
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "articles": []
+          }
+        },
         "redsox": {
           "boxscore": {
             "played": true,
@@ -30,33 +40,112 @@
             "away_score": 8,
             "result": "Red Sox lost 2-8"
           },
-          "news": {"articles": []}
+          "news": {
+            "articles": []
+          }
         },
-        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+        "patriots": {
+          "boxscore": {
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "articles": []
+          }
+        }
       }
     ]
   },
   "season_memory": {
     "past_seasons": {
-      "celtics": {"past_seasons": [{"year": 2024, "wins": 64, "losses": 18, "result": "NBA Champions — beat Mavericks 4-1"}]},
-      "redsox": {"past_seasons": [{"year": 2025, "wins": 78, "losses": 84, "result": "Missed playoffs"}]},
-      "patriots": {"past_seasons": [{"year": 2025, "wins": 6, "losses": 11, "result": "Missed playoffs"}]}
+      "celtics": {
+        "past_seasons": [
+          {
+            "year": 2024,
+            "wins": 64,
+            "losses": 18,
+            "result": "NBA Champions \u2014 beat Mavericks 4-1"
+          }
+        ]
+      },
+      "redsox": {
+        "past_seasons": [
+          {
+            "year": 2025,
+            "wins": 78,
+            "losses": 84,
+            "result": "Missed playoffs"
+          }
+        ]
+      },
+      "patriots": {
+        "past_seasons": [
+          {
+            "year": 2025,
+            "wins": 6,
+            "losses": 11,
+            "result": "Missed playoffs"
+          }
+        ]
+      }
     },
     "current_season": {
-      "celtics": {"status": "in_playoffs", "regular_season_summary": "57-25", "playoff_seed": 1},
-      "redsox": {"status": "regular_season", "wins": 14, "losses": 22, "win_pct": 0.389, "streak": "L4"},
-      "patriots": {"status": "offseason"}
+      "celtics": {
+        "status": "in_playoffs",
+        "regular_season_summary": "57-25",
+        "playoff_seed": 1
+      },
+      "redsox": {
+        "status": "regular_season",
+        "wins": 14,
+        "losses": 22,
+        "win_pct": 0.389,
+        "streak": "L4"
+      },
+      "patriots": {
+        "status": "offseason"
+      }
     }
   },
   "boston_drafts": {
     "generated_at": "2026-05-04T08:00:00+00:00",
     "last_active_date": "2026-04-25",
-    "active_drafts": []
+    "active_drafts": [
+      {
+        "sport": "NFL",
+        "year": 2026,
+        "team": "patriots",
+        "last_active_date": "2026-04-25",
+        "picks": [
+          {
+            "round": 1,
+            "pick_overall": 4,
+            "player_name": "Malik Okafor",
+            "position": "EDGE",
+            "college": "Ohio State"
+          },
+          {
+            "round": 2,
+            "pick_overall": 36,
+            "player_name": "Darius Whitfield",
+            "position": "CB",
+            "college": "Alabama"
+          },
+          {
+            "round": 3,
+            "pick_overall": 68,
+            "player_name": "Trey Fontaine",
+            "position": "OT",
+            "college": "Georgia"
+          }
+        ]
+      }
+    ]
   },
   "recent_dan_output": [
     {
       "date": "2026-05-02",
-      "headline": "C's take Game 6 in Miami — one win from the Finals",
+      "headline": "C's take Game 6 in Miami \u2014 one win from the Finals",
       "morning_brew": [
         "Tatum went for 34 and Brown locked up Herro all night. Celtics are one game from the conference finals and they earned it.",
         "Sox can't buy a win right now. Four in a row, lineup is lifeless, and the rotation is stretched thin.",
@@ -66,9 +155,9 @@
     },
     {
       "date": "2026-05-03",
-      "headline": "Celtics close out the Heat — off to the conference finals",
+      "headline": "Celtics close out the Heat \u2014 off to the conference finals",
       "morning_brew": [
-        "Series over. Celtics are through. Tatum, Brown, Pritchard — all of 'em showed up when it mattered.",
+        "Series over. Celtics are through. Tatum, Brown, Pritchard \u2014 all of 'em showed up when it mattered.",
         "Sox dropped another one to the Astros. Four-game losing streak, fourteen and twenty-two. This is not where you want to be in May.",
         "Conference finals matchup TBD. Garden is going to be electric when that series tips."
       ],
