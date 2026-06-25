@@ -1,10 +1,29 @@
 {
+  "date": "2026-06-25",
+  "generated_at": "2026-06-25T10:50:47.424029+00:00",
   "headline": "Celtics and Patriots Draft While Sox Blow Another Late Lead in Denver",
   "morning_brew": [
     "What a gut punch out in Denver last night. Ranger Suarez was absolutely stellar on the mound, giving us six strong innings with only one earned run and striking out nine. But then our bullpen completely fell apart. It's the same movie, just a different remake with this relief staff. Tyron Guerrero, Danny Coulombe, and Justin Slaten combined to give up five late runs, turning a comfortable lead into an agonizing eight to six loss. I haven't seen a bullpen cough up a game like that since September 2011 when the team went seven and twenty to miss the playoffs on the final night.",
     "Even with Ceddanne Rafaela turning in a great performance with three hits and an RBI, we just can't secure a win when the pitching staff throws away a masterpiece. We're now sitting at thirty-two and forty-six, dead last in the AL East, and the first-place Yankees are coming to Fenway Park tonight for a massive four-game series. If there's ever a time for this team to show some pride and turn things around, it's right now against our biggest rivals.",
     "While the baseball team struggles, the Celtics wrapped up their draft and added some fresh young talent to the mix. Here's how their class looks:\nRound 1, Pick 27: Chris Cenac Jr., F out of Houston. We desperately need size and frontcourt depth off the bench. Love it.\nRound 2, Pick 40: Dillon Mitchell, F out of St. John's. Athletic wing prospect but a bit of a project. Head-scratcher.",
     "Down in Foxborough, the front office focused heavily on building around Drake Maye during their draft. Here's the breakdown:\nRound 1, Pick 28: Caleb Lomu, OT out of Utah. Protecting our franchise quarterback has to be the top priority. Love it.\nRound 2, Pick 55: Gabe Jacas, EDGE out of Illinois. You can never have enough athletic pass rushers. Love it.\nRound 3, Pick 95: Eli Raridon, TE out of Notre Dame. A massive target to help Maye over the middle. About time.\nRound 5, Pick 171: Karon Prunty, CB out of Wake Forest. Secondary depth is a constant need in this league. Love it.\nRound 6, Pick 196: Dametrious Crownover, OT out of Texas A&M. More protection up front for the offense. Love it.\nRound 6, Pick 212: Namdi Obiazor, LB out of TCU. A developmental linebacker who can fly down the field on special teams. Love it.\nRound 7, Pick 234: Behren Morton, QB out of Texas Tech. Taking a flyer on a developmental signal-caller. Head-scratcher.\nRound 7, Pick 245: Jam Miller, RB out of Alabama. A physical runner to push the guys in training camp. Love it.\nRound 7, Pick 247: Quintayvious Hutchins, EDGE out of Boston College. Keeping the local kid in New England. Love it."
+  ],
+  "news_digest": [
+    {
+      "headline": "Stephen A.: The Celtics have to trade Jaylen Brown",
+      "url": "https://www.espn.com/video/clip/_/id/49165827/celtics-trade-jaylen-brown",
+      "dans_take": "Stephen A. needs to quiet down because trading Jaylen after everything he's done for this city is a massive mistake."
+    },
+    {
+      "headline": "Ranking WR, TE, RB groups for 2026: Best and worst NFL teams",
+      "url": "https://www.espn.com/nfl/story/_/id/49154825/ranking-nfl-teams-offensive-groups-wr-rb-te-2026-season-best-playmakers",
+      "dans_take": "Our skill groups have a lot to prove, but these rookies we just drafted are gonna help Drake Maye in a big way."
+    },
+    {
+      "headline": "Final 2026 NHL draft rankings: Projections for top prospects",
+      "url": "https://www.espn.com/nhl/story/_/id/49154008/2026-nhl-draft-rankings-big-board-prospects-projections-players-mckenna-stenberg-carels",
+      "dans_take": "With the draft starting Friday, the front office needs to hit a home run to get us back into the mix next season."
+    }
   ],
   "trend_watch": [
     {
@@ -24,23 +43,6 @@
       "player": "Ranger Suarez",
       "trend": "Ranger Suarez struck out nine over six strong innings while giving up just one earned run.",
       "dans_take": "Suarez did his job and deserved a win, but the bullpen let him down."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Stephen A.: The Celtics have to trade Jaylen Brown",
-      "url": "https://www.espn.com/video/clip/_/id/49165827/celtics-trade-jaylen-brown",
-      "dans_take": "Stephen A. needs to quiet down because trading Jaylen after everything he's done for this city is a massive mistake."
-    },
-    {
-      "headline": "Ranking WR, TE, RB groups for 2026: Best and worst NFL teams",
-      "url": "https://www.espn.com/nfl/story/_/id/49154825/ranking-nfl-teams-offensive-groups-wr-rb-te-2026-season-best-playmakers",
-      "dans_take": "Our skill groups have a lot to prove, but these rookies we just drafted are gonna help Drake Maye in a big way."
-    },
-    {
-      "headline": "Final 2026 NHL draft rankings: Projections for top prospects",
-      "url": "https://www.espn.com/nhl/story/_/id/49154008/2026-nhl-draft-rankings-big-board-prospects-projections-players-mckenna-stenberg-carels",
-      "dans_take": "With the draft starting Friday, the front office needs to hit a home run to get us back into the mix next season."
     }
   ],
   "box_scores": {
@@ -122,9 +124,6 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-06-25T10:50:47.424029+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "Contains borderline profanity ('damn') in the draft picks commentary"
-  ]
+  "_stale": null,
+  "_fallback": null
 }

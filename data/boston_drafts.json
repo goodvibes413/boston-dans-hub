@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-24T10:52:28.343279+00:00",
-  "last_active_date": "2026-06-24",
+  "generated_at": "2026-06-25T10:44:37.986114+00:00",
+  "last_active_date": "2026-06-25",
   "active_drafts": [
     {
       "sport": "NFL",
@@ -92,6 +92,14 @@
           "player_name": "Chris Cenac Jr.",
           "position": "F",
           "college": "Houston",
+          "team": "celtics"
+        },
+        {
+          "round": 2,
+          "pick_overall": 40,
+          "player_name": "Dillon Mitchell",
+          "position": "F",
+          "college": "St. John's",
           "team": "celtics"
         }
       ]

@@ -1,0 +1,30 @@
+{
+  "date": "2026-06-25",
+  "generated_at": "2026-06-25T10:47:29.078251+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 198.3,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "Contains borderline profanity ('damn') in the draft picks commentary"
+      ],
+      "duration_seconds": 16.7
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 10.5
+    }
+  ]
+}
