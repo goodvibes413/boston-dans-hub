@@ -1,26 +1,26 @@
 {
-  "updated": "2026-06-25",
+  "updated": "2026-06-26",
   "_note": "Hand-curated marquee / high-investment players per team (the EXPECTATION axis of salience). Tells Dan who the headliners are by investment — contract, free-agent signing, high draft pick, big trade, award, or franchise status — which a flat name+position roster can't convey. Injected as PLAYERS_TO_WATCH. Cross-checked against the live CURRENT_ROSTER in generate_rant.py before injection (entries not on the roster are dropped), so a player traded away can't be featured. FLAVOR/salience only — the safety judge does NOT cross-reference this; rule 11 (off-roster) is the factual guardrail. Update after a major trade/signing (the curate-key-players GitHub issue will remind you). basis values: franchise | contract | free_agent | draft | trade | award.",
   "celtics": [
-    { "name": "Jayson Tatum", "role": "franchise cornerstone", "basis": "franchise", "note": "the face of the team, supermax centerpiece" },
-    { "name": "Jaylen Brown", "role": "co-star wing", "basis": "contract", "note": "supermax money, 2024 Finals MVP" },
-    { "name": "Derrick White", "role": "two-way guard", "basis": "franchise", "note": "glue guy, key to the core" },
-    { "name": "Kristaps Porzingis", "role": "stretch big", "basis": "trade", "note": "trade acquisition, spacing and rim protection" }
+    { "name": "Jayson Tatum", "role": "franchise forward", "basis": "franchise", "note": "$314M supermax extension ending 2030, the undisputed face" },
+    { "name": "Jaylen Brown", "role": "starting forward", "basis": "contract", "note": "2024 Finals MVP on 5-year, $285M supermax ending 2029" },
+    { "name": "Derrick White", "role": "starting guard", "basis": "contract", "note": "two-way guard on 4-year, $125.9M extension ending 2029" }
   ],
   "bruins": [
-    { "name": "David Pastrnak", "role": "RW1, franchise scorer", "basis": "contract", "note": "8-year deal, the engine of the offense" },
-    { "name": "Charlie McAvoy", "role": "No. 1 defenseman", "basis": "contract", "note": "big-money anchor on the blue line" },
-    { "name": "Jeremy Swayman", "role": "starting goaltender", "basis": "contract", "note": "signed long-term as the franchise netminder" }
+    { "name": "David Pastrnak", "role": "star right wing", "basis": "franchise", "note": "offensive face on 8-year, $90M extension ending 2031" },
+    { "name": "Charlie McAvoy", "role": "franchise defenseman", "basis": "contract", "note": "cornerstone D on 8-year, $76M extension ending 2030" },
+    { "name": "Jeremy Swayman", "role": "starting goaltender", "basis": "contract", "note": "starter on 8-year, $66M extension ending 2032" }
   ],
   "redsox": [
-    { "name": "Rafael Devers", "role": "franchise bat", "basis": "contract", "note": "11-year, $300M+ extension, the cornerstone" },
-    { "name": "Garrett Crochet", "role": "ace", "basis": "trade", "note": "headline trade for a frontline starter" },
-    { "name": "Alex Bregman", "role": "veteran infielder", "basis": "free_agent", "note": "marquee free-agent signing, postseason pedigree" }
+    { "name": "Brayan Bello", "role": "starting pitcher", "basis": "contract", "note": "rotation cornerstone on 6-year, $55M extension ending 2029" },
+    { "name": "Jarren Duran", "role": "starting outfielder", "basis": "award", "note": "2024 All-Star Game MVP, foundational outfield star" }
   ],
   "patriots": [
-    { "name": "Drake Maye", "role": "franchise QB", "basis": "draft", "note": "top-3 pick, the franchise's future" },
-    { "name": "AJ Brown", "role": "WR1", "basis": "trade", "note": "blockbuster trade, the alpha target for Maye" },
-    { "name": "Christian Gonzalez", "role": "shutdown CB", "basis": "draft", "note": "first-round corner, defensive cornerstone" },
-    { "name": "Milton Williams", "role": "interior pass rusher", "basis": "free_agent", "note": "big free-agent signing on the defensive line" }
+    { "name": "Drake Maye", "role": "franchise QB", "basis": "draft", "note": "drafted 3rd overall 2024, the foundational QB build" },
+    { "name": "Christian Barmore", "role": "defensive tackle", "basis": "contract", "note": "DL cornerstone on 4-year, $92M extension ending 2028" },
+    { "name": "Christian Gonzalez", "role": "CB1", "basis": "draft", "note": "drafted 17th in 2023, high-pedigree secondary anchor" },
+    { "name": "Hunter Henry", "role": "starting tight end", "basis": "contract", "note": "offensive focal point on 3-year, $27M extension" },
+    { "name": "Kayshon Boutte", "role": "wide receiver", "basis": "draft", "note": "low draft pick who emerged as clutch receiver in 2025 SB run" },
+    { "name": "Kevin Byard III", "role": "starting free safety", "basis": "free_agent", "note": "marquee free agent signing, defensive anchor at safety" }
   ]
 }
