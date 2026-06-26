@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-06-21",
     "2026-06-22",
     "2026-06-23",
     "2026-06-24",
-    "2026-06-25"
+    "2026-06-25",
+    "2026-06-26"
   ],
   "rules": [
     {
@@ -65,15 +65,9 @@
   ],
   "summary_5day": {
     "fresh": 4,
-    "retry": 1,
-    "fallback": 0,
+    "retry": 0,
+    "fallback": 1,
     "stale": 0,
-    "most_flagged_rules": [
-      {
-        "rule": 10,
-        "count": 1,
-        "title": "Voice repetition"
-      }
-    ]
+    "most_flagged_rules": []
   }
 }

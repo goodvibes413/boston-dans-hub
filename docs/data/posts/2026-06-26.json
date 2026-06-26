@@ -1,10 +1,29 @@
 {
+  "date": "2026-06-26",
+  "generated_at": "2026-06-25T12:50:35.189514+00:00",
   "headline": "Sox Bullpen Disaster In Denver Screams For Help Ahead Of Yankees Arrival",
   "morning_brew": [
     "We had them right where we wanted them, and then the bullpen completely spit the bit again. Ranger Suarez threw a gem, giving us six innings of one-earned-run ball with nine strikeouts, but the late innings turned into an absolute circus in Colorado. Leading six to three in the seventh, everything fell apart. Tyron Guerrero and Danny Coulombe couldn't lock it down, and Justin Slaten got tagged with the loss after giving up two runs in the eighth. Getting eleven hits and Ceddanne Rafaela going three-for-five doesn't mean a thing when you blow a three-run lead on the road.",
     "This loss sits right in your chest like a bad order of home fries from the local diner. We're sitting at thirty-two and forty-six, dead last in the division, and now the first-place Yankees are coming to Fenway Park tonight for a massive four-game set. I don't care what the standings say, this is the rivalry that defines baseball in the Northeast, and the boys need to show some pride. If the bullpen keeps serving up batting practice like they did in Denver, it's going to be a long, miserable weekend on Yawkey Way.",
     "Over at the Garden, Brad Stevens is busy trying to reload for next year while the talk shows scream about trading Jaylen Brown. The green team added some size in the draft, picking up Chris Cenac Jr. out of Houston at twenty-seven and Dillon Mitchell out of St. John's at forty. Love the Cenac pick, because we need frontcourt depth after that brutal first-round exit against Philly, and Mitchell brings some serious athletic energy. They can talk all they want about moving Jaylen, but I'll believe it when I see it.",
     "Down in Foxborough, the analysts are already ranking the skill position groups, and they aren't giving our guys any respect. My buddy Sully from Southie called me up raging because some national writer ranked the Patriots playmakers near the bottom of the league. Drake Maye has plenty of talent to work with, especially with Rhamondre Stevenson and Kayshon Boutte in the mix, but the front office needs to keep focus on locking up our core with those contract extensions."
+  ],
+  "news_digest": [
+    {
+      "headline": "Red Sox begin 4-game series at home against the Yankees",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815900",
+      "dans_take": "Forget the standings, when the Bronx Bombers come to Fenway, it is time to put up a fight."
+    },
+    {
+      "headline": "2026 NBA draft grades: Winners, losers for all 30 teams",
+      "url": "https://www.espn.com/nba/story/_/id/49147426/2026-nba-draft-grades-winners-losers-sleepers-best-picks-value-reaches-all-30-teams-classes",
+      "dans_take": "The draft experts are giving out grades, but the only grade that matters is how these kids look on the hardwood."
+    },
+    {
+      "headline": "Ranking WR, TE, RB groups for 2026: Best and worst NFL teams",
+      "url": "https://www.espn.com/nfl/story/_/id/49154825/ranking-nfl-teams-offensive-groups-wr-rb-te-2026-season-best-playmakers",
+      "dans_take": "The national media can rank our skill groups wherever they want, but Drake Maye is going to shock some people."
+    }
   ],
   "trend_watch": [
     {
@@ -24,23 +43,6 @@
       "player": "Tyron Guerrero",
       "trend": "Allowed three unearned runs while recording only two outs.",
       "dans_take": "Guerrero completely lost the handle in the seventh. You can't give up three runs in a relief appearance and expect to win ballgames."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Red Sox begin 4-game series at home against the Yankees",
-      "url": "http://www.espn.com/mlb/preview?gameId=401815900",
-      "dans_take": "Forget the standings, when the Bronx Bombers come to Fenway, it is time to put up a fight."
-    },
-    {
-      "headline": "2026 NBA draft grades: Winners, losers for all 30 teams",
-      "url": "https://www.espn.com/nba/story/_/id/49147426/2026-nba-draft-grades-winners-losers-sleepers-best-picks-value-reaches-all-30-teams-classes",
-      "dans_take": "The draft experts are giving out grades, but the only grade that matters is how these kids look on the hardwood."
-    },
-    {
-      "headline": "Ranking WR, TE, RB groups for 2026: Best and worst NFL teams",
-      "url": "https://www.espn.com/nfl/story/_/id/49154825/ranking-nfl-teams-offensive-groups-wr-rb-te-2026-season-best-playmakers",
-      "dans_take": "The national media can rank our skill groups wherever they want, but Drake Maye is going to shock some people."
     }
   ],
   "box_scores": {
@@ -122,8 +124,6 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-06-25T12:50:35.189514+00:00",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 22.1
+  "_stale": null,
+  "_fallback": null
 }
