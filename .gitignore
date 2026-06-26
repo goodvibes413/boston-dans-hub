@@ -15,3 +15,4 @@ data/*
 !data/season_overrides.json
 !data/dan_stories.json
 !data/story_seeds.json
+!data/key_players.json

@@ -272,6 +272,42 @@ jobs:
               gh issue create --title "$title" --body "$body"
           fi
 
+      - name: Detect roster moves (nudge to curate key players)
+        # Scan today's news for trade/signing signals. If any are found, the next
+        # step opens a one-off issue reminding the operator to refresh
+        # data/key_players.json so Dan's "who's the star" signal stays current.
+        id: roster_moves
+        if: success() && steps.freshness.outputs.skip != 'true'
+        run: python3 scripts/detect_roster_moves.py | tee /tmp/roster_moves.txt
+
+      - name: Open key-players curation issue
+        if: success() && steps.freshness.outputs.skip != 'true' && steps.roster_moves.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Only nudge if there is no open curation issue already — otherwise a
+          # lingering move headline would re-alert every day. One open issue per
+          # curation cycle; the operator closes it once key_players.json is current.
+          existing=$(gh issue list --state open --label "curate-key-players" --json number --jq '.[0].number' || true)
+          if [ -n "$existing" ]; then
+            echo "Open curate-key-players issue #$existing already exists; not duplicating."
+            exit 0
+          fi
+          moves=$(cat /tmp/roster_moves.txt)
+          title="Curate key players: review roster moves ($(date +%Y-%m-%d))"
+          body="A possible trade/signing was detected in today's Boston sports news. Review and, if a marquee player changed teams, update \`data/key_players.json\` (then commit \`chore: update key_players after {team} {move}\`).
+
+          Detected headlines:
+          \`\`\`
+          $moves
+          \`\`\`
+
+          Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          Close this issue once key_players.json is up to date (or if these moves don't change any headliner)."
+          gh issue create --title "$title" --body "$body" --label "curate-key-players" || \
+            gh issue create --title "$title" --body "$body"
+
       - name: Open/update failure issue
         if: failure()
         env:

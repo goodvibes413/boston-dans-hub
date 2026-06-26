@@ -1,0 +1,26 @@
+{
+  "updated": "2026-06-25",
+  "_note": "Hand-curated marquee / high-investment players per team (the EXPECTATION axis of salience). Tells Dan who the headliners are by investment — contract, free-agent signing, high draft pick, big trade, award, or franchise status — which a flat name+position roster can't convey. Injected as PLAYERS_TO_WATCH. Cross-checked against the live CURRENT_ROSTER in generate_rant.py before injection (entries not on the roster are dropped), so a player traded away can't be featured. FLAVOR/salience only — the safety judge does NOT cross-reference this; rule 11 (off-roster) is the factual guardrail. Update after a major trade/signing (the curate-key-players GitHub issue will remind you). basis values: franchise | contract | free_agent | draft | trade | award.",
+  "celtics": [
+    { "name": "Jayson Tatum", "role": "franchise cornerstone", "basis": "franchise", "note": "the face of the team, supermax centerpiece" },
+    { "name": "Jaylen Brown", "role": "co-star wing", "basis": "contract", "note": "supermax money, 2024 Finals MVP" },
+    { "name": "Derrick White", "role": "two-way guard", "basis": "franchise", "note": "glue guy, key to the core" },
+    { "name": "Kristaps Porzingis", "role": "stretch big", "basis": "trade", "note": "trade acquisition, spacing and rim protection" }
+  ],
+  "bruins": [
+    { "name": "David Pastrnak", "role": "RW1, franchise scorer", "basis": "contract", "note": "8-year deal, the engine of the offense" },
+    { "name": "Charlie McAvoy", "role": "No. 1 defenseman", "basis": "contract", "note": "big-money anchor on the blue line" },
+    { "name": "Jeremy Swayman", "role": "starting goaltender", "basis": "contract", "note": "signed long-term as the franchise netminder" }
+  ],
+  "redsox": [
+    { "name": "Rafael Devers", "role": "franchise bat", "basis": "contract", "note": "11-year, $300M+ extension, the cornerstone" },
+    { "name": "Garrett Crochet", "role": "ace", "basis": "trade", "note": "headline trade for a frontline starter" },
+    { "name": "Alex Bregman", "role": "veteran infielder", "basis": "free_agent", "note": "marquee free-agent signing, postseason pedigree" }
+  ],
+  "patriots": [
+    { "name": "Drake Maye", "role": "franchise QB", "basis": "draft", "note": "top-3 pick, the franchise's future" },
+    { "name": "AJ Brown", "role": "WR1", "basis": "trade", "note": "blockbuster trade, the alpha target for Maye" },
+    { "name": "Christian Gonzalez", "role": "shutdown CB", "basis": "draft", "note": "first-round corner, defensive cornerstone" },
+    { "name": "Milton Williams", "role": "interior pass rusher", "basis": "free_agent", "note": "big free-agent signing on the defensive line" }
+  ]
+}

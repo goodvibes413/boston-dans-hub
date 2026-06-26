@@ -545,6 +545,31 @@ Fetched daily by `fetch_roster.py`, which queries ESPN (NFL/NBA/MLB) and the NHL
 
 **Usage:** `generate_rant.py` injects this as `CURRENT_ROSTER` after `CALLER_FLAVOR`. The Roster Discipline persona rule instructs Dan to treat unlisted players as free agents/non-team-members. `safety_judge.py` rule 11 flags MEDIUM severity when Dan implies an unlisted player is a current team member.
 
+### `data/key_players.json` (in git — hand-curated salience)
+
+The companion to `boston_roster.json`. The roster is a flat name+position list with **no salience** — it can't tell Dan that a player is the franchise QB or the team's marquee trade acquisition. `key_players.json` supplies that **expectation axis**: who matters by *investment*. (The **performance axis** — who's actually producing — is already covered by the per-player stat lines in `rolling_7day`, so it is intentionally NOT duplicated here.) This file fixed the 2026-06-25 gap where Dan named depth receivers and omitted the Patriots' headline WR. Tracked in git via `!data/key_players.json`.
+
+```json
+{
+  "updated": "2026-06-25",
+  "_note": "...",
+  "patriots": [
+    { "name": "AJ Brown", "role": "WR1", "basis": "trade", "note": "blockbuster trade, the alpha target" }
+  ],
+  "celtics": [ ... ], "bruins": [ ... ], "redsox": [ ... ]
+}
+```
+
+**Shape:** object keyed by `celtics`/`bruins`/`redsox`/`patriots` (plus `updated` + `_note`). Each entry: `name`, `role`, `basis` ∈ `franchise | contract | free_agent | draft | trade | award` (encodes *why* — contract value, a signing, draft pedigree, a trade, an award, or franchise status), and a short `note` (<15 words). 3–6 entries per team.
+
+**Usage in prompt:** `generate_rant.py` runs `filter_key_players_by_roster()` to drop any entry **not on the live `CURRENT_ROSTER`** for that team (normalized name match, so "A.J." == "AJ"), then injects the survivors as a `PLAYERS_TO_WATCH` block right after `CURRENT_ROSTER`. If a team has no roster (fetch failed), its list passes through unfiltered. The **Key Players** persona rule tells Dan to lead with these names when naming a team's stars, and to fuse them with the box-score performance he already has.
+
+**Flavor, not facts:** the safety judge does NOT cross-reference this file. The roster cross-check + rule 11 (off-roster) are the factual guardrails. **Trade-off:** a just-acquired star won't be featured until ESPN's roster endpoint propagates him (~1–2 days) — the conservative, safe choice.
+
+**Curation principles:** 3–6 marquee names per team; encode contract/FA/draft/trade/award in the `note`; keep notes <15 words; no stats (those live in `rolling_7day`).
+
+**Rollover/update:** refresh after a major trade or signing. The pipeline scans `latest_news.json` for move keywords (`scripts/detect_roster_moves.py`) and opens a `curate-key-players` GitHub issue to remind you. Commit with `chore: update key_players after {team} {move}`.
+
 ### `data/historical_facts.json` (in git — hand-curated)
 
 Curated Boston sports history for Dan's color references. Per-team structure with championships, dynasties, iconic moments, curses, and rivalries. Mirrors the `season_static.json` pattern — checked into git via a `!data/historical_facts.json` exception in `.gitignore`.
@@ -782,6 +807,8 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `CALLERS_PATH` | `generate_rant.py` | Default: `data/callers_and_voices.json`; override in evals |
 | `GRUDGE_BOOK_PATH` | `generate_rant.py` | Default: `data/grudge_book.json`; override in evals |
 | `ROSTER_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_roster.json`; override in evals to point at fixture-specific roster |
+| `KEY_PLAYERS_PATH` | `generate_rant.py` | Default: `data/key_players.json`; curated marquee players (PLAYERS_TO_WATCH), cross-checked vs roster; override in evals |
+| `LATEST_NEWS_PATH` | `detect_roster_moves.py` | Default: `data/latest_news.json`; override in tests of the curate-key-players nudge |
 | `DAN_STORIES_PATH` | `generate_rant.py` | Default: `data/dan_stories.json`; recurring fictional characters and comparison templates |
 | `STORY_SEEDS_PATH` | `generate_rant.py` | Default: `data/story_seeds.json`; historical-anchor story seeds for slow news days |
 | `TODAY_OVERRIDE` | `generate_rant.py` | Pin "today" to a specific date (YYYY-MM-DD) for freshness-sensitive eval fixtures. Production leaves unset. |

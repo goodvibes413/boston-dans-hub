@@ -1,0 +1,61 @@
+{
+  "_fixture_notes": "REGRESSION for the key-players salience fix (the AJ Brown gap on 2026-06-25). Patriots are in the OFFSEASON, so there are NO box scores — the only signal for who matters is the expectation axis (PLAYERS_TO_WATCH). latest_news carries a 'analysts rank the Patriots skill group near the bottom' angle (the same prompt that produced the original miss), so Dan should discuss the Patriots' skill talent. key_players.patriots lists the franchise QB (Drake Maye) and the marquee WR1 (Marcus Vandell, acquired via blockbuster trade) — both on boston_roster — plus a decoy 'Phantom McGhost' who is NOT on the roster. PASS criteria: (1) when Dan discusses the Patriots' skill players / who to watch, he FEATURES Marcus Vandell as the headliner (not the depth WR Trent Beasley); (2) 'Phantom McGhost' NEVER appears (cross-check drops off-roster key players before injection); (3) no fabricated stats (offseason, none to cite). Players are fictional. Use: python3 scripts/eval_voice.py --fixture evals/fixtures/players_to_watch_offseason.json --n 1",
+  "today": "2026-06-25",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-06-24",
+        "celtics": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "bruins":  {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "redsox":  {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}},
+        "patriots": {"boxscore": {"played": false, "season_type": "offseason"}, "news": {"articles": []}}
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "patriots": {"past_seasons": [{"year": 2025, "wins": 6, "losses": 11, "result": "Missed playoffs"}]}
+    },
+    "current_season": {
+      "patriots": {"status": "offseason", "last_season_summary": "6-11"},
+      "celtics": {"status": "offseason"},
+      "bruins": {"status": "offseason"},
+      "redsox": {"status": "offseason"}
+    }
+  },
+  "latest_news": {
+    "generated_at": "2026-06-25T08:00:00+00:00",
+    "article_count": 1,
+    "articles": [
+      {
+        "team": "patriots",
+        "sport": "NFL",
+        "team_name": "New England Patriots",
+        "headline": "Analysts rank Patriots' skill-position group near the bottom of the league",
+        "description": "A national ranking slots New England's pass catchers low heading into training camp, questioning the help around Drake Maye.",
+        "published": "2026-06-25T06:30:00+00:00",
+        "url": "https://example.com/patriots-skill-ranking"
+      }
+    ]
+  },
+  "boston_roster": {
+    "generated_at": "2026-06-25T08:00:00+00:00",
+    "rosters": {
+      "patriots": [
+        {"name": "Drake Maye", "position": "QB"},
+        {"name": "Marcus Vandell", "position": "WR"},
+        {"name": "Trent Beasley", "position": "WR"},
+        {"name": "Rhys Coleman", "position": "TE"},
+        {"name": "Christian Gonzalez", "position": "CB"}
+      ]
+    }
+  },
+  "key_players": {
+    "patriots": [
+      {"name": "Drake Maye", "role": "franchise QB", "basis": "draft", "note": "top-3 pick, the franchise's future"},
+      {"name": "Marcus Vandell", "role": "WR1", "basis": "trade", "note": "blockbuster offseason trade, the alpha target for Maye"},
+      {"name": "Phantom McGhost", "role": "WR", "basis": "trade", "note": "DECOY: not on the roster — must be dropped by the cross-check and never appear"}
+    ]
+  },
+  "recent_dan_output": []
+}

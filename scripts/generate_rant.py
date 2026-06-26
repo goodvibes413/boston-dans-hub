@@ -20,6 +20,7 @@ Env vars:
 
 import json
 import os
+import re
 import sys
 import time
 from datetime import date, datetime, timedelta, timezone
@@ -41,6 +42,7 @@ DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
 DEFAULT_DAN_STORIES = REPO / "data" / "dan_stories.json"
 DEFAULT_STORY_SEEDS = REPO / "data" / "story_seeds.json"
+DEFAULT_KEY_PLAYERS = REPO / "data" / "key_players.json"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
 
 # Caller flavor: how many archetypes to inject per day. 2-3 keeps the prompt
@@ -862,7 +864,57 @@ def _build_overrides_block(season_overrides: dict) -> str:
     return "\n".join(lines).strip()
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None) -> str:
+def _normalize_player_name(name: str) -> str:
+    """Lowercase and strip whitespace/punctuation so 'A.J. Brown' == 'AJ Brown'."""
+    return re.sub(r"[^a-z0-9]", "", (name or "").lower())
+
+
+def filter_key_players_by_roster(key_players: dict | None, roster: dict | None) -> dict:
+    """
+    Cross-check curated key_players against the live CURRENT_ROSTER, keeping only
+    players who are actually on the team's roster. This prevents Dan from
+    featuring a marquee player who has since been traded away or cut.
+
+    - Per-team: an entry is kept only if its normalized name matches a roster
+      name for the SAME team.
+    - If the roster has no entry for a team (empty/missing), that team's curated
+      list is passed through unfiltered — mirrors safety_judge rule 11's "if
+      rosters empty, skip" so we never lose the salience signal just because a
+      roster fetch failed.
+    - Non-team keys (e.g. "updated", "_note") are dropped from the injected block.
+
+    Returns a per-team dict {team: [entries...]} containing only non-empty teams.
+    Dropped names are printed to stderr for observability.
+    """
+    if not key_players:
+        return {}
+    rosters = (roster or {}).get("rosters", {}) or {}
+    out: dict = {}
+    for team in ("celtics", "bruins", "redsox", "patriots"):
+        entries = key_players.get(team)
+        if not isinstance(entries, list) or not entries:
+            continue
+        team_roster = rosters.get(team) or []
+        if not team_roster:
+            # No roster to check against — keep the curated list as-is.
+            out[team] = entries
+            continue
+        roster_names = {_normalize_player_name(p.get("name", "")) for p in team_roster}
+        kept, dropped = [], []
+        for e in entries:
+            if _normalize_player_name(e.get("name", "")) in roster_names:
+                kept.append(e)
+            else:
+                dropped.append(e.get("name", "?"))
+        if dropped:
+            print(f"  key_players: dropped {team} (not on roster): {', '.join(dropped)}",
+                  file=sys.stderr)
+        if kept:
+            out[team] = kept
+    return out
+
+
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None, key_players=None) -> str:
     if today_iso is None:
         today_iso = datetime.now(timezone.utc).date().isoformat()
 
@@ -1001,6 +1053,18 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
             "unlisted player is currently on the team):\n"
             f"{json.dumps(roster['rosters'], indent=2)}\n\n"
         )
+    if key_players:
+        watch = filter_key_players_by_roster(key_players, roster)
+        if watch:
+            message += (
+                "PLAYERS_TO_WATCH (each team's marquee / high-investment players and "
+                "WHY they matter — contract, free-agent signing, high draft pick, "
+                "trade, award, or franchise status. These are the HEADLINERS: when "
+                "you name a team's stars or 'who to watch,' lead with these over "
+                "depth players. A player is watch-worthy if he's on this list OR is "
+                "putting up notable lines in the box scores above):\n"
+                f"{json.dumps(watch, indent=2)}\n\n"
+            )
     message += (
         "Generate Boston Dan's Hub JSON output. Return ONLY the JSON object, "
         "no prose, no markdown fences. Keys: headline (punchy newspaper-style headline in Dan's voice — complete thought, no cut-off phrases, 10–16 words max), "
@@ -1165,6 +1229,8 @@ def main():
     grudges = load_json(grudge_path)
     roster_path = Path(os.environ.get("ROSTER_PATH", DEFAULT_ROSTER))
     roster = load_json(roster_path)
+    key_players_path = Path(os.environ.get("KEY_PLAYERS_PATH", DEFAULT_KEY_PLAYERS))
+    key_players = load_json(key_players_path)
     season_overrides_path = Path(os.environ.get("SEASON_OVERRIDES_PATH", DEFAULT_SEASON_OVERRIDES))
     season_overrides = load_json(season_overrides_path)
     stories_path = Path(os.environ.get("DAN_STORIES_PATH", DEFAULT_DAN_STORIES))
@@ -1212,6 +1278,7 @@ def main():
         slow_day=slow_day,
         stories=todays_stories,
         story_seeds=todays_seeds,
+        key_players=key_players,
     )
 
     # DRY_RUN=1 prints the assembled prompt and exits before any LLM call.
