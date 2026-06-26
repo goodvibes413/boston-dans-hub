@@ -64,9 +64,9 @@
     }
   ],
   "summary_5day": {
-    "fresh": 4,
+    "fresh": 5,
     "retry": 0,
-    "fallback": 1,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": []
   }

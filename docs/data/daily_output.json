@@ -1,46 +1,45 @@
 {
-  "headline": "Sox Bullpen Disaster In Denver Screams For Help Ahead Of Yankees Arrival",
+  "headline": "Caleb Durbin Crushes Yankees At Fenway As Connelly Early Shines On The Mound",
   "morning_brew": [
-    "We had them right where we wanted them, and then the bullpen completely spit the bit again. Ranger Suarez threw a gem, giving us six innings of one-earned-run ball with nine strikeouts, but the late innings turned into an absolute circus in Colorado. Leading six to three in the seventh, everything fell apart. Tyron Guerrero and Danny Coulombe couldn't lock it down, and Justin Slaten got tagged with the loss after giving up two runs in the eighth. Getting eleven hits and Ceddanne Rafaela going three-for-five doesn't mean a thing when you blow a three-run lead on the road.",
-    "This loss sits right in your chest like a bad order of home fries from the local diner. We're sitting at thirty-two and forty-six, dead last in the division, and now the first-place Yankees are coming to Fenway Park tonight for a massive four-game set. I don't care what the standings say, this is the rivalry that defines baseball in the Northeast, and the boys need to show some pride. If the bullpen keeps serving up batting practice like they did in Denver, it's going to be a long, miserable weekend on Yawkey Way.",
-    "Over at the Garden, Brad Stevens is busy trying to reload for next year while the talk shows scream about trading Jaylen Brown. The green team added some size in the draft, picking up Chris Cenac Jr. out of Houston at twenty-seven and Dillon Mitchell out of St. John's at forty. Love the Cenac pick, because we need frontcourt depth after that brutal first-round exit against Philly, and Mitchell brings some serious athletic energy. They can talk all they want about moving Jaylen, but I'll believe it when I see it.",
-    "Down in Foxborough, the analysts are already ranking the skill position groups, and they aren't giving our guys any respect. My buddy Sully from Southie called me up raging because some national writer ranked the Patriots playmakers near the bottom of the league. Drake Maye has plenty of talent to work with, especially with Rhamondre Stevenson and Kayshon Boutte in the mix, but the front office needs to keep focus on locking up our core with those contract extensions."
+    "That's how you start a series against the Bronx Bombers. We needed a performance like this to shake off the stink of that Colorado trip, and the boys delivered a beautiful six to three victory over the Yankees at Fenway Park last night. Connelly Early was absolutely fantastic on the mound, giving us six strong innings, allowing just two runs while striking out nine. He kept their bats off balance all night long, showing the kind of grit we've been begging to see from this rotation. Then Caleb Durbin stepped up in the fifth inning and crushed a tie-breaking two-run home run that nearly cleared the seats.",
+    "The bullpen actually held the lead this time, which is a massive relief after the disasters we watched earlier in the week. Greg Weissert, Danny Coulombe, and Garrett Whitlock did their jobs to bridge the gap, and Aroldis Chapman locked down the save in the ninth. Sully from Southie actually called me in the third inning groaning that we're done, but this team proved him wrong and showed some real fight. We're sitting at thirty-three and forty-six, and while the hill is steep, beating New York at Fenway always makes the coffee taste a little sweeter the next morning.",
+    "Down in Foxborough, the offseason chatter is shifting across the pond with rumors linking the Patriots to a potential game in Scotland. That'd be wild, though I'm not sure how the locals will handle Sully trying to explain a cover-two defense in a pub. Back home, the national writers are still disrespecting our skill positions, ranking Drake Maye's supporting cast near the bottom of the league. Let them talk, because Drake Maye and Rhamondre Stevenson are going to turn some heads once the real action starts."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Ranger Suarez",
-      "trend": "Pitched six innings, allowing just one earned run with nine strikeouts.",
-      "dans_take": "Suarez was absolutely dealin' out there. Six innings of one-earned-run ball with nine strikeouts is a masterpiece in that thin Denver air."
+      "player": "Caleb Durbin",
+      "trend": "Hit a game-winning, tie-breaking two-run home run in the fifth inning against the Yankees.",
+      "dans_take": "This kid has some serious pop, and doing it in a massive spot against our biggest rival makes him an instant hero in this town."
     },
     {
-      "category": "Streak",
-      "player": "Ceddanne Rafaela",
-      "trend": "Went three-for-five with an RBI in Denver.",
-      "dans_take": "Rafaela was a bright spot with three hits. The kid is finding his stroke, now we just need the rest of the lineup to follow his lead."
+      "category": "Heater",
+      "player": "Connelly Early",
+      "trend": "Allowed just two runs over six strong innings with nine strikeouts to earn the win.",
+      "dans_take": "We desperately needed a starting pitcher to step up and stop the bleeding, and Early looked like an absolute ace out there."
     },
     {
-      "category": "Cold Snap",
-      "player": "Tyron Guerrero",
-      "trend": "Allowed three unearned runs while recording only two outs.",
-      "dans_take": "Guerrero completely lost the handle in the seventh. You can't give up three runs in a relief appearance and expect to win ballgames."
+      "category": "Bullpen Watch",
+      "player": "Aroldis Chapman",
+      "trend": "Allowed two hits and a walk but closed the door in the ninth for the save.",
+      "dans_take": "It wasn't exactly pretty, but getting the job done against New York is all that matters at the end of the day."
     }
   ],
   "news_digest": [
     {
-      "headline": "Red Sox begin 4-game series at home against the Yankees",
-      "url": "http://www.espn.com/mlb/preview?gameId=401815900",
-      "dans_take": "Forget the standings, when the Bronx Bombers come to Fenway, it is time to put up a fight."
+      "headline": "Sources: Celtics remain active in talks to trade Jaylen Brown",
+      "url": "https://www.espn.com/nba/story/_/id/49173956/sources-celtics-remain-active-talks-trade-jaylen-brown",
+      "dans_take": "Brad Stevens is playing with fire if he actually moves Jaylen after everything he has done for this franchise."
     },
     {
-      "headline": "2026 NBA draft grades: Winners, losers for all 30 teams",
-      "url": "https://www.espn.com/nba/story/_/id/49147426/2026-nba-draft-grades-winners-losers-sleepers-best-picks-value-reaches-all-30-teams-classes",
-      "dans_take": "The draft experts are giving out grades, but the only grade that matters is how these kids look on the hardwood."
+      "headline": "Patriots linked to possible Scotland game",
+      "url": "https://www.espn.com/video/clip/_/id/49179787/patriots-linked-possible-scotland-game",
+      "dans_take": "I suppose the Scotland trip would be fun, but let's make sure we can win some games on our own turf first."
     },
     {
-      "headline": "Ranking WR, TE, RB groups for 2026: Best and worst NFL teams",
-      "url": "https://www.espn.com/nfl/story/_/id/49154825/ranking-nfl-teams-offensive-groups-wr-rb-te-2026-season-best-playmakers",
-      "dans_take": "The national media can rank our skill groups wherever they want, but Drake Maye is going to shock some people."
+      "headline": "2026 NHL mock draft: Projections for the top 32 picks",
+      "url": "https://www.espn.com/nhl/story/_/id/49165820/2026-nhl-mock-draft-top-prospects-first-round-32-teams-predictions",
+      "dans_take": "The B's need to find some young talent in this draft to get us back to being a threat in the East."
     }
   ],
   "box_scores": {
@@ -50,7 +49,7 @@
       "away_team": "Philadelphia 76ers",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-06-24",
+      "game_date": "2026-06-25",
       "played": false,
       "season_type": "offseason"
     },
@@ -60,17 +59,17 @@
       "away_team": "Buffalo Sabres",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-06-24",
+      "game_date": "2026-06-25",
       "played": false,
       "season_type": "offseason"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": "Colorado Rockies",
-      "away_team": "Boston Red Sox",
-      "home_score": 8,
-      "away_score": 6,
-      "game_date": "2026-06-24",
+      "home_team": "Boston Red Sox",
+      "away_team": "New York Yankees",
+      "home_score": 6,
+      "away_score": 3,
+      "game_date": "2026-06-25",
       "played": true,
       "season_type": "regular"
     },
@@ -80,17 +79,12 @@
       "away_team": "Seattle Seahawks",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-06-24",
+      "game_date": "2026-06-25",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-06-25",
-      "matchup": "New York Yankees at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
     {
       "date": "2026-06-26",
       "matchup": "New York Yankees at Boston Red Sox",
@@ -120,10 +114,12 @@
       "date": "2026-07-01",
       "matchup": "Washington Nationals at Boston Red Sox",
       "time_et": "1:35 PM ET"
+    },
+    {
+      "date": "2026-07-03",
+      "matchup": "Boston Red Sox at Los Angeles Angels",
+      "time_et": "9:38 PM ET"
     }
   ],
-  "generated_at": "2026-06-25T12:50:35.189514+00:00",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 22.1
+  "generated_at": "2026-06-26T11:45:36.342675+00:00"
 }
