@@ -1,0 +1,44 @@
+{
+  "_fixture_notes": "Regression for safety_judge.py detect_structural_repetition() — the structural pre-pass that catches NOVEL templated repetition the fixed REPETITION_PATTERNS factoid list cannot see. Models the real 2026-06-26 -> 2026-06-27 incident: two consecutive Red Sox-vs-Yankees recaps that reused (1) a number-masked result-sentence skeleton ('a beautiful six-to-three victory over the Yankees at Fenway' vs 'six-to-one'), (2) the 'That's how you ... Bronx Bombers' lead opener, and (3) the 'Down in Foxborough,' Patriots-segment opener. Neither the factoid pre-pass nor the LLM judge flagged it (the judge was API-skipped on 6/26 and lenient on 6/27). Pass criteria: detect_structural_repetition(today_output, recent_dan_output) returns >=1 flag for the result skeleton AND a flag for each reused opener; a non-repeating control returns []. Threshold is 2 consecutive days (STRUCTURAL_MIN_OCCURRENCES). Manual usage: load this file and call scripts/safety_judge.detect_structural_repetition(fixture['today_output'], fixture['recent_dan_output']).",
+  "today": "2026-06-27",
+  "today_output": {
+    "headline": "Payton Tolle dominates the Yankees as Red Sox roll at Fenway",
+    "morning_brew": [
+      "That's how you treat the Bronx Bombers when they walk into our house. Payton Tolle was absolutely magnificent on the mound last night, giving up just one hit over seven scoreless innings to carry us to a beautiful six to one victory over the Yankees at Fenway. He had their hitters completely lost from the first pitch.",
+      "Willson Contreras provided the thunder, crushing a home run over the Green Monster to put this one away. We now hold a two to zero lead in this four-game series, and beating up on the Yankees makes everything feel right in the world.",
+      "Down in Foxborough, the Patriots are still getting hammered in the national rankings for their playmaker group. People can write off the skill guys all they want, but Drake Maye has more than enough weapons to surprise people this fall."
+    ],
+    "news_digest": []
+  },
+  "recent_dan_output": [
+    {
+      "date": "2026-06-26",
+      "headline": "Caleb Durbin crushes Yankees at Fenway as Connelly Early shines on the mound",
+      "morning_brew": [
+        "That's how you start a series against the Bronx Bombers. The boys delivered a beautiful six to three victory over the Yankees at Fenway Park last night. Connelly Early was absolutely fantastic on the mound, giving us six strong innings while striking out nine.",
+        "The bullpen actually held the lead this time, which is a massive relief after the disasters earlier in the week. We're sitting at thirty-three and forty-six, and while the hill is steep, beating New York at Fenway always makes the coffee taste sweeter.",
+        "Down in Foxborough, the offseason chatter is shifting across the pond with rumors linking the Patriots to a game in Scotland. Back home, the national writers are still disrespecting our skill positions."
+      ],
+      "news_digest": []
+    },
+    {
+      "date": "2026-06-25",
+      "headline": "Quiet night around the Hub as the Sox rest up",
+      "morning_brew": [
+        "No baseball at Fenway last night, so the focus turns to a draft that finally gave this front office a jolt.",
+        "The Celtics added some frontcourt depth that should pay off come spring. Patience in the lottery is rarely rewarded, but this looks like a swing worth taking.",
+        "Over on Causeway Street, the Bruins are still quiet, letting the market come to them before the free-agency window opens."
+      ],
+      "news_digest": []
+    }
+  ],
+  "control_non_repeating": {
+    "headline": "Celtics roll behind a balanced night at the Garden",
+    "morning_brew": [
+      "Eight guys in double figures and a defense that smothered everything at the rim — that is the version of this team that wins in May.",
+      "The Bruins, meanwhile, dropped a tight one on Causeway Street, undone by a late power-play lapse that has quietly become a theme.",
+      "No football news worth your coffee this morning, so enjoy the basketball while it lasts."
+    ],
+    "news_digest": []
+  }
+}
