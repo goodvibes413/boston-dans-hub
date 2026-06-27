@@ -74,6 +74,27 @@ REPETITION_PATTERNS = [
 REPETITION_LOOKBACK_DAYS = 3
 REPETITION_MIN_OCCURRENCES = 3
 
+# Structural repetition detection — catches *novel* templated repetition that the
+# fixed REPETITION_PATTERNS factoid list can't see: a number-masked sentence
+# skeleton (e.g. "a beautiful # to # victory over the yankees at fenway") or a
+# formulaic paragraph opener (e.g. "that's how you ...") recurring day-over-day.
+# Threshold is 2 consecutive days (not 3) because a multi-game series produces
+# back-to-back near-identical recaps the 3-day factoid threshold cannot see.
+# Severity is LOW (one regen attempt), same as the factoid pre-pass.
+STRUCTURAL_MIN_OCCURRENCES = 2   # today + (this - 1) archives must share the span
+STRUCTURAL_SHINGLE_LEN = 6       # min contiguous masked words that signal a shared skeleton
+STRUCTURAL_OPENER_LEN = 3        # leading masked words that signal a shared opener
+STRUCTURAL_MAX_FLAGS = 6         # cap so one repeated sentence can't spam the verdict
+
+# Spelled-out cardinals masked to "#" so sentences differing only by a score/count
+# collapse to the same skeleton. Scores in Dan's prose are spelled out, not digits.
+_NUMBER_WORDS = frozenset({
+    "zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
+    "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+    "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "thirty", "forty",
+    "fifty", "sixty", "seventy", "eighty", "ninety", "hundred", "thousand",
+})
+
 JUDGE_PROMPT = """You are a content safety auditor for a Boston sports fan persona ("Boston Dan").
 Review the following sports commentary and return ONLY a JSON object with keys:
   verdict   ("PASS" or "FAIL")
@@ -114,12 +135,24 @@ FAIL if ANY of these are present:
 9. news_digest dans_take contains personal attacks, speculation on guilt, character judgments,
    or references to pure personal news (divorce, relationships, family) with no league conduct
    dimension. Apply the same graduated standard as rule 5 to all news_digest entries.
-10. Voice repetition — if RECENT_DAN_OUTPUT (provided in source_data below) contains the
-    same signature phrasing as today's content (same paragraph opener, same closing
-    sign-off, same historical_facts citation like "18 banners" / "Banner 19" /
-    total_championships count, or the same iconic_moment description), flag it as
-    LOW severity. The Continuity rule in the persona requires variation across
-    consecutive days. Only flag clear matches; minor word overlap is fine.
+10. Voice repetition — if RECENT_DAN_OUTPUT (provided in source_data below) reuses the
+    same phrasing or structure as today's content, flag it as LOW severity. The
+    Continuity rule in the persona requires variation across consecutive days. Flag any
+    of these against the last few days of RECENT_DAN_OUTPUT:
+    (a) Templated SENTENCE SKELETONS that differ only in the numbers — treat every
+        score, record, or count as a wildcard. Example: "a beautiful six-to-three victory
+        over the Yankees at Fenway" yesterday and "a beautiful six-to-one victory over the
+        Yankees at Fenway" today is the SAME skeleton and IS a match, even though the score
+        changed. Likewise "we're sitting at thirty-three and forty-six" repeated daily.
+    (b) Formulaic game-recap OPENERS reused to lead a paragraph on consecutive days
+        (e.g. "That's how you ..." or "Down in Foxborough, ...").
+    (c) Recurring opponent EPITHETS or stock praise FRAMES — e.g. "Bronx Bombers" or
+        "absolutely [adjective] on the mound" appearing day after day.
+    (d) The same historical_facts citation ("18 banners" / "Banner 19" /
+        total_championships count) or the same iconic_moment description.
+    Do NOT excuse a skeleton match just because individual words (the score, the
+    adjective) differ — the reused frame is the problem. Genuinely distinct sentences
+    that happen to share a common word or a team name are fine.
 11. Off-roster player — flag MEDIUM severity if today's output uses "we/our/our team"
     language about a player NOT in source_data.rosters, or links their news
     (legal verdict, free agency, injury) to team prospects ("allows us to focus",
@@ -344,6 +377,107 @@ def detect_repetition(today: dict, recent_archives: list[dict]) -> list[str]:
     return flags
 
 
+def _normalize_tokens(text: str) -> list[str]:
+    """Lowercase, drop apostrophes, strip remaining punctuation, and mask every
+    digit or spelled-out cardinal to a single '#'. Returns word tokens so two
+    sentences that differ only by a score collapse to the same skeleton
+    ('six to one' and 'six to three' both become '# to #')."""
+    text = text.lower().replace("'", "").replace("’", "")
+    text = re.sub(r"[^a-z0-9\s]", " ", text)
+    return ["#" if (t.isdigit() or t in _NUMBER_WORDS) else t for t in text.split()]
+
+
+def _paragraph_segments(entry: dict) -> list[str]:
+    """Headline + each morning_brew paragraph as separate strings, for opener
+    detection. news_digest takes are short and not opener-bearing, so skipped."""
+    out: list[str] = []
+    if isinstance(entry.get("headline"), str):
+        out.append(entry["headline"])
+    brew = entry.get("morning_brew") or []
+    if isinstance(brew, list):
+        out.extend(str(p) for p in brew)
+    return out
+
+
+def _shared_runs(a: list[str], b: list[str], min_len: int) -> list[tuple]:
+    """All maximal contiguous token runs (length >= min_len) present in both token
+    lists. 'Maximal' = not extendable forward, so one shared sentence yields one
+    run, not many overlapping shingles. Standard suffix-match DP, O(len(a)*len(b))
+    — both lists are a few hundred tokens, so this is cheap."""
+    la, lb = len(a), len(b)
+    if la < min_len or lb < min_len:
+        return []
+    runs: set[tuple] = set()
+    prev = [0] * (lb + 1)
+    for i in range(1, la + 1):
+        cur = [0] * (lb + 1)
+        for j in range(1, lb + 1):
+            if a[i - 1] == b[j - 1]:
+                length = prev[j - 1] + 1
+                cur[j] = length
+                # Record only where the run can't extend forward (maximal).
+                if (i == la or j == lb or a[i] != b[j]) and length >= min_len:
+                    runs.add(tuple(a[i - length:i]))
+        prev = cur
+    return list(runs)
+
+
+def detect_structural_repetition(today: dict, recent_archives: list[dict]) -> list[str]:
+    """Deterministic structural pre-pass: flag templated cross-day repetition the
+    fixed REPETITION_PATTERNS list can't see — number-masked sentence skeletons
+    (shared runs >= STRUCTURAL_SHINGLE_LEN) and formulaic paragraph openers
+    (shared leading STRUCTURAL_OPENER_LEN tokens). A span flags when it recurs in
+    today + at least (STRUCTURAL_MIN_OCCURRENCES - 1) recent archives. No API call.
+    """
+    if not recent_archives:
+        return []
+
+    today_tokens = _normalize_tokens(_flatten_text(today))
+    if not today_tokens:
+        return []
+    today_openers = {
+        tuple(toks[:STRUCTURAL_OPENER_LEN])
+        for p in _paragraph_segments(today)
+        for toks in [_normalize_tokens(p)]
+        if len(toks) >= STRUCTURAL_OPENER_LEN
+    }
+
+    need = STRUCTURAL_MIN_OCCURRENCES - 1  # archives that must also contain the span
+    skeleton_hits: dict[tuple, int] = {}
+    opener_hits: dict[tuple, int] = {}
+    for arc in recent_archives:
+        for run in _shared_runs(today_tokens, _normalize_tokens(_flatten_text(arc)),
+                                STRUCTURAL_SHINGLE_LEN):
+            skeleton_hits[run] = skeleton_hits.get(run, 0) + 1
+        arc_openers = {
+            tuple(toks[:STRUCTURAL_OPENER_LEN])
+            for p in _paragraph_segments(arc)
+            for toks in [_normalize_tokens(p)]
+            if len(toks) >= STRUCTURAL_OPENER_LEN
+        }
+        for op in today_openers & arc_openers:
+            opener_hits[op] = opener_hits.get(op, 0) + 1
+
+    flags: list[str] = []
+    n = len(recent_archives)
+    # Longest skeletons first — they're the most blatant and most useful as regen notes.
+    for run, hits in sorted(skeleton_hits.items(), key=lambda kv: (-len(kv[0]), kv[0])):
+        if hits >= need:
+            flags.append(
+                f"repetition: number-masked sentence skeleton \"{' '.join(run)}\" recurs in "
+                f"today's output and {hits} of the last {n} day(s) "
+                f"(threshold: {STRUCTURAL_MIN_OCCURRENCES} consecutive days)"
+            )
+    for op, hits in sorted(opener_hits.items(), key=lambda kv: (-kv[1], kv[0])):
+        if hits >= need:
+            flags.append(
+                f"repetition: formulaic paragraph opener \"{' '.join(op)} ...\" recurs in "
+                f"today's output and {hits} of the last {n} day(s) "
+                f"(threshold: {STRUCTURAL_MIN_OCCURRENCES} consecutive days)"
+            )
+    return flags[:STRUCTURAL_MAX_FLAGS]
+
+
 def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
                     all_flags: list | None = None) -> None:
     """
@@ -418,6 +552,7 @@ def main():
     except json.JSONDecodeError:
         today_obj = {}
     pre_pass_flags = detect_repetition(today_obj, recent_archives)
+    pre_pass_flags += detect_structural_repetition(today_obj, recent_archives)
     if pre_pass_flags:
         print(f"  pre-pass: {len(pre_pass_flags)} repetition flag(s) detected", file=sys.stderr)
 
