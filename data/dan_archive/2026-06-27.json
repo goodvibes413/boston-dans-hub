@@ -1,30 +1,11 @@
 {
+  "generated_at": "2026-06-27T10:17:48.796428+00:00",
   "headline": "Payton Tolle Dominates The Yankees As Red Sox Roll At Fenway",
   "morning_brew": [
     "That's how you treat the Bronx Bombers when they walk into our house. Payton Tolle was absolutely magnificent on the mound last night, retiring his first sixteen batters and giving up just one hit over seven scoreless innings to carry us to a beautiful six to one victory over the Yankees at Fenway. I don't think I've seen a starter look that untouchable against New York since Pedro Martinez struck out seventeen of them back in September of 1999. Tolle had their hitters completely lost from the first pitch, racking up seven strikeouts and keeping the bullpen's workload nice and light.",
     "Willson Contreras provided the thunder, absolutely crushing a home run over the Green Monster and completely out of the park to put this one away. Tsung-Che Cheng and Anthony Seigler kept the line moving, showing some real life in the bottom of the order. We now hold a two to zero lead in this four-game series, and even though the standings aren't pretty, beating up on the Yankees makes everything feel right in the world. Tommy Kahnle had a minor hiccup in the eighth, but Ryan Watson shut the door in the ninth to seal a great night in the Fens.",
     "Switching over to the ice, the Bruins made a massive splash by acquiring winger JJ Peterka from the Utah Mammoth. I love this move because we desperately need some scoring depth on the wing, and Peterka is a young player who can immediately slot into our top six. It's a bold summer trade that shows the front office isn't just sitting on their hands after that tough first-round exit against Buffalo. My neighbor Rick is probably still trying to find a conspiracy in the trade, but I think the front office actually got one right.",
     "Down in Foxborough, the Patriots are still getting hammered in the national rankings for their playmaker group. People can write off Kayshon Boutte and Rhamondre Stevenson all they want, but Drake Maye has more than enough weapon options to surprise people this fall. We've got another date with the Yankees this afternoon, so grab your Dunks, get down to Fenway, and let's go for the series win."
-  ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Payton Tolle",
-      "trend": "Retired his first 16 batters, allowing just one hit over seven scoreless innings with seven strikeouts.",
-      "dans_take": "Absolutely brilliant performance from the kid, showing the kind of dominance we've been starving for all season."
-    },
-    {
-      "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Homered over the Green Monster and finished with two RBIs.",
-      "dans_take": "That ball might still be traveling over the Mass Pike, which is exactly the kind of power we need in this lineup."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Tommy Kahnle",
-      "trend": "Allowed one earned run on one hit in one inning of work.",
-      "dans_take": "A bit shaky in the eighth, but he limited the damage and kept the lead intact."
-    }
   ],
   "news_digest": [
     {
@@ -42,85 +23,5 @@
       "url": "https://www.espn.com/video/clip/_/id/49186228/could-rockets-best-fit-jaylen-brown",
       "dans_take": "They can talk all they want about trading Jaylen, but I'm not buying into any of this offseason noise."
     }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-26",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-26",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "New York Yankees",
-      "home_score": 6,
-      "away_score": 1,
-      "game_date": "2026-06-26",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Seattle Seahawks",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-26",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-06-27",
-      "matchup": "New York Yankees at Boston Red Sox",
-      "time_et": "1:10 PM ET"
-    },
-    {
-      "date": "2026-06-28",
-      "matchup": "New York Yankees at Boston Red Sox",
-      "time_et": "7:20 PM ET"
-    },
-    {
-      "date": "2026-06-29",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-06-30",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-07-01",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-03",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-04",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    }
-  ],
-  "generated_at": "2026-06-27T10:17:48.796428+00:00"
+  ]
 }

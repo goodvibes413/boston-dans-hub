@@ -1,10 +1,29 @@
 {
+  "date": "2026-06-27",
+  "generated_at": "2026-06-27T10:17:48.796428+00:00",
   "headline": "Payton Tolle Dominates The Yankees As Red Sox Roll At Fenway",
   "morning_brew": [
     "That's how you treat the Bronx Bombers when they walk into our house. Payton Tolle was absolutely magnificent on the mound last night, retiring his first sixteen batters and giving up just one hit over seven scoreless innings to carry us to a beautiful six to one victory over the Yankees at Fenway. I don't think I've seen a starter look that untouchable against New York since Pedro Martinez struck out seventeen of them back in September of 1999. Tolle had their hitters completely lost from the first pitch, racking up seven strikeouts and keeping the bullpen's workload nice and light.",
     "Willson Contreras provided the thunder, absolutely crushing a home run over the Green Monster and completely out of the park to put this one away. Tsung-Che Cheng and Anthony Seigler kept the line moving, showing some real life in the bottom of the order. We now hold a two to zero lead in this four-game series, and even though the standings aren't pretty, beating up on the Yankees makes everything feel right in the world. Tommy Kahnle had a minor hiccup in the eighth, but Ryan Watson shut the door in the ninth to seal a great night in the Fens.",
     "Switching over to the ice, the Bruins made a massive splash by acquiring winger JJ Peterka from the Utah Mammoth. I love this move because we desperately need some scoring depth on the wing, and Peterka is a young player who can immediately slot into our top six. It's a bold summer trade that shows the front office isn't just sitting on their hands after that tough first-round exit against Buffalo. My neighbor Rick is probably still trying to find a conspiracy in the trade, but I think the front office actually got one right.",
     "Down in Foxborough, the Patriots are still getting hammered in the national rankings for their playmaker group. People can write off Kayshon Boutte and Rhamondre Stevenson all they want, but Drake Maye has more than enough weapon options to surprise people this fall. We've got another date with the Yankees this afternoon, so grab your Dunks, get down to Fenway, and let's go for the series win."
+  ],
+  "news_digest": [
+    {
+      "headline": "JJ Peterka acquired by Bruins from Mammoth",
+      "url": "https://www.espn.com/nhl/story/_/id/49191418/jj-peterka-acquired-bruins-mammoth-sources-say",
+      "dans_take": "This is a fantastic pickup that gives our top six a much-needed injection of youth and speed."
+    },
+    {
+      "headline": "Red Sox face the Yankees with 2-0 series lead",
+      "url": "http://www.espn.com/mlb/preview?gameId=401815924",
+      "dans_take": "Let's keep our foot on the gas and secure a series win against these guys."
+    },
+    {
+      "headline": "Could the Rockets be the best fit for Jaylen Brown?",
+      "url": "https://www.espn.com/video/clip/_/id/49186228/could-rockets-best-fit-jaylen-brown",
+      "dans_take": "They can talk all they want about trading Jaylen, but I'm not buying into any of this offseason noise."
+    }
   ],
   "trend_watch": [
     {
@@ -24,23 +43,6 @@
       "player": "Tommy Kahnle",
       "trend": "Allowed one earned run on one hit in one inning of work.",
       "dans_take": "A bit shaky in the eighth, but he limited the damage and kept the lead intact."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "JJ Peterka acquired by Bruins from Mammoth",
-      "url": "https://www.espn.com/nhl/story/_/id/49191418/jj-peterka-acquired-bruins-mammoth-sources-say",
-      "dans_take": "This is a fantastic pickup that gives our top six a much-needed injection of youth and speed."
-    },
-    {
-      "headline": "Red Sox face the Yankees with 2-0 series lead",
-      "url": "http://www.espn.com/mlb/preview?gameId=401815924",
-      "dans_take": "Let's keep our foot on the gas and secure a series win against these guys."
-    },
-    {
-      "headline": "Could the Rockets be the best fit for Jaylen Brown?",
-      "url": "https://www.espn.com/video/clip/_/id/49186228/could-rockets-best-fit-jaylen-brown",
-      "dans_take": "They can talk all they want about trading Jaylen, but I'm not buying into any of this offseason noise."
     }
   ],
   "box_scores": {
@@ -122,5 +124,6 @@
       "time_et": "9:38 PM ET"
     }
   ],
-  "generated_at": "2026-06-27T10:17:48.796428+00:00"
+  "_stale": null,
+  "_fallback": null
 }
