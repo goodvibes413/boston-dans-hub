@@ -1,9 +1,28 @@
 {
+  "date": "2026-06-28",
+  "generated_at": "2026-06-28T10:38:06.125685+00:00",
   "headline": "Jake Bennett Deals As Red Sox Put The Yankees On The Ropes At Fenway",
   "morning_brew": [
     "What a weekend at Fenway. We've got the Yankees on the ropes after another pitching clinic last night, this time courtesy of Jake Bennett. He was dealing from the jump, grinding through more than six innings and giving up just a single run. I haven't seen our starters look this confident in years. Bennett handed things over to the bullpen, and Justin Slaten, Garrett Whitlock, and Aroldis Chapman did the rest, with Chapman slamming the door to lock up the four to one win.",
     "On the offensive side, Anthony Seigler provided some instant offense with a solo shot, and Willson Contreras came through with a clutch hit to drive in a pair of runs. It's beautiful to watch this lineup actually execute when it matters most, especially against our biggest rivals. My old man always said there's nothing better than a quiet Yankee stadium, but making their fans suffer right here in Boston is a very close second. We've now taken three straight in this series, and even though this season's been a massive uphill climb, sweeping these guys would make the whole summer feel different.",
     "Off the field, the Patriots are keeping busy with contract extension talks as we get closer to training camp. Drake Maye is going to need every bit of stability he can get around him, so locking up our key guys is a smart move. Meanwhile, the Celtics are heading into a crucial free agency period under the second apron, and the front office has some serious work to do if they want to build another championship roster. Tonight we've got one more game against New York at Fenway, so let's get the brooms out and finish the job."
+  ],
+  "news_digest": [
+    {
+      "headline": "NBA free agency 2026: How much all 30 teams can spend this summer",
+      "url": "https://www.espn.com/nba/story/_/id/49190331/nba-free-agency-2026-salary-cap-tiers-lakers-thunder-nets-bulls-knicks-30-teams",
+      "dans_take": "Brad Stevens has some tight cap space to navigate, but I trust him to make the right moves."
+    },
+    {
+      "headline": "2026 NHL draft grades: Best, worst, most surprising picks",
+      "url": "https://www.espn.com/nhl/story/_/id/49201091/nhl-draft-2026-grades-best-players-top-prospects-picks-value",
+      "dans_take": "Let's see if the front office found some actual diamonds in the rough this weekend."
+    },
+    {
+      "headline": "Patriots linked to possible Scotland game",
+      "url": "https://www.espn.com/video/clip/_/id/49179787/patriots-linked-possible-scotland-game",
+      "dans_take": "Playing across the pond sounds wild, but let's focus on winning at home first."
+    }
   ],
   "trend_watch": [
     {
@@ -23,23 +42,6 @@
       "player": "Aroldis Chapman",
       "trend": "Locked down the save with a scoreless ninth inning, striking out one.",
       "dans_take": "He's still got that high heat when we need it most to close out the Yankees."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "NBA free agency 2026: How much all 30 teams can spend this summer",
-      "url": "https://www.espn.com/nba/story/_/id/49190331/nba-free-agency-2026-salary-cap-tiers-lakers-thunder-nets-bulls-knicks-30-teams",
-      "dans_take": "Brad Stevens has some tight cap space to navigate, but I trust him to make the right moves."
-    },
-    {
-      "headline": "2026 NHL draft grades: Best, worst, most surprising picks",
-      "url": "https://www.espn.com/nhl/story/_/id/49201091/nhl-draft-2026-grades-best-players-top-prospects-picks-value",
-      "dans_take": "Let's see if the front office found some actual diamonds in the rough this weekend."
-    },
-    {
-      "headline": "Patriots linked to possible Scotland game",
-      "url": "https://www.espn.com/video/clip/_/id/49179787/patriots-linked-possible-scotland-game",
-      "dans_take": "Playing across the pond sounds wild, but let's focus on winning at home first."
     }
   ],
   "box_scores": {
@@ -121,12 +123,6 @@
       "time_et": "9:30 PM ET"
     }
   ],
-  "generated_at": "2026-06-28T10:38:06.125685+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "Voice repetition: Reused the stock praise frame 'absolutely [adjective] on the mound' on consecutive days ('absolutely magnificent on the mound last night' on June 27 and 'absolutely spectacular on the mound last night' on June 28).",
-    "Voice repetition: Reused the templated sentence skeleton 'beautiful [score] victory over [Yankees/New York]' on consecutive days ('beautiful six to one victory over the Yankees' on June 27 and 'beautiful four to one victory over New York' on June 28).",
-    "repetition: number-masked sentence skeleton \"a beautiful # to # victory over\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"the door in the ninth to\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
