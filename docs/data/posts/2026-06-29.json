@@ -1,9 +1,23 @@
 {
+  "date": "2026-06-29",
+  "generated_at": "2026-06-29T12:53:55.432543+00:00",
   "headline": "Jarren Duran Walk-Off Seals Epic Four Game Sweep Over The Yankees",
   "morning_brew": [
     "We just completed a four-game sweep of the Yankees, and my heart rate is finally starting to settle down. Sonny Gray was absolutely spectacular on the mound, tossing seven and a third scoreless innings and giving up only one hit while striking out nine. He handed over a two to zero lead, but then the ninth inning happened. I been sayin' it all year, this bullpen is going to give me a heart attack, and Aroldis Chapman blowing the save in the ninth almost did the trick. We tried to hand them the game with two errors, and honestly, I haven't seen a defensive display that shaky since cousin Jimmy tried to play shortstop in the townie softball league.",
     "Fortunately, this team refused to quit when things got messy in extra innings. After the Yankees put up two runs in the top of the tenth, our guys fought right back. Jarren Duran came through with the ultimate clutch moment, driving home the winning run with a walk-off single to seal the five to four victory. Beating New York is always sweet, but watching their fans leave Fenway with their heads down after a sweep is pure poetry. We're still sitting ten games under five hundred at thirty-six and forty-six, but this is the kind of series that can turn a season around.",
     "Looking ahead, the Nationals are coming to town tonight to start a three-game series, so let's keep this momentum rolling. Down in Foxborough, the Patriots are reportedly grinding away on a contract extension for Christian Gonzalez before training camp starts, which is exactly what we need to see to lock down our secondary. Meanwhile, the Celtics are heading into the free agency frenzy with very little spending room under the second apron. Brad Stevens has to get creative if he wants to build a bench that can get us back to the promised land."
+  ],
+  "news_digest": [
+    {
+      "headline": "Will Christian Gonzalez's extension get done before camp?",
+      "url": "https://www.espn.com/nfl/story/_/id/49190165/will-new-england-patriots-christian-gonzalez-extension-get-done-training-camp",
+      "dans_take": "Pay the man his money because we cannot afford a holdout from our best defensive back."
+    },
+    {
+      "headline": "NBA free agency 2026: How much all 30 teams can spend this summer",
+      "url": "https://www.espn.com/nba/story/_/id/49190331/nba-free-agency-2026-salary-cap-tiers-lakers-thunder-nets-bulls-knicks-30-teams",
+      "dans_take": "Brad Stevens has to work some serious magic under this second apron to keep us competitive."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Jarren Duran",
       "trend": "Singled home the game-winning run in the bottom of the tenth to secure the sweep.",
       "dans_take": "Duran has that clutch gene you can't teach, and sending those Yankees fans home crying is beautiful."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Will Christian Gonzalez's extension get done before camp?",
-      "url": "https://www.espn.com/nfl/story/_/id/49190165/will-new-england-patriots-christian-gonzalez-extension-get-done-training-camp",
-      "dans_take": "Pay the man his money because we cannot afford a holdout from our best defensive back."
-    },
-    {
-      "headline": "NBA free agency 2026: How much all 30 teams can spend this summer",
-      "url": "https://www.espn.com/nba/story/_/id/49190331/nba-free-agency-2026-salary-cap-tiers-lakers-thunder-nets-bulls-knicks-30-teams",
-      "dans_take": "Brad Stevens has to work some serious magic under this second apron to keep us competitive."
     }
   ],
   "box_scores": {
@@ -111,10 +113,6 @@
       "time_et": "9:30 PM ET"
     }
   ],
-  "generated_at": "2026-06-29T12:53:55.432543+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    "repetition: number-masked sentence skeleton \"meanwhile the celtics are heading into\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "judge skipped \u2014 API error: ServerError"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
