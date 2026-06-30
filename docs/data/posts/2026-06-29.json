@@ -1,5 +1,4 @@
 {
-  "date": "2026-06-29",
   "generated_at": "2026-06-29T12:53:55.432543+00:00",
   "headline": "Jarren Duran Walk-Off Seals Epic Four Game Sweep Over The Yankees",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "Brad Stevens has to work some serious magic under this second apron to keep us competitive."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Sonny Gray",
-      "trend": "Tossed seven and a third innings of one-hit ball with nine strikeouts.",
-      "dans_take": "Sonny was absolutely dealing out there, and it is a crime he didn't get the win after that masterpiece."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Aroldis Chapman",
-      "trend": "Blew a two-run lead in the ninth inning, allowing two runs on one hit and a walk.",
-      "dans_take": "I love the guy's fire, but Chapman has got to find his control because blowing saves against New York will give me an ulcer."
-    },
-    {
-      "category": "Heater",
-      "player": "Jarren Duran",
-      "trend": "Singled home the game-winning run in the bottom of the tenth to secure the sweep.",
-      "dans_take": "Duran has that clutch gene you can't teach, and sending those Yankees fans home crying is beautiful."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-28",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-28",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "New York Yankees",
-      "home_score": 5,
-      "away_score": 4,
-      "game_date": "2026-06-28",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Seattle Seahawks",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-28",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-06-29",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-06-30",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-07-01",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-03",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-04",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-05",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:30 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-06-29"
 }
