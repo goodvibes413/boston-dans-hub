@@ -5,11 +5,11 @@ and compare outputs.
 Fixture mode:
   python scripts/eval_models.py \
     --fixture evals/fixtures/voice_rivalry.json --n 2 \
-    --models "gemini-flash-latest,gemma-3-27b-it,gemma-3-12b-it"
+    --models "gemini-3.1-flash-lite,gemma-3-27b-it,gemma-3-12b-it"
 
 Live mode (run against today's REAL fetched data — run the fetchers first):
   python scripts/eval_models.py --live --n 2 \
-    --models "gemini-flash-latest,gemma-3-27b-it,gemma-3-12b-it"
+    --models "gemini-3.1-flash-lite,gemma-3-27b-it,gemma-3-12b-it"
   In live mode the Gemini output that actually shipped today
   (docs/data/daily_output.json) is included as a read-only "shipped-gemini"
   reference row, so you get a true side-by-side against what really published.
@@ -206,7 +206,7 @@ def main():
     ap.add_argument("--n", type=int, default=2, help="Generations per model")
     ap.add_argument("--models",
                     help="Comma-separated model ids, e.g. "
-                         "'gemini-flash-latest,gemma-3-27b-it'")
+                         "'gemini-3.1-flash-lite,gemma-3-27b-it'")
     ap.add_argument("--label", help="Output filename label")
     args = ap.parse_args()
 

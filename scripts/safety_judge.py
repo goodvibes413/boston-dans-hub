@@ -5,7 +5,7 @@ Returns JSON {verdict, severity, flags} on stdout. Exit 0 = PASS, 1 = FAIL.
 
 Env vars:
   GEMINI_API_KEY        required
-  JUDGE_MODEL           optional, default "gemini-flash-latest"
+  JUDGE_MODEL           optional, default "gemini-3.1-flash-lite"
   INPUT_PATH            optional, default data/raw_dan_output.json
   SEASON_STATIC_PATH    optional, past-seasons JSON (cross-referenced for stat claims)
   SEASON_CURRENT_PATH   optional, current-season JSON (cross-referenced for stat claims)
@@ -36,7 +36,10 @@ DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
 DEFAULT_ROSTER = REPO / "data" / "boston_roster.json"
 DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
-DEFAULT_MODEL = "gemini-flash-latest"
+# See generate_rant.py's DEFAULT_MODEL comment — pinned to gemini-3.1-flash-lite
+# (500 RPD free tier) after "gemini-flash-latest" resolved to a model whose
+# free tier was persistently exhausted on 2026-07-01.
+DEFAULT_MODEL = "gemini-3.1-flash-lite"
 
 # Signature-phrase patterns that should never recur in 3+ consecutive
 # daily outputs. Conservative list (9 entries); expand only after observing

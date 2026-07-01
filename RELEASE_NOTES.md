@@ -5,6 +5,19 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-07-01 — Pin to `gemini-3.1-flash-lite`; Bounded Request Timeout
+
+**Problem:** Three widely-spaced pipeline runs (12:18, 13:32, 14:22 UTC) all hit persistent `429 RESOURCE_EXHAUSTED` for over two hours — not the short demand spike the in-process retries and spaced safety-net cron slots are designed to absorb. A quota-error detail from one attempt named the actual model: `generativelanguage.googleapis.com/generate_content_free_tier_requests (model=gemini-3.5-flash)`. Google had promoted `gemini-3.5-flash` to the `gemini-flash-latest` alias, and its free tier was tight enough (likely a fresh-launch quota) to starve the whole day's runs. Separately, the 11:26 UTC run hit a worse failure mode: a single `generate_content()` call hung for ~21 minutes with zero response, and GitHub Actions force-cancelled the job at the 25-min timeout — worse than a clean failure, because the hard cancellation happened before `publish.py` ever ran, so there was no sentinel, no fallback, no commit, just a red X.
+
+**What shipped:**
+1. **Model pin**: `GEMINI_MODEL`/`JUDGE_MODEL` default changed from the `gemini-flash-latest` alias to `gemini-3.1-flash-lite`, pinned. Documented 500 RPD free-tier quota, comfortably above this pipeline's ~2–6 calls/day. This reverses the original 2026-04-xx decision to float on `-latest` for a higher quota — that reasoning broke the moment Google silently remapped `-latest` to a model with a worse quota than what we'd pinned against.
+2. **Request timeout**: `genai.Client()` now sets `http_options=types.HttpOptions(timeout=90_000)` (90s) in both `generate_rant.py` and `safety_judge.py`. A hang now surfaces as a normal exception within 90s instead of blocking indefinitely, which the existing try/except around `call_gemini()` already handles correctly (write sentinel → `publish.py` fallback).
+3. Updated `AGENTS.md` Model Strategy section, the free-tier model-availability list, env var docs, and dev-only eval tool defaults (`eval_models.py`, `model_eval.yml`) to match.
+
+**Lesson learned:** floating on a "latest" alias trades one failure mode (a stale pinned model's quota degrading over time) for a worse one (an unannounced remap to a model with an unknown, possibly much tighter, quota — with zero warning and no way to detect it except by watching production fail). A pin is a known, stable quantity; re-evaluate only when the pinned model is actually deprecated.
+
+---
+
 ## 2026-06-11 — Game Coverage Gap Fix: Slow-Day Detection Bug + Judge Rule 12
 
 **Problem:** First run with the voice overhaul (June 11). Dan told a fictional 2004 ALCS story instead of covering a real Red Sox game that happened on June 10. All judges passed because no rule checked game coverage completeness.

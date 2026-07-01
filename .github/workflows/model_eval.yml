@@ -27,7 +27,7 @@ on:
         description: 'Comma-separated model ids to compare'
         type: string
         required: true
-        default: 'gemini-flash-latest,gemma-3-27b-it,gemma-3-12b-it'
+        default: 'gemini-3.1-flash-lite,gemma-3-27b-it,gemma-3-12b-it'
       n:
         description: 'Generations per model (keep small — free-tier rate limits)'
         type: string

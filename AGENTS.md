@@ -45,8 +45,8 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 | Layer | Tool | Notes |
 |---|---|---|
 | Data fetching | Python stdlib only (`urllib`, `json`) | No third-party HTTP libs |
-| LLM generation | `gemini-flash-latest` via `google-genai` | Read key from `GEMINI_API_KEY` env var; override via `GEMINI_MODEL`. **IMPORTANT: Use the `-latest` alias, not pinned versions like `gemini-2.5-flash`** (see Model Strategy below) |
-| Safety judge | `gemini-flash-latest` via `google-genai` | Same model, separate call. Override via `JUDGE_MODEL` |
+| LLM generation | `gemini-3.1-flash-lite` via `google-genai` | Read key from `GEMINI_API_KEY` env var; override via `GEMINI_MODEL`. **Pinned, not the `-latest` alias** (see Model Strategy below) |
+| Safety judge | `gemini-3.1-flash-lite` via `google-genai` | Same model, separate call. Override via `JUDGE_MODEL` |
 | Frontend | Vanilla HTML/CSS/JS | No build tools — pure `fetch()` loads `daily_output.json`, renders dynamically |
 | CI/CD | GitHub Actions | Daily cron at 03:00 ET (08:00 UTC) — moved from 06:00 ET to avoid peak API demand |
 | Hosting | GitHub Pages | `/site` folder → https://goodvibes413.github.io/boston-dans-hub/ |
@@ -56,24 +56,26 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 
 **Never** add third-party Python packages beyond `google-genai` without discussion. The goal is a minimal, auditable dependency footprint.
 
-### Model Strategy: `gemini-flash-latest` for Higher Daily Quota
+### Model Strategy: `gemini-3.1-flash-lite`, Pinned Deliberately
 
-**Decision: Always use `gemini-flash-latest` alias, NOT pinned versions like `gemini-2.5-flash`.**
+**Decision (2026-07-01): Pin to `gemini-3.1-flash-lite`. Do NOT use the `-latest` alias.**
 
-**Why:**
-- **Higher daily request limit**: Google's free tier grants higher daily request quotas to `gemini-flash-latest` (the officially recommended latest model) compared to older pinned versions. This allows our pipeline (generation + safety judge = 2 calls/day, plus retries on transient failures) to stay within free tier limits.
-- **Pinned versions have lower quotas**: Once a Flash model is pinned (e.g., `gemini-2.5-flash`), Google allocates it a lower daily quota. Using pinned versions would exhaust our quota faster and force paid upgrades.
-- **API demand spike resilience**: When `gemini-flash-latest` experiences high load (503 UNAVAILABLE) or rate-limiting (429), the in-process retry logic in `generate_rant.py` (4 retries, `[5, 15, 30, 60]`s, ~110s/call) and `safety_judge.py` (3 retries, `[5, 15, 30]`s) absorbs short spikes. **These budgets are intentionally capped** at ~110s/call so that `publish.py` chaining up to 3 Gemini calls (judge → correction generate → judge) stays well inside the 25-min job timeout — see the `call_with_retry` docstring. Demand spikes can last 1–2h, which is longer than any single run's in-process backoff can cover; **cross-day/cross-run resilience comes from the spaced safety-net cron slots** in `morning_brew.yml` (multiple independent attempts across the morning), not from longer in-process backoff.
+**History:** This project originally used the `gemini-flash-latest` alias on the theory that Google grants the current "latest" model a more generous free-tier quota than pinned versions, and that floating forward automatically avoids the trap of a stale pinned model getting quota-starved over time. That held until 2026-07-01, when Google promoted `gemini-3.5-flash` to `latest` — confirmed by the quota-error detail `generativelanguage.googleapis.com/generate_content_free_tier_requests (model=gemini-3.5-flash)` in that day's workflow logs. A newly-promoted model's free tier is often much tighter right after launch, and three independent, widely-spaced pipeline runs that day (12:18, 13:32, 14:22 UTC) all hit persistent `429 RESOURCE_EXHAUSTED` for over two hours — not a short demand spike the in-process retries or spaced cron slots could ride out.
 
-**Do not change the model alias** — it directly impacts our free tier quota and ability to run the daily pipeline. If you see a 503/429 in the logs, it's usually a transient spike; the in-process retries cover short ones, and the later cron slots retry longer ones. If a whole day's slots fail, re-trigger manually with `force=true` once Gemini recovers (see Troubleshooting Rule #6). A degraded (stale/fallback) publish now opens a `pipeline-degraded` GitHub issue so it is not silently green.
+**Why `gemini-3.1-flash-lite` specifically:**
+- **Documented 500 requests/day free-tier quota** — comfortably above this pipeline's ~2–6 calls/day (generation + judge + occasional correction retries).
+- **A pin is a known, stable quantity.** The whole point of pinning here is the opposite of the old strategy: we'd rather have a fixed, predictable quota than an alias that can silently point somewhere worse. Re-evaluate the alias-vs-pin tradeoff only if this model gets deprecated or its quota changes materially — check `GEMINI_MODEL`/`JUDGE_MODEL` behavior against [ai.google.dev/gemini-api/docs/pricing](https://ai.google.dev/gemini-api/docs/pricing) before ever switching again.
+- **API demand spike resilience unchanged**: the in-process retry logic in `generate_rant.py` (4 retries, `[5, 15, 30, 60]`s, ~110s/call, plus a 90s per-request timeout added 2026-07-01 to prevent an unbounded hang) and `safety_judge.py` (same pattern) absorbs short spikes; the spaced safety-net cron slots in `morning_brew.yml` absorb longer ones.
 
-**Note**: Both `gemini-flash-latest` and pinned versions are free — the difference is in the daily request quota allocation.
+**If you see persistent 429s again**: check whether `gemini-3.1-flash-lite` itself has been deprecated or re-quota'd before assuming it's a transient spike — that's exactly the failure mode that motivated this pin in the first place. A degraded (stale/fallback) publish opens a `pipeline-degraded` GitHub issue automatically so it is not silently green.
+
+**Note**: Free tier vs. paid is not the distinction here — `gemini-flash-latest`, `gemini-2.5-flash`, and `gemini-3.1-flash-lite` are all free. The distinction is daily request quota, and whether that quota is a fixed known value (pinned) or whatever Google currently maps "latest" to (floating).
 
 ### Evaluating open models (dev-only) with `eval_models.py`
 
 To gauge whether a free/open model could replace Gemini, you can A/B candidate
 models in isolation against the existing fixtures — **production and CI stay on
-`gemini-flash-latest`; this is a dev/eval-only path.**
+`gemini-3.1-flash-lite`; this is a dev/eval-only path.**
 
 - **Gemma rides the existing setup.** Google serves its open Gemma models
   (`gemma-3-27b-it`, `gemma-3-12b-it`, …) through the **same `google-genai` SDK
@@ -87,7 +89,7 @@ models in isolation against the existing fixtures — **production and CI stay o
   `eval_voice.py`'s fixture-split + `summarize`), writes outputs to
   `evals/runs/<model>/`, and prints a comparison table. As with `eval_voice.py`,
   the table is triage — **read the JSON yourself to judge voice.** Example:
-  `python3 scripts/eval_models.py --fixture evals/fixtures/voice_rivalry.json --n 2 --models "gemini-flash-latest,gemma-3-27b-it"`
+  `python3 scripts/eval_models.py --fixture evals/fixtures/voice_rivalry.json --n 2 --models "gemini-3.1-flash-lite,gemma-3-27b-it"`
 - This measures voice + structure + fidelity to injected data, **not** Gemini's
   live Google-Search grounding (open models can't ground). To later test
   non-Google open models (Llama/Qwen/DeepSeek) point an OpenAI-compatible client
@@ -110,9 +112,9 @@ fetch_schedule.py          → data/upcoming_schedule.json  (merged, sorted)
 fetch_news.py              → data/latest_news.json  (merged, most-recent-first)
 fetch_season_memory.py     → data/season_current.json  (current records/seeds/status)
     ↓
-generate_rant.py    → data/raw_dan_output.json  (Gemini 2.5 Flash + grounding)
+generate_rant.py    → data/raw_dan_output.json  (gemini-3.1-flash-lite + grounding)
     ↓
-safety_judge.py     → PASS / FAIL + severity  (Gemini 2.5 Flash)
+safety_judge.py     → PASS / FAIL + severity  (gemini-3.1-flash-lite)
     ↓
 publish.py          → site/data/daily_output.json  (or safe fallback)
     ↓
@@ -138,7 +140,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/fetch_season_memory.py` | ✅ Done | `season_current.json` (current records/seeds/status from ESPN) |
 | `scripts/generate_rant.py` | ✅ Done | `raw_dan_output.json` (loads persona from `prompts/boston_dan_system.txt`) |
 | `scripts/eval_voice.py` | ✅ Done | `evals/runs/{label}_{N}.json` (manual eyeball harness) |
-| `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (Gemini 2.5 Flash) |
+| `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (gemini-3.1-flash-lite) |
 | `scripts/publish.py` | ✅ Done | `site/data/daily_output.json` (or safe fallback on judge failure) |
 | `scripts/healthcheck.py` | ✅ Done | Validates `site/data/daily_output.json` is parseable + complete |
 
@@ -305,8 +307,10 @@ capped budgets (so `publish.py` chaining up to 3 calls stays inside the 25-min j
   - `generate_rant.py` writes a `{"_generation_failed": true, ...}` sentinel to `data/raw_dan_output.json` and exits 0 — `publish.py` then decides between yesterday's content (<48h old) and `SAFE_FALLBACK`. This keeps `publish.py` the single fallback decision point rather than having the workflow die mid-pipeline.
 
 ### Free tier model availability
+- `gemini-3.1-flash-lite`: ✅ free tier available, 500 RPD — **current production pin** (see Model Strategy above)
 - `gemini-2.5-flash`: ✅ free tier available
 - `gemini-2.5-pro`: ❌ no free tier (limit: 0) — do not use as default
+- `gemini-flash-latest` (the `-latest` alias): ⚠️ do not use — floats to whatever Google currently maps "latest" to, which can carry a much tighter quota with no warning (see Model Strategy history above)
 
 ---
 
@@ -768,9 +772,9 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | Variable | Used By | Notes |
 |---|---|---|
 | `GEMINI_API_KEY` | `generate_rant.py`, `safety_judge.py` | Set in `~/.zshrc` locally; GitHub Actions secret in CI |
-| `GEMINI_MODEL` | `generate_rant.py` | Default: `gemini-flash-latest` (see Model Strategy — do not pin) |
+| `GEMINI_MODEL` | `generate_rant.py` | Default: `gemini-3.1-flash-lite` (see Model Strategy — pinned deliberately, do not switch to `-latest`) |
 | `LLM_MODEL` | `generate_rant.py`, `eval_models.py` | Eval-only override of the model (e.g. `gemma-3-27b-it`); takes precedence over `GEMINI_MODEL`. Leave unset in production |
-| `JUDGE_MODEL` | `safety_judge.py` | Default: `gemini-flash-latest` (see Model Strategy — do not pin) |
+| `JUDGE_MODEL` | `safety_judge.py` | Default: `gemini-3.1-flash-lite` (see Model Strategy — pinned deliberately, do not switch to `-latest`) |
 | `ROLLING_STORE_PATH` | `generate_rant.py` | Default: `data/rolling_7day.json`; override in evals to point at fixtures |
 | `OUTPUT_PATH` | `generate_rant.py` | Default: `data/raw_dan_output.json`; override in evals |
 | `INPUT_PATH` | `safety_judge.py` | Default: `data/raw_dan_output.json` |

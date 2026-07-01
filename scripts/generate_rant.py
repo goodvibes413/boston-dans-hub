@@ -7,7 +7,7 @@ back, writes data/raw_dan_output.json.
 
 Env vars:
   GEMINI_API_KEY        required
-  GEMINI_MODEL          optional, default "gemini-flash-latest"
+  GEMINI_MODEL          optional, default "gemini-3.1-flash-lite"
   ROLLING_STORE_PATH    optional, lets eval_voice.py swap in a fixture
   SCHEDULE_PATH         optional
   NEWS_PATH             optional
@@ -81,7 +81,14 @@ DEFAULT_MEMORY_DAYS = 5
 
 TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
 
-DEFAULT_MODEL = "gemini-flash-latest"
+# 2026-07-01: switched off the "-latest" alias. Google had quietly promoted
+# gemini-3.5-flash to "latest," and its free tier was persistently exhausted
+# for hours (three widely-spaced pipeline runs all hit 429 RESOURCE_EXHAUSTED).
+# gemini-3.1-flash-lite is pinned deliberately here for its documented 500
+# RPD free-tier quota — plenty for this pipeline's ~2-6 calls/day including
+# retries, and no longer subject to whatever quota "latest" resolves to on
+# a given day. See AGENTS.md Model Strategy for the full rationale.
+DEFAULT_MODEL = "gemini-3.1-flash-lite"
 
 
 def describe_api_error(e) -> str:
