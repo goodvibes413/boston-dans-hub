@@ -1034,7 +1034,17 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
     if not api_key:
         sys.exit("error: GEMINI_API_KEY not set")
 
-    client = genai.Client(api_key=api_key)
+    # Without an explicit request timeout, an HTTP call that never returns (as
+    # opposed to one that returns a 503/429) blocks forever — call_with_retry's
+    # backoff budget never even starts because fn() itself hasn't raised. This
+    # bit the pipeline on 2026-07-01: a single hung generate_content() call ate
+    # ~21 minutes with zero output until GitHub Actions force-cancelled the whole
+    # job at the 25-min mark, skipping publish.py's sentinel/fallback path
+    # entirely (no commit, no _generation_failed marker — just a red X). A
+    # bounded per-request timeout turns that hang into a normal exception, which
+    # the existing try/except around call_gemini() already handles by writing
+    # the sentinel and letting publish.py's fallback take over.
+    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=90_000))
 
     # Gemma open models are served through the same Gemini API + GEMINI_API_KEY,
     # but unlike the Gemini models they reject system_instruction, tools (Google

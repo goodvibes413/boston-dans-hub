@@ -565,7 +565,9 @@ def main():
         + content
     )
 
-    client = genai.Client(api_key=api_key)
+    # Bounded request timeout — see generate_rant.py's call_gemini() for why an
+    # unbounded HTTP call is dangerous inside a 25-min job (2026-07-01 incident).
+    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=90_000))
     try:
         resp = call_with_retry(
             lambda: client.models.generate_content(
