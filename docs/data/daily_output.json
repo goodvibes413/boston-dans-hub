@@ -118,6 +118,6 @@
     "repetition: number-masked sentence skeleton \"at # # and # #\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
   ],
   "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 26.0
+  "_stale_reason": "generation failed: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.",
+  "_stale_age_hours": 26.9
 }
