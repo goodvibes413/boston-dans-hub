@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-06-26",
     "2026-06-27",
     "2026-06-28",
     "2026-06-29",
-    "2026-06-30"
+    "2026-06-30",
+    "2026-07-01"
   ],
   "rules": [
     {
@@ -64,9 +64,9 @@
     }
   ],
   "summary_5day": {
-    "fresh": 1,
+    "fresh": 0,
     "retry": 3,
-    "fallback": 1,
+    "fallback": 2,
     "stale": 0,
     "most_flagged_rules": [
       {

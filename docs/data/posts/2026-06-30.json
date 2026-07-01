@@ -1,5 +1,4 @@
 {
-  "date": "2026-06-30",
   "generated_at": "2026-06-30T11:33:26.395643+00:00",
   "headline": "Willson Contreras Sparks Emotional Victory As Red Sox Roll At Fenway",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "We need everyone on the same page if we're going to bounce back next season."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Homered and ejected against the Nationals",
-      "dans_take": "The man plays with his heart on his sleeve and I love every second of it."
-    },
-    {
-      "category": "Streak",
-      "player": "Ranger Suarez",
-      "trend": "Earned the win with eight strikeouts over six innings",
-      "dans_take": "Suarez is giving this rotation exactly what we need during this five-game winning streak."
-    },
-    {
-      "category": "Heater",
-      "player": "Anthony Seigler",
-      "trend": "Two hits against Washington to keep his average at .361",
-      "dans_take": "Seigler is quietly becoming one of the most reliable bats in this lineup."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-29",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-29",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Washington Nationals",
-      "home_score": 6,
-      "away_score": 3,
-      "game_date": "2026-06-29",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-29",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-06-30",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-07-01",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-03",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-04",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-05",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:30 PM ET"
-    },
-    {
-      "date": "2026-07-07",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-06-30"
 }
