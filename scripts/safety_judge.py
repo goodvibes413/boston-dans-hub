@@ -61,6 +61,7 @@ RULE_TITLES = {
     10: "Voice repetition",
     11: "Off-roster player",
     12: "Game coverage gap",
+    13: "Cross-team misattribution",
 }
 
 REPETITION_PATTERNS = [
@@ -172,10 +173,21 @@ FAIL if ANY of these are present:
     The 7-day window is narrative context (streaks, callbacks), only yesterday's results
     trigger this rule. Exception: if 3+ teams played yesterday, covering only 2 is
     acceptable (Dan prioritizes the bigger stories).
+13. Cross-team misattribution — a paragraph in morning_brew is clearly about one team
+    (its subject, "we"/"our" language, and surrounding sentences all point to team X),
+    but contains a sentence referencing a story, stat, or storyline (e.g. "free agency",
+    "the draft", "trade rumors") that actually belongs to a DIFFERENT team or sport per
+    LATEST_NEWS or the news_digest, WITHOUT naming which team/sport it concerns. This
+    reads as if team X is the subject of that story when it is not. Flag as MEDIUM
+    severity. Example violation: a Red Sox recap paragraph says "there is plenty of
+    chatter around the league about the upcoming free agency period" when the actual
+    LATEST_NEWS item is "NBA free agency 2026" — the sentence never says NBA/Celtics,
+    so it reads as MLB free agency. This is fine ONLY if the sentence explicitly names
+    the other team/sport (e.g. "the C's are bracing for NBA free agency").
 
 Severity:
 - "low" if a single borderline phrase that could be tightened
-- "medium" if an off-roster player is implied as a current team member (rule 11), or a played game is missing from morning_brew (rule 12)
+- "medium" if an off-roster player is implied as a current team member (rule 11), a played game is missing from morning_brew (rule 12), or a story is misattributed to the wrong team (rule 13)
 - "high" if any clear violation of items 1, 2, 6, 7, 8, or multiple violations
 
 Return ONLY the JSON. No markdown fences, no prose.

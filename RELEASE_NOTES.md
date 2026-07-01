@@ -5,6 +5,23 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-07-01 — Cross-Team Misattribution Fix (first output under `gemini-3.1-flash-lite`)
+
+**Problem:** The first brew generated under the new pinned model (see entry below) had a real bug: paragraph 3 was entirely a Red Sox recap ("regroup and salvage the series... against Washington... afternoon matchup"), but contained the sentence "There is plenty of chatter around the league about the upcoming free agency period" with zero attribution. The actual LATEST_NEWS item was "NBA free agency 2026: Bobby Marks' 30-team preview" — an unrelated Celtics/NBA story blended into the Red Sox paragraph with no team/sport named, reading as if the Red Sox were affected by free agency chatter.
+
+Separately (checking Bruins/Patriots weren't glossed over): both teams' news feeds that day were 3 generic league-wide roundups each (NHL free agency rankings, NFL offseason grades, etc.) — nothing team-specific enough to warrant coverage, so their silence was correct per the existing Coverage Allocation rule. But Celtics coverage picked the vaguest of 3 available headlines (generic free-agency preview) over a more specific, harder-to-write one that was skipped entirely: "Jaylen Brown's frustrations with Celtics are valid."
+
+**Root cause:** the Coverage Allocation rule correctly instructs Dan to bury a MINIMAL-tier team's story inside another team's paragraph — but nothing required that buried mention to be attributed by team/sport name. The mechanism worked as designed; the safeguard was missing.
+
+**What shipped:**
+1. **New system prompt section "Cross-Team Attribution"** (`prompts/boston_dan_system.txt`, after Coverage Allocation): when a MINIMAL/SECONDARY team's story is folded into another team's paragraph, it must name the team/sport explicitly — especially for cross-sport shared vocabulary (free agency, trades, the draft). If it can't be attributed naturally in one sentence, cut it rather than leave it ambiguous.
+2. **`news_digest` rule addition**: prefer a team-specific headline (named player, real development) over a generic league-wide roundup when both are available — targets the "picked the vaguer, easier-to-write story" pattern.
+3. **New judge rule 13 — Cross-team misattribution** (`scripts/safety_judge.py`): MEDIUM severity if a paragraph clearly about team X contains an unattributed reference to a story that actually belongs to a different team/sport per LATEST_NEWS.
+
+**Why this matters given the model swap:** this is the first content generated under `gemini-3.1-flash-lite`, and the failure pattern (vague blending, reaching for the safer/generic option over the more specific one) is consistent with a lighter model's weaker instruction-following. Worth watching the next several days of output for similar patterns before concluding the pin is a clean swap voice-wise.
+
+---
+
 ## 2026-07-01 — Pin to `gemini-3.1-flash-lite`; Bounded Request Timeout
 
 **Problem:** Three widely-spaced pipeline runs (12:18, 13:32, 14:22 UTC) all hit persistent `429 RESOURCE_EXHAUSTED` for over two hours — not the short demand spike the in-process retries and spaced safety-net cron slots are designed to absorb. A quota-error detail from one attempt named the actual model: `generativelanguage.googleapis.com/generate_content_free_tier_requests (model=gemini-3.5-flash)`. Google had promoted `gemini-3.5-flash` to the `gemini-flash-latest` alias, and its free tier was tight enough (likely a fresh-launch quota) to starve the whole day's runs. Separately, the 11:26 UTC run hit a worse failure mode: a single `generate_content()` call hung for ~21 minutes with zero response, and GitHub Actions force-cancelled the job at the 25-min timeout — worse than a clean failure, because the hard cancellation happened before `publish.py` ever ran, so there was no sentinel, no fallback, no commit, just a red X.
