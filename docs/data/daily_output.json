@@ -1,60 +1,60 @@
 {
-  "headline": "Willson Contreras Sparks Emotional Victory As Red Sox Roll At Fenway",
+  "headline": "Red Sox Winning Streak Snapped As Bats Go Cold In Washington Loss",
   "morning_brew": [
-    "What a wild night at Fenway Park. Willson Contreras absolutely crushed a ball, gave us a bat flip for the ages, and got himself tossed from the game. Talk about playing with some serious fire. He was emotional out there, thinking about his home country of Venezuela after those earthquakes, and honestly, you gotta love that kind of passion. Ranger Suarez was solid on the mound too, giving us six strong innings and racking up eight strikeouts to lock down the win. The bullpen shut the door, and we walked away with a six to three victory over the Washington Nationals.",
-    "This makes five wins in a row for the Sox, and even though we're still sitting at thirty-seven and forty-six, this streak is giving us some life. Pops always said that if you don't play with heart, you don't belong in Boston, and Contreras showed plenty of it. Anthony Seigler had himself a night too, picking up two hits to keep his average sitting at a scorching .361. If this lineup can keep finding ways to produce, maybe this summer won't be a total wash after all.",
-    "Down in Foxborough, negotiations are still ongoing to get cornerback Christian Gonzalez locked up on an extension before camp kicks off. We can't afford to have our best defensive back holding out when training camp is right around the corner. Over on the hardwood, the Celtics are looking at a quiet entry into free agency given their tight cap situation under the second apron, and Brad Stevens will need to find some bargain depth to help support Jayson Tatum and Jaylen Brown. For the Bruins, the focus turns to the opening of NHL free agency tomorrow to see if they can finally address their scoring needs after that first-round exit."
+    "Tuesday night at Fenway Park was a complete 180 from what we saw all last week. After riding a wave of momentum, the offense just evaporated against the Nationals. Cade Cavalli was carving us up like a Thanksgiving turkey, and watching our guys manage only four hits all night was an absolute disastah. The energy that had been building around the yard felt totally deflated by the middle innings, and it left me wondering if that recent success was just a brief flash in the pan.",
+    "Early on the mound gave us four quality innings, but the bullpen had a really rough time keeping things within reach once they took over. Weissert caught the loss after things started slipping away in the later frames, and the whole night felt like a classic case of the wheels coming off right when you least expect it. My mother watched a few innings before turning it off, and she just shook her head and said they looked like they were swinging underwater. She has a way of cutting right through the noise.",
+    "Now we have to regroup and try to salvage the series here at home before hitting the road again. There is plenty of chatter around the league about the upcoming free agency period, but for us, the focus has to be on finding some consistency in the box score every single night. We aren't in a position to take any opponent lightly, especially when the bats go quiet like they did against Washington. Let's hope they wake up for the afternoon matchup."
   ],
   "trend_watch": [
     {
-      "category": "Heater",
+      "category": "Cold Snap",
       "player": "Willson Contreras",
-      "trend": "Homered and ejected against the Nationals",
-      "dans_take": "The man plays with his heart on his sleeve and I love every second of it."
+      "trend": "Hitless in two at-bats with no production",
+      "dans_take": "Tough night at the plate after all the emotion and fire from his previous appearances."
     },
     {
-      "category": "Streak",
-      "player": "Ranger Suarez",
-      "trend": "Earned the win with eight strikeouts over six innings",
-      "dans_take": "Suarez is giving this rotation exactly what we need during this five-game winning streak."
+      "category": "Bullpen Watch",
+      "player": "Greg Weissert",
+      "trend": "Issued a loss over one and two-thirds innings",
+      "dans_take": "The relief core really struggled to contain the damage once the starter exited the game."
     },
     {
       "category": "Heater",
       "player": "Anthony Seigler",
-      "trend": "Two hits against Washington to keep his average at .361",
-      "dans_take": "Seigler is quietly becoming one of the most reliable bats in this lineup."
+      "trend": "Collected one hit and maintains a high average",
+      "dans_take": "He continues to be one of the few guys in the lineup actually putting the barrel on the ball."
     }
   ],
   "news_digest": [
     {
-      "headline": "Mindful of Venezuela, Contreras' emotion spills over in bat flip",
-      "url": "https://www.espn.com/mlb/story/_/id/49222764/mindful-venezuela-contreras-emotion-spills-bat-flip",
-      "dans_take": "You cannot help but respect the passion Contreras showed out there during a tough time."
+      "headline": "Cade Cavalli strikes out 13 in Nationals' rout of Red Sox",
+      "url": "http://www.espn.com/mlb/recap?gameId=401815970",
+      "dans_take": "Absolutely brutal performance from our hitters, we could not touch him all night."
     },
     {
-      "headline": "David Dennis Jr.: Jaylen Brown's frustrations with Celtics are valid",
-      "url": "https://www.espn.com/video/clip/_/id/49216094/jaylen-brown-frustrations-celtics-valid",
-      "dans_take": "We need everyone on the same page if we're going to bounce back next season."
+      "headline": "NBA free agency 2026: Bobby Marks' 30-team preview",
+      "url": "https://www.espn.com/nba/story/_/id/49211486/nba-free-agency-preview-2026-30-team-lakers-lebron-celtics-jaylen-brown-clippers-kawhi-bobby-marks",
+      "dans_take": "The league is shifting and it is going to be interesting to see who ends up where."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "",
+      "home_team": null,
+      "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-06-29",
+      "game_date": "2026-06-30",
       "played": false,
       "season_type": "offseason"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "",
+      "home_team": null,
+      "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-06-29",
+      "game_date": "2026-06-30",
       "played": false,
       "season_type": "offseason"
     },
@@ -62,29 +62,24 @@
       "sport": "MLB",
       "home_team": "Boston Red Sox",
       "away_team": "Washington Nationals",
-      "home_score": 6,
-      "away_score": 3,
-      "game_date": "2026-06-29",
+      "home_score": 1,
+      "away_score": 8,
+      "game_date": "2026-06-30",
       "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "",
+      "home_team": null,
+      "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-06-29",
+      "game_date": "2026-06-30",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-06-30",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
     {
       "date": "2026-07-01",
       "matchup": "Washington Nationals at Boston Red Sox",
@@ -109,15 +104,17 @@
       "date": "2026-07-07",
       "matchup": "Boston Red Sox at Chicago White Sox",
       "time_et": "7:40 PM ET"
+    },
+    {
+      "date": "2026-07-08",
+      "matchup": "Boston Red Sox at Chicago White Sox",
+      "time_et": "7:40 PM ET"
     }
   ],
-  "generated_at": "2026-06-30T11:33:26.395643+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    "Voice repetition: Reused the formulaic paragraph opener 'Down in Foxborough, ...' on consecutive days (Rule 10b).",
-    "repetition: number-masked sentence skeleton \"at # # and # #\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ],
-  "_stale": true,
-  "_stale_reason": "generation failed: ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.",
-  "_stale_age_hours": 26.9
+  "generated_at": "2026-07-01T14:42:11.745041+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
+    "repetition: number-masked sentence skeleton \"we're sitting at # and # now\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+    "repetition: number-masked sentence skeleton \"sitting at # # and # #\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+  ]
 }

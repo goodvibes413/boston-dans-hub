@@ -65,13 +65,13 @@
   ],
   "summary_5day": {
     "fresh": 0,
-    "retry": 3,
-    "fallback": 2,
+    "retry": 4,
+    "fallback": 1,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 17,
+        "count": 19,
         "title": "Voice repetition"
       },
       {
