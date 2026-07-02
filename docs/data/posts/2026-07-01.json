@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-01",
   "generated_at": "2026-07-01T15:08:51.250300+00:00",
   "headline": "Red Sox Bats Fall Silent In Frustrating Eight To One Loss",
   "morning_brew": [
@@ -14,100 +13,5 @@
       "dans_take": "We need to turn the page on June and find a new gear for the dog days of summer."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Early",
-      "trend": "Solid four innings with five strikeouts",
-      "dans_take": "He gave us a fighting chance early on but the support just was not there."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Greg Weissert",
-      "trend": "Allowed two runs in less than two innings",
-      "dans_take": "The relief arms were shaky all night and he got caught in the mess."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Tommy Kahnle",
-      "trend": "Four earned runs allowed in one inning",
-      "dans_take": "Things fell apart quickly once he came into the game, making it impossible to stay close."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-30",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-30",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Washington Nationals",
-      "home_score": 1,
-      "away_score": 8,
-      "game_date": "2026-06-30",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-06-30",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-01",
-      "matchup": "Washington Nationals at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-03",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-04",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-05",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:30 PM ET"
-    },
-    {
-      "date": "2026-07-07",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-08",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-01"
 }

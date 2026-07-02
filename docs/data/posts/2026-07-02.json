@@ -1,9 +1,23 @@
 {
+  "date": "2026-07-02",
+  "generated_at": "2026-07-02T10:44:52.160553+00:00",
   "headline": "Red Sox Collapse Again As Nationals Take Series At Fenway Park",
   "morning_brew": [
     "Another day, another brutal afternoon at Fenway as the Sox dropped the finale to the Nationals. We really needed to salvage something after the way the last few days went, but Washington just completely dismantled us. It is getting hard to watch this team struggle to find any sort of rhythm on the mound, and that fourth inning was just an absolute catastrophe. I've been watching this team for years and seeing them concede double-digit runs like that is exactly the kind of thing that makes a fan's blood boil.",
     "Payton Tolle just did not have it, getting knocked around for six runs in his three innings of work, and the bullpen didn't provide much relief either. When you are constantly digging yourself out of a six-run hole before the middle innings, you aren't gonna win many games in this league. My neighbor Rick was already complaining about the pitching staff being a disaster before the first pitch was even thrown, and for once, I really didn't have anything to say back to him. It is just depressing to see the pitching depth get exposed this way.",
     "Elsewhere, the Celtics have sent shockwaves through the Hub by moving Jaylen Brown to the 76ers for Paul George and picks. It is a massive shakeup for the roster and one that's gonna take some time to process. Meanwhile, the Bruins are busy with the early days of their own offseason, trading Joonas Korpisalo to the Rangers as the front office looks to retool. With the Sox heading out to the West Coast to face the Angels, we really need to find some consistency before this season slips away entirely."
+  ],
+  "news_digest": [
+    {
+      "headline": "Sources: Celtics sending Brown to 76ers for George, picks",
+      "url": "https://www.espn.com/nba/story/_/id/49241843/sources-celtics-sending-brown-76ers-george-picks",
+      "dans_take": "A massive deal that completely changes the direction of the C's roster."
+    },
+    {
+      "headline": "Rangers acquire goaltender Joonas Korpisalo from Bruins",
+      "url": "https://www.espn.com/nhl/story/_/id/49238381/rangers-acquire-goaltender-joonas-korpisalo-bruins",
+      "dans_take": "A move that makes sense as the B's start their offseason shuffle."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Alec Gamboa",
       "trend": "Two point one innings, four walks, two earned runs",
       "dans_take": "Four walks in two innings is exactly how you let a game turn into a total disaster."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Sources: Celtics sending Brown to 76ers for George, picks",
-      "url": "https://www.espn.com/nba/story/_/id/49241843/sources-celtics-sending-brown-76ers-george-picks",
-      "dans_take": "A massive deal that completely changes the direction of the C's roster."
-    },
-    {
-      "headline": "Rangers acquire goaltender Joonas Korpisalo from Bruins",
-      "url": "https://www.espn.com/nhl/story/_/id/49238381/rangers-acquire-goaltender-joonas-korpisalo-bruins",
-      "dans_take": "A move that makes sense as the B's start their offseason shuffle."
     }
   ],
   "box_scores": {
@@ -111,5 +113,6 @@
       "time_et": "2:10 PM ET"
     }
   ],
-  "generated_at": "2026-07-02T10:44:52.160553+00:00"
+  "_stale": null,
+  "_fallback": null
 }
