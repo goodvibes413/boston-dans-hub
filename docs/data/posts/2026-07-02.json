@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-02",
   "generated_at": "2026-07-02T10:44:52.160553+00:00",
   "headline": "Red Sox Collapse Again As Nationals Take Series At Fenway Park",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "A move that makes sense as the B's start their offseason shuffle."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Cold Snap",
-      "player": "Payton Tolle",
-      "trend": "Three innings, six earned runs, six runs total",
-      "dans_take": "Absolutely brutal start, he didn't give the team a chance to breathe."
-    },
-    {
-      "category": "Heater",
-      "player": "Connor Wong",
-      "trend": "Two hits in four at-bats",
-      "dans_take": "One of the few guys who actually showed up ready to swing the bat."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Alec Gamboa",
-      "trend": "Two point one innings, four walks, two earned runs",
-      "dans_take": "Four walks in two innings is exactly how you let a game turn into a total disaster."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-01",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-01",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Washington Nationals",
-      "home_score": 2,
-      "away_score": 10,
-      "game_date": "2026-07-01",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Buffalo Bills",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-01",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-03",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-04",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-05",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:30 PM ET"
-    },
-    {
-      "date": "2026-07-07",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-08",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-09",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "2:10 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-02"
 }
