@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-03",
   "generated_at": "2026-07-03T10:40:21.547202+00:00",
   "headline": "Red Sox head west looking for answers after suspension nightmare",
   "morning_brew": [
@@ -19,99 +18,5 @@
       "dans_take": "Hard to see a guy like that leave, but that's the reality of the business."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Cold Snap",
-      "player": "Nate Eaton",
-      "trend": "Suspended for three games following a brawl",
-      "dans_take": "Can't help the team from the dugout, and we need his bat right now."
-    },
-    {
-      "category": "Heater",
-      "player": "Jarren Duran",
-      "trend": "Consistent plate approach despite team struggles",
-      "dans_take": "He's one of the few guys bringing any life to this lineup."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-02",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "New York Rangers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-02",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Washington Nationals",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-02",
-      "played": false,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "N/A",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-02",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-03",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-04",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:38 PM ET"
-    },
-    {
-      "date": "2026-07-05",
-      "matchup": "Boston Red Sox at Los Angeles Angels",
-      "time_et": "9:30 PM ET"
-    },
-    {
-      "date": "2026-07-07",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-08",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-09",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "2:10 PM ET"
-    },
-    {
-      "date": "2026-07-10",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "7:15 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-03"
 }
