@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-06",
   "generated_at": "2026-07-06T12:10:19.222860+00:00",
   "headline": "Red Sox rally past Angels as injury clouds Suarez status moving forward",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "Family comes first, hope he\u2019s doing better and the league handles the rest."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Willson Contreras",
-      "trend": "Big homer and multiple RBIs in the win",
-      "dans_take": "That swing is exactly what we need when the top of the order hits a speed bump."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Justin Slaten",
-      "trend": "Hard work in relief during the middle frames",
-      "dans_take": "He\u2019s been a reliable arm when the manager calls his number to bridge the gap."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Ranger Suarez",
-      "trend": "Exited early with adductor tightness",
-      "dans_take": "Hate to see a guy like him go down, especially when he was looking like an All-Star on the hill."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": null,
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": null,
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Los Angeles Angels",
-      "away_team": "Boston Red Sox",
-      "home_score": 5,
-      "away_score": 7,
-      "game_date": "2026-07-05",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": null,
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-07",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-08",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-09",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "2:10 PM ET"
-    },
-    {
-      "date": "2026-07-10",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "7:15 PM ET"
-    },
-    {
-      "date": "2026-07-11",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-12",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "1:40 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-06"
 }
