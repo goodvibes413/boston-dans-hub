@@ -62,6 +62,7 @@ RULE_TITLES = {
     11: "Off-roster player",
     12: "Game coverage gap",
     13: "Cross-team misattribution",
+    14: "Milestone omission",
 }
 
 REPETITION_PATTERNS = [
@@ -184,10 +185,23 @@ FAIL if ANY of these are present:
     LATEST_NEWS item is "NBA free agency 2026" — the sentence never says NBA/Celtics,
     so it reads as MLB free agency. This is fine ONLY if the sentence explicitly names
     the other team/sport (e.g. "the C's are bracing for NBA free agency").
+14. Milestone omission — check LATEST_NEWS for headlines that clearly indicate a
+    MUST-COVER milestone for ANY Boston team (trade, signing/extension, coach or
+    front-office firing/hiring, official league suspension, season-ending or major
+    injury, retirement, Hall of Fame selection). Signals include verbs like "traded,"
+    "signs," "signing," "acquires," "acquired," "extension," "fired," "hired," "suspended,"
+    "retires," or headlines naming a specific dollar figure or contract term. If the
+    milestone is not covered in morning_brew with at least a self-contained 2-sentence
+    chunk (a news_digest entry alone does NOT satisfy this — the milestone must appear
+    as real prose in the brew, and a single passing clause tacked onto another team's
+    paragraph does NOT count), flag as MEDIUM severity. The Coverage Allocation
+    "MINIMAL airtime" rule does NOT override this — it only governs generic offseason
+    chatter, not real breaking milestones. Exception: if 3+ milestones are surfaced in
+    the same day, covering 2 substantively is acceptable (Dan prioritizes the biggest).
 
 Severity:
 - "low" if a single borderline phrase that could be tightened
-- "medium" if an off-roster player is implied as a current team member (rule 11), a played game is missing from morning_brew (rule 12), or a story is misattributed to the wrong team (rule 13)
+- "medium" if an off-roster player is implied as a current team member (rule 11), a played game is missing from morning_brew (rule 12), a story is misattributed to the wrong team (rule 13), or a MUST-cover milestone from LATEST_NEWS is missing from morning_brew (rule 14)
 - "high" if any clear violation of items 1, 2, 6, 7, 8, or multiple violations
 
 Return ONLY the JSON. No markdown fences, no prose.

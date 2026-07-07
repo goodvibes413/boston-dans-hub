@@ -5,6 +5,24 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-07-07 — Milestone Coverage Fix: MINIMAL-tier Rule Was Suppressing Real News
+
+**Problem:** A four-day streak of undercovering real Celtics/Bruins milestones:
+- **July 3:** Jaylen Brown TRADED to the 76ers — reduced to a passing clause in a Red Sox paragraph ("the C's are still making headlines with the Jaylen Brown trade to the 76ers") + news_digest entry. A franchise-altering trade got roughly one sentence in the brew.
+- **July 4:** Celtics signed Queta to a $56M extension — zero paragraph coverage, news_digest only. Paragraph 3 said vaguely "the Celtics are busy shuffling the roster."
+- **July 6:** Bruins traded Korpisalo to the Rangers + Mitchell Robinson Celtics news — zero paragraph coverage. All three paragraphs on the Red Sox game.
+
+**Root cause — a genuine conflict inside the prompt:** the Major Milestones section said trades/signings MUST get "at least one paragraph" and that the brew "can expand to 4 or 5 paragraphs" (note: *can*, not *must*). The Coverage Allocation section then said eliminated teams get "MINIMAL airtime… One to two sentences MAX, buried in a paragraph about active teams" and "a brief mention in paragraph 3 at most." The lite model was resolving the conflict by treating the restrictive rule as strongest and satisfying "MUST cover" with a news_digest entry or a single passing clause. This is consistent with the "reaching for the safer/generic option" pattern flagged in the 2026-07-01 misattribution note — the same class of failure, one level deeper.
+
+**What shipped:**
+1. **Coverage Allocation section rewritten** (`prompts/boston_dan_system.txt`) with an explicit "MILESTONE EXCEPTION" clause that overrides the MINIMAL rule when LATEST_NEWS has a real breaking milestone. Includes a concrete bad/good example built from the actual July 3 output. States plainly that a news_digest entry alone does not satisfy the milestone-coverage requirement.
+2. **Major Milestones "can expand to 4-5 paragraphs" → "MUST expand"**. The output-format comment mirrors this: "You MUST extend to 4 or 5 when a Major Milestone needs coverage on the same day as game recaps."
+3. **New judge rule 14 — "Milestone omission"** (`scripts/safety_judge.py`, MEDIUM severity): flags when LATEST_NEWS clearly indicates a MUST-COVER milestone (trade, signing/extension, firing, suspension, major injury, retirement, HoF) that's absent from morning_brew or reduced to a single passing clause. Detection cues include verbs like "traded," "signs," "extension," "fired," "suspended," "retires," and specific dollar figures. Explicit exception if 3+ milestones stack.
+
+**Why this matters given the model swap:** the July 3, 4, and 6 misses are consistent with the earlier July 1 flag about the lite model reaching for safer/generic options. Milestone coverage is the concrete cost of that pattern — big stories quietly disappearing. Judge rule 14 turns the failure mode into a hard gate that triggers a regeneration retry.
+
+---
+
 ## 2026-07-01 — Cross-Team Misattribution Fix (first output under `gemini-3.1-flash-lite`)
 
 **Problem:** The first brew generated under the new pinned model (see entry below) had a real bug: paragraph 3 was entirely a Red Sox recap ("regroup and salvage the series... against Washington... afternoon matchup"), but contained the sentence "There is plenty of chatter around the league about the upcoming free agency period" with zero attribution. The actual LATEST_NEWS item was "NBA free agency 2026: Bobby Marks' 30-team preview" — an unrelated Celtics/NBA story blended into the Red Sox paragraph with no team/sport named, reading as if the Red Sox were affected by free agency chatter.
