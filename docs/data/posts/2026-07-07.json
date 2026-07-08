@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-07",
   "generated_at": "2026-07-07T10:07:32.808850+00:00",
   "headline": "Red Sox look to keep momentum rolling without injured Ranger Suarez",
   "morning_brew": [
@@ -19,100 +18,5 @@
       "dans_take": "Watch the wire closely because this front office needs to make a move to save the season."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Jarren Duran",
-      "trend": "Hitting with power during the recent stretch",
-      "dans_take": "He is the heartbeat of this lineup right now."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Garrett Whitlock",
-      "trend": "Key innings in the recent 7-5 win",
-      "dans_take": "He is exactly who you want on the mound when the starter goes down early."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Ranger Suarez",
-      "trend": "Forced exit with adductor tightness",
-      "dans_take": "Just brutal luck for a guy who was dealing."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-06",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-06",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Los Angeles Angels",
-      "home_score": 7,
-      "away_score": 5,
-      "game_date": "2026-07-06",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-06",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-07",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-08",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-09",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "2:10 PM ET"
-    },
-    {
-      "date": "2026-07-10",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "7:15 PM ET"
-    },
-    {
-      "date": "2026-07-11",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-12",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "1:40 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-07"
 }
