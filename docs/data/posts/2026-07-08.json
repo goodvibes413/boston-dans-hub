@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-08",
   "generated_at": "2026-07-08T10:22:49.800125+00:00",
   "headline": "Tolle dominates as Red Sox bats finally wake up in Chicago",
   "morning_brew": [
@@ -19,95 +18,5 @@
       "dans_take": "Good for Willson Contreras, he has been a bright spot in this lineup all season."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Payton Tolle",
-      "trend": "Six innings, two hits, six strikeouts",
-      "dans_take": "That was his best stuff all year. If he keeps dealing like that, the rotation isn't as hopeless as I thought."
-    },
-    {
-      "category": "Heater",
-      "player": "Andruw Monasterio",
-      "trend": "Home run in the win",
-      "dans_take": "The man found his swing at the perfect time. We need that kind of production from the middle of the order."
-    },
-    {
-      "category": "Heater",
-      "player": "Ceddanne Rafaela",
-      "trend": "Home run in the win",
-      "dans_take": "He has been playing with a ton of energy, and seeing him drive the ball like that is a great sign."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-07",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-07",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Chicago White Sox",
-      "away_team": "Boston Red Sox",
-      "home_score": 1,
-      "away_score": 8,
-      "game_date": "2026-07-07",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-07",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-08",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "7:40 PM ET"
-    },
-    {
-      "date": "2026-07-09",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "2:10 PM ET"
-    },
-    {
-      "date": "2026-07-10",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "7:15 PM ET"
-    },
-    {
-      "date": "2026-07-11",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-12",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "1:40 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-08"
 }
