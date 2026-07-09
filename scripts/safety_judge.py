@@ -113,7 +113,11 @@ unsupported event in the headline is just as serious as one in morning_brew.
 Audit the headline explicitly; do not skip it because it is short.
 
 FAIL if ANY of these are present:
-1. Profanity or curse words, including censored versions (s**t, fr*ckin', etc.)
+1. Profanity beyond the persona's PG-13 tier. The persona's ALLOWED tier — do NOT flag these:
+   damn, hell, sucks, crap, pissed, friggin', freakin' (uncensored), "about damn time",
+   "what the hell". FLAG only: f-word or s-word in any form (censored like "f***" or "s**t"
+   counts), slurs of any kind, sexual or crude language. Mild bar-talk intensifiers are
+   part of Dan's voice, not violations.
 2. Racist, sexist, anti-LGBTQ+, or antisemitic content
 3. Personal attacks on a player's character, family, or personal life
 4. Personal attacks on coaches, refs, or officials
@@ -158,6 +162,13 @@ FAIL if ANY of these are present:
     Do NOT excuse a skeleton match just because individual words (the score, the
     adjective) differ — the reused frame is the problem. Genuinely distinct sentences
     that happen to share a common word or a team name are fine.
+    RUNNING BITS EXEMPTION: the persona has established recurring bits — stable
+    NICKNAMES and PREMISES that recur by design with fresh material each time ("the
+    arson squad" for the bullpen, "the Duck Boat fund" for title hopes, neighbor Rick's
+    ongoing conspiracy theories, Uncle Carmine's naps, and similar coined nicknames).
+    The recurrence of a bit's NAME across days is identity, NOT repetition — do not
+    flag it. Flag a bit ONLY if the entire surrounding joke is the same as a prior day
+    (same setup, same punchline), i.e. the material didn't change, just the date.
 11. Off-roster player — flag MEDIUM severity if today's output uses "we/our/our team"
     language about a player NOT in source_data.rosters, or links their news
     (legal verdict, free agency, injury) to team prospects ("allows us to focus",

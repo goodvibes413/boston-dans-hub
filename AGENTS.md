@@ -48,7 +48,7 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 | LLM generation | `gemini-3.1-flash-lite` via `google-genai` | Read key from `GEMINI_API_KEY` env var; override via `GEMINI_MODEL`. **Pinned, not the `-latest` alias** (see Model Strategy below) |
 | Safety judge | `gemini-3.1-flash-lite` via `google-genai` | Same model, separate call. Override via `JUDGE_MODEL` |
 | Frontend | Vanilla HTML/CSS/JS | No build tools — pure `fetch()` loads `daily_output.json`, renders dynamically |
-| CI/CD | GitHub Actions | Daily cron at 03:00 ET (08:00 UTC) — moved from 06:00 ET to avoid peak API demand |
+| CI/CD | GitHub Actions | Daily cron at 03:00 ET (08:00 UTC) — moved from 06:00 ET to avoid peak API demand. `tests.yml` runs unit tests (`tests/test_pipeline.py`, stdlib unittest) + DRY_RUN prompt-assembly smoke on every push/PR touching scripts or prompts |
 | Hosting | GitHub Pages | `/site` folder → https://goodvibes413.github.io/boston-dans-hub/ |
 | Sports data | Public ESPN + NHL + MLB APIs | No auth keys required |
 
@@ -112,11 +112,15 @@ fetch_schedule.py          → data/upcoming_schedule.json  (merged, sorted)
 fetch_news.py              → data/latest_news.json  (merged, most-recent-first)
 fetch_season_memory.py     → data/season_current.json  (current records/seeds/status)
     ↓
-generate_rant.py    → data/raw_dan_output.json  (gemini-3.1-flash-lite + grounding)
+generate_rant.py    → data/raw_dan_output.json  (gemini-3.1-flash-lite + grounding,
+                      then a punch-up pass: one extra call that amps emotion/humor in
+                      voice fields only — facts merge-locked; PUNCH_UP=0 disables)
     ↓
 safety_judge.py     → PASS / FAIL + severity  (gemini-3.1-flash-lite)
     ↓
-publish.py          → site/data/daily_output.json  (or safe fallback)
+publish.py          → site/data/daily_output.json  (severity ladder after 3 judge
+                      attempts: LOW/MEDIUM publish fresh with _quality_warning;
+                      only HIGH — fabrication/safety — falls back to stale)
     ↓
 healthcheck.py      → validates all JSON files are parseable
 ```

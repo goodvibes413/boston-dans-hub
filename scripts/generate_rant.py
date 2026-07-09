@@ -832,20 +832,32 @@ def detect_slow_day(rolling: dict | None, news: dict | list | None, schedule: di
     return True
 
 
-def _build_overrides_block(season_overrides: dict) -> str:
+def _build_overrides_block(season_overrides: dict, today_iso: str | None = None) -> str:
     """
     Render season_overrides.json into plain-prose override text for the prompt.
 
     Converts each elimination entry into direct, imperative language that
     counteracts the playoff framing Dan might infer from news stories.
     Returns empty string if no eliminations are active.
+
+    Entries may carry an "expires" ISO date. Past-expiry entries are skipped
+    with a loud warning — this file is hand-maintained, and an elimination
+    notice left over from LAST season becomes actively wrong the moment the
+    new season starts (the trap: nobody remembers to clear it in October).
     """
     eliminations = season_overrides.get("eliminations") or {}
     if not eliminations:
         return ""
+    if today_iso is None:
+        today_iso = datetime.now(timezone.utc).date().isoformat()
 
     lines = []
     for team_key, info in eliminations.items():
+        expires = info.get("expires")
+        if expires and expires < today_iso:
+            print(f"  warn: season_overrides entry '{team_key}' expired {expires} — skipping "
+                  f"(clear it from data/season_overrides.json)", file=sys.stderr)
+            continue
         team_label = f"{team_key.upper()} ({info.get('sport', '')})"
         elim_from = info.get("eliminated_from", "playoffs")
         elim_date = info.get("eliminated_date", "recently")
@@ -953,7 +965,7 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
         )
     # No non-stale drafts: omit DRAFT_PICKS entirely.
     if season_overrides:
-        overrides_text = _build_overrides_block(season_overrides)
+        overrides_text = _build_overrides_block(season_overrides, today_iso=today_iso)
         if overrides_text:
             message += (
                 "SEASON_OVERRIDES (authoritative — takes precedence over any playoff "
@@ -1110,6 +1122,67 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
         )
     )
     return resp.text
+
+
+PUNCH_UP_INSTRUCTION = """PUNCH-UP MODE. Below is today's complete, fact-checked draft of Dan's daily post as JSON.
+This is a rewrite pass for VOICE ONLY: crank up the emotional swings (see Emotional Range) and land
+funnier lines (see Humor and Running Bits) while keeping every fact identical. The draft is competent
+but flat — your job is to make it sound like Dan actually FELT the game: euphoric, devastated,
+exasperated, superstitious, whatever last night earned. Big swings. Make the reader laugh at least once.
+
+HARD CONSTRAINTS:
+- Do NOT change, add, or remove any stat, score, record, player name, team name, or event.
+  Every number and every name stays exactly as written in the draft.
+- Keep the SAME number of morning_brew paragraphs, covering the same stories in the same order.
+- Keep the same trend_watch and news_digest entries (same players, same headlines, same URLs);
+  you may rewrite only their dans_take text — and those SHOULD get funnier too.
+- Do not touch box_scores or schedule.
+- All voice rules still apply: PG-13 tier, no em dashes, never start a sentence with a digit.
+
+Return ONLY the complete JSON object with the same keys. No markdown fences, no prose."""
+
+
+def punch_up_draft(parsed: dict, system_prompt: str, model_name: str) -> dict:
+    """
+    One extra Gemini call that amplifies emotion/humor in the voice fields only.
+
+    Fact safety is structural, not instructional: the punched output is MERGED
+    into the original draft — only headline, morning_brew (same paragraph count
+    required), and per-entry dans_take fields are taken from the punch-up.
+    box_scores, schedule, trend_watch stats, and news_digest headlines/URLs
+    always come from the original draft, so a misbehaving punch-up can't alter
+    facts the frontend renders. The safety judge runs on the merged result, so
+    any prose-level stat drift still gets caught by rule 7.
+
+    Raises on API/parse failure — caller keeps the original draft.
+    """
+    user_message = PUNCH_UP_INSTRUCTION + "\n\nDRAFT:\n" + json.dumps(parsed, indent=2)
+    raw = call_gemini(system_prompt, user_message, model_name, use_grounding=False, force_json=True)
+    punched = json.loads(raw)
+
+    merged = dict(parsed)
+    if isinstance(punched.get("headline"), str) and punched["headline"].strip():
+        merged["headline"] = punched["headline"]
+
+    pb, ob = punched.get("morning_brew"), parsed.get("morning_brew")
+    if (isinstance(pb, list) and isinstance(ob, list) and len(pb) == len(ob)
+            and all(isinstance(p, str) and p.strip() for p in pb)):
+        merged["morning_brew"] = pb
+
+    # dans_take-only merges: entry identity (player/trend/headline/url) stays original.
+    for key in ("trend_watch", "news_digest"):
+        pl, ol = punched.get(key), parsed.get(key)
+        if isinstance(pl, list) and isinstance(ol, list) and len(pl) == len(ol):
+            new_list = []
+            for orig, pun in zip(ol, pl):
+                entry = dict(orig) if isinstance(orig, dict) else orig
+                if (isinstance(entry, dict) and isinstance(pun, dict)
+                        and isinstance(pun.get("dans_take"), str) and pun["dans_take"].strip()):
+                    entry["dans_take"] = pun["dans_take"]
+                new_list.append(entry)
+            merged[key] = new_list
+
+    return merged
 
 
 def build_schedule_from_fetcher(schedule_path: Path) -> list:
@@ -1327,6 +1400,16 @@ def main():
             output_path.write_text(json.dumps(sentinel, indent=2))
             print(f"  wrote sentinel: {output_path}")
             return
+
+    # Punch-up pass (PUNCH_UP=0 disables): one extra call that amps emotion and
+    # humor in voice fields only — see punch_up_draft() for the fact-safety merge.
+    # On any failure the original draft ships as-is; the judge gates either way.
+    if os.environ.get("PUNCH_UP", "1") != "0":
+        try:
+            parsed = punch_up_draft(parsed, system_prompt, model_name)
+            print("  punch-up pass applied")
+        except Exception as e:
+            print(f"  warn: punch-up pass failed ({type(e).__name__}: {str(e)[:120]}); keeping original draft", file=sys.stderr)
 
     # Normalize box_scores schema for consistent frontend rendering
     parsed = normalize_box_scores(parsed)

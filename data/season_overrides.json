@@ -1,6 +1,6 @@
 {
-  "_comment": "Manually maintained. Update when a Boston team is eliminated from playoffs or their season ends. Injected into Dan's prompt as SEASON_OVERRIDES — takes precedence over any playoff framing Dan might infer from news stories. Checked into git via !data/season_overrides.json exception in .gitignore.",
-  "updated": "2026-05-13",
+  "_comment": "Manually maintained. Update when a Boston team is eliminated from playoffs or their season ends. Injected into Dan's prompt as SEASON_OVERRIDES \u2014 takes precedence over any playoff framing Dan might infer from news stories. EVERY entry must carry an 'expires' ISO date (typically the eve of the next season's training camp) \u2014 generate_rant.py skips expired entries with a warning so a stale notice can never leak into a new season. Checked into git via !data/season_overrides.json exception in .gitignore.",
+  "updated": "2026-07-07",
   "eliminations": {
     "bruins": {
       "sport": "NHL",
@@ -8,8 +8,9 @@
       "eliminated_date": "2026-05-01",
       "eliminated_by": "Buffalo Sabres",
       "series_result": "Lost 4-2 in Round 1",
-      "series_notes": "Entered as Eastern Conference Wild Card 1. Lost all three home games at TD Garden — a brutal home collapse. Jeremy Swayman was a Vezina finalist but the team had no secondary scoring.",
-      "season_over_note": "The Bruins' 2025-26 season is completely over. There are no upcoming playoff games. Do NOT frame any Bruins story with playoff urgency, series stakes, or language like 'he can't miss these games', 'in the thick of it', 'with the playoffs on the line', or 'this hurts the run'. Any Bruins news — suspensions, injuries, trades, signings — carries zero playoff consequence. Treat all Bruins coverage as off-season context only."
+      "series_notes": "Entered as Eastern Conference Wild Card 1. Lost all three home games at TD Garden \u2014 a brutal home collapse. Jeremy Swayman was a Vezina finalist but the team had no secondary scoring.",
+      "season_over_note": "The Bruins' 2025-26 season is completely over. There are no upcoming playoff games. Do NOT frame any Bruins story with playoff urgency, series stakes, or language like 'he can't miss these games', 'in the thick of it', 'with the playoffs on the line', or 'this hurts the run'. Any Bruins news \u2014 suspensions, injuries, trades, signings \u2014 carries zero playoff consequence. Treat all Bruins coverage as off-season context only.",
+      "expires": "2026-09-15"
     },
     "celtics": {
       "sport": "NBA",
@@ -17,8 +18,9 @@
       "eliminated_date": "2026-05-02",
       "eliminated_by": "Philadelphia 76ers",
       "series_result": "Lost 4-3 in Round 1",
-      "series_notes": "Finished regular season 56-26 as the 2nd seed in the East. Blew a 3-1 series lead to the 76ers — the first time in franchise history the Celtics have surrendered a 3-1 lead. Jayson Tatum missed most of the season rehabbing a torn Achilles and only returned in March. Season ended with a Game 7 loss at home.",
-      "season_over_note": "The Celtics' 2025-26 season is completely over. There are no upcoming playoff games. Do NOT frame any Celtics story with playoff urgency or series stakes. Any Celtics news — injuries, trades, signings, Tatum rehab updates — carries zero in-season consequence. Treat all Celtics coverage as off-season context only. The 3-1 collapse is a legitimate sore subject and Dan can reference it as historical heartbreak, but always past-tense."
+      "series_notes": "Finished regular season 56-26 as the 2nd seed in the East. Blew a 3-1 series lead to the 76ers \u2014 the first time in franchise history the Celtics have surrendered a 3-1 lead. Jayson Tatum missed most of the season rehabbing a torn Achilles and only returned in March. Season ended with a Game 7 loss at home.",
+      "season_over_note": "The Celtics' 2025-26 season is completely over. There are no upcoming playoff games. Do NOT frame any Celtics story with playoff urgency or series stakes. Any Celtics news \u2014 injuries, trades, signings, Tatum rehab updates \u2014 carries zero in-season consequence. Treat all Celtics coverage as off-season context only. The 3-1 collapse is a legitimate sore subject and Dan can reference it as historical heartbreak, but always past-tense.",
+      "expires": "2026-09-20"
     }
   }
 }

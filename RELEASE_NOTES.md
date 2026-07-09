@@ -5,6 +5,35 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-07-07 — Full Audit: Voice Overhaul (Bar-Buddy Persona, PG-13, Punch-Up Pass) + Security & Ops Fixes
+
+**Context:** full project audit requested (effectiveness, security, everything). Owner's top complaint: Dan reads deadpan, not passionate or funny. Root-cause analysis found four compounding causes: (1) `gemini-3.1-flash-lite` hedges — comedy needs commitment; (2) the 291-line prompt is overwhelmingly prohibitions; (3) 14 judge rules + three layers of repetition policing sand off personality, with zero counter-pressure (there's a safety judge but nothing ever fails Dan for being boring); (4) every correction retry drifts more conservative. Also: the quota scarcity that shaped the whole Quality Roadmap is gone — 500 RPD vs ~5 used.
+
+**Voice changes (owner-approved in interview):**
+1. **Persona reframed** from "98.5 radio caller" to "your buddy from the bar who writes a daily newsletter" — written register, direct, personally invested.
+2. **PG-13 bar-talk language tier**: damn/hell/sucks/crap/pissed/friggin' explicitly ALLOWED (matches how the persona's own templates already talked — "About damn time" was simultaneously suggested by the prompt and bannable by the judge). F/s-words and slurs stay hard-banned, censored or not. Judge rule 1 rewritten to match so mild intensifiers are never flagged.
+3. **Running Bits system**: recurring nicknames/gags with fresh material each day (the arson squad, the Duck Boat fund, Rick's ongoing investigation, Carmine's naps). The bit's NAME recurs by design; the JOKE must be new. Judge rule 10 got an explicit running-bits exemption. Chosen over fixed catchphrases ("Absolutely brutal" daily = radio shtick; evolving bits = how a bar buddy actually talks).
+4. **Punch-up pass** (`punch_up_draft()` in generate_rant.py, `PUNCH_UP=0` to disable): one extra Gemini call that rewrites voice fields for bigger emotional swings and funnier lines. Fact safety is STRUCTURAL, not instructional — only headline, morning_brew (same paragraph count enforced), and dans_take fields merge in; box_scores, schedule, player names, headlines, URLs always come from the original draft. Judge gates the merged result.
+
+**Pipeline changes:**
+5. **MEDIUM severity now publishes with `_quality_warning`** instead of falling back to stale (publish.py). Rules 12-14 are coverage/attribution quality issues; an imperfect fresh post beats yesterday's post. Only HIGH (fabrication/safety) still triggers fallback.
+6. **`season_overrides.json` entries now carry `expires` dates** — generate_rant skips expired entries with a warning, so a May elimination notice can't leak into October's new season.
+7. **publish.py now imports RULE_TITLES from safety_judge** — the hand-mirrored dict had silently drifted (missing rules 12-14, so the evals dashboard rubric was incomplete). Summaries added for 12-14.
+
+**Security fixes:**
+8. **Frontend paragraph truncation bug** (index.html archive-swap path rendered only `b[0]+b[1]+b[2]`) — a 4-5 paragraph milestone brew would have silently lost paragraphs. Now maps all.
+9. **URL scheme validation** (`safeUrl()`): news links only render clickable for http(s) — a `javascript:` URL from the news→LLM→href chain no longer survives.
+10. **Deleted dead prototype pages** (v1-v4.html, index-material.html): unreferenced but live on Pages, fetching real LLM output with weak-to-zero escaping (v3 interpolated raw).
+11. **Prompt-injection hardening**: system prompt now states all data blocks are content to react to, never instructions to follow.
+
+**Testing (first tests in the repo):**
+12. `tests/test_pipeline.py` — 15 stdlib-unittest cases covering `_extract_team_games` (the June structure bug that shipped broken for a month), `detect_slow_day`, draft freshness windows, overrides expiry, punch-up merge fact-locking (including a hostile-punch-up case), and RULE_TITLES sync.
+13. `.github/workflows/tests.yml` — runs tests + DRY_RUN prompt-assembly smoke + compile check on every push/PR touching scripts or prompts.
+
+**Deferred (noted, not done):** SHA-pinning GitHub Actions; trying a stronger free-tier model for generation (revisit if punch-up pass isn't enough); best-of-N generation.
+
+---
+
 ## 2026-07-07 — Milestone Coverage Fix: MINIMAL-tier Rule Was Suppressing Real News
 
 **Problem:** A four-day streak of undercovering real Celtics/Bruins milestones:

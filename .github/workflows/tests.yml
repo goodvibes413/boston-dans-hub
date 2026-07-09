@@ -1,0 +1,42 @@
+name: Tests
+
+# Unit tests for the deterministic pipeline pieces plus a DRY_RUN prompt-assembly
+# smoke test. Exists because the rolling-store structure bug shipped broken for a
+# month in June 2026 — nothing exercised the pre-pass functions before production.
+# No API key needed: tests never call Gemini, and DRY_RUN exits before any LLM call.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'prompts/**'
+      - 'tests/**'
+      - '.github/workflows/tests.yml'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Prompt-assembly smoke test (DRY_RUN)
+        run: |
+          DRY_RUN=1 python3 scripts/generate_rant.py > /tmp/prompt.txt
+          # The assembled prompt must contain the core data blocks
+          grep -q "ROLLING_7DAY" /tmp/prompt.txt
+          grep -q "SEASON_MEMORY" /tmp/prompt.txt
+          echo "prompt assembled OK ($(wc -c < /tmp/prompt.txt) bytes)"
+
+      - name: Compile all scripts
+        run: python3 -m py_compile scripts/*.py

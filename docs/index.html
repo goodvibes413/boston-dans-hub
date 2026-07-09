@@ -1226,6 +1226,9 @@
        UTIL HELPERS (unchanged)
     ================================================================ */
     function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
+    // News URLs flow from the live web through the LLM into hrefs — escapeHtml alone
+    // doesn't stop a javascript: scheme, so only http(s) links are rendered clickable.
+    function safeUrl(u) { const s = String(u || '').trim(); return /^https?:\/\//i.test(s) ? s : '#'; }
     function oppCode(name) { if (!name) return 'OPP'; const key = String(name).toLowerCase(); if (OPP_CODE[key]) return OPP_CODE[key]; const words = String(name).trim().split(/\s+/); const last = words[words.length - 1] || 'OPP'; return last.slice(0, 3).toUpperCase(); }
     function shortDate(dateStr) { if (!dateStr) return ''; const parts = dateStr.split('-'); if (parts.length < 3) return dateStr; const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; return `${days[d.getDay()]} ${d.getDate()}`; }
     function getTodayISO(data) { if (data && data.generated_at) { try { return new Date(data.generated_at).toISOString().slice(0, 10); } catch(e) {} } return new Date().toISOString().slice(0, 10); }
@@ -1326,7 +1329,7 @@
 
     function buildNewsPulseWidget(news) {
       if (!news || !news.length) return '';
-      const items = news.map((item, i) => `<div class="pulse-card${i > 0 ? ' pulse-card--sep' : ''}"><a class="pulse-news-headline" href="${escapeHtml(item.url || '#')}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.headline || '')}</a>${item.dans_take ? `<p class="pulse-take">"${escapeHtml(item.dans_take)}"</p>` : ''}</div>`).join('');
+      const items = news.map((item, i) => `<div class="pulse-card${i > 0 ? ' pulse-card--sep' : ''}"><a class="pulse-news-headline" href="${escapeHtml(safeUrl(item.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.headline || '')}</a>${item.dans_take ? `<p class="pulse-take">"${escapeHtml(item.dans_take)}"</p>` : ''}</div>`).join('');
       return `<section class="widget" id="news"><header class="widget-header"><span class="ms">newspaper</span><span>News</span></header>${items}</section>`;
     }
 
@@ -1583,7 +1586,7 @@
         const brewEl = document.getElementById('brew');
         if (brewEl) {
           const b = postData.morning_brew || [];
-          brewEl.innerHTML = (b[0] ? `<p>${escapeHtml(b[0])}</p>` : '') + (b[1] ? `<p>${escapeHtml(b[1])}</p>` : '') + (b[2] ? `<p>${escapeHtml(b[2])}</p>` : '');
+          brewEl.innerHTML = b.map(p => p ? `<p>${escapeHtml(p)}</p>` : '').join('');
         }
 
         // Update date label
