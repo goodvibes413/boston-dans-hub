@@ -1,10 +1,10 @@
 {
   "date": "2026-07-09",
-  "generated_at": "2026-07-09T10:58:06.918573+00:00",
-  "outcome": "fresh",
-  "winning_attempt": 1,
-  "total_attempts": 1,
-  "generation_seconds": 2.1,
+  "generated_at": "2026-07-09T14:38:06.343361+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 125.0,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -12,10 +12,19 @@
   "attempts": [
     {
       "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "repetition: number-masked sentence skeleton \"when you lose a guy like ranger suarez to injury you\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      ],
+      "duration_seconds": 3.7
+    },
+    {
+      "attempt": 2,
       "verdict": "PASS",
       "severity": "low",
       "flags": [],
-      "duration_seconds": 2.1
+      "duration_seconds": 1.9
     }
   ]
 }

@@ -10,7 +10,7 @@
     {
       "number": 1,
       "title": "Profanity",
-      "summary": "Curse words including censored versions"
+      "summary": "Language beyond the PG-13 tier (f/s-words, slurs; mild bar talk is fine)"
     },
     {
       "number": 2,
@@ -55,23 +55,38 @@
     {
       "number": 10,
       "title": "Voice repetition",
-      "summary": "Same signature phrasing as recent consecutive days"
+      "summary": "Same signature phrasing as recent consecutive days (running bits exempt)"
     },
     {
       "number": 11,
       "title": "Off-roster player",
       "summary": "Implies current team membership for non-roster players"
+    },
+    {
+      "number": 12,
+      "title": "Game coverage gap",
+      "summary": "A team played yesterday but the brew never mentions the game"
+    },
+    {
+      "number": 13,
+      "title": "Cross-team misattribution",
+      "summary": "A story blended into another team's paragraph without naming the team"
+    },
+    {
+      "number": 14,
+      "title": "Milestone omission",
+      "summary": "A must-cover milestone (trade, signing, firing) missing from the brew"
     }
   ],
   "summary_5day": {
-    "fresh": 3,
-    "retry": 2,
+    "fresh": 2,
+    "retry": 3,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 7,
+        "count": 8,
         "title": "Voice repetition"
       }
     ]
