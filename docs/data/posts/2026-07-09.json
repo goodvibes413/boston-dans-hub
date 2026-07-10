@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-09",
   "generated_at": "2026-07-09T14:40:11.295574+00:00",
   "headline": "Red Sox keep rolling in Chicago with another dominant shutout victory",
   "morning_brew": [
@@ -14,90 +13,5 @@
       "dans_take": "A clean sweep of the stat sheet is a damn good way to spend a Wednesday night."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Jake Bennett",
-      "trend": "Seven scoreless innings",
-      "dans_take": "That is how you handle your business on the road, absolute masterclass in command from start to finish."
-    },
-    {
-      "category": "Heater",
-      "player": "Tsung-Che Cheng",
-      "trend": "First multi-RBI performance of the season",
-      "dans_take": "He finally found his spots and delivered exactly when the team needed a big gap hit."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Jovani Moran",
-      "trend": "Two strikeouts in a scoreless inning",
-      "dans_take": "Coming in and throwing absolute gas with two punchouts is exactly what we need to keep the arson squad at bay."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "unknown",
-      "away_team": "unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-08",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "unknown",
-      "away_team": "unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-08",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Chicago White Sox",
-      "away_team": "Boston Red Sox",
-      "home_score": 0,
-      "away_score": 5,
-      "game_date": "2026-07-08",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "unknown",
-      "away_team": "unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-08",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-09",
-      "matchup": "Boston Red Sox at Chicago White Sox",
-      "time_et": "2:10 PM ET"
-    },
-    {
-      "date": "2026-07-10",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "7:15 PM ET"
-    },
-    {
-      "date": "2026-07-11",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-12",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "1:40 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-09"
 }
