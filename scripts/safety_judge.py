@@ -358,7 +358,8 @@ def _load_recent_archives(archive_dir: Path, days: int = REPETITION_LOOKBACK_DAY
     today_iso = datetime.now(timezone.utc).date().isoformat()
     try:
         files = sorted(
-            (p for p in archive_dir.glob("*.json") if p.stem != today_iso),
+            (p for p in archive_dir.glob("*.json")
+             if ".evals" not in p.name and p.stem != today_iso),
             key=lambda p: p.stem,
             reverse=True,
         )

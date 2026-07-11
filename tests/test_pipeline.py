@@ -164,6 +164,81 @@ class TestPunchUpMerge(unittest.TestCase):
         self.assertEqual(merged["morning_brew"], self.DRAFT["morning_brew"])
 
 
+class TestArchiveEvalsSeparation(unittest.TestCase):
+    """The dan_archive dir holds two file families — YYYY-MM-DD.json posts and
+    YYYY-MM-DD.evals.json pipeline traces. Every post-side reader/pruner must
+    ignore the .evals files: counting them halved the retention window and
+    filled Dan's continuity memory with empty entries (caught 2026-07-11 when
+    the July 6 archive was pruned at only 5 days old)."""
+
+    def _make_archive(self, tmpdir, dates, today):
+        import json as _json
+        d = Path(tmpdir)
+        for ds in dates:
+            (d / f"{ds}.json").write_text(_json.dumps({
+                "generated_at": f"{ds}T09:00:00+00:00",
+                "headline": f"headline {ds}",
+                "morning_brew": [f"brew {ds}"],
+                "news_digest": [],
+            }))
+            (d / f"{ds}.evals.json").write_text(_json.dumps({
+                "date": ds, "outcome": "fresh", "attempts": [],
+            }))
+        return d
+
+    def test_load_recent_dan_output_skips_evals_files(self):
+        import tempfile
+        from datetime import datetime, timezone, timedelta
+        today = datetime.now(timezone.utc).date()
+        dates = [(today - timedelta(days=n)).isoformat() for n in range(4, 0, -1)]
+        with tempfile.TemporaryDirectory() as tmp:
+            d = self._make_archive(tmp, dates + [today.isoformat()], today)
+            entries = generate_rant.load_recent_dan_output(d, days=3)
+        self.assertEqual(len(entries), 3)
+        # Newest-first, real post content only, today excluded
+        self.assertEqual([e["date"] for e in entries], list(reversed(dates))[:3])
+        for e in entries:
+            self.assertTrue(e["headline"].startswith("headline "))
+            self.assertNotIn(".evals", e["date"])
+
+    def test_judge_repetition_lookback_skips_evals_files(self):
+        import tempfile
+        import safety_judge
+        from datetime import datetime, timezone, timedelta
+        today = datetime.now(timezone.utc).date()
+        dates = [(today - timedelta(days=n)).isoformat() for n in range(3, 0, -1)]
+        with tempfile.TemporaryDirectory() as tmp:
+            d = self._make_archive(tmp, dates, today)
+            out = safety_judge._load_recent_archives(d, days=2)
+        self.assertEqual(len(out), 2)
+        for entry in out:
+            self.assertIn("morning_brew", entry)
+            self.assertTrue(entry["headline"].startswith("headline "))
+
+    def test_archive_prune_counts_posts_only(self):
+        import tempfile
+        import publish
+        from datetime import datetime, timezone, timedelta
+        today = datetime.now(timezone.utc).date()
+        dates = [(today - timedelta(days=n)).isoformat() for n in range(4, 0, -1)]
+        published = {
+            "generated_at": f"{today.isoformat()}T09:00:00+00:00",
+            "headline": "fresh headline",
+            "morning_brew": ["p1"],
+            "news_digest": [],
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            d = self._make_archive(tmp, dates, today)
+            publish.archive_dan_output(published, archive_dir=d, retention_days=3)
+            posts = sorted(p.name for p in d.glob("*.json") if ".evals" not in p.name)
+            evals = sorted(p.name for p in d.glob("*.evals.json"))
+        # 4 old posts + today's = 5, pruned to the 3 newest
+        self.assertEqual(len(posts), 3)
+        self.assertIn(f"{today.isoformat()}.json", posts)
+        # evals siblings are untouched by the post prune
+        self.assertEqual(len(evals), 4)
+
+
 class TestRuleTitlesSync(unittest.TestCase):
     def test_publish_imports_judge_rule_titles(self):
         import safety_judge

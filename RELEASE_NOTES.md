@@ -5,6 +5,25 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-07-11 — Archive Glob Fix: `.evals.json` Files Were Halving Retention and Polluting Continuity Memory
+
+**Context:** Owner asked whether the July 11 run's Red Sox-only coverage was expected. It was — Celtics/Bruins are eliminated (MINIMAL tier), Patriots are offseason (SECONDARY), and the day's only non-Red-Sox headlines were a stale Korpisalo-trade item (covered July 6-7), a months-old Celtics highlights video, and a generic AFC East roundup. No milestone, so the July 7 milestone exception correctly didn't fire. But the investigation surfaced a real bug in the archive machinery.
+
+**Problem:** `data/dan_archive/` holds two file families — `YYYY-MM-DD.json` post snapshots and `YYYY-MM-DD.evals.json` pipeline traces (added 2026-05-07). Three code paths globbed `*.json`, which matches BOTH families:
+
+1. **`publish.py` `archive_dan_output()` prune** counted evals files against the 9-day post retention — with 2 files/day the effective window is ~4.5 days. Confirmed in the July 11 run log: `pruned: 2026-07-06.json` at only 5 days old, inside the 5-day memory window generate_rant wants to read.
+2. **`generate_rant.py` `load_recent_dan_output()`** sorted the interleaved list newest-first and took the first 5 entries — which were `07-10.evals`, `07-10`, `07-09.evals`, `07-09`, `07-08.evals`. Dan's "5-day" continuity memory was actually 2 real days plus 3 empty junk entries (evals docs have no headline/brew, so they load as blanks). Bonus: the `p.stem != today_iso` self-exclusion never matched today's evals file (stem is `2026-07-11.evals`).
+3. **`safety_judge.py` `_load_recent_archives()`** — same pattern, so the rule-10 repetition lookback saw ~half its intended days.
+
+**What shipped:**
+- All three globs now exclude `.evals` files (matching the correct pattern that already existed in `publish_evals_to_docs()`).
+- Restored the prematurely-pruned `data/dan_archive/2026-07-06.json` + `.evals.json` from git history.
+- Three regression tests in `tests/test_pipeline.py` (`TestArchiveEvalsSeparation`): memory loader skips evals files, judge lookback skips evals files, post prune counts posts only and never deletes evals siblings.
+
+**Impact:** since May 7, cross-day repetition policing (persona continuity + judge rule 10) had been operating on a much shorter window than designed. No published-output incident traced to it yet, but it shortens exactly the memory that decides "did I already cover this story?" — the same class of miss as the July 3-6 undercoverage streak.
+
+---
+
 ## 2026-07-07 — Full Audit: Voice Overhaul (Bar-Buddy Persona, PG-13, Punch-Up Pass) + Security & Ops Fixes
 
 **Context:** full project audit requested (effectiveness, security, everything). Owner's top complaint: Dan reads deadpan, not passionate or funny. Root-cause analysis found four compounding causes: (1) `gemini-3.1-flash-lite` hedges — comedy needs commitment; (2) the 291-line prompt is overwhelmingly prohibitions; (3) 14 judge rules + three layers of repetition policing sand off personality, with zero counter-pressure (there's a safety judge but nothing ever fails Dan for being boring); (4) every correction retry drifts more conservative. Also: the quota scarcity that shaped the whole Quality Roadmap is gone — 500 RPD vs ~5 used.
