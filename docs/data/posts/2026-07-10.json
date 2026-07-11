@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-10",
   "generated_at": "2026-07-10T11:00:46.766014+00:00",
   "headline": "Six straight wins for the Sox as Durbin powers past Chicago",
   "morning_brew": [
@@ -14,95 +13,5 @@
       "dans_take": "The Derby is always a fun watch, though I would prefer to see a Sox slugger taking home the trophy instead of watching the rest of the league showboat."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Caleb Durbin",
-      "trend": "Hit the game-winning two-run homer",
-      "dans_take": "That swing was pure gold and had me jumping off the couch at the first crack of the bat."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Garrett Whitlock",
-      "trend": "Perfect inning with a pair of strikeouts",
-      "dans_take": "He looked sharp and confident, and for once I didn't have to watch his half-inning through my fingers."
-    },
-    {
-      "category": "Heater",
-      "player": "Tyron Guerrero",
-      "trend": "Earned the win with scoreless relief",
-      "dans_take": "The man stepped up and kept the game locked down exactly where we needed it."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": null,
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": null,
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Chicago White Sox",
-      "away_team": "Boston Red Sox",
-      "home_score": 1,
-      "away_score": 2,
-      "game_date": "2026-07-09",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": null,
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-10",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "7:15 PM ET"
-    },
-    {
-      "date": "2026-07-11",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-12",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "1:40 PM ET"
-    },
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-10"
 }

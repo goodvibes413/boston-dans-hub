@@ -1,9 +1,23 @@
 {
+  "date": "2026-07-11",
+  "generated_at": "2026-07-11T09:41:17.139769+00:00",
   "headline": "Sonny Gray stops the bleeding as Red Sox take down Mets",
   "morning_brew": [
     "It wasn't pretty, but a win is a win, and we needed that one in the worst way. Sonny Gray showed up when it mattered most, shaking off a travel nightmare that would've had my cousin Jimmy crying for his momma to give us six rock-solid innings against the Mets. After the bullpen nearly gave me a full-blown heart attack earlier this week, seeing Gray command the zone like that was a relief I didn't know I needed. My old man always told me that a starting pitcher who handles adversity is worth his weight in gold, and last night felt like exactly that kind of veteran performance.",
     "The bats came alive just enough to take the pressure off, with Anthony Seigler and Wilyer Abreu putting us on their backs with a couple of big flies. It's funny how one good start can change the vibe of an entire road trip, but that's baseball. We're still fighting to crawl back toward .500, and while the standings haven't shifted as much as I'd like, at least the team is showing an actual pulse. Watching them grind out those late-inning runs makes me feel like we aren't just dead in the water, which is a damn sight better than how I felt watching us flail around earlier this week.",
     "We've got another date with New York today before we finally head back to Fenway. I'm not gonna look past these Mets just yet, but I'm dying to get back to the oldest yard in baseball next week to start that series with Tampa. The Duck Boat fund is still sitting in low-yield territory, but if the boys can keep stacking these kinds of wins, maybe I'll start feeling a little more optimistic before the month is out. One win doesn't make a season, but I'll sleep better tonight knowing we didn't just lay down and die."
+  ],
+  "news_digest": [
+    {
+      "headline": "Sonny Gray gives Red Sox solid start after travel woes and Boston beats the Mets 6-2",
+      "url": "http://www.espn.com/mlb/recap?gameId=401816096",
+      "dans_take": "Traveling like a human luggage rack and still throwing strikes is the kind of grit I can respect."
+    },
+    {
+      "headline": "Herrera, Rafaela, Martinez, Murakami named All-Star replacements",
+      "url": "https://www.espn.com/mlb/story/_/id/49329543/ivan-herrera-ceddanne-rafaela-nick-martinez-munetaka-murakami-named-all-star-injury-replacements",
+      "dans_take": "Ceddanne Rafaela getting the call is wicked well-deserved, that kid has been the only spark plug worth watching all year."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Greg Weissert",
       "trend": "One inning, one earned run",
       "dans_take": "A little shaky, but he didn't set the clubhouse on fire, so I'll take it."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Sonny Gray gives Red Sox solid start after travel woes and Boston beats the Mets 6-2",
-      "url": "http://www.espn.com/mlb/recap?gameId=401816096",
-      "dans_take": "Traveling like a human luggage rack and still throwing strikes is the kind of grit I can respect."
-    },
-    {
-      "headline": "Herrera, Rafaela, Martinez, Murakami named All-Star replacements",
-      "url": "https://www.espn.com/mlb/story/_/id/49329543/ivan-herrera-ceddanne-rafaela-nick-martinez-munetaka-murakami-named-all-star-injury-replacements",
-      "dans_take": "Ceddanne Rafaela getting the call is wicked well-deserved, that kid has been the only spark plug worth watching all year."
     }
   ],
   "box_scores": {
@@ -106,5 +108,6 @@
       "time_et": "4:10 PM ET"
     }
   ],
-  "generated_at": "2026-07-11T09:41:17.139769+00:00"
+  "_stale": null,
+  "_fallback": null
 }
