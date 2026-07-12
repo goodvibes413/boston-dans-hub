@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-11",
   "generated_at": "2026-07-11T09:41:17.139769+00:00",
   "headline": "Sonny Gray stops the bleeding as Red Sox take down Mets",
   "morning_brew": [
@@ -19,95 +18,5 @@
       "dans_take": "Ceddanne Rafaela getting the call is wicked well-deserved, that kid has been the only spark plug worth watching all year."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Sonny Gray",
-      "trend": "6.0 innings pitched, one earned run, three strikeouts",
-      "dans_take": "The man dealt like he was playing against his own kids in the backyard."
-    },
-    {
-      "category": "Heater",
-      "player": "Anthony Seigler",
-      "trend": "Two hits, one home run, two RBI",
-      "dans_take": "Swinging that lumber with some serious intent, finally."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Greg Weissert",
-      "trend": "One inning, one earned run",
-      "dans_take": "A little shaky, but he didn't set the clubhouse on fire, so I'll take it."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "unknown",
-      "away_team": "unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-10",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "unknown",
-      "away_team": "unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-10",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "New York Mets",
-      "away_team": "Boston Red Sox",
-      "home_score": 2,
-      "away_score": 6,
-      "game_date": "2026-07-10",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "unknown",
-      "away_team": "unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-10",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-11",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-12",
-      "matchup": "Boston Red Sox at New York Mets",
-      "time_et": "1:40 PM ET"
-    },
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-07-18",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-11"
 }

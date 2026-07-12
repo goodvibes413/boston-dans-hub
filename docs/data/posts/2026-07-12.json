@@ -1,9 +1,18 @@
 {
+  "date": "2026-07-12",
+  "generated_at": "2026-07-12T09:58:44.658649+00:00",
   "headline": "Red Sox stay scorching with eight straight wins after Mets shutout",
   "morning_brew": [
     "Eight games on the bounce and I have to say, this team is finally playing the kind of ball we were praying for back in April. Taking down the Mets in their own yard isn't exactly a casual Sunday stroll, but Andrew Monasterio and Masataka Yoshida stepped up in the clutch and launched those two-run homers that completely broke the game open. Watching the boys maintain this kind of laser focus, especially coming off a night where they actually got to rest those tired legs, tells me they have found a rhythm that was missing for most of this long summer.",
     "The way we handled business on the mound was just as beautiful to watch, as the pitching staff locked things down from the first pitch to the final out. Jovani Mor\u00e1n coming in to snag the win and the bullpen slamming the door shut made it a stress-free night for once, which is a hell of a change of pace from the heart-pounding, high-blood-pressure finishes I have been watching all season. After the absolute roller coaster of the past month, it is refreshing to see a complete effort that doesn't leave me pacing the living room floor until the clock strikes midnight.",
     "I am trying my damn best to stay grounded and not look too far ahead, but it is getting wicked difficult to keep the Duck Boat fund from growing when the results are this consistent. We have one more turn at Citi Field before we finally return to Fenway for the series against Tampa Bay. My neighbor Rick has moved on from his umpire investigation and is now obsessed with tracking the challenge system leaderboard, but I am just happy to watch the winning streak extend while we wait for the next pitch."
+  ],
+  "news_digest": [
+    {
+      "headline": "Monasterio, Yoshida hit 2-run homers as Red Sox beat Mets 4-0 for 8-game winning streak",
+      "url": "http://www.espn.com/mlb/recap?gameId=401816111",
+      "dans_take": "That victory was a total masterclass, exactly the kind of game that reminds you why we endure the bad stretches."
+    }
   ],
   "trend_watch": [
     {
@@ -23,13 +32,6 @@
       "player": "Anthony Seigler",
       "trend": "Empty stat line at the plate",
       "dans_take": "He just couldn't find a gap last night, but he is due for a hit soon enough."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Monasterio, Yoshida hit 2-run homers as Red Sox beat Mets 4-0 for 8-game winning streak",
-      "url": "http://www.espn.com/mlb/recap?gameId=401816111",
-      "dans_take": "That victory was a total masterclass, exactly the kind of game that reminds you why we endure the bad stretches."
     }
   ],
   "box_scores": {
@@ -101,12 +103,6 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-07-12T09:58:44.658649+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "repetition: number-masked sentence skeleton \"if the boys can keep stacking these\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"more optimistic before the month is out\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"dying to get back to the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"to take the pressure off with\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
