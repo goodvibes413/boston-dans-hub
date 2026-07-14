@@ -1,91 +1,16 @@
 {
+  "generated_at": "2026-07-14T10:02:19.590277+00:00",
   "headline": "Enjoying the quiet before the Red Sox return to Fenway",
   "morning_brew": [
     "Not much happening on the field today, so let me tell you about the time I watched Banner 18 go up with the whole family in our living room in Brockton. We had three generations crammed on the same couches where we suffered through the 2010 Finals loss, and watching my kid in a Jayson Tatum jersey two sizes too big made me realize how long the road to the top really is. When the banner finally hit the rafters, my kid looked up and asked if the Celtics always win, and I laughed so hard I spilled my coffee all over the rug. I had to sit the little guy down and explain that for the last thirty years, winning wasn't exactly a guarantee around here.",
     "It is those moments that make the grind worth it, you know? My pops was sitting in his recliner, the same one he has been using since way back, just taking it all in with a look on his face like he had seen a ghost. We have been through the ringer with every team in this town, and that championship was a reminder that even when it feels like we are stuck in a loop of heartbreak, the good days eventually do come around. It is the stuff that makes being a Boston fan a lifestyle instead of just a hobby.",
     "We are in the middle of a quiet patch now, but that is fine by me because it gives the blood pressure a chance to stabilize before we get back to business at Fenway. The Red Sox have been playing some serious ball lately, and with the Tampa Bay series coming up, I am hoping this momentum holds steady. We will be back at the yard on Thursday, and I will be right there in my seat, probably complaining about the prices but enjoying every single minute of it."
   ],
-  "trend_watch": [],
   "news_digest": [
     {
       "headline": "MLB Home Run Derby 2026: Analysis, results from Philly",
       "url": "https://www.espn.com/mlb/story/_/id/49337954/mlb-2026-home-run-derby-predictions-live-updates-takeaways-analysis",
       "dans_take": "Nothing wrong with some long-ball practice, though I would trade a Derby crown for a playoff series win any day."
     }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Atlanta Hawks",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-13",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-13",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "New York Mets",
-      "away_team": "Boston Red Sox",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-13",
-      "played": false,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Buffalo Bills",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-13",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-07-18",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-19",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-20",
-      "matchup": "Baltimore Orioles at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-07-21",
-      "matchup": "Baltimore Orioles at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    }
-  ],
-  "generated_at": "2026-07-14T10:02:19.590277+00:00"
+  ]
 }

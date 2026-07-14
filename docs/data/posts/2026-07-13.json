@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-13",
   "generated_at": "2026-07-13T11:17:45.101385+00:00",
   "headline": "Red Sox steal a gritty extra-innings victory against the Mets",
   "morning_brew": [
@@ -19,95 +18,5 @@
       "dans_take": "Always good to see where the league thinks we stand, though I have got my own ideas about our signal caller."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Bullpen Watch",
-      "player": "Garrett Whitlock",
-      "trend": "Locking down high-leverage frames",
-      "dans_take": "Nothing puts my nerves at ease like seeing him take the ball in the final inning; the man is absolute ice."
-    },
-    {
-      "category": "Heater",
-      "player": "Aroldis Chapman",
-      "trend": "Securing key wins out of the pen",
-      "dans_take": "He showed real poise keeping the game locked down when we absolutely had to hold the line, and that is all I ask."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Wilyer Abreu",
-      "trend": "Struggling to find consistent contact",
-      "dans_take": "He is better than what we saw tonight, and I trust he will be back to driving the ball soon, before I lose my mind."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "unknown",
-      "away_team": "unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-12",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "unknown",
-      "away_team": "unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-12",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "New York Mets",
-      "away_team": "Boston Red Sox",
-      "home_score": 2,
-      "away_score": 3,
-      "game_date": "2026-07-12",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "unknown",
-      "away_team": "unknown",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-12",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-07-18",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-19",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-20",
-      "matchup": "Baltimore Orioles at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-13"
 }
