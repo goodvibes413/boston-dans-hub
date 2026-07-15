@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-14",
   "generated_at": "2026-07-14T10:02:19.590277+00:00",
   "headline": "Enjoying the quiet before the Red Sox return to Fenway",
   "morning_brew": [
@@ -14,81 +13,5 @@
       "dans_take": "Nothing wrong with some long-ball practice, though I would trade a Derby crown for a playoff series win any day."
     }
   ],
-  "trend_watch": [],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Atlanta Hawks",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-13",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-13",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "New York Mets",
-      "away_team": "Boston Red Sox",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-13",
-      "played": false,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Buffalo Bills",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-13",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-07-18",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-19",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-20",
-      "matchup": "Baltimore Orioles at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-07-21",
-      "matchup": "Baltimore Orioles at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-14"
 }

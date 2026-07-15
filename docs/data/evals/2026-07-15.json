@@ -1,0 +1,37 @@
+{
+  "date": "2026-07-15",
+  "generated_at": "2026-07-15T10:06:35.954491+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 125.0,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "fabricated historical events: The content claims a 'doubleheader' on Thursday, July 17th, but the provided schedule shows two separate games on that date, not a single doubleheader event.",
+        "voice repetition: The morning_brew paragraph structure and phrasing regarding 'quiet patch', 'blood pressure', and 'back to business' are highly repetitive of the July 14th output, violating the continuity rule.",
+        "repetition: number-masked sentence skeleton \"a chance to stabilize before we get back to business at fenway the red sox have been playing some serious ball lately and with the tampa bay series\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"we have been through the ringer with every team in this town and that championship was a reminder that even when\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"and i will be right there in my seat probably complaining about the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"today so let me tell you about the time i watched\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"but that is fine by me because it gives\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"but enjoying every single minute of it\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      ],
+      "duration_seconds": 2.7
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 2.2
+    }
+  ]
+}

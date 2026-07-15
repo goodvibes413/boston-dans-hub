@@ -1,11 +1,12 @@
 {
+  "date": "2026-07-15",
+  "generated_at": "2026-07-15T10:08:40.928468+00:00",
   "headline": "Red Sox get a quiet breather before Tampa Bay visits Fenway",
   "morning_brew": [
     "Not much to report from the diamond today, which brings to mind a miserable, rainy afternoon at the Fens back during that two-thousand-thirteen run. My pops dragged me to the park while the sky was falling, and we spent the whole time huddled under the overhang behind home plate, shivering and watching the tarp dance in the wind. We were there for one of those games where you wonder if you have lost your mind for showing up, but then David Ortiz stepped into the box and cleared the bullpen fence, and suddenly the guy next to me, a complete stranger, grabbed me in a bear hug so tight my lukewarm beer went flying all over his jacket.",
     "That kind of beautiful chaos is the heartbeat of this town. We spent the rest of that night laughing about how the guy's coat smelled like a local brewery and how we did not care one bit because the win mattered more than anything else. It is those crazy, unpredictable slices of life that define our connection to the yard, whether it is a playoff push or just a random mid-July afternoon where the baseball gods decide to smile down on us for a few hours. I still see that stranger at the park every once in a blue moon, and we always nod like we shared a foxhole instead of just a soggy bleacher seat.",
     "We have a couple of days to gear up before the Rays roll into the Hub for a set of games starting Thursday. I am looking forward to seeing the boys back in action after a few days of downtime, and I trust they will be ready to defend the turf. I am gonna spend my time catching up on some errands and trying to stay out of trouble, though knowing my luck, I will probably just end up at Dunks talking myself into believing we are destined for a hot streak."
   ],
-  "trend_watch": [],
   "news_digest": [
     {
       "headline": "Red Sox haven't lost since Celtics traded Jaylen Brown",
@@ -18,6 +19,7 @@
       "dans_take": "I will wait until these kids actually reach the bigs before I start carving out space for them in the Hall of Fame."
     }
   ],
+  "trend_watch": [],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
@@ -97,16 +99,6 @@
       "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-07-15T10:08:40.928468+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "fabricated historical events: The content claims a 'doubleheader' on Thursday, July 17th, but the provided schedule shows two separate games on that date, not a single doubleheader event.",
-    "voice repetition: The morning_brew paragraph structure and phrasing regarding 'quiet patch', 'blood pressure', and 'back to business' are highly repetitive of the July 14th output, violating the continuity rule.",
-    "repetition: number-masked sentence skeleton \"a chance to stabilize before we get back to business at fenway the red sox have been playing some serious ball lately and with the tampa bay series\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"we have been through the ringer with every team in this town and that championship was a reminder that even when\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"and i will be right there in my seat probably complaining about the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"today so let me tell you about the time i watched\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"but that is fine by me because it gives\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"but enjoying every single minute of it\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
