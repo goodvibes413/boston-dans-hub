@@ -110,6 +110,6 @@
     "repetition: number-masked sentence skeleton \"but enjoying every single minute of it\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
   ],
   "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: fabricated historical events: The content claims a 'double dip' (doubleheader) against the Rays on July 17th, but the provided schedule shows two separate games on that date, not a single doubleheader",
-  "_stale_age_hours": 24.1
+  "_stale_reason": "safety judge FAILed after 3 attempts: fabricated historical events: The content claims a 'double set of games' (doubleheader) on Thursday, July 17th, but the provided schedule shows two separate games on that date, not a single doublehead",
+  "_stale_age_hours": 25.2
 }

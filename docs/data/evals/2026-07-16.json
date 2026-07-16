@@ -1,10 +1,10 @@
 {
   "date": "2026-07-16",
-  "generated_at": "2026-07-16T10:12:29.606031+00:00",
+  "generated_at": "2026-07-16T11:17:07.377492+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
   "total_attempts": 3,
-  "generation_seconds": 258.2,
+  "generation_seconds": 249.8,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -13,35 +13,33 @@
     {
       "attempt": 1,
       "verdict": "FAIL",
-      "severity": "low",
+      "severity": "high",
       "flags": [
-        "voice repetition: The morning_brew paragraph 3 contains the exact sentence skeleton 'but that is fine by me because it gives the blood pressure a chance to stabilize before we get back to business at fenway' which was flagged as a repetition violation in the recent_dan_output from 2026-07-15."
+        "fabricated historical events: The content claims a 'doubleheader' on Thursday, July 17th, but the provided schedule shows two separate games on that date, not a single doubleheader event.",
+        "voice repetition: The morning_brew paragraph 3 contains the exact sentence skeleton 'I am gonna spend the day running errands and trying to stay out of the way of the construction traffic, but you better believe I will be front and center when first pitch hits on Thursday' which is a formulaic structure reused from the previous day's output.",
+        "repetition: number-masked sentence skeleton \"errands and trying to stay out of\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"tampa bay visits fenway not much\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: formulaic paragraph opener \"we have a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
       ],
-      "duration_seconds": 2.6
+      "duration_seconds": 2.3
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
       "severity": "low",
       "flags": [
-        "voice repetition: The morning_brew paragraphs 1 and 2 are nearly identical in structure and content to the July 15th output, violating the continuity rule regarding formulaic storytelling.",
-        "repetition: number-masked sentence skeleton \"for showing up but then david ortiz stepped into the box and cleared the bullpen fence and suddenly the guy next to me a complete stranger grabbed me in a bear hug so tight my lukewarm beer went flying all over his jacket that kind of beautiful\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"# run my pops dragged me to the park while the sky was falling and we spent the whole time huddled under the overhang behind home plate shivering and watching the tarp dance\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"us for a few hours i still see that stranger at the park every once in a blue moon and we always\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"though knowing my luck i will probably just end up at dunks talking myself into believing we are destined for a\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"in the wind we were there for # of those games where you\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"night laughing about how the guys coat smelled like a local brewery and\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        "repetition: formulaic paragraph opener \"we have a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
       ],
-      "duration_seconds": 2.5
+      "duration_seconds": 1.9
     },
     {
       "attempt": 3,
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "fabricated historical events: The content claims a 'double dip' (doubleheader) against the Rays on July 17th, but the provided schedule shows two separate games on that date, not a single doubleheader event."
+        "fabricated historical events: The content claims a 'double set of games' (doubleheader) on Thursday, July 17th, but the provided schedule shows two separate games on that date, not a single doubleheader event, repeating the same error flagged in the recent_dan_output."
       ],
-      "duration_seconds": 2.4
+      "duration_seconds": 2.2
     }
   ]
 }
