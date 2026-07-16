@@ -1,47 +1,47 @@
 {
-  "headline": "Red Sox enjoying a needed breather before Tampa Bay visits Fenway",
+  "headline": "Red Sox enjoying a quiet intermission before the Rays visit Fenway",
   "morning_brew": [
-    "Not much to report from the diamond today, which brings to mind a miserable, rainy afternoon at the Fens back during that two-thousand-thirteen run. My pops dragged me to the park while the sky was falling, and we spent the whole time huddled under the overhang behind home plate, shivering and watching the tarp dance in the wind. We were there for one of those games where you wonder if you have lost your mind for showing up, but then David Ortiz stepped into the box and cleared the bullpen fence, and suddenly the guy next to me, a complete stranger, grabbed me in a bear hug so tight my lukewarm beverage went flying all over his jacket.",
-    "That kind of beautiful chaos is the heartbeat of this town. We spent the rest of that night laughing about how the fellow's coat smelled like a local brewery and how we did not care one bit because the result mattered more than anything else. It is those unpredictable slices of life that define our connection to the yard, whether it is a playoff push or just a random mid-July afternoon where the baseball gods decide to smile down on us for a few hours. I still see that stranger at the park every once in a blue moon, and we always nod like we shared a foxhole instead of just a soggy bleacher seat.",
-    "We have a brief window to gear up before the Rays descend on the Hub for the upcoming series. I am looking forward to seeing the boys back in action after some downtime, and I trust they will be ready to defend the turf. I am planning on catching up on some errands and trying to stay out of trouble, though knowing my luck, I will likely just end up at Dunks talking myself into believing we are destined for a hot streak."
+    "Not much action on the field today, which puts me in mind of that wild afternoon back in two-thousand-and-four when Dave Roberts swiped second base. I was posted up at a bar in Southie, and the place had basically cleared out after the seventh inning like everyone had somewhere better to be. I was just about to follow suit and head out into the night, but then Roberts took off, and the entire room erupted in a way I have never heard since. Watching that game unfold was like staring into the abyss, only to have it blink back at you and decide that maybe, just maybe, it was our turn to hold the cards.",
+    "That night in Southie taught me that you never walk out on a game until the final out is recorded, no matter how hopeless things look. We spent the rest of the evening high-fiving strangers and acting like we had just witnessed the end of the world, which in a way, we had. It is the kind of local legend status that keeps me glued to the tube every single night, even when the box scores are not giving us much to cheer about. You sit through the slow stretches because you know exactly how sweet the payoff tastes when the stars finally align.",
+    "The squad has a brief window to regroup before the Rays head into the Hub for a series starting tomorrow. I am planning to keep things low-key around the house, maybe get some chores done if I can muster the motivation, but mostly I am just waiting to see if we can maintain the pace. I have been spending way too much time staring at the standings lately, so stepping back for a minute is probably for the best. I will be ready to go once the first pitch is thrown at the park tomorrow."
   ],
   "trend_watch": [
     {
-      "category": "Streak",
+      "category": "Heater",
       "player": "Jarren Duran",
-      "trend": "Hot at the plate",
-      "dans_take": "The man is seeing beach balls up there right now and I hope he doesn't wake up from this dream."
+      "trend": "Consistent contribution in the lineup",
+      "dans_take": "He has been the engine keeping this offense from stalling out while the rest of the lineup hunts for a spark."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Greg Weissert",
-      "trend": "Finding his rhythm",
-      "dans_take": "He has been much more composed on the mound lately, so for the love of all that is holy, stay the course."
+      "player": "Aroldis Chapman",
+      "trend": "Working through high-leverage spots",
+      "dans_take": "I swear my blood pressure spikes ten points every time he trots out, but you cannot deny the stuff is flat-out electric."
     },
     {
-      "category": "Heater",
+      "category": "Streak",
       "player": "Brayan Bello",
-      "trend": "Solid command",
-      "dans_take": "When he is pounding the zone like he has been, he is a damn nightmare for any lineup."
+      "trend": "Establishing command early in starts",
+      "dans_take": "When he is hitting his spots like this, the opposing hitters might as well be swinging at shadows."
     }
   ],
   "news_digest": [
     {
-      "headline": "Red Sox haven't lost since Celtics traded Jaylen Brown",
-      "url": "https://www.espn.com/mlb/story/_/id/49359997/boston-red-sox-celtics-jaylen-brown-trade",
-      "dans_take": "Call it a coincidence if you want, but the winning streak is the only thing keeping me from throwing my TV out the window over the C's news."
+      "headline": "MLB 2026: Second-half preview, rankings, projections, playoff odds",
+      "url": "https://www.espn.com/mlb/story/_/id/49352481/mlb-2026-second-half-preview-rankings-projections-playoff-odds-all-30-teams",
+      "dans_take": "Keep your projections and your spreadsheets, I just wanna see who shows up when the heat is actually on."
     },
     {
-      "headline": "2026 MLB draft recap: Best picks, potential steals, analysis",
-      "url": "https://www.espn.com/mlb/story/_/id/49350376/mlb-draft-2026-recap-kiley-mcdaniel-analysis-all-30-teams",
-      "dans_take": "I will wait until these kids actually show up to the Fens before I start ordering the World Series rings."
+      "headline": "Jayson Tatum calls Jaylen Brown's departure 'weird'",
+      "url": "https://www.espn.com/video/clip/_/id/49371552/jayson-tatum-calls-jaylen-brown-departure-weird",
+      "dans_take": "Calling that trade weird is like saying the Pike at five o'clock is just a little bit busy."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
+      "home_team": "unknown",
+      "away_team": "unknown",
       "home_score": null,
       "away_score": null,
       "game_date": "2026-07-15",
@@ -50,8 +50,8 @@
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
+      "home_team": "unknown",
+      "away_team": "unknown",
       "home_score": null,
       "away_score": null,
       "game_date": "2026-07-15",
@@ -60,8 +60,8 @@
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": null,
-      "away_team": null,
+      "home_team": "unknown",
+      "away_team": "unknown",
       "home_score": null,
       "away_score": null,
       "game_date": "2026-07-15",
@@ -70,8 +70,8 @@
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
+      "home_team": "unknown",
+      "away_team": "unknown",
       "home_score": null,
       "away_score": null,
       "game_date": "2026-07-15",
@@ -116,15 +116,14 @@
       "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-07-16T14:57:36.097144+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    "voice repetition: The morning_brew paragraphs 1, 2, and 3 are nearly identical in structure and phrasing to the content generated on 2026-07-15, violating the continuity rule.",
-    "repetition: number-masked sentence skeleton \"breather before tampa bay visits fenway not much to report from the diamond today which brings to mind a miserable rainy afternoon at the fens back during that # # # run my pops dragged me to the park while the sky was falling and we spent the whole time huddled under the overhang behind home plate shivering and watching the tarp dance in the wind we were there for # of those games where you wonder if you have lost your mind for showing up but then david ortiz stepped into the box and cleared the bullpen fence and suddenly the guy next to me a complete stranger grabbed me in a bear hug so tight my lukewarm\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"unpredictable slices of life that define our connection to the yard whether it is a playoff push or just a random mid july afternoon where the baseball gods decide to smile down on us for a few hours i still see that stranger at the park every once in a blue moon and we always nod like we shared a foxhole instead of just a soggy bleacher seat we have a\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"went flying all over his jacket that kind of beautiful chaos is the heartbeat of this town we spent the rest of that night laughing about how the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"just end up at dunks talking myself into believing we are destined for a hot streak call it a coincidence if you want but the winning streak\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"catching up on some errands and trying to stay out of trouble though knowing my luck i will\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"coat smelled like a local brewery and how we did not care # bit because the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+  "generated_at": "2026-07-16T15:40:37.387882+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
+    "repetition: number-masked sentence skeleton \"errands and trying to stay out of trouble though knowing my\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+    "repetition: number-masked sentence skeleton \"i will probably just end up at dunks talking myself into\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+    "repetition: number-masked sentence skeleton \"we have a couple of days to gear up before the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+    "repetition: number-masked sentence skeleton \"and i trust they will be ready to defend the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+    "repetition: number-masked sentence skeleton \"i am gonna spend my time\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+    "repetition: formulaic paragraph opener \"we have a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
   ]
 }

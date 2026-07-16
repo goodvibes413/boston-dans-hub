@@ -1,54 +1,35 @@
 {
   "date": "2026-07-16",
-  "generated_at": "2026-07-16T14:53:25.852279+00:00",
+  "generated_at": "2026-07-16T15:38:31.195330+00:00",
   "outcome": "retry",
-  "winning_attempt": 3,
-  "total_attempts": 3,
-  "generation_seconds": 250.2,
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 126.2,
   "pre_pass": {
-    "repetition_check": "fail",
-    "flagged_phrases": [
-      "repetition: number-masked sentence skeleton \"breather before tampa bay visits fenway not much to report from the diamond today which brings to mind a miserable rainy afternoon at the fens back during that # # # run my pops dragged me to the park while the sky was falling and we spent the whole time huddled under the overhang behind home plate shivering and watching the tarp dance in the wind we were there for # of those games where you wonder if you have lost your mind for showing up but then david ortiz stepped into the box and cleared the bullpen fence and suddenly the guy next to me a complete stranger grabbed me in a bear hug so tight my lukewarm\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-      "repetition: number-masked sentence skeleton \"unpredictable slices of life that define our connection to the yard whether it is a playoff push or just a random mid july afternoon where the baseball gods decide to smile down on us for a few hours i still see that stranger at the park every once in a blue moon and we always nod like we shared a foxhole instead of just a soggy bleacher seat we have a\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-      "repetition: number-masked sentence skeleton \"went flying all over his jacket that kind of beautiful chaos is the heartbeat of this town we spent the rest of that night laughing about how the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-      "repetition: number-masked sentence skeleton \"just end up at dunks talking myself into believing we are destined for a hot streak call it a coincidence if you want but the winning streak\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-      "repetition: number-masked sentence skeleton \"catching up on some errands and trying to stay out of trouble though knowing my luck i will\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-      "repetition: number-masked sentence skeleton \"coat smelled like a local brewery and how we did not care # bit because the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    ]
+    "repetition_check": "pass",
+    "flagged_phrases": []
   },
   "attempts": [
     {
       "attempt": 1,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "low",
       "flags": [
-        "fabricated historical events: The content claims a 'doubleheader' on Thursday, July 17th, but the provided schedule shows two separate games on that date, not a single doubleheader event."
+        "repetition: number-masked sentence skeleton \"errands and trying to stay out of trouble though knowing my\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"i will probably just end up at dunks talking myself into\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"we have a couple of days to gear up before the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"and i trust they will be ready to defend the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"i am gonna spend my time\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: formulaic paragraph opener \"we have a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
       ],
-      "duration_seconds": 2.5
+      "duration_seconds": 2.2
     },
     {
       "attempt": 2,
-      "verdict": "FAIL",
+      "verdict": "PASS",
       "severity": "low",
-      "flags": [
-        "repetition: number-masked sentence skeleton \"the hub for a set of games starting thursday\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      ],
-      "duration_seconds": 2.3
-    },
-    {
-      "attempt": 3,
-      "verdict": "FAIL",
-      "severity": "low",
-      "flags": [
-        "voice repetition: The morning_brew paragraphs 1, 2, and 3 are nearly identical in structure and phrasing to the content generated on 2026-07-15, violating the continuity rule.",
-        "repetition: number-masked sentence skeleton \"breather before tampa bay visits fenway not much to report from the diamond today which brings to mind a miserable rainy afternoon at the fens back during that # # # run my pops dragged me to the park while the sky was falling and we spent the whole time huddled under the overhang behind home plate shivering and watching the tarp dance in the wind we were there for # of those games where you wonder if you have lost your mind for showing up but then david ortiz stepped into the box and cleared the bullpen fence and suddenly the guy next to me a complete stranger grabbed me in a bear hug so tight my lukewarm\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"unpredictable slices of life that define our connection to the yard whether it is a playoff push or just a random mid july afternoon where the baseball gods decide to smile down on us for a few hours i still see that stranger at the park every once in a blue moon and we always nod like we shared a foxhole instead of just a soggy bleacher seat we have a\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"went flying all over his jacket that kind of beautiful chaos is the heartbeat of this town we spent the rest of that night laughing about how the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"just end up at dunks talking myself into believing we are destined for a hot streak call it a coincidence if you want but the winning streak\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"catching up on some errands and trying to stay out of trouble though knowing my luck i will\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: number-masked sentence skeleton \"coat smelled like a local brewery and how we did not care # bit because the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      ],
-      "duration_seconds": 2.3
+      "flags": [],
+      "duration_seconds": 2.1
     }
   ]
 }
