@@ -1,10 +1,10 @@
 {
   "date": "2026-07-17",
-  "generated_at": "2026-07-17T11:02:23.061403+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
+  "generated_at": "2026-07-17T12:06:47.627443+00:00",
+  "outcome": "retry",
+  "winning_attempt": 3,
   "total_attempts": 3,
-  "generation_seconds": 247.7,
+  "generation_seconds": 248.2,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -15,25 +15,27 @@
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "fabricated historical events: The headline and content claim a 'doubleheader' is occurring today, July 17th. The provided schedule shows two separate games at 1:35 PM and 7:10 PM, which are separate-admission games, not a doubleheader."
+        "fabricated historical events: The content claims a 'doubleheader' is occurring today, July 17th. The provided schedule shows two separate games at 1:35 PM and 7:10 PM, which are separate-admission games, not a doubleheader.",
+        "game coverage gap: The Red Sox played on 2026-07-16 (per rolling_7day), but the morning_brew fails to mention the game result or reaction to the game, focusing only on upcoming games."
       ],
       "duration_seconds": 2.4
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "medium",
+      "severity": "high",
       "flags": [
+        "fabricated historical events: The headline and content claim a 'doubleheader' is occurring today, July 17th. The provided schedule shows two separate games at 1:35 PM and 7:10 PM, which are separate-admission games, not a doubleheader.",
         "game coverage gap: The Red Sox played on 2026-07-16 (per rolling_7day), but the morning_brew fails to mention the game result or reaction to the game, focusing only on upcoming games."
       ],
-      "duration_seconds": 2.2
+      "duration_seconds": 2.5
     },
     {
       "attempt": 3,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "medium",
       "flags": [
-        "fabricated historical events: The content claims a 'double-header' is occurring today, July 17th. The provided schedule shows two separate games at 1:35 PM and 7:10 PM, which are separate-admission games, not a doubleheader."
+        "game coverage gap: The Red Sox played on 2026-07-16 (per rolling_7day), but the morning_brew fails to mention the game result or reaction to the game, focusing only on upcoming games."
       ],
       "duration_seconds": 2.3
     }
