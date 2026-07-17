@@ -1,10 +1,10 @@
 {
   "date": "2026-07-17",
-  "generated_at": "2026-07-17T10:01:41.113090+00:00",
+  "generated_at": "2026-07-17T11:02:23.061403+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
   "total_attempts": 3,
-  "generation_seconds": 246.4,
+  "generation_seconds": 247.7,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -15,27 +15,27 @@
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "fabricated historical events: The headline and content claim a 'doubleheader' is occurring today, July 17th. While there are two games scheduled against the Rays on July 17th, a doubleheader is a specific MLB scheduling event (two games for the price of one ticket, often played back-to-back). The provided schedule shows two separate game times (1:35 PM and 7:10 PM), which are standard separate-admission games, not a doubleheader."
+        "fabricated historical events: The headline and content claim a 'doubleheader' is occurring today, July 17th. The provided schedule shows two separate games at 1:35 PM and 7:10 PM, which are separate-admission games, not a doubleheader."
       ],
-      "duration_seconds": 2.1
+      "duration_seconds": 2.4
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "medium",
       "flags": [
-        "fabricated historical events: The headline claims 'two' games against the Rays today, but the schedule shows two separate games (1:35 PM and 7:10 PM), which is not a standard 'two-game series' or 'two against' phrasing in baseball context; it implies a doubleheader which is not explicitly confirmed as such in the schedule data provided."
+        "game coverage gap: The Red Sox played on 2026-07-16 (per rolling_7day), but the morning_brew fails to mention the game result or reaction to the game, focusing only on upcoming games."
       ],
-      "duration_seconds": 1.9
+      "duration_seconds": 2.2
     },
     {
       "attempt": 3,
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "fabricated historical events: The headline and content claim a 'doubleheader' today, July 17th. While there are two games scheduled against the Rays on this date, a doubleheader is a specific MLB scheduling event (two games for the price of one ticket). The schedule shows two separate games at different times (1:35 PM and 7:10 PM), which is not a doubleheader."
+        "fabricated historical events: The content claims a 'double-header' is occurring today, July 17th. The provided schedule shows two separate games at 1:35 PM and 7:10 PM, which are separate-admission games, not a doubleheader."
       ],
-      "duration_seconds": 1.8
+      "duration_seconds": 2.3
     }
   ]
 }

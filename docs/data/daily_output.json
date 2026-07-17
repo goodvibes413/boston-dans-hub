@@ -127,6 +127,6 @@
     "repetition: formulaic paragraph opener \"we have a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
   ],
   "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: fabricated historical events: The headline and content claim a 'doubleheader' today, July 17th. While there are two games scheduled against the Rays on this date, a doubleheader is a specific MLB sche",
-  "_stale_age_hours": 18.4
+  "_stale_reason": "safety judge FAILed after 3 attempts: fabricated historical events: The content claims a 'double-header' is occurring today, July 17th. The provided schedule shows two separate games at 1:35 PM and 7:10 PM, which are separate-admission ga",
+  "_stale_age_hours": 19.4
 }
