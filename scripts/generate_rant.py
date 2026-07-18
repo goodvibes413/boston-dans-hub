@@ -260,19 +260,33 @@ def normalize_box_scores(data: dict) -> dict:
 
         sport = sport_map.get(team_key, "Unknown")
 
-        # If the team has a nested games array (Red Sox format), take the first game
+        # If the team has a nested games array (Red Sox format), normalize every
+        # game — a doubleheader has two entries and dropping games[1] loses half
+        # the day (the 2026-07-17 Rays sweep shipped with only game 1 visible).
         if isinstance(team_data.get("games"), list) and len(team_data["games"]) > 0:
-            game = team_data["games"][0]
-            normalized[team_key] = {
+            norm_games = []
+            for i, game in enumerate(team_data["games"]):
+                norm_games.append({
+                    "game_number": game.get("game_number", i + 1),
+                    "home_team": "Boston Red Sox" if game.get("home") else game.get("opponent", "Unknown"),
+                    "away_team": game.get("opponent", "Unknown") if game.get("home") else "Boston Red Sox",
+                    "home_score": game.get("redsox_score") if game.get("home") else game.get("opponent_score"),
+                    "away_score": game.get("opponent_score") if game.get("home") else game.get("redsox_score"),
+                })
+            entry = {
                 "sport": sport,
-                "home_team": "Boston Red Sox" if game.get("home") else game.get("opponent", "Unknown"),
-                "away_team": game.get("opponent", "Unknown") if game.get("home") else "Boston Red Sox",
-                "home_score": game.get("redsox_score") if game.get("home") else game.get("opponent_score"),
-                "away_score": game.get("opponent_score") if game.get("home") else game.get("redsox_score"),
+                "home_team": norm_games[0]["home_team"],
+                "away_team": norm_games[0]["away_team"],
+                "home_score": norm_games[0]["home_score"],
+                "away_score": norm_games[0]["away_score"],
                 "game_date": team_data.get("game_date", ""),
                 "played": team_data.get("played", False),
                 "season_type": team_data.get("season_type", "unknown"),
             }
+            if len(norm_games) > 1:
+                entry["doubleheader"] = True
+                entry["games"] = norm_games
+            normalized[team_key] = entry
         else:
             # Fetcher-format (Celtics/Bruins): uses team-specific score fields and
             # a boolean "home" flag rather than home_team/away_team strings.
@@ -382,12 +396,17 @@ def repair_box_scores_from_fetchers(data: dict) -> dict:
         if not raw or raw.get("error"):
             continue  # Fetcher also failed — nothing to repair from
 
-        # Red Sox may wrap in a games array
+        # Red Sox may wrap in a games array. Individual game dicts carry no
+        # "played" key — that lives on the top-level boxscore — so check the
+        # level we're actually reading from (checking game.get("played") after
+        # unwrapping made this repair a silent no-op for the games-array format).
         game = raw
-        if isinstance(raw.get("games"), list) and raw["games"]:
-            game = raw["games"][0]
-
-        if not game.get("played"):
+        raw_games = raw.get("games") if isinstance(raw.get("games"), list) else None
+        if raw_games:
+            game = raw_games[0]
+            if not raw.get("played"):
+                continue  # Fetcher says no game — respect that
+        elif not game.get("played"):
             continue  # Fetcher also says no game — respect that
 
         boston_score_key = boston_score_keys[team_key]
@@ -421,6 +440,18 @@ def repair_box_scores_from_fetchers(data: dict) -> dict:
             "played":     True,
             "season_type": season_type,
         }
+        if raw_games and len(raw_games) > 1:
+            repaired["doubleheader"] = True
+            repaired["games"] = [
+                {
+                    "game_number": g.get("game_number", i + 1),
+                    "home_team": boston_full_name if g.get("home") else g.get("opponent", "Unknown"),
+                    "away_team": g.get("opponent", "Unknown") if g.get("home") else boston_full_name,
+                    "home_score": g.get(boston_score_key) if g.get("home") else g.get("opponent_score"),
+                    "away_score": g.get("opponent_score") if g.get("home") else g.get(boston_score_key),
+                }
+                for i, g in enumerate(raw_games)
+            ]
         data["box_scores"][team_key] = repaired
         print(f"  repaired box_score for {team_key}: {home_team} {home_score}–{away_score} {away_team}", file=sys.stderr)
 
@@ -639,8 +670,67 @@ def _extract_team_games(rolling: dict | None, team_key: str) -> list[dict]:
                 enriched.setdefault("game_date", game_date)
                 all_games.append(enriched)
         elif played:
-            all_games.append({"played": True, "game_date": game_date})
+            # Flat single-game format (Celtics/Bruins/Patriots): the score
+            # fields live directly on the boxscore, so carry them along —
+            # appending only {played, game_date} strips the result and
+            # downstream consumers (emotional context) see a 0-0 game.
+            flat = {k: v for k, v in boxscore.items() if k != "games"}
+            flat.setdefault("played", True)
+            flat.setdefault("game_date", game_date)
+            all_games.append(flat)
     return all_games
+
+
+_BOSTON_NAMES = {
+    "celtics": ["celtics", "boston celtics"],
+    "bruins": ["bruins", "boston bruins"],
+    "redsox": ["red sox", "boston red sox"],
+    "patriots": ["patriots", "new england patriots"],
+}
+_BOSTON_SCORE_KEYS = {
+    "celtics": "celtics_score",
+    "bruins": "bruins_score",
+    "redsox": "redsox_score",
+    "patriots": "patriots_score",
+}
+
+
+def _game_outcome(game: dict, team_key: str) -> dict | None:
+    """
+    Resolve a single game dict to Boston's perspective:
+    {"our_score", "their_score", "opponent", "won", "margin"}.
+
+    Supports BOTH schemas that reach the rolling store:
+      - fetcher format:  {home (bool), <team>_score, opponent, opponent_score}
+        (this is what fetch_*.py actually writes — the production path)
+      - normalized/fixture format: {home_team, away_team, home_score, away_score}
+
+    Returns None if neither schema's score fields are present, so callers can
+    skip entries that carry no result rather than fabricate a 0-0 game.
+    """
+    score_key = _BOSTON_SCORE_KEYS.get(team_key, "score")
+    if score_key in game or "opponent_score" in game:
+        our = game.get(score_key) or 0
+        their = game.get("opponent_score") or 0
+        opponent = (game.get("opponent") or "").lower()
+    elif "home_score" in game or "away_score" in game:
+        home = game.get("home_score", 0) or 0
+        away = game.get("away_score", 0) or 0
+        home_team = (game.get("home_team") or "").lower()
+        away_team = (game.get("away_team") or "").lower()
+        is_home = any(name in home_team for name in _BOSTON_NAMES.get(team_key, []))
+        our = home if is_home else away
+        their = away if is_home else home
+        opponent = away_team if is_home else home_team
+    else:
+        return None
+    return {
+        "our_score": our,
+        "their_score": their,
+        "opponent": opponent,
+        "won": our > their,
+        "margin": abs(our - their),
+    }
 
 
 def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
@@ -649,7 +739,9 @@ def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
     explicit mood direction instead of relying on Gemini to infer it.
 
     Returns a dict keyed by team with: last_result, margin, streak, rival_game,
-    rival, emotional_register.
+    rival, emotional_register (plus doubleheader/doubleheader_result when the
+    most recent day had two games — MLB twin bills must never be summarized
+    from just one of the games).
     """
     context = {}
     # Build a lookup of rivals from grudge_book
@@ -667,47 +759,48 @@ def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
         if not games:
             continue
 
-        # Find most recent played game
-        played_games = [g for g in games if g.get("played")]
-        if not played_games:
+        # Keep only played games that carry a resolvable result.
+        outcomes = []
+        for g in games:
+            if not g.get("played"):
+                continue
+            o = _game_outcome(g, team_key)
+            if o is not None:
+                o["game_date"] = g.get("game_date", "")
+                o["game_number"] = g.get("game_number", 1)
+                outcomes.append(o)
+        if not outcomes:
             continue
 
-        # Sort by date descending
-        played_games.sort(key=lambda g: g.get("game_date", ""), reverse=True)
-        latest = played_games[0]
+        # Most recent first; game 2 of a doubleheader is the later game.
+        outcomes.sort(key=lambda o: (o["game_date"], o["game_number"]), reverse=True)
+        latest = outcomes[0]
+        latest_day = [o for o in outcomes if o["game_date"] == latest["game_date"]]
+        is_doubleheader = len(latest_day) > 1
 
-        # Determine win/loss and margin
-        home = latest.get("home_score", 0) or 0
-        away = latest.get("away_score", 0) or 0
-        home_team = (latest.get("home_team") or "").lower()
-        away_team = (latest.get("away_team") or "").lower()
+        if is_doubleheader:
+            day_wins = sum(1 for o in latest_day if o["won"])
+            if day_wins == len(latest_day):
+                last_result = "doubleheader sweep (won both games)"
+            elif day_wins == 0:
+                last_result = "swept in doubleheader (lost both games)"
+            else:
+                last_result = "doubleheader split (won one, lost one)"
+            # The day's mood rides on the pair; use the most lopsided game for
+            # blowout/nail-biter checks so a 10-0 opener isn't muted by a close
+            # nightcap (and vice versa on a swept day).
+            margin = max(o["margin"] for o in latest_day)
+            won = day_wins > len(latest_day) / 2
+        else:
+            last_result = "win" if latest["won"] else "loss"
+            margin = latest["margin"]
+            won = latest["won"]
 
-        # Figure out which side is our Boston team
-        boston_names = {
-            "celtics": ["celtics", "boston celtics"],
-            "bruins": ["bruins", "boston bruins"],
-            "redsox": ["red sox", "boston red sox"],
-            "patriots": ["patriots", "new england patriots"],
-        }
-        is_home = any(name in home_team for name in boston_names.get(team_key, []))
-        our_score = home if is_home else away
-        their_score = away if is_home else home
-        opponent = away_team if is_home else home_team
-
-        won = our_score > their_score
-        margin = abs(our_score - their_score)
-
-        # Count streak
+        # Count streak game-by-game (each doubleheader game counts).
         streak_count = 0
-        streak_type = "W" if won else "L"
-        for g in played_games:
-            g_home = g.get("home_score", 0) or 0
-            g_away = g.get("away_score", 0) or 0
-            g_is_home = any(name in (g.get("home_team") or "").lower() for name in boston_names.get(team_key, []))
-            g_our = g_home if g_is_home else g_away
-            g_their = g_away if g_is_home else g_home
-            g_won = g_our > g_their
-            if (g_won and streak_type == "W") or (not g_won and streak_type == "L"):
+        streak_type = "W" if outcomes[0]["won"] else "L"
+        for o in outcomes:
+            if (o["won"] and streak_type == "W") or (not o["won"] and streak_type == "L"):
                 streak_count += 1
             else:
                 break
@@ -715,9 +808,8 @@ def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
         # Check if rival game
         rival_game = False
         rival_name = ""
-        team_rivals = rival_lookup.get(team_key, [])
-        for r in team_rivals:
-            if r in opponent:
+        for r in rival_lookup.get(team_key, []):
+            if r in latest["opponent"]:
                 rival_game = True
                 rival_name = r
                 break
@@ -739,14 +831,23 @@ def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
         if rival_game:
             register_parts.append(f"rival game vs {rival_name}")
 
-        context[team_key] = {
-            "last_result": "win" if won else "loss",
+        entry = {
+            "last_result": last_result,
             "margin": margin,
             "streak": f"{streak_type}{streak_count}",
             "rival_game": rival_game,
             "rival": rival_name,
             "emotional_register": ", ".join(register_parts),
         }
+        if is_doubleheader:
+            entry["doubleheader"] = True
+            entry["doubleheader_result"] = [
+                {"game_number": o["game_number"],
+                 "result": "W" if o["won"] else "L",
+                 "score": f"{o['our_score']}-{o['their_score']}"}
+                for o in sorted(latest_day, key=lambda o: o["game_number"])
+            ]
+        context[team_key] = entry
 
     return context
 

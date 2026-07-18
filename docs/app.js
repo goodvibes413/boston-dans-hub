@@ -132,24 +132,33 @@ function renderBoxScores(scores) {
     }
 
     section.style.display = 'block';
+    const renderCard = (game, sportLabel, gameDate) => {
+        const homeWon = game.home_score > game.away_score;
+        return `
+            <div class="score-card">
+                <div class="score-sport">${escapeHtml(sportLabel)}</div>
+                <div class="score-teams">
+                    <div class="score-team ${homeWon ? 'winner' : ''}">
+                        ${escapeHtml(game.home_team)} ${escapeHtml(game.home_score)}
+                    </div>
+                    <div class="score-team ${!homeWon ? 'winner' : ''}">
+                        ${escapeHtml(game.away_team)} ${escapeHtml(game.away_score)}
+                    </div>
+                </div>
+                <div class="score-final">${escapeHtml(gameDate || '')}</div>
+            </div>
+        `;
+    };
     const cards = Object.entries(scores)
         .filter(([_, scoreData]) => scoreData && scoreData.played)
-        .map(([team, scoreData]) => {
-            const homeWon = scoreData.home_score > scoreData.away_score;
-            return `
-                <div class="score-card">
-                    <div class="score-sport">${escapeHtml(scoreData.sport || 'Game')}</div>
-                    <div class="score-teams">
-                        <div class="score-team ${homeWon ? 'winner' : ''}">
-                            ${escapeHtml(scoreData.home_team)} ${escapeHtml(scoreData.home_score)}
-                        </div>
-                        <div class="score-team ${!homeWon ? 'winner' : ''}">
-                            ${escapeHtml(scoreData.away_team)} ${escapeHtml(scoreData.away_score)}
-                        </div>
-                    </div>
-                    <div class="score-final">${escapeHtml(scoreData.game_date || '')}</div>
-                </div>
-            `;
+        .flatMap(([team, scoreData]) => {
+            const sport = scoreData.sport || 'Game';
+            // Doubleheader: one card per game so game 2 isn't silently dropped
+            if (Array.isArray(scoreData.games) && scoreData.games.length > 1) {
+                return scoreData.games.map((game, i) =>
+                    renderCard(game, `${sport} · Game ${game.game_number || i + 1}`, scoreData.game_date));
+            }
+            return [renderCard(scoreData, sport, scoreData.game_date)];
         });
 
     if (cards.length === 0) {

@@ -50,6 +50,117 @@ class TestExtractTeamGames(unittest.TestCase):
         self.assertEqual(generate_rant._extract_team_games({"days": [None]}, "redsox"), [])
 
 
+def make_mlb_game(redsox_score, opponent_score, game_number=1, home=True,
+                  opponent="Tampa Bay Rays"):
+    """A game dict shaped exactly like fetch_mlb.py's parse_game writes it —
+    note: no home_team/home_score keys, and no per-game 'played' key."""
+    return {"game_number": game_number, "home": home, "redsox_score": redsox_score,
+            "opponent": opponent, "opponent_score": opponent_score}
+
+
+class TestExtractFlatFormatKeepsScores(unittest.TestCase):
+    """Celtics/Bruins/Patriots boxscores are flat (no games array). The scores
+    must survive extraction — they were being stripped to {played, game_date}."""
+
+    def test_flat_boxscore_scores_survive(self):
+        rolling = {"days": [{"date": "2026-06-10", "celtics": {"boxscore": {
+            "game_date": "2026-06-10", "played": True, "home": True,
+            "celtics_score": 120, "opponent": "New York Knicks",
+            "opponent_score": 98}}}]}
+        games = generate_rant._extract_team_games(rolling, "celtics")
+        self.assertEqual(len(games), 1)
+        self.assertEqual(games[0]["celtics_score"], 120)
+        self.assertEqual(games[0]["opponent_score"], 98)
+
+
+class TestEmotionalContext(unittest.TestCase):
+    """compute_emotional_context shipped reading home_score/home_team keys that
+    no fetcher produces — every real game read as a heartbroken 0-0 loss. On
+    the 2026-07-17 doubleheader sweep that told the model 'loss, L2' against
+    raw data showing two wins, and it wrote 'split' (judge FAIL, stale publish).
+    These tests pin the real fetcher schema."""
+
+    def test_mlb_single_win_is_a_win(self):
+        rolling = make_rolling("2026-07-10", games=[make_mlb_game(6, 2)])
+        ctx = generate_rant.compute_emotional_context(rolling, None)
+        self.assertEqual(ctx["redsox"]["last_result"], "win")
+        self.assertEqual(ctx["redsox"]["margin"], 4)
+        self.assertEqual(ctx["redsox"]["streak"], "W1")
+
+    def test_mlb_doubleheader_sweep_not_a_split(self):
+        rolling = make_rolling("2026-07-17", games=[
+            make_mlb_game(10, 0, game_number=1),
+            make_mlb_game(5, 3, game_number=2),
+        ])
+        ctx = generate_rant.compute_emotional_context(rolling, None)
+        rs = ctx["redsox"]
+        self.assertIn("sweep", rs["last_result"])
+        self.assertNotIn("split", rs["last_result"])
+        self.assertTrue(rs["doubleheader"])
+        self.assertEqual(rs["streak"], "W2")
+        self.assertEqual(
+            [g["result"] for g in rs["doubleheader_result"]], ["W", "W"])
+        # blowout margin (10-0) should drive the register, not the close nightcap
+        self.assertIn("euphoric", rs["emotional_register"])
+
+    def test_mlb_doubleheader_split_detected(self):
+        rolling = make_rolling("2026-07-17", games=[
+            make_mlb_game(2, 1, game_number=1),
+            make_mlb_game(3, 7, game_number=2),
+        ])
+        ctx = generate_rant.compute_emotional_context(rolling, None)
+        self.assertIn("split", ctx["redsox"]["last_result"])
+
+    def test_celtics_flat_format_blowout_win(self):
+        rolling = {"days": [{"date": "2026-06-10", "celtics": {"boxscore": {
+            "game_date": "2026-06-10", "played": True, "home": True,
+            "celtics_score": 120, "opponent": "New York Knicks",
+            "opponent_score": 98}}}]}
+        ctx = generate_rant.compute_emotional_context(rolling, None)
+        self.assertEqual(ctx["celtics"]["last_result"], "win")
+        self.assertIn("euphoric", ctx["celtics"]["emotional_register"])
+
+    def test_fixture_format_still_supported(self):
+        rolling = make_rolling("2026-06-10", games=[
+            {"home_team": "Tampa Bay Rays", "away_team": "Boston Red Sox",
+             "home_score": 4, "away_score": 3}])
+        ctx = generate_rant.compute_emotional_context(rolling, None)
+        self.assertEqual(ctx["redsox"]["last_result"], "loss")
+        self.assertEqual(ctx["redsox"]["margin"], 1)
+
+    def test_score_free_entry_skipped_not_zero_zero(self):
+        rolling = make_rolling("2026-06-10", played=True)  # no games, no scores
+        ctx = generate_rant.compute_emotional_context(rolling, None)
+        self.assertNotIn("redsox", ctx)
+
+
+class TestNormalizeBoxScoresDoubleheader(unittest.TestCase):
+    def test_both_games_survive_normalization(self):
+        data = {"box_scores": {"redsox": {
+            "game_date": "2026-07-17", "played": True, "season_type": "regular",
+            "doubleheader": True,
+            "games": [make_mlb_game(10, 0, game_number=1),
+                      make_mlb_game(5, 3, game_number=2)],
+        }}}
+        out = generate_rant.normalize_box_scores(data)
+        rs = out["box_scores"]["redsox"]
+        self.assertTrue(rs["doubleheader"])
+        self.assertEqual(len(rs["games"]), 2)
+        self.assertEqual(rs["games"][1]["home_score"], 5)
+        # top-level fields still present for old consumers
+        self.assertEqual(rs["home_score"], 10)
+
+    def test_single_game_keeps_flat_schema(self):
+        data = {"box_scores": {"redsox": {
+            "game_date": "2026-07-10", "played": True, "season_type": "regular",
+            "games": [make_mlb_game(6, 2)],
+        }}}
+        out = generate_rant.normalize_box_scores(data)
+        rs = out["box_scores"]["redsox"]
+        self.assertNotIn("games", rs)
+        self.assertEqual(rs["home_score"], 6)
+
+
 class TestDetectSlowDay(unittest.TestCase):
     def test_not_slow_when_team_played_yesterday(self):
         rolling = make_rolling("2026-06-10", games=[{"home_score": 4, "away_score": 3}])
