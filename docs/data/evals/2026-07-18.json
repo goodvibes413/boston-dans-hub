@@ -1,10 +1,10 @@
 {
   "date": "2026-07-18",
-  "generated_at": "2026-07-18T09:29:55.251851+00:00",
+  "generated_at": "2026-07-18T10:46:10.413120+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
   "total_attempts": 3,
-  "generation_seconds": 248.4,
+  "generation_seconds": 248.6,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -15,20 +15,20 @@
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "fabricated historical events: The headline and content claim a 'doubleheader' occurred yesterday, July 17th. The source data confirms two separate games were played, but they were not a doubleheader.",
-        "fabricated statistics: The content claims a 'ten-run explosion' in the first game, but the source data shows the Red Sox scored 10 runs. However, the content claims a 'five-to-three victory' in the second game, which matches the source data. The headline and content refer to a 'split', but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games, not split them."
+        "fabricated historical events: The headline and content claim a 'doubleheader' occurred on July 17th. The source data confirms two separate games were played, but they were not a doubleheader.",
+        "fabricated statistics: The content claims a 'split' of the doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games, not split them."
       ],
-      "duration_seconds": 2.7
+      "duration_seconds": 2.5
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "fabricated statistics: The headline and morning_brew claim a sweep of two victories, but the box scores in the source data show the Red Sox scored 10-0 and 5-3, totaling 15 runs for the Red Sox and 3 for the Rays. The content incorrectly lists the total score as 15-3 in the box_scores section, which is a fabrication of the game results.",
-        "repetition: formulaic paragraph opener \"my pops always ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        "fabricated statistics: The box_scores section incorrectly lists the total score for the two games as 15-3, which is a misrepresentation of the actual game results (10-0 and 5-3).",
+        "repetition: The phrase 'My neighbor Rick' is used as a formulaic opener/setup in the morning_brew, which matches the structure and content of the previous day's output."
       ],
-      "duration_seconds": 2.9
+      "duration_seconds": 2.4
     },
     {
       "attempt": 3,
@@ -36,9 +36,9 @@
       "severity": "high",
       "flags": [
         "fabricated historical events: The headline and content claim a 'doubleheader' occurred on July 17th. The source data confirms two separate games were played, but they were not a doubleheader.",
-        "fabricated statistics: The content claims the Red Sox scored 'double digits' in the opener (10-0) and implies a total of 15 runs scored across both games (10+5=15), but the headline and body incorrectly frame the event as a doubleheader, and the box score data for the second game (5-3) is misrepresented in the context of the 'doubleheader' narrative."
+        "fabricated statistics: The content claims a 'split' of the doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games, not split them."
       ],
-      "duration_seconds": 2.6
+      "duration_seconds": 2.4
     }
   ]
 }
