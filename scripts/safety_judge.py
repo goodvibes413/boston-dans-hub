@@ -210,6 +210,22 @@ FAIL if ANY of these are present:
     chatter, not real breaking milestones. Exception: if 3+ milestones are surfaced in
     the same day, covering 2 substantively is acceptable (Dan prioritizes the biggest).
 
+DOUBLEHEADER INTERPRETATION (applies to rules 7, 8, and 12):
+Two games between the same teams on the same game_date in rolling_7day — a "games"
+array with two entries, usually with "doubleheader": true — IS a doubleheader.
+Calling that day a "doubleheader", "twin bill", or "double dip" is CORRECT standard
+baseball terminology. NEVER flag the word itself as a fabricated event or statistic;
+the two-games-one-date data is exactly what those words mean.
+What you MUST verify instead is that the characterization matches the per-game
+results: "sweep" / "swept the doubleheader" means Boston won BOTH games; "split"
+means they won exactly one; "got swept" / "dropped both" means they lost both.
+Flag under rule 7 only when the stated characterization or scores contradict the
+per-game results in rolling_7day (e.g. calling two wins a "split").
+For rule 12, a doubleheader day is satisfied only when morning_brew reflects BOTH
+games — either both scores/results mentioned, or the pair clearly characterized
+as a unit ("swept the twin bill"). Covering game 1 while ignoring game 2 entirely
+is a coverage gap; do not, however, demand the word "doubleheader" specifically.
+
 Severity:
 - "low" if a single borderline phrase that could be tightened
 - "medium" if an off-roster player is implied as a current team member (rule 11), a played game is missing from morning_brew (rule 12), a story is misattributed to the wrong team (rule 13), or a MUST-cover milestone from LATEST_NEWS is missing from morning_brew (rule 14)
