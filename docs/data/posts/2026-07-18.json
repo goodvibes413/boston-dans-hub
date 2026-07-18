@@ -1,9 +1,18 @@
 {
+  "date": "2026-07-18",
+  "generated_at": "2026-07-17T12:10:55.784329+00:00",
   "headline": "Red Sox look to keep rolling as Tampa Bay arrives at Fenway",
   "morning_brew": [
     "I have been watching this team claw their way back from the cellar, and I gotta say, they look like a completely different group lately. My neighbor Rick has been convinced for months that the baseball gods had a personal vendetta against our pitching staff, but even he has stopped his incessant grumbling now that we are stringing together some wins. It is nice to actually look forward to turning on the tube again, even if I still keep one eye on the arson squad just in case things go sideways.",
     "We have a full day at the yard with a pair of contests against Tampa Bay, so I am planning on pacing myself. It is a marathon, not a sprint, and watching two full tilts in one day is the kind of stuff that makes me feel like a kid again, provided I do not fall asleep in the fifth like Uncle Carmine usually does. I hope the bats stay as hot as they have been during this run, because the Rays are always a pain in the side and we need to keep this momentum moving in the right direction.",
     "My pops always told me that you never get too high on a streak, but man, it is hard not to get a little giddy when things finally click. I am grabbing a few extra Dunks runs today to make sure I am fueled up for the second game tonight. If we can take care of business at home, we might just be able to keep this thing going through the weekend and add a decent deposit to the Duck Boat fund."
+  ],
+  "news_digest": [
+    {
+      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
+      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
+      "dans_take": "The challenge system is just another elaborate way for Rick to get into a shouting match with his own television."
+    }
   ],
   "trend_watch": [
     {
@@ -23,13 +32,6 @@
       "player": "Brayan Bello",
       "trend": "Effective command",
       "dans_take": "He is hitting his spots with precision and giving us the innings we desperately need, which beats the hell out of watching a bullpen parade."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
-      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
-      "dans_take": "The challenge system is just another elaborate way for Rick to get into a shouting match with his own television."
     }
   ],
   "box_scores": {
@@ -116,12 +118,6 @@
       "time_et": "7:15 PM ET"
     }
   ],
-  "generated_at": "2026-07-17T12:10:55.784329+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    "game coverage gap: The Red Sox played on 2026-07-16 (per rolling_7day), but the morning_brew fails to mention the game result or reaction to the game, focusing only on upcoming games."
-  ],
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: fabricated historical events: The headline and content claim a 'doubleheader' occurred on July 17th. The source data confirms two separate games were played, but they were not a doubleheader.; fabrica",
-  "_stale_age_hours": 21.4
+  "_stale": null,
+  "_fallback": null
 }
