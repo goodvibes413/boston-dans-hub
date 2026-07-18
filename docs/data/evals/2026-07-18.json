@@ -1,13 +1,15 @@
 {
   "date": "2026-07-18",
-  "generated_at": "2026-07-18T10:46:10.413120+00:00",
+  "generated_at": "2026-07-18T11:52:22.152287+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
   "total_attempts": 3,
-  "generation_seconds": 248.6,
+  "generation_seconds": 247.3,
   "pre_pass": {
-    "repetition_check": "pass",
-    "flagged_phrases": []
+    "repetition_check": "fail",
+    "flagged_phrases": [
+      "repetition: number-masked sentence skeleton \"the challenge system is just another\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    ]
   },
   "attempts": [
     {
@@ -15,18 +17,20 @@
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "fabricated historical events: The headline and content claim a 'doubleheader' occurred on July 17th. The source data confirms two separate games were played, but they were not a doubleheader.",
-        "fabricated statistics: The content claims a 'split' of the doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games, not split them."
+        "fabricated statistics: The headline and content claim a 'split' of a doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games.",
+        "fabricated historical events: The content refers to a 'doubleheader' on July 17th, but the source data confirms two separate games were played, not a doubleheader.",
+        "fabricated statistics: The content claims the Red Sox are sitting at an 'even record', but the source data (season_memory.current_season.redsox) shows 48-48, which is even, but the content implies this is a result of the 'split' mentioned in the headline, which is factually incorrect.",
+        "repetition: number-masked sentence skeleton \"the challenge system is just another elaborate way for rick to get into a shouting match with his own television\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
       ],
-      "duration_seconds": 2.5
+      "duration_seconds": 2.6
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "medium",
       "flags": [
-        "fabricated statistics: The box_scores section incorrectly lists the total score for the two games as 15-3, which is a misrepresentation of the actual game results (10-0 and 5-3).",
-        "repetition: The phrase 'My neighbor Rick' is used as a formulaic opener/setup in the morning_brew, which matches the structure and content of the previous day's output."
+        "game coverage gap: The Red Sox played two games yesterday (2026-07-17), but the morning_brew fails to acknowledge the doubleheader, instead referring to the day's events as a singular 'day at the yard' and a singular 'offensive explosion', failing to cover the specific results of both games.",
+        "repetition: number-masked sentence skeleton \"my neighbor rick has been convinced\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
       ],
       "duration_seconds": 2.4
     },
@@ -35,10 +39,12 @@
       "verdict": "FAIL",
       "severity": "high",
       "flags": [
-        "fabricated historical events: The headline and content claim a 'doubleheader' occurred on July 17th. The source data confirms two separate games were played, but they were not a doubleheader.",
-        "fabricated statistics: The content claims a 'split' of the doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games, not split them."
+        "fabricated statistics: The headline and content claim a 'split' of a doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games.",
+        "fabricated historical events: The content claims a 'doubleheader' occurred on July 17th, but the source data shows two separate games were played, not a doubleheader.",
+        "repetition: The content reuses the 'neighbor Rick' and 'Duck Boat fund' framing and structure from recent outputs, violating the continuity rule.",
+        "repetition: number-masked sentence skeleton \"the challenge system is just another\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
       ],
-      "duration_seconds": 2.4
+      "duration_seconds": 2.5
     }
   ]
 }

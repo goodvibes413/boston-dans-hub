@@ -122,6 +122,6 @@
     "game coverage gap: The Red Sox played on 2026-07-16 (per rolling_7day), but the morning_brew fails to mention the game result or reaction to the game, focusing only on upcoming games."
   ],
   "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: fabricated historical events: The headline and content claim a 'doubleheader' occurred on July 17th. The source data confirms two separate games were played, but they were not a doubleheader.; fabrica",
-  "_stale_age_hours": 22.7
+  "_stale_reason": "safety judge FAILed after 3 attempts: fabricated statistics: The headline and content claim a 'split' of a doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games.; fabricated histor",
+  "_stale_age_hours": 23.8
 }
