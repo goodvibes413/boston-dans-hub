@@ -1,55 +1,55 @@
 {
-  "headline": "Red Sox look to keep rolling as Tampa Bay arrives at Fenway",
+  "headline": "Red Sox sweep the twin bill and keep the momentum rolling",
   "morning_brew": [
-    "I have been watching this team claw their way back from the cellar, and I gotta say, they look like a completely different group lately. My neighbor Rick has been convinced for months that the baseball gods had a personal vendetta against our pitching staff, but even he has stopped his incessant grumbling now that we are stringing together some wins. It is nice to actually look forward to turning on the tube again, even if I still keep one eye on the arson squad just in case things go sideways.",
-    "We have a full day at the yard with a pair of contests against Tampa Bay, so I am planning on pacing myself. It is a marathon, not a sprint, and watching two full tilts in one day is the kind of stuff that makes me feel like a kid again, provided I do not fall asleep in the fifth like Uncle Carmine usually does. I hope the bats stay as hot as they have been during this run, because the Rays are always a pain in the side and we need to keep this momentum moving in the right direction.",
-    "My pops always told me that you never get too high on a streak, but man, it is hard not to get a little giddy when things finally click. I am grabbing a few extra Dunks runs today to make sure I am fueled up for the second game tonight. If we can take care of business at home, we might just be able to keep this thing going through the weekend and add a decent deposit to the Duck Boat fund."
+    "Sweeping a twin bill at Fenway is exactly what the doctor ordered to get this summer back on track, and yesterday's display against the Rays was nothing short of a masterpiece. Game one was a complete clinic with Jake Bennett cruising through six scoreless innings, and game two was just as satisfying with the bullpen finally slamming the door shut when it counted. It feels like this squad has found their pulse, and you can see the confidence growing with every single out.",
+    "Watching Wilyer Abreu hammer two homers in the nightcap was the kind of performance that makes you want to jump out of your seat, especially with how tight that game felt for a stretch. We aren't out of the woods just yet in the standings, but taking two from Tampa Bay sends a hell of a message to the rest of the league. I am officially moving a nice, healthy deposit into the Duck Boat fund today, because if they keep playing this brand of baseball, things are gonna get real interesting before August rolls around.",
+    "My neighbor Rick is already trying to find a reason to moan, claiming the umps were blind on a couple of calls during the second game, but I told him to just shut his trap and enjoy the win for once. Even he can't argue with a sweep, though he is already plotting his next dossier on the league's officiating. I am just gonna bask in this winning streak for a few hours and enjoy my Dunks in peace, at least until first pitch this afternoon."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Jarren Duran",
-      "trend": "Consistent contact and aggressive play",
-      "dans_take": "The kid has been the absolute spark plug for this offense, and he is playing with a fire that is damn near contagious."
+      "player": "Wilyer Abreu",
+      "trend": "Two homers and three RBI in the second game of the doubleheader",
+      "dans_take": "That second bomb was a total moonshot, pure gold for the highlight reel."
+    },
+    {
+      "category": "Heater",
+      "player": "Jake Bennett",
+      "trend": "Six scoreless innings with only one hit allowed",
+      "dans_take": "The Rays looked like they were trying to hit a bowling ball with a toothpick against him all afternoon."
     },
     {
       "category": "Bullpen Watch",
       "player": "Aroldis Chapman",
-      "trend": "High-leverage innings",
-      "dans_take": "Every time he walks out to the mound, I am watching the final three outs through my fingers like a horror movie."
-    },
-    {
-      "category": "Streak",
-      "player": "Brayan Bello",
-      "trend": "Effective command",
-      "dans_take": "He is hitting his spots with precision and giving us the innings we desperately need, which beats the hell out of watching a bullpen parade."
+      "trend": "Pitched a scoreless ninth with two strikeouts for the save",
+      "dans_take": "Finally, an arson squad member who remembered that his job is to put out fires, not start them."
     }
   ],
   "news_digest": [
     {
-      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
-      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
-      "dans_take": "The challenge system is just another elaborate way for Rick to get into a shouting match with his own television."
+      "headline": "Tampa Bay Rays vs. Boston Red Sox: Game Highlights",
+      "url": "https://www.espn.com/video/clip/_/id/49387892/game-highlights",
+      "dans_take": "Watch the highlights if you want to remember what it feels like to actually win a damn ballgame."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "unknown",
-      "away_team": "unknown",
+      "home_team": "Boston Celtics",
+      "away_team": "Sacramento Kings",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-07-16",
+      "game_date": "2026-07-17",
       "played": false,
       "season_type": "offseason"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "unknown",
-      "away_team": "unknown",
+      "home_team": "Boston Bruins",
+      "away_team": "Not Applicable",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-07-16",
+      "game_date": "2026-07-17",
       "played": false,
       "season_type": "offseason"
     },
@@ -57,34 +57,24 @@
       "sport": "MLB",
       "home_team": "Boston Red Sox",
       "away_team": "Tampa Bay Rays",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-16",
-      "played": false,
+      "home_score": 15,
+      "away_score": 3,
+      "game_date": "2026-07-17",
+      "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "unknown",
-      "away_team": "unknown",
+      "home_team": "New England Patriots",
+      "away_team": "Not Applicable",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-07-16",
+      "game_date": "2026-07-17",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-17",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
     {
       "date": "2026-07-18",
       "matchup": "Tampa Bay Rays at Boston Red Sox",
@@ -114,14 +104,12 @@
       "date": "2026-07-24",
       "matchup": "Toronto Blue Jays at Boston Red Sox",
       "time_et": "7:15 PM ET"
+    },
+    {
+      "date": "2026-07-25",
+      "matchup": "Toronto Blue Jays at Boston Red Sox",
+      "time_et": "4:10 PM ET"
     }
   ],
-  "generated_at": "2026-07-17T12:10:55.784329+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    "game coverage gap: The Red Sox played on 2026-07-16 (per rolling_7day), but the morning_brew fails to mention the game result or reaction to the game, focusing only on upcoming games."
-  ],
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: fabricated statistics: The headline and content claim a 'split' of a doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games.; fabricated histor",
-  "_stale_age_hours": 23.8
+  "generated_at": "2026-07-18T13:22:52.122271+00:00"
 }

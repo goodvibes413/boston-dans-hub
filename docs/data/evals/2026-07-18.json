@@ -1,50 +1,21 @@
 {
   "date": "2026-07-18",
-  "generated_at": "2026-07-18T11:52:22.152287+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
-  "total_attempts": 3,
-  "generation_seconds": 247.3,
+  "generated_at": "2026-07-18T13:22:50.283218+00:00",
+  "outcome": "fresh",
+  "winning_attempt": 1,
+  "total_attempts": 1,
+  "generation_seconds": 1.8,
   "pre_pass": {
-    "repetition_check": "fail",
-    "flagged_phrases": [
-      "repetition: number-masked sentence skeleton \"the challenge system is just another\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    ]
+    "repetition_check": "pass",
+    "flagged_phrases": []
   },
   "attempts": [
     {
       "attempt": 1,
-      "verdict": "FAIL",
-      "severity": "high",
-      "flags": [
-        "fabricated statistics: The headline and content claim a 'split' of a doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games.",
-        "fabricated historical events: The content refers to a 'doubleheader' on July 17th, but the source data confirms two separate games were played, not a doubleheader.",
-        "fabricated statistics: The content claims the Red Sox are sitting at an 'even record', but the source data (season_memory.current_season.redsox) shows 48-48, which is even, but the content implies this is a result of the 'split' mentioned in the headline, which is factually incorrect.",
-        "repetition: number-masked sentence skeleton \"the challenge system is just another elaborate way for rick to get into a shouting match with his own television\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      ],
-      "duration_seconds": 2.6
-    },
-    {
-      "attempt": 2,
-      "verdict": "FAIL",
-      "severity": "medium",
-      "flags": [
-        "game coverage gap: The Red Sox played two games yesterday (2026-07-17), but the morning_brew fails to acknowledge the doubleheader, instead referring to the day's events as a singular 'day at the yard' and a singular 'offensive explosion', failing to cover the specific results of both games.",
-        "repetition: number-masked sentence skeleton \"my neighbor rick has been convinced\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      ],
-      "duration_seconds": 2.4
-    },
-    {
-      "attempt": 3,
-      "verdict": "FAIL",
-      "severity": "high",
-      "flags": [
-        "fabricated statistics: The headline and content claim a 'split' of a doubleheader, but the source data shows the Red Sox won both games (10-0 and 5-3), meaning they swept the games.",
-        "fabricated historical events: The content claims a 'doubleheader' occurred on July 17th, but the source data shows two separate games were played, not a doubleheader.",
-        "repetition: The content reuses the 'neighbor Rick' and 'Duck Boat fund' framing and structure from recent outputs, violating the continuity rule.",
-        "repetition: number-masked sentence skeleton \"the challenge system is just another\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      ],
-      "duration_seconds": 2.5
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 1.8
     }
   ]
 }
