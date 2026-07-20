@@ -1,55 +1,55 @@
 {
-  "headline": "Twelve straight wins and the Sox are absolutely on fire",
+  "headline": "Twelve straight wins for the Red Sox as Fenway rocks",
   "morning_brew": [
-    "Twelve straight wins. My heart can barely take it, but the energy at Fenway is wicked electric right now. Rallies are becoming the calling card of this group, and watching them claw back after falling behind early against Tampa Bay was the kind of grit we haven't seen in this ballpark in a long time. It feels like every guy in the lineup is picking each other up, and that confidence is contagious enough to catch a cold in the dugout.",
-    "Wilyer Abreu is playing out of his mind, providing the kind of power that shifts the momentum of an entire series. I am not gonna say we have the division title locked up, but the way this team is fighting back is a massive statement to the rest of the league. I am making another deposit into the Duck Boat fund, and I am not even gonna apologize for how optimistic I am gettin'.",
-    "My mother called me after the final out and just said they finally look like a real ballclub again. She has watched this team since before I was born and she is usually the toughest critic I know, definitely harsher than my neighbor Rick on his best day. If she is impressed, then we really do have something cooking. I am just gonna enjoy this ride while it lasts and hope the hot streak carries right into the next series at Fenway."
+    "Twelve in a row and the atmosphere at Fenway is flat out electric. Watching this team scrap and claw back against the Rays on Saturday night reminded me exactly why we put up with all the heartbreak and bad coffee of a long season. They were down early but never panicked, and the way they bullied their way back into the lead shows a kind of grit that makes me think this might actually lead somewhere special come autumn.",
+    "Willson Contreras brought the thunder with a blast that shifted the tide, and our bullpen shut the door with the kind of precision I haven't seen in years. Sonny Gray gave us six innings of absolute beauty before handing the keys to the relievers, who made sure that cushion was plenty. I am officially making another fat deposit into the Duck Boat fund because this streak has reached the point where I'm starting to get nervous just talking about it.",
+    "My neighbor Rick is currently trying to build a dossier proving the league is terrified of our momentum, claiming the umpires were looking for any excuse to slow us down. I told him to put the tinfoil hat away and just enjoy the damn ride while the getting is good. We have the Orioles coming into the Hub tonight, and if we keep playing this brand of ball, the rest of the league better watch their backs."
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "Wilyer Abreu",
-      "trend": "Hitting homers in bunches",
-      "dans_take": "The man is locked in and making every pitcher pay for leaving one over the plate like it's his job."
+      "trend": "Four home runs over two games",
+      "dans_take": "The man is playing on a cheat code right now, and I am loving every second of it."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Aroldis Chapman",
-      "trend": "Working through traffic to lock down the save",
-      "dans_take": "My blood pressure spiked with those walks, but he found a way to finish the job."
+      "player": "Ryan Watson",
+      "trend": "One inning of work with two strikeouts",
+      "dans_take": "He marched into the fire with the game on the line and absolutely dismantled them."
     },
     {
       "category": "Streak",
-      "player": "Boston Red Sox",
-      "trend": "Twelve consecutive victories",
-      "dans_take": "This is the kind of run that defines a season and turns every cynic in Boston into a believer."
+      "player": "Sonny Gray",
+      "trend": "Six innings pitched with five strikeouts",
+      "dans_take": "He was a total surgeon on that mound and kept us breathing while the bats woke up."
     }
   ],
   "news_digest": [
     {
-      "headline": "Red Sox's win streak hits 12 after four-run rally vs. Rays",
-      "url": "https://www.espn.com/mlb/story/_/id/49395309/red-sox-win-streak-hits-12-four-run-rally-vs-rays",
-      "dans_take": "Twelve games in a row is no fluke and this team is playing like they could beat the 1927 Yankees."
+      "headline": "Red Sox rally for victory over Rays for 12th straight win",
+      "url": "http://www.espn.com/mlb/recap?gameId=401816160",
+      "dans_take": "Twelve straight is pure insanity, this group has found a gear I wasn't even sure existed."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Orlando Magic",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-18",
+      "home_team": "unknown",
+      "away_team": "unknown",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-07-19",
       "played": false,
       "season_type": "offseason"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": 0,
-      "away_score": 0,
-      "game_date": "2026-07-18",
+      "home_team": "unknown",
+      "away_team": "unknown",
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-07-19",
       "played": false,
       "season_type": "offseason"
     },
@@ -57,29 +57,24 @@
       "sport": "MLB",
       "home_team": "Boston Red Sox",
       "away_team": "Tampa Bay Rays",
-      "home_score": 7,
-      "away_score": 6,
-      "game_date": "2026-07-18",
+      "home_score": 6,
+      "away_score": 1,
+      "game_date": "2026-07-19",
       "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "N/A",
+      "home_team": "unknown",
+      "away_team": "unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-07-18",
+      "game_date": "2026-07-19",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-07-19",
-      "matchup": "Tampa Bay Rays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
     {
       "date": "2026-07-20",
       "matchup": "Baltimore Orioles at Boston Red Sox",
@@ -109,15 +104,17 @@
       "date": "2026-07-26",
       "matchup": "Toronto Blue Jays at Boston Red Sox",
       "time_et": "1:35 PM ET"
+    },
+    {
+      "date": "2026-07-27",
+      "matchup": "Boston Red Sox at Athletics",
+      "time_et": "9:40 PM ET"
     }
   ],
-  "generated_at": "2026-07-19T09:59:32.322143+00:00",
+  "generated_at": "2026-07-20T12:06:03.787396+00:00",
   "_quality_warning": true,
   "_quality_flags": [
-    "repetition: number-masked sentence skeleton \"to the rest of the league i am\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"deposit into the duck boat fund\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ],
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: Fabricated statistics: The headline and morning_brew claim a 13-game winning streak, but the source_data (rolling_7day and news_digest) confirms a 12-game winning streak.; repetition: formulaic paragr",
-  "_stale_age_hours": 25.0
+    "repetition: number-masked sentence skeleton \"deposit into the duck boat fund\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+    "repetition: formulaic paragraph opener \"# straight wins ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+  ]
 }
