@@ -1,9 +1,18 @@
 {
+  "date": "2026-07-21",
+  "generated_at": "2026-07-21T10:32:51.533438+00:00",
   "headline": "Fourteen straight at Fenway and I am officially losing my mind",
   "morning_brew": [
     "Fourteen straight victories and this team has me walking on air. Watching the Red Sox pull out another win at Fenway last night was a masterclass in staying cool while the rest of us were pacing a hole in our living room rugs. The air at the park was thick enough to cut with a knife, but this group just refuses to blink when the game is on the line.",
     "Payton Tolle battled through five innings, keeping us afloat before the bullpen slammed the door shut. That relief performance was pure magic, especially given how many times the arson squad has made me watch the final innings through my fingers this summer. I am not saying we have the division trophy polished and sitting on the mantle, but the vibe in the Hub has completely shifted. It is a damn good time to be a Sox fan.",
     "My neighbor Rick is currently trying to convince me that the streak is entirely due to a lucky pair of socks he started wearing last Tuesday. He has been tracking the statistics on a legal pad for days now, and honestly, I am not gonna be the one to tell him he is wrong if it keeps this train moving. We are back at it again tonight, and I hope we can keep this heater rolling while the rest of the league is still trying to figure out what the hell hit them."
+  ],
+  "news_digest": [
+    {
+      "headline": "Red Sox win 14th straight behind Durbin's heroics",
+      "url": "https://www.espn.com/video/clip/_/id/49414027/red-sox-win-14th-straight-durbin-heroics",
+      "dans_take": "Fourteen in a row is absolute insanity, this club is playing like they are possessed."
+    }
   ],
   "trend_watch": [
     {
@@ -23,13 +32,6 @@
       "player": "Caleb Durbin",
       "trend": "Delivered the winning heroics",
       "dans_take": "He stepped up like he owns the place, and I am loving every second of it."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Red Sox win 14th straight behind Durbin's heroics",
-      "url": "https://www.espn.com/video/clip/_/id/49414027/red-sox-win-14th-straight-durbin-heroics",
-      "dans_take": "Fourteen in a row is absolute insanity, this club is playing like they are possessed."
     }
   ],
   "box_scores": {
@@ -111,10 +113,6 @@
       "time_et": "9:40 PM ET"
     }
   ],
-  "generated_at": "2026-07-21T10:32:51.533438+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    "repetition: number-masked sentence skeleton \"my neighbor rick is currently trying to\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: formulaic paragraph opener \"my neighbor rick ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
