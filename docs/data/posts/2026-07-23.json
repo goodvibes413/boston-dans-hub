@@ -1,9 +1,23 @@
 {
+  "date": "2026-07-23",
+  "generated_at": "2026-07-23T10:26:50.907858+00:00",
   "headline": "Orioles kill our historic winning streak in doubleheader split at Fenway",
   "morning_brew": [
     "Well, the ride had to end sometime, but damn if it didn't hurt to watch it happen in the nightcap. After fifteen straight wins, we finally came back down to earth against the Orioles yesterday. We took the opener behind a solid start from Jake Bennett, but the bats went colder than a day-old Dunks in the second game and the streak is officially in the books. It stings to see the momentum vanish, especially when we were looking to make history, but fifteen games is a hell of a run that kept this whole city buzzing all month long.",
     "I was sitting in my usual spot at Fenway for both games and you could just feel the energy drain out of the park once the O's grabbed that early lead in the nightcap. Ed Rivera had a rough go of it, lasting less than an inning, and that put our guys in a hole they just couldn't climb out of. The bullpen worked hard to keep us in it, and Brayan Bello was a real bright spot with over five innings of scoreless work, but the lineup couldn't generate the clutch hitting we've seen throughout this heater. Watching that offense stall was like watching my neighbor Rick try to parallel park the Buick, just painful to witness.",
     "Look, I'm frustrated, but I'm not hitting the panic button. We are still sitting at 52-49, and if you told me in April we would be where we are now, I would have signed for it in a heartbeat. We have a couple of days to clear our heads before the Blue Jays come to town. My neighbor Rick is already whispering about 'corrective regression' and 'statistical leveling,' but I think we just ran into a buzzsaw. Time to reset and start a new streak on Thursday."
+  ],
+  "news_digest": [
+    {
+      "headline": "Orioles end Red Sox's record-tying 15-game winning streak",
+      "url": "https://www.espn.com/mlb/story/_/id/49428964/orioles-end-red-sox-record-tying-15-game-winning-streak",
+      "dans_take": "Fifteen in a row was a beautiful thing, but all good things come to a grinding halt."
+    },
+    {
+      "headline": "2026 New England Patriots training camp preview",
+      "url": "https://www.espn.com/nfl/story/_/id/49096288/2026-new-england-patriots-nfl-training-camp-preview",
+      "dans_take": "Football is almost back and I'm ready to see if Drake Maye finally takes that next step."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Ceddanne Rafaela",
       "trend": "Hitless in the second game after a big Game 1",
       "dans_take": "Even the spark plugs run out of gas eventually, no sense crying over one bad game."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Orioles end Red Sox's record-tying 15-game winning streak",
-      "url": "https://www.espn.com/mlb/story/_/id/49428964/orioles-end-red-sox-record-tying-15-game-winning-streak",
-      "dans_take": "Fifteen in a row was a beautiful thing, but all good things come to a grinding halt."
-    },
-    {
-      "headline": "2026 New England Patriots training camp preview",
-      "url": "https://www.espn.com/nfl/story/_/id/49096288/2026-new-england-patriots-nfl-training-camp-preview",
-      "dans_take": "Football is almost back and I'm ready to see if Drake Maye finally takes that next step."
     }
   ],
   "box_scores": {
@@ -116,5 +118,6 @@
       "time_et": "9:40 PM ET"
     }
   ],
-  "generated_at": "2026-07-23T10:26:50.907858+00:00"
+  "_stale": null,
+  "_fallback": null
 }
