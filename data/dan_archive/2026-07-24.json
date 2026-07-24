@@ -1,17 +1,10 @@
 {
+  "generated_at": "2026-07-24T10:22:26.506853+00:00",
   "headline": "Jordan Walsh inks extension as the Celtics look toward next season",
   "morning_brew": [
     "The news cycle hasn't stopped even though the games are over, with Jordan Walsh locking in a three-year, 15 million dollar extension to stay in Boston through 2030. It is a solid move for the front office to secure a young piece while the league is still figuring out its roster configurations for next year. After the way the playoffs ended back in May, I am happy to see the team making some moves to solidify the foundation. We have had our share of heartbreaks on Causeway Street, but keeping the youth pipeline active is what we need to get back to the top of the mountain.",
     "Speaking of looking ahead, the Patriots are finally starting training camp this Saturday. I have been waiting for the pads to start popping so we can see what this roster is actually made of after the offseason moves. My neighbor Rick has been going on for weeks about the training camp storylines and how the 53-man roster is going to shake out, and for once, I am actually listening to him. Training camp is the time for hope, and god knows we could use a little bit of that going into the fall.",
     "Back on the diamond, the Red Sox are getting ready to host the Blue Jays for a three-game set starting tonight at Fenway. We are sitting at 52-49, and after the streak ended, it is time to start a new run if we want to stay in the thick of the Wild Card hunt. The trade deadline is right around the corner, and the chatter is heating up, but for now, the only thing that matters is taking care of business against Toronto."
-  ],
-  "trend_watch": [
-    {
-      "category": "Streak",
-      "player": "Jordan Walsh",
-      "trend": "Signed a three-year extension",
-      "dans_take": "A smart piece of business to keep him in the mix for the long haul, unlike my attempts to keep my lawn green this summer."
-    }
   ],
   "news_digest": [
     {
@@ -24,90 +17,5 @@
       "url": "https://www.espn.com/nfl/story/_/id/49096288/2026-new-england-patriots-nfl-training-camp-preview",
       "dans_take": "Training camp is finally here and it is time to see who actually wants to play football, or if Rick's theories hold any water."
     }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-23",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-23",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-23",
-      "played": false,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-23",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-24",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "7:15 PM ET"
-    },
-    {
-      "date": "2026-07-25",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-26",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-27",
-      "matchup": "Boston Red Sox at Athletics",
-      "time_et": "9:40 PM ET"
-    },
-    {
-      "date": "2026-07-28",
-      "matchup": "Boston Red Sox at Athletics",
-      "time_et": "9:40 PM ET"
-    },
-    {
-      "date": "2026-07-29",
-      "matchup": "Boston Red Sox at Athletics",
-      "time_et": "9:40 PM ET"
-    },
-    {
-      "date": "2026-07-30",
-      "matchup": "Boston Red Sox at Athletics",
-      "time_et": "9:40 PM ET"
-    },
-    {
-      "date": "2026-07-31",
-      "matchup": "Boston Red Sox at Los Angeles Dodgers",
-      "time_et": "10:10 PM ET"
-    }
-  ],
-  "generated_at": "2026-07-24T10:22:26.506853+00:00"
+  ]
 }
