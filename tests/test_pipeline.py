@@ -161,6 +161,60 @@ class TestNormalizeBoxScoresDoubleheader(unittest.TestCase):
         self.assertEqual(rs["home_score"], 6)
 
 
+class TestRepairBoxScoresDoubleheader(unittest.TestCase):
+    """repair_box_scores_from_fetchers gated purely on 'Gemini already produced
+    scores', but on a doubleheader Gemini emits ONE flat game while the fetcher
+    holds both. The gate skipped repair and the second game was discarded — the
+    2026-07-22 Orioles twin bill published as a lone 1-5 loss."""
+
+    def setUp(self):
+        import json as _json
+        import tempfile
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        root = Path(self._tmp.name)
+        (root / "data").mkdir()
+        # Fetcher saw a doubleheader: Sox lost 1-5, then won 4-2.
+        (root / "data" / "redsox_boxscore.json").write_text(_json.dumps({
+            "game_date": "2026-07-22", "played": True, "season_type": "regular",
+            "doubleheader": True,
+            "games": [make_mlb_game(1, 5, game_number=1, opponent="Baltimore Orioles"),
+                      make_mlb_game(4, 2, game_number=2, opponent="Baltimore Orioles")],
+        }))
+        self._orig_repo = generate_rant.REPO
+        generate_rant.REPO = root
+        self.addCleanup(lambda: setattr(generate_rant, "REPO", self._orig_repo))
+
+    def test_second_game_recovered_when_model_flattened_it(self):
+        # What Gemini emitted: a single flat game, scores populated.
+        data = {"box_scores": {"redsox": {
+            "sport": "MLB", "home_team": "Boston Red Sox",
+            "away_team": "Baltimore Orioles", "home_score": 1, "away_score": 5,
+            "game_date": "2026-07-22", "played": True, "season_type": "regular",
+        }}}
+        out = generate_rant.repair_box_scores_from_fetchers(data)
+        rs = out["box_scores"]["redsox"]
+        self.assertTrue(rs.get("doubleheader"))
+        self.assertEqual(len(rs.get("games", [])), 2)
+        self.assertEqual([g["game_number"] for g in rs["games"]], [1, 2])
+        # game 2 (the win) is the one that used to vanish
+        self.assertEqual(rs["games"][1]["home_score"], 4)
+        self.assertEqual(rs["games"][1]["away_score"], 2)
+
+    def test_complete_single_game_still_left_alone(self):
+        import json as _json
+        (Path(self._tmp.name) / "data" / "redsox_boxscore.json").write_text(_json.dumps({
+            "game_date": "2026-07-10", "played": True, "season_type": "regular",
+            "games": [make_mlb_game(6, 2)],
+        }))
+        original = {"sport": "MLB", "home_team": "Boston Red Sox",
+                    "away_team": "Tampa Bay Rays", "home_score": 6, "away_score": 2,
+                    "game_date": "2026-07-10", "played": True, "season_type": "regular"}
+        out = generate_rant.repair_box_scores_from_fetchers(
+            {"box_scores": {"redsox": dict(original)}})
+        self.assertEqual(out["box_scores"]["redsox"], original)
+
+
 class TestDetectSlowDay(unittest.TestCase):
     def test_not_slow_when_team_played_yesterday(self):
         rolling = make_rolling("2026-06-10", games=[{"home_score": 4, "away_score": 3}])
