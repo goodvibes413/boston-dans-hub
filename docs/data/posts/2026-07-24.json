@@ -1,5 +1,4 @@
 {
-  "date": "2026-07-24",
   "generated_at": "2026-07-24T10:22:26.506853+00:00",
   "headline": "Jordan Walsh inks extension as the Celtics look toward next season",
   "morning_brew": [
@@ -19,98 +18,5 @@
       "dans_take": "Training camp is finally here and it is time to see who actually wants to play football, or if Rick's theories hold any water."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Streak",
-      "player": "Jordan Walsh",
-      "trend": "Signed a three-year extension",
-      "dans_take": "A smart piece of business to keep him in the mix for the long haul, unlike my attempts to keep my lawn green this summer."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-23",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-23",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-23",
-      "played": false,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-07-23",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-07-24",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "7:15 PM ET"
-    },
-    {
-      "date": "2026-07-25",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-07-26",
-      "matchup": "Toronto Blue Jays at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-07-27",
-      "matchup": "Boston Red Sox at Athletics",
-      "time_et": "9:40 PM ET"
-    },
-    {
-      "date": "2026-07-28",
-      "matchup": "Boston Red Sox at Athletics",
-      "time_et": "9:40 PM ET"
-    },
-    {
-      "date": "2026-07-29",
-      "matchup": "Boston Red Sox at Athletics",
-      "time_et": "9:40 PM ET"
-    },
-    {
-      "date": "2026-07-30",
-      "matchup": "Boston Red Sox at Athletics",
-      "time_et": "9:40 PM ET"
-    },
-    {
-      "date": "2026-07-31",
-      "matchup": "Boston Red Sox at Los Angeles Dodgers",
-      "time_et": "10:10 PM ET"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-07-24"
 }
