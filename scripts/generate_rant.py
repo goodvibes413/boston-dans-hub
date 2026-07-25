@@ -382,26 +382,35 @@ def repair_box_scores_from_fetchers(data: dict) -> dict:
     }
 
     for team_key, fetcher_path in fetcher_files.items():
-        # Only repair entries where Gemini failed to populate scores
         existing = data["box_scores"].get(team_key, {})
         already_has_scores = (
             existing.get("played") and
             existing.get("home_score") is not None and
             existing.get("away_score") is not None
         )
-        if already_has_scores:
-            continue  # Gemini got it right — leave it alone
 
+        # Load the fetcher BEFORE deciding to skip. Gemini having *a* score is
+        # not proof it has the whole day: on a doubleheader it typically emits
+        # one flat game, and gating purely on already_has_scores discarded the
+        # fetcher's second game (2026-07-22 Orioles twin bill published as a
+        # single 1-5 loss). Repair also runs when the fetcher saw more games
+        # than the current entry carries.
         raw = load_json(fetcher_path)
         if not raw or raw.get("error"):
             continue  # Fetcher also failed — nothing to repair from
+
+        raw_games = raw.get("games") if isinstance(raw.get("games"), list) else None
+        existing_games = existing.get("games") if isinstance(existing.get("games"), list) else []
+        missing_games = bool(raw_games) and len(raw_games) > max(len(existing_games), 1)
+
+        if already_has_scores and not missing_games:
+            continue  # Gemini got it right — leave it alone
 
         # Red Sox may wrap in a games array. Individual game dicts carry no
         # "played" key — that lives on the top-level boxscore — so check the
         # level we're actually reading from (checking game.get("played") after
         # unwrapping made this repair a silent no-op for the games-array format).
         game = raw
-        raw_games = raw.get("games") if isinstance(raw.get("games"), list) else None
         if raw_games:
             game = raw_games[0]
             if not raw.get("played"):
@@ -453,7 +462,8 @@ def repair_box_scores_from_fetchers(data: dict) -> dict:
                 for i, g in enumerate(raw_games)
             ]
         data["box_scores"][team_key] = repaired
-        print(f"  repaired box_score for {team_key}: {home_team} {home_score}–{away_score} {away_team}", file=sys.stderr)
+        suffix = f" (+{len(raw_games) - 1} more game(s), doubleheader)" if repaired.get("doubleheader") else ""
+        print(f"  repaired box_score for {team_key}: {home_team} {home_score}–{away_score} {away_team}{suffix}", file=sys.stderr)
 
     return data
 

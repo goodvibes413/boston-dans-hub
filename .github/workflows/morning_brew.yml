@@ -80,7 +80,14 @@ jobs:
           today_utc = datetime.now(timezone.utc).date()
           if dt.date() == today_utc and not data.get("_stale") and not data.get("_fallback"):
               # Already have a real publish for today. Signal downstream steps to skip.
-              Path(os.environ["GITHUB_OUTPUT"]).open("a").write("skip=true\n")
+              # Must be an explicit close/flush: the previous `.open("a").write(...)`
+              # left the handle to interpreter-shutdown GC, so a dropped write made
+              # skip empty and the run regenerated the whole day instead of exiting
+              # in ~9s (2026-07-24 16:14 UTC ran the full pipeline for 15 minutes).
+              with Path(os.environ["GITHUB_OUTPUT"]).open("a") as fh:
+                  fh.write("skip=true\n")
+                  fh.flush()
+                  os.fsync(fh.fileno())
               print(f"today's content already published at {gen_at} — skipping")
           else:
               print(f"existing output is from {dt.date()} (today={today_utc}) — proceeding")
@@ -273,7 +280,12 @@ jobs:
           fi
 
       - name: Open/update failure issue
-        if: failure()
+        # cancelled() as well as failure(): a job GitHub *cancels* (infra
+        # preemption, concurrency eviction, manual stop) does not satisfy
+        # failure(), so the 2026-07-24 16:14 UTC cancellation filed no issue and
+        # was invisible to alerting despite showing red. Logs for cancelled runs
+        # also expire fast, so capture the status in the issue while it exists.
+        if: failure() || cancelled()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -282,6 +294,7 @@ jobs:
 
           Event: ${{ github.event_name }}
           Attempt: ${{ github.run_attempt }}
+          Job status: ${{ job.status }}
 
           See run logs for details."
           # Try to find an existing open issue with today's title; if none, create one.
