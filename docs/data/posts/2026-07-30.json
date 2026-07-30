@@ -1,9 +1,18 @@
 {
+  "date": "2026-07-30",
+  "generated_at": "2026-07-30T10:32:32.819119+00:00",
   "headline": "Red Sox rally in extras to snatch a nail-biter from Oakland",
   "morning_brew": [
     "I watched that tenth inning through my fingers like a horror movie, and for once, the baseball gods actually decided to smile down on us. After fighting through a miserable, tight contest all night, finally pushing across two runs in the tenth felt like a cold beer after a three-hour commute on the Pike. It was the kind of gritty performance that reminds you why we endure the cross-country travel, especially when the bats decide to wake up right before the lights go out.",
     "Patrick Sandoval gave us a solid start, and the bullpen was absolutely lights out, shutting down the Athletics when the game was on the line. Aroldis Chapman picked up the win and Greg Weissert locked it down in the final frame, and I'll be damned if that isn't the kind of late-game efficiency we've been begging for all year. My old man always said a good relief corps is the heartbeat of a playoff contender, and if these arms keep dealing like this, they might finally earn back their real name and stop being the arson squad.",
     "We are sitting at 56-51, and the team is finally showing the kind of consistency we need to make a real push. I'm not looking at the standings too closely because I don't want to jinx the momentum, but winning like this feels like we're finally turning a corner. We have a tough stretch against the Dodgers coming up, but for today, I am just happy to see the Red Sox playing winning baseball. The Duck Boat fund is getting a small deposit this morning, and I'm treating myself to an extra large at Dunks to celebrate."
+  ],
+  "news_digest": [
+    {
+      "headline": "2026 MLB trade deadline tracker: Rumors, news, analysis",
+      "url": "https://www.espn.com/mlb/story/_/id/49410877/2026-mlb-trade-deadline-tracker-rumors-alerts-news-latest-updates-analysis",
+      "dans_take": "The front office better be burning up the phone lines before the deadline hits on Monday or I'm gonna lose my mind."
+    }
   ],
   "trend_watch": [
     {
@@ -23,13 +32,6 @@
       "player": "Aroldis Chapman",
       "trend": "One inning of work with two strikeouts",
       "dans_take": "If he keeps painting corners like that, I might actually stop hiding behind my couch."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "2026 MLB trade deadline tracker: Rumors, news, analysis",
-      "url": "https://www.espn.com/mlb/story/_/id/49410877/2026-mlb-trade-deadline-tracker-rumors-alerts-news-latest-updates-analysis",
-      "dans_take": "The front office better be burning up the phone lines before the deadline hits on Monday or I'm gonna lose my mind."
     }
   ],
   "box_scores": {
@@ -111,11 +113,6 @@
       "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-07-30T10:32:32.819119+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    "repetition: number-masked sentence skeleton \"we are sitting at # # and\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: formulaic paragraph opener \"i watched that ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: formulaic paragraph opener \"we are sitting ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }

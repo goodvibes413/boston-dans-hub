@@ -1,0 +1,48 @@
+{
+  "date": "2026-07-30",
+  "generated_at": "2026-07-30T10:28:20.054809+00:00",
+  "outcome": "retry",
+  "winning_attempt": 3,
+  "total_attempts": 3,
+  "generation_seconds": 252.8,
+  "pre_pass": {
+    "repetition_check": "fail",
+    "flagged_phrases": [
+      "repetition: number-masked sentence skeleton \"we are sitting at # # and\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+      "repetition: formulaic paragraph opener \"i watched that ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+      "repetition: formulaic paragraph opener \"we are sitting ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "repetition: number-masked sentence skeleton \"when you are fighting for a wild card spot\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: number-masked sentence skeleton \"innings of # run ball but\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      ],
+      "duration_seconds": 2.4
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "fabricated statistics: Greg Weissert is credited with 'Two scoreless innings' in the trend_watch, but source_data shows he pitched 1.0 inning."
+      ],
+      "duration_seconds": 4.0
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "repetition: number-masked sentence skeleton \"we are sitting at # # and\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: formulaic paragraph opener \"i watched that ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: formulaic paragraph opener \"we are sitting ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      ],
+      "duration_seconds": 2.4
+    }
+  ]
+}
