@@ -1,9 +1,23 @@
 {
+  "date": "2026-07-31",
+  "generated_at": "2026-07-31T10:45:40.989481+00:00",
   "headline": "Sox grind out a beauty in Oakland before heading west",
   "morning_brew": [
     "Winning a tight one on the road is always satisfying, but walking out of Oakland with a dub feels like a deep, cleansing breath. Sonny Gray was absolutely dealing on the mound, keeping the opposition quiet enough to let our bats do the heavy lifting. Every time the pressure started to build, someone stepped up to make a play, which is exactly the kind of grit I need to see from this group as we hit the dog days of summer.",
     "Watching Willson Contreras launch that home run felt like the turning point we have been hunting for in these low-scoring nail-biters. Ceddanne Rafaela played out of his mind, driving in runs and providing the exact spark this lineup needs to keep the lead. Aroldis Chapman closed the door with pure authority, and seeing him settle into that ninth inning is huge for my blood pressure and the confidence of the whole pitching staff. It wasn't the prettiest win in history, but grabbing a victory before hopping on a flight to the West Coast is a hell of a way to build some momentum.",
     "The focus shifts immediately to the Dodgers, and we are gonna need every ounce of this energy to compete with a team that has been hot all year. We have a tough stretch ahead, but this club is starting to look like a unit that actually believes in itself. No sense looking back at the standings, just keep grinding out these results one pitch at a time. I am keeping the faith and hoping we can take the fight to LA starting tonight."
+  ],
+  "news_digest": [
+    {
+      "headline": "2026 MLB trade deadline grades: Report cards for every deal",
+      "url": "https://www.espn.com/mlb/story/_/id/49454655/2026-mlb-trade-deadline-grades-analysis-report-cards-every-deal",
+      "dans_take": "I am refreshing the wire like a maniac, hoping the front office unearths a diamond before the clock hits zero."
+    },
+    {
+      "headline": "Patriots' 1st-round pick Caleb Lomu off to hot start at camp",
+      "url": "https://www.espn.com/video/clip/_/id/49490742/patriots-1st-round-pick-caleb-lomu-hot-start-camp",
+      "dans_take": "Music to my ears to hear the new blood is making noise down in Foxborough."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Ceddanne Rafaela",
       "trend": "Clutch hitting performance",
       "dans_take": "He is doing damage every time he steps in the box, and watching him work is a total blast."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "2026 MLB trade deadline grades: Report cards for every deal",
-      "url": "https://www.espn.com/mlb/story/_/id/49454655/2026-mlb-trade-deadline-grades-analysis-report-cards-every-deal",
-      "dans_take": "I am refreshing the wire like a maniac, hoping the front office unearths a diamond before the clock hits zero."
-    },
-    {
-      "headline": "Patriots' 1st-round pick Caleb Lomu off to hot start at camp",
-      "url": "https://www.espn.com/video/clip/_/id/49490742/patriots-1st-round-pick-caleb-lomu-hot-start-camp",
-      "dans_take": "Music to my ears to hear the new blood is making noise down in Foxborough."
     }
   ],
   "box_scores": {
@@ -116,15 +118,6 @@
       "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-07-31T10:45:40.989481+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "repetition: formulaic paragraph opener \"i watched that ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"for once the baseball gods actually decided to smile down on us\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"the front office better be burning up the phone lines\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"inning through my fingers like a horror movie\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"we are sitting at # # and\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"the duck boat fund is getting\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: formulaic paragraph opener \"i watched that ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
