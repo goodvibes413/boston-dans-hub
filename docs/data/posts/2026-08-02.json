@@ -1,9 +1,23 @@
 {
+  "date": "2026-08-02",
+  "generated_at": "2026-08-02T10:05:09.300252+00:00",
   "headline": "Red Sox keep rolling in LA with another heart-stopping win",
   "morning_brew": [
     "Another night, another game that took three years off my life. Our boys kept their cool in Los Angeles, edging out the Dodgers with the kind of grit that had me white-knuckling my empty Dunks cup until the final out. Peyton Tolle managed to navigate six innings against a high-powered lineup, and while he dealt with plenty of traffic on the basepaths, he kept us in the game when we needed it most. It was not pretty, but finding a way to gut out a close win on the road is exactly what a contender does during these dog days of August.",
     "The bullpen deserves a massive tip of the cap for shutting the door late. Justin Slaten, Tyron Guerrero, and Aroldis Chapman were lights out, combining for three scoreless frames to seal the deal. It is refreshing to see those guys working in harmony, especially after the stress of the last few weeks. My neighbor Rick has spent the morning buried in his latest umpire dossier, and for once, he actually has nothing to complain about because the strike zone didn't cost us a damn thing.",
     "Riding a four-game winning streak is a welcome change of pace, and the energy in the clubhouse seems to be catching fire at the perfect time. We have a quick turnaround before facing the Dodgers again, but this group is playing with a level of confidence that has been missing for most of the summer. I am not saying anything else to avoid hexing this run, but I am certainly enjoying the ride while it lasts. Keep the pressure on, stay focused, and let us see if we can keep the streak alive."
+  ],
+  "news_digest": [
+    {
+      "headline": "2026 MLB trade deadline tracker: Rumors, news, analysis",
+      "url": "https://www.espn.com/mlb/story/_/id/49410877/2026-mlb-trade-deadline-tracker-rumors-alerts-news-latest-updates-analysis",
+      "dans_take": "The clock is ticking on Monday, and I am waiting to see if we make any final moves"
+    },
+    {
+      "headline": "Gabe Jacas finally reports to training camp",
+      "url": "https://www.espn.com/video/clip/_/id/49508819/gabe-jacas-reports-training-camp",
+      "dans_take": "Good to see our guys showing up and getting to work down in Foxborough"
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Brayan Bello",
       "trend": "Four scoreless innings in relief",
       "dans_take": "Giving the team valuable length out of the pen is a massive boost"
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "2026 MLB trade deadline tracker: Rumors, news, analysis",
-      "url": "https://www.espn.com/mlb/story/_/id/49410877/2026-mlb-trade-deadline-tracker-rumors-alerts-news-latest-updates-analysis",
-      "dans_take": "The clock is ticking on Monday, and I am waiting to see if we make any final moves"
-    },
-    {
-      "headline": "Gabe Jacas finally reports to training camp",
-      "url": "https://www.espn.com/video/clip/_/id/49508819/gabe-jacas-reports-training-camp",
-      "dans_take": "Good to see our guys showing up and getting to work down in Foxborough"
     }
   ],
   "box_scores": {
@@ -116,9 +118,6 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-08-02T10:05:09.300252+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "repetition: number-masked sentence skeleton \"when the top of the order\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
