@@ -162,7 +162,12 @@ def archive_dan_output(published: dict, archive_dir: Path = ARCHIVE_DIR,
 
         # Prune anything older than retention window. Sort by filename
         # (lexicographic == chronological for ISO dates), keep the last N.
-        all_files = sorted(archive_dir.glob("*.json"), key=lambda p: p.stem)
+        # Posts only — *.evals.json siblings have their own prune in
+        # archive_evals(); counting them here halved the effective window.
+        all_files = sorted(
+            (p for p in archive_dir.glob("*.json") if ".evals" not in p.name),
+            key=lambda p: p.stem,
+        )
         excess = len(all_files) - retention_days
         if excess > 0:
             for old in all_files[:excess]:

@@ -508,7 +508,8 @@ def load_recent_dan_output(archive_dir: Path, days: int = DEFAULT_MEMORY_DAYS) -
 
     try:
         archive_files = sorted(
-            (p for p in archive_dir.glob("*.json") if p.stem != today_iso),
+            (p for p in archive_dir.glob("*.json")
+             if ".evals" not in p.name and p.stem != today_iso),
             key=lambda p: p.stem,
             reverse=True,
         )
