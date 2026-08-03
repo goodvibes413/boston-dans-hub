@@ -1,9 +1,18 @@
 {
+  "date": "2026-08-03",
+  "generated_at": "2026-08-03T11:28:03.621026+00:00",
   "headline": "Red Sox sweep the Dodgers as Rafaela stays absolutely red hot",
   "morning_brew": [
     "I'm not saying anything, I don't wanna jinx it, but this team is cooking with gas right now. Ceddanne Rafaela is on a different planet, launching a homer for the third straight game to help us take down the Dodgers 8-4 on Sunday. Sweeping a series against a club like that in their own house isn't just a win, it's a statement that we aren't messing around. The way this lineup is grinding out at-bats and attacking the zone tells me they're finally starting to believe what I've been shouting at the TV since April.",
     "Jake Bennett navigated five and two-thirds innings to pick up the win, and while he dealt with a bit of traffic, he did exactly what we needed to keep the ship steady. The bullpen had to work for it, but they shut the door when it mattered most, and I didn't even have to watch through my fingers. My neighbor Rick has been trying to construct some wild conspiracy theory about the manager's pitch counts all morning, but even he had to shut his trap after watching Whitlock and the rest of the arms close out that ninth inning with zero drama.",
     "We're heading back to Fenway for a homestand with a five-game winning streak and the kind of clubhouse energy that makes you want to run through a wall. The trade deadline is upon us, and while I'm keeping my eye on the front office to see if they make one final, glorious deposit in the Duck Boat fund, I'm just gonna sit back and enjoy this version of the Sox. It is a damn good time to be a fan in the Hub."
+  ],
+  "news_digest": [
+    {
+      "headline": "2026 MLB trade deadline grades: Report cards for every deal",
+      "url": "https://www.espn.com/mlb/story/_/id/49454655/2026-mlb-trade-deadline-grades-analysis-report-cards-every-deal",
+      "dans_take": "The deadline is finally here, so let's see if we add that one last piece to this winning puzzle"
+    }
   ],
   "trend_watch": [
     {
@@ -23,13 +32,6 @@
       "player": "Brayan Bello",
       "trend": "Team is on a five-game winning streak",
       "dans_take": "I'm not saying a word, I'm just gonna keep my eyes shut and let it ride"
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "2026 MLB trade deadline grades: Report cards for every deal",
-      "url": "https://www.espn.com/mlb/story/_/id/49454655/2026-mlb-trade-deadline-grades-analysis-report-cards-every-deal",
-      "dans_take": "The deadline is finally here, so let's see if we add that one last piece to this winning puzzle"
     }
   ],
   "box_scores": {
@@ -111,5 +113,6 @@
       "time_et": "7:07 PM ET"
     }
   ],
-  "generated_at": "2026-08-03T11:28:03.621026+00:00"
+  "_stale": null,
+  "_fallback": null
 }
