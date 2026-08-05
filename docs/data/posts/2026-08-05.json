@@ -1,9 +1,23 @@
 {
+  "date": "2026-08-05",
+  "generated_at": "2026-08-05T10:39:24.537219+00:00",
   "headline": "Red Sox crush White Sox to extend winning streak to six",
   "morning_brew": [
     "I been sayin' it all year, this team is finally finding its rhythm when it matters most. Last night was a total beatdown of the White Sox, and watching Caleb Durbin launch that grand slam made the whole place erupt like it was October already. We put up fourteen runs on fifteen hits, and when the lineup is firing on all cylinders like that, it feels like we can beat anybody in the league. Seeing the bats wake up and support our pitching staff is a damn good feeling, and frankly, it's about damn time.",
     "Patrick Sandoval finally got himself in the win column after a hell of a wait, and he looked sharp out there. He went five full innings, and honestly, the way the bullpen locked it down after that, three scoreless frames from Brayan Bello to close it out, was the kind of disciplined baseball that makes you believe in this run. Sully texted me in the sixth saying he was already planning the parade, and for the first time all season, I didn't even have the heart to tell him to calm down. I just sent back a picture of my Dunks and kept watching.",
     "We are riding a six-game heater heading into tonight, and the energy at Fenway is exactly what we need as we navigate this stretch of the schedule. The Patriots are still grinding away in Foxborough, and watching Tommy DeVito turn some heads in training camp is a nice little distraction, but let's be real, the Hub belongs to the Sox right now. We are back at the Fens tonight, and if we keep playing like this, I might just have to stop looking at my bank account and start looking at flights to Toronto for the post-season."
+  ],
+  "news_digest": [
+    {
+      "headline": "Durbin hits grand slam and Abreu goes deep twice as streaking Red Sox rout White Sox 14-2",
+      "url": "http://www.espn.com/mlb/recap?gameId=401816386",
+      "dans_take": "That is the kind of offensive clinic that makes the rest of the league start sweating."
+    },
+    {
+      "headline": "Tommy Devito impressing at Patriots training camp",
+      "url": "https://www.espn.com/video/clip/_/id/49531896/tommy-devito-impressing-patriots-training-camp",
+      "dans_take": "It is just camp, but I will take any positive news out of Foxborough I can get to keep the lights on."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Caleb Durbin",
       "trend": "Hit a grand slam in the blowout win",
       "dans_take": "Nothing clears the air like a grand slam to put a game out of reach before the third inning."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Durbin hits grand slam and Abreu goes deep twice as streaking Red Sox rout White Sox 14-2",
-      "url": "http://www.espn.com/mlb/recap?gameId=401816386",
-      "dans_take": "That is the kind of offensive clinic that makes the rest of the league start sweating."
-    },
-    {
-      "headline": "Tommy Devito impressing at Patriots training camp",
-      "url": "https://www.espn.com/video/clip/_/id/49531896/tommy-devito-impressing-patriots-training-camp",
-      "dans_take": "It is just camp, but I will take any positive news out of Foxborough I can get to keep the lights on."
     }
   ],
   "box_scores": {
@@ -121,5 +123,6 @@
       "time_et": "7:07 PM ET"
     }
   ],
-  "generated_at": "2026-08-05T10:39:24.537219+00:00"
+  "_stale": null,
+  "_fallback": null
 }
