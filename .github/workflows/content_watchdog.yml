@@ -2,19 +2,33 @@ name: Content Watchdog — is Dan actually up?
 
 # Observability that does not depend on the pipeline being alive.
 #
-# morning_brew.yml reports failures from a step inside its own job, which
-# leaves two blind spots:
-#   1. A job GitHub never assigns a runner (no runner_id, no steps, cancelled
-#      after ~15 min queued — seen 2026-07-24 and 2026-08-06) runs no steps at
-#      all, so nothing files an issue and the day passes silently.
-#   2. A run that publishes stale or fallback content exits 0 by design, so a
-#      green history is not proof that readers are seeing current content.
+# morning_brew.yml reports failures from a step inside its own job, so it can
+# only report what happens while that job is running. That leaves two blind
+# spots, and this workflow closes BOTH of them:
+#   1. A run that publishes stale or fallback content exits 0 by design, so a
+#      green run history is not proof readers are seeing current content.
+#   2. A pipeline run that fires but leaves the published file untouched or
+#      dated to an earlier day passes silently.
 #
-# This workflow checks the published artifact instead of the process that
-# writes it, so it holds no matter how many runs fired or whether any ran.
-# It cannot catch its own non-start — nothing scheduled can — but it is a
-# checkout plus one stdlib script, so it is far likelier to get scheduled
-# than the 25-minute pipeline it watches.
+# It checks the published artifact rather than the process that writes it, so
+# it holds regardless of how many runs fired or how late they were.
+#
+# WHAT THIS DOES *NOT* COVER — runner starvation.
+# When GitHub never assigns a job a runner (runner_id 0, empty runner_name, no
+# steps array, cancelled after ~15 min queued) no step executes, so no in-repo
+# alerting of any kind can fire. This workflow is equally exposed: on
+# 2026-08-06 its very first run was stranded exactly that way, alongside the
+# pipeline slot and an ensure-labels dispatch.
+#
+# An earlier version of this comment claimed a small job is "far likelier to
+# get scheduled" than the 25-minute pipeline. That was wrong and is recorded
+# here so it is not re-derived: queue admission is about obtaining a runner at
+# all and is indifferent to how long the job would hold one. A 10-second job
+# waits in the same line as a 25-minute one.
+#
+# Covering runner starvation requires a monitor that does not share fate with
+# GitHub Actions. See docs/MONITORING.md for the external check that closes
+# this last gap.
 
 on:
   schedule:

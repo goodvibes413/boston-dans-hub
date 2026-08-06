@@ -5,16 +5,22 @@ content live and current right now?
 
 Exists because per-run failure alerting has a structural blind spot. The
 Morning Brew workflow opens an issue from a step inside its own job, so it
-can only report failures that happen *while that job is running*. When
-GitHub never assigns the job a runner — no runner_id, no steps, cancelled
-after ~15 minutes in the queue (2026-07-24, 2026-08-06) — no step executes,
-so nothing files an issue and the day passes silently. A green run history
-is likewise no proof of health: a run that publishes stale or fallback
-content exits 0 by design.
+can only report failures that happen *while that job is running*. A green
+run history is no proof of health: a run that publishes stale or fallback
+content exits 0 by design, and a run that leaves the file dated to an
+earlier day passes just as quietly.
 
 This check reads the published artifact instead of the pipeline that writes
-it, so it holds regardless of how many runs fired, whether they were
-delayed, or whether they ran at all.
+it, so it holds regardless of how many runs fired or how delayed they were.
+
+SCOPE LIMIT — this does not cover runner starvation. When GitHub never
+assigns a job a runner (runner_id 0, empty runner_name, no steps array,
+cancelled after ~15 min queued — 2026-07-24 and 2026-08-06) nothing in the
+repo runs, including this script. Being a small job does not help: queue
+admission is about obtaining a runner at all, not how long the job would
+hold one, so this waits in the same line as the 25-minute pipeline. Its own
+first production run was stranded that way. Closing that gap needs a
+monitor outside GitHub Actions — see docs/MONITORING.md.
 
 Checks (in order):
   1. docs/data/daily_output.json exists and parses
