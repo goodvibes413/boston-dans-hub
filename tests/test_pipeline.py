@@ -14,6 +14,7 @@ Run: python3 -m unittest discover -s tests -v
 
 import sys
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
@@ -327,6 +328,93 @@ class TestPunchUpMerge(unittest.TestCase):
         punched = {"headline": "x", "morning_brew": ["only one paragraph"]}
         merged = self._merge_with(punched)
         self.assertEqual(merged["morning_brew"], self.DRAFT["morning_brew"])
+
+
+class TestWatchdog(unittest.TestCase):
+    """The watchdog is the only health signal that survives the pipeline never
+    running — a job GitHub leaves unassigned executes no steps, so no in-job
+    alerting can fire. These pin the states it must call unhealthy."""
+
+    def setUp(self):
+        import watchdog
+        self.watchdog = watchdog
+        import tempfile
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.path = Path(self._tmp.name) / "daily_output.json"
+        self.now = datetime(2026, 8, 6, 19, 0, tzinfo=timezone.utc)
+
+    def _write(self, **overrides):
+        import json as _json
+        payload = {
+            "morning_brew": ["p"], "trend_watch": [], "news_digest": [],
+            "box_scores": {}, "schedule": [],
+            "generated_at": "2026-08-06T10:45:30+00:00",
+        }
+        payload.update(overrides)
+        self.path.write_text(_json.dumps(payload))
+
+    def _check(self):
+        # site_url="" keeps the live fetch out of unit tests
+        return self.watchdog.check(self.path, "", self.now)
+
+    def test_healthy_today(self):
+        self._write()
+        problems, _ = self._check()
+        self.assertEqual(problems, [])
+
+    def test_missing_file_is_unhealthy(self):
+        problems, _ = self._check()
+        self.assertEqual(len(problems), 1)
+        self.assertIn("does not exist", problems[0])
+
+    def test_yesterdays_content_is_unhealthy(self):
+        """The blind spot that motivated this: pipeline never ran, no failure
+        issue exists, and the newest content is from a previous day."""
+        self._write(generated_at="2026-08-05T10:45:30+00:00")
+        problems, _ = self._check()
+        self.assertTrue(any("No publish for today" in p for p in problems))
+
+    def test_stale_republish_is_unhealthy(self):
+        self._write(_stale=True, _stale_reason="judge FAILed after 3 attempts")
+        problems, _ = self._check()
+        self.assertTrue(any("stale republish" in p for p in problems))
+
+    def test_fallback_is_unhealthy(self):
+        self._write(_fallback=True)
+        problems, _ = self._check()
+        self.assertTrue(any("SAFE_FALLBACK" in p for p in problems))
+
+    def test_missing_keys_flagged(self):
+        import json as _json
+        self.path.write_text(_json.dumps({"generated_at": "2026-08-06T10:45:30+00:00"}))
+        problems, _ = self._check()
+        self.assertTrue(any("Missing required keys" in p for p in problems))
+
+    def test_malformed_json_is_unhealthy(self):
+        self.path.write_text("{not json")
+        problems, _ = self._check()
+        self.assertTrue(any("not valid JSON" in p for p in problems))
+
+    def test_regenerated_is_healthy_but_noted(self):
+        self._write(_regenerated=True)
+        problems, notes = self._check()
+        self.assertEqual(problems, [])
+        self.assertTrue(any("regeneration" in n for n in notes))
+
+    def test_past_midnight_grace_accepts_yesterday(self):
+        """A watchdog delayed past midnight UTC must not false-alarm on the
+        publish that is still correctly the newest one."""
+        self._write(generated_at="2026-08-06T10:45:30+00:00")
+        early = datetime(2026, 8, 7, 2, 0, tzinfo=timezone.utc)
+        problems, _ = self.watchdog.check(self.path, "", early)
+        self.assertEqual(problems, [])
+
+    def test_after_grace_hour_rejects_yesterday(self):
+        self._write(generated_at="2026-08-06T10:45:30+00:00")
+        later = datetime(2026, 8, 7, 19, 0, tzinfo=timezone.utc)
+        problems, _ = self.watchdog.check(self.path, "", later)
+        self.assertTrue(any("No publish for today" in p for p in problems))
 
 
 class TestRuleTitlesSync(unittest.TestCase):

@@ -29,3 +29,7 @@ jobs:
             --color fbca04 \
             --description "Morning Brew published stale/fallback content (graceful degradation)" \
             --force
+          gh label create content-stale \
+            --color b60205 \
+            --description "Watchdog: the live site is not serving current content" \
+            --force
