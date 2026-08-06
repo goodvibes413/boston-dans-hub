@@ -1,0 +1,101 @@
+name: Content Watchdog — is Dan actually up?
+
+# Observability that does not depend on the pipeline being alive.
+#
+# morning_brew.yml reports failures from a step inside its own job, which
+# leaves two blind spots:
+#   1. A job GitHub never assigns a runner (no runner_id, no steps, cancelled
+#      after ~15 min queued — seen 2026-07-24 and 2026-08-06) runs no steps at
+#      all, so nothing files an issue and the day passes silently.
+#   2. A run that publishes stale or fallback content exits 0 by design, so a
+#      green history is not proof that readers are seeing current content.
+#
+# This workflow checks the published artifact instead of the process that
+# writes it, so it holds no matter how many runs fired or whether any ran.
+# It cannot catch its own non-start — nothing scheduled can — but it is a
+# checkout plus one stdlib script, so it is far likelier to get scheduled
+# than the 25-minute pipeline it watches.
+
+on:
+  schedule:
+    # 19:00 UTC = 3:00 PM ET. The last publish slot is 15:00 UTC and observed
+    # queue delays run 85-115 min, so every slot has had its chance by now.
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: content-watchdog
+  cancel-in-progress: false
+
+jobs:
+  watchdog:
+    name: Verify today's content is published and current
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Check published content
+        id: check
+        continue-on-error: true
+        run: python3 scripts/watchdog.py
+
+      - name: Open or update alert
+        if: steps.check.outputs.status == 'unhealthy'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="Dan is not current: $(date -u +%Y-%m-%d)"
+          body="The content watchdog found the published site is not serving current content.
+
+          **What is wrong:** ${{ steps.check.outputs.summary }}
+
+          Details: ${{ steps.check.outputs.details }}
+
+          Watchdog run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          This check reads \`docs/data/daily_output.json\` directly, so it fires even when
+          no pipeline run reported a failure — including when GitHub never assigned the
+          Morning Brew job a runner, which files no issue of its own.
+
+          To recover once Gemini is healthy:
+          \`gh workflow run \"Morning Brew — Daily Dan Commentary\" --ref main -f force=true\`
+
+          This issue closes automatically on the next healthy check."
+          # `|| true`: a missing content-stale label makes `gh issue list` exit
+          # non-zero, and an alert must never be lost to a label bookkeeping
+          # problem. Falls through to creating a fresh issue.
+          existing=$(gh issue list --state open --label content-stale \
+            --json number --jq '.[0].number' 2>/dev/null || true)
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body" --label "content-stale" || \
+              gh issue create --title "$title" --body "$body"
+          fi
+
+      - name: Close alert when healthy
+        if: steps.check.outputs.status == 'healthy'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Auto-close so an open content-stale issue always means "broken right
+          # now". Without this the label accumulates resolved days and stops
+          # being a signal worth reading.
+          for n in $(gh issue list --state open --label content-stale \
+              --json number --jq '.[].number' 2>/dev/null || true); do
+            gh issue close "$n" \
+              --comment "Content is current again as of $(date -u +%Y-%m-%dT%H:%M:%SZ). Closed automatically by the watchdog." \
+              --reason completed
+          done
+
+      - name: Fail the run when unhealthy
+        if: steps.check.outputs.status == 'unhealthy'
+        run: |
+          echo "::error::Dan is not serving current content — ${{ steps.check.outputs.summary }}"
+          exit 1
