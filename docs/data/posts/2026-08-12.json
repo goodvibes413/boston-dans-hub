@@ -1,9 +1,23 @@
 {
+  "date": "2026-08-12",
+  "generated_at": "2026-08-12T09:17:11.521158+00:00",
   "headline": "Red Sox losing streak hits four as Toronto keeps us sinking",
   "morning_brew": [
     "I watched Tuesday night's game through my fingers, and let me tell you, this current run of form is reaching a new level of misery. Watching the Red Sox drop four in a row feels like waiting for a delayed T train that you know isn't coming, only to realize you're stuck in the rain. Ernie Clement delivering that tiebreaking blow in the sixth inning was the kind of punch to the gut that leaves you breathless, and quite frankly, it is getting old watching us give away games when we should be sharpening our focus for the final stretch of the season.",
     "Sandoval went through six innings but just could not keep the Blue Jays contained long enough for our lineup to find any real rhythm. When the bats are quiet and the bullpen starts showing cracks, there is nowhere to hide, and that is exactly where we find ourselves right now. I have not seen a team look this lost since cousin Jimmy tried to navigate the Pike during rush hour without a GPS and ended up in a completely different county. We need a spark, a win, or even just a decent night of fundamental baseball to remind us that this group is still in the hunt.",
     "We head right back out there tonight, and I really hope the guys can find a way to flip the script before this slump turns into a total disaster. Toronto isn't an easy place to play, but we are supposed to be a team that fights back when the odds are against us. I am going to park myself on the couch again because that is what we do in this town, but I would sure love a reason to cheer for a change instead of sitting here wondering what on earth went wrong."
+  ],
+  "news_digest": [
+    {
+      "headline": "Drake Maye not expected to play in first preseason game",
+      "url": "https://www.espn.com/video/clip/_/id/49584714/drake-maye-not-expected-play-first-preseason-game",
+      "dans_take": "Mike Vrabel is playing it safe, and honestly, I would rather keep our future signal caller in bubble wrap anyway."
+    },
+    {
+      "headline": "Champion Knicks to face Sixers, LeBron in NBA tripleheader",
+      "url": "https://www.espn.com/nba/story/_/id/49581391/champion-knicks-face-sixers-lebron-nba-tripleheader",
+      "dans_take": "I do not care about the league schedule when we are still shaking off the hangover from how our own season ended."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Ceddanne Rafaela",
       "trend": "Putting the ball in play and driving in runs",
       "dans_take": "At least someone is playing with some damn fire, showing the rest of the guys how to actually produce."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Drake Maye not expected to play in first preseason game",
-      "url": "https://www.espn.com/video/clip/_/id/49584714/drake-maye-not-expected-play-first-preseason-game",
-      "dans_take": "Mike Vrabel is playing it safe, and honestly, I would rather keep our future signal caller in bubble wrap anyway."
-    },
-    {
-      "headline": "Champion Knicks to face Sixers, LeBron in NBA tripleheader",
-      "url": "https://www.espn.com/nba/story/_/id/49581391/champion-knicks-face-sixers-lebron-nba-tripleheader",
-      "dans_take": "I do not care about the league schedule when we are still shaking off the hangover from how our own season ended."
     }
   ],
   "box_scores": {
@@ -126,11 +128,6 @@
       "time_et": "TBD"
     }
   ],
-  "generated_at": "2026-08-12T09:17:11.521158+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "repetition: number-masked sentence skeleton \"i been sayin it all year you cannot expect to\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"red sox skid hits # games after\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: formulaic paragraph opener \"red sox skid ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
