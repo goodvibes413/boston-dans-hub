@@ -1,9 +1,23 @@
 {
+  "date": "2026-08-15",
+  "generated_at": "2026-08-15T08:33:00.078432+00:00",
   "headline": "Red Sox bullpen turns into the arson squad against Pittsburgh",
   "morning_brew": [
     "Just when I thought we were getting our act together, the Red Sox reminded us exactly why watching this team feels like a full-time job. Bennett gave us four innings of shaky work, but the real disaster show started when the bullpen took over. Giving up four runs to a team like Pittsburgh feels like a kick in the teeth after the momentum we had against Toronto. It is the same movie, just a different, worse remake, and I am getting real tired of watching the same tragic ending.",
     "The bats couldn't bail us out either, leaving nine hits on the board while failing to put any real pressure on a middling Pirates staff. It felt like watching cousin Jimmy try to field a grounder in his work boots, watching that lead slip away because we couldn't execute the simple stuff when it mattered most. You can't expect to climb back into the AL East hunt if you are dropping games like this, especially when the pitching doesn't have the stomach to hold a close game in the later innings.",
     "We have to shake this off fast because the schedule isn't doing us any favors. I am hoping for a total reset tonight, but until the arms start looking reliable, I am keeping my expectations buried deep in the ground. My mother took one look at the scoreboard, sighed like she was watching a long-lost pet get lost again, and shook her head. Honestly, she is usually the only one in the room who sees this team for what it really is."
+  ],
+  "news_digest": [
+    {
+      "headline": "Timberwolves set Garnett jersey retirement for Celtics clash",
+      "url": "https://www.espn.com/nba/story/_/id/49610507/timberwolves-set-garnett-jersey-retirement-celtics-clash",
+      "dans_take": "Seeing KG get his number retired again is a nice trip down memory lane, even if it feels like a lifetime ago."
+    },
+    {
+      "headline": "Colts and Patriots finish first preseason game in a 13-13 tie",
+      "url": "https://www.espn.com/video/clip/_/id/49609380/colts-patriots-finish-first-preseason-game-13-13-tie",
+      "dans_take": "Watching Andy Borregales miss three field goals in a tie is exactly the kind of mid-August mess I expected."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Bennett",
       "trend": "Four innings pitched with four earned runs",
       "dans_take": "Not gonna get it done when the starter is out before the fifth inning starts."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Timberwolves set Garnett jersey retirement for Celtics clash",
-      "url": "https://www.espn.com/nba/story/_/id/49610507/timberwolves-set-garnett-jersey-retirement-celtics-clash",
-      "dans_take": "Seeing KG get his number retired again is a nice trip down memory lane, even if it feels like a lifetime ago."
-    },
-    {
-      "headline": "Colts and Patriots finish first preseason game in a 13-13 tie",
-      "url": "https://www.espn.com/video/clip/_/id/49609380/colts-patriots-finish-first-preseason-game-13-13-tie",
-      "dans_take": "Watching Andy Borregales miss three field goals in a tie is exactly the kind of mid-August mess I expected."
     }
   ],
   "box_scores": {
@@ -121,5 +123,6 @@
       "time_et": "TBD"
     }
   ],
-  "generated_at": "2026-08-15T08:33:00.078432+00:00"
+  "_stale": null,
+  "_fallback": null
 }
