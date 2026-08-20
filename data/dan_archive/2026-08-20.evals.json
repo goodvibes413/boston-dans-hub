@@ -1,0 +1,31 @@
+{
+  "date": "2026-08-20",
+  "generated_at": "2026-08-20T08:41:59.694650+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 140.3,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "fabricated statistics: headline claims 'late errors' cost the Sox the game, but the boxscore shows 0 errors for the Red Sox",
+        "fabricated statistics: morning_brew claims Mor\u00e1n gave up 'three walks' in the 10th inning, but the boxscore shows he gave up 3 walks total in his 1.0 inning of work, not specifically in the 10th frame (which was the only inning he pitched, but the description of the event is inaccurate regarding the game flow)"
+      ],
+      "duration_seconds": 2.9
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 2.2
+    }
+  ]
+}

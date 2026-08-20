@@ -1,9 +1,18 @@
 {
+  "date": "2026-08-20",
+  "generated_at": "2026-08-20T08:44:19.996003+00:00",
   "headline": "Red Sox choke away the sweep in a brutal extra-inning loss",
   "morning_brew": [
     "I am still sitting here staring at the wall wondering what the hell I just watched. Losing to the Diamondbacks in extras at Fenway Park is a special kind of agony, especially when we were right there with a chance to complete the sweep. It was a tight battle all night, but watching that lead evaporate in the final frame felt like taking a line drive directly to the gut. We had our chances to put them away early, but the bats went into a deep freeze right when we needed a pulse, and that is a miserable way to end a series.",
     "The bullpen had been looking like a bunch of world-beaters lately, but last night the arson squad finally showed up and torched the place. It is the kind of loss that makes you want to drive to the Pike at rush hour just to scream at the traffic until your throat bleeds. We grinded for nine innings, but once we hit extras, the Diamondbacks found a way to scratch out the winning runs and leave us with nothing but a bitter taste and a long, sleepless night.",
     "Looking ahead, the boys have to shake this off immediately. We have the Giants coming to the Hub for a series starting tomorrow night, and we cannot let one pathetic night turn into a full-blown slump. I am praying they find some grit when they step back onto the field. I will be back in my seat, nursing the same frustration, crossing my fingers that they actually show up this time."
+  ],
+  "news_digest": [
+    {
+      "headline": "Nolan Arenado's broken-bat bloop in 10th sparks Diamondbacks to 7-6 win over Red Sox",
+      "url": "http://www.espn.com/mlb/recap?gameId=401816586",
+      "dans_take": "Losing a game on a broken-bat bloop is the kind of luck that makes you want to cancel your cable package."
+    }
   ],
   "trend_watch": [
     {
@@ -23,13 +32,6 @@
       "player": "Willson Contreras",
       "trend": "Consistent contact all night",
       "dans_take": "He was the only guy who didn't look like he was trying to put a hole in the Green Monster with his face."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Nolan Arenado's broken-bat bloop in 10th sparks Diamondbacks to 7-6 win over Red Sox",
-      "url": "http://www.espn.com/mlb/recap?gameId=401816586",
-      "dans_take": "Losing a game on a broken-bat bloop is the kind of luck that makes you want to cancel your cable package."
     }
   ],
   "box_scores": {
@@ -111,10 +113,6 @@
       "time_et": "TBD"
     }
   ],
-  "generated_at": "2026-08-20T08:44:19.996003+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "fabricated statistics: headline claims 'late errors' cost the Sox the game, but the boxscore shows 0 errors for the Red Sox",
-    "fabricated statistics: morning_brew claims Mor\u00e1n gave up 'three walks' in the 10th inning, but the boxscore shows he gave up 3 walks total in his 1.0 inning of work, not specifically in the 10th frame (which was the only inning he pitched, but the description of the event is inaccurate regarding the game flow)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
