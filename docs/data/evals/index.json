@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-08-16",
     "2026-08-17",
     "2026-08-18",
     "2026-08-19",
-    "2026-08-20"
+    "2026-08-20",
+    "2026-08-21"
   ],
   "rules": [
     {
@@ -79,14 +79,14 @@
     }
   ],
   "summary_5day": {
-    "fresh": 1,
-    "retry": 4,
+    "fresh": 2,
+    "retry": 3,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 9,
+        "count": 7,
         "title": "Voice repetition"
       }
     ]
