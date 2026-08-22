@@ -1,9 +1,23 @@
 {
+  "date": "2026-08-22",
+  "generated_at": "2026-08-22T08:36:26.753270+00:00",
   "headline": "Red Sox finally wake up with a gutsy win against Giants",
   "morning_brew": [
     "Finally, a night where the ball bounced our way. Watching the boys grind out a win at Fenway Park felt like a massive weight off the shoulders after the misery of the last few days. It was exactly the kind of response we needed, especially with the bats finally finding some gaps and the pitching holding steady when things got tight. When this team plays with that kind of focus, you start to remember why we put ourselves through this every single season, like a masochist who can't stop ordering the burnt toast.",
     "Sonny Gray looked locked in for most of his start, and the bullpen guys did their jobs perfectly to slam the door shut. It was a relief to watch the final frame without needing to keep my eyes covered, which was a welcome change of pace from the recent chaos. Even my neighbor Rick, who spends half the game looking for conspiracies in the umpire's strike zone, had to admit that the execution was clean from start to finish. I think he's finally pivoting his dossier away from the umps and onto the team's travel coordinator.",
     "Rafael Devers was back in town wearing the visitor colors, and while the nostalgia of seeing him at the Fens is still a little weird, it was nice to see him back on this field for once. We have a couple more games against these guys before heading out on the road, and if we can keep this momentum rolling, maybe we can actually build some real comfort in the standings. I am not saying anything else, I do not want to jinx it, but this team is finally cooking right now."
+  ],
+  "news_digest": [
+    {
+      "headline": "Giants' Devers back at Fenway, shuns talk of split with Red Sox",
+      "url": "https://www.espn.com/mlb/story/_/id/49684895/giants-devers-back-fenway-shuns-talk-split-red-sox",
+      "dans_take": "It is still a total gut punch seeing him in that uniform, but he played it cool and kept the focus on the game."
+    },
+    {
+      "headline": "2026 NBA free agency: Grades for offseason signings, extensions",
+      "url": "https://www.espn.com/nba/story/_/id/48957095/2026-nba-free-agency-grades-offseason-signings-deals-contracts-extensions-depth-charts",
+      "dans_take": "Watching the rest of the league move pieces around is just a reminder that the C's have a long summer of questions to answer."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Aroldis Chapman",
       "trend": "Struck out the side in the ninth",
       "dans_take": "The arson squad took a night off, and that kind of dominance is exactly what we need to see from the closer."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Giants' Devers back at Fenway, shuns talk of split with Red Sox",
-      "url": "https://www.espn.com/mlb/story/_/id/49684895/giants-devers-back-fenway-shuns-talk-split-red-sox",
-      "dans_take": "It is still a total gut punch seeing him in that uniform, but he played it cool and kept the focus on the game."
-    },
-    {
-      "headline": "2026 NBA free agency: Grades for offseason signings, extensions",
-      "url": "https://www.espn.com/nba/story/_/id/48957095/2026-nba-free-agency-grades-offseason-signings-deals-contracts-extensions-depth-charts",
-      "dans_take": "Watching the rest of the league move pieces around is just a reminder that the C's have a long summer of questions to answer."
     }
   ],
   "box_scores": {
@@ -131,9 +133,6 @@
       "time_et": "TBD"
     }
   ],
-  "generated_at": "2026-08-22T08:36:26.753270+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "repetition: formulaic paragraph opener \"elsewhere the patriots ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }

@@ -1,5 +1,4 @@
 {
-  "date": "2026-08-21",
   "generated_at": "2026-08-21T08:44:17.664140+00:00",
   "headline": "Red Sox look to rebound as Giants visit Fenway Park tonight",
   "morning_brew": [
@@ -19,96 +18,5 @@
       "dans_take": "If this connection is for real, it might actually make watching this team in the fall worth the price of a cold beer at the stadium."
     }
   ],
-  "trend_watch": [],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Philadelphia 76ers",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-08-20",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Buffalo Sabres",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-08-20",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Arizona Diamondbacks",
-      "home_score": 6,
-      "away_score": 7,
-      "game_date": "2026-08-20",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Philadelphia Eagles",
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-08-20",
-      "played": false,
-      "season_type": "offseason"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-08-21",
-      "matchup": "San Francisco Giants at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-08-22",
-      "matchup": "San Francisco Giants at Boston Red Sox",
-      "time_et": "7:15 PM ET"
-    },
-    {
-      "date": "2026-08-23",
-      "matchup": "San Francisco Giants at Boston Red Sox",
-      "time_et": "3:15 PM ET"
-    },
-    {
-      "date": "2026-08-24",
-      "matchup": "Boston Red Sox at Miami Marlins",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-08-25",
-      "matchup": "Boston Red Sox at Miami Marlins",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-08-26",
-      "matchup": "Boston Red Sox at Miami Marlins",
-      "time_et": "6:40 PM ET"
-    },
-    {
-      "date": "2026-08-28",
-      "matchup": "Boston Red Sox at New York Yankees",
-      "time_et": "7:15 PM ET"
-    },
-    {
-      "date": "9999-12-30",
-      "matchup": "Philadelphia Eagles at New England Patriots",
-      "time_et": "TBD"
-    },
-    {
-      "date": "9999-12-30",
-      "matchup": "New England Patriots at Cleveland Browns",
-      "time_et": "TBD"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-08-21"
 }
