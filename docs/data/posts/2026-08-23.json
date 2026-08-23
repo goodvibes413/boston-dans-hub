@@ -1,9 +1,18 @@
 {
+  "date": "2026-08-23",
+  "generated_at": "2026-08-23T08:33:52.724579+00:00",
   "headline": "Red Sox keep rolling with gritty win as the giants fall",
   "morning_brew": [
     "That was one of those tight, nerve-wracking wins that makes you feel like you just ran a marathon without ever leaving your recliner. Getting another W in the column against the Giants feels like we are finally turning the corner, and I am not gonna lie, it is about damn time. Our pitching stayed solid enough to get through the night, and that three-run blast from Willson Contreras in the ninth was the kind of electric spark that can carry a team through a whole weekend. I am starting to think this team finally found its rhythm, though I am keeping my trap shut so I do not jinx the whole thing.",
     "Watching our bullpen handle the pressure without turning into the arson squad was a sight for sore eyes. They faced down some real heat in those final frames and did not blink, which is a massive relief compared to the headaches we have been dealing with for most of August. Even my neighbor Rick, who is usually busy writing his next manifesto about the umpires, had to admit that the late-inning execution was as clean as it gets. He has already moved on to investigating the league's travel schedule, but at least he was not yelling at the TV for once.",
     "With a couple more games left against San Francisco before we head out to face the Yankees, we need to keep our foot on the gas. I know we have seen this movie before, where we string together a few wins just to give us a glimmer of hope before the floor drops out, but this group feels different. If we can keep playing this kind of disciplined baseball, maybe we really can make some noise down the stretch. We have a busy week ahead, and honestly, I am just happy to see them playing like they actually wanna be here."
+  ],
+  "news_digest": [
+    {
+      "headline": "Patriots come back to win at home over Eagles",
+      "url": "https://www.espn.com/video/clip/_/id/49697361/patriots-come-back-win-home-eagles",
+      "dans_take": "It is just preseason, but seeing the Patriots fight back late is always a nice look for the young guys."
+    }
   ],
   "trend_watch": [
     {
@@ -23,13 +32,6 @@
       "player": "Sandoval",
       "trend": "Struck out six Giants over five point two innings.",
       "dans_take": "He gave us exactly the start we needed to keep the game within reach until the bats finally woke up."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Patriots come back to win at home over Eagles",
-      "url": "https://www.espn.com/video/clip/_/id/49697361/patriots-come-back-win-home-eagles",
-      "dans_take": "It is just preseason, but seeing the Patriots fight back late is always a nice look for the young guys."
     }
   ],
   "box_scores": {
@@ -121,5 +123,6 @@
       "time_et": "TBD"
     }
   ],
-  "generated_at": "2026-08-23T08:33:52.724579+00:00"
+  "_stale": null,
+  "_fallback": null
 }
