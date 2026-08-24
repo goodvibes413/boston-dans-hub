@@ -1,9 +1,18 @@
 {
+  "date": "2026-08-24",
+  "generated_at": "2026-08-24T08:51:59.317408+00:00",
   "headline": "Red Sox sweep the Giants as the boys finally start clicking",
   "morning_brew": [
     "I am not saying another word because I refuse to jinx this, but can we all agree that sweeping the Giants feels like a massive weight off our collective chest? That five to four win on Sunday was exactly the kind of nail-biter that usually takes three years off my life, but this time it actually went our way. Seeing Nick Sogard rip that solo homer to spark the rally was just pure, unadulterated bliss. For once, the late innings didn't force me to watch through my fingers, and that kind of quiet relief is exactly what the doctor ordered for a fan base that's been through the absolute wringer lately.",
     "Jake Bennett was absolute nails on the mound for seven innings, giving us exactly the length we have been screaming for all month. He kept the Giants guessing, and even when things got a little hairy in the middle frames, he just settled in and did his job like a professional. My neighbor Rick has been busy with his insane umpire dossier all year, but even he had to put his clipboard down and applaud that start. When you get that kind of steady performance from your starter, it makes life a hell of a lot easier for the guys coming out of the bullpen.",
     "Now we head out on the road to face Miami before hitting the big show in the Bronx, and I am just happy we are heading there with some wind in our sails. This team has been frustrating as hell for most of the summer, but playing disciplined baseball for three straight days is a sign that they might actually have something here. I have been watching this team long enough to know the floor can drop out whenever it wants, but for today, we are keeping the Duck Boat fund open and moving in the right direction."
+  ],
+  "news_digest": [
+    {
+      "headline": "2026 NFL preseason Week 2: Game takeaways, analysis",
+      "url": "https://www.espn.com/nfl/story/_/id/49664649/2026-nfl-preseason-week-2-takeaways-analysis-roster-questions",
+      "dans_take": "Just exhibition games, but watching young guys like Will Campbell fight for a spot is the only thing keeping me going until kickoff."
+    }
   ],
   "trend_watch": [
     {
@@ -23,13 +32,6 @@
       "player": "Chapman",
       "trend": "1.0 scoreless inning with a save",
       "dans_take": "Finally, a clean ninth where the arson squad took the night off and actually shut the door."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "2026 NFL preseason Week 2: Game takeaways, analysis",
-      "url": "https://www.espn.com/nfl/story/_/id/49664649/2026-nfl-preseason-week-2-takeaways-analysis-roster-questions",
-      "dans_take": "Just exhibition games, but watching young guys like Will Campbell fight for a spot is the only thing keeping me going until kickoff."
     }
   ],
   "box_scores": {
@@ -121,5 +123,6 @@
       "time_et": "TBD"
     }
   ],
-  "generated_at": "2026-08-24T08:51:59.317408+00:00"
+  "_stale": null,
+  "_fallback": null
 }
