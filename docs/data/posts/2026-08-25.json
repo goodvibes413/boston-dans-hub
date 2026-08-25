@@ -1,9 +1,23 @@
 {
+  "date": "2026-08-25",
+  "generated_at": "2026-08-25T08:46:22.451480+00:00",
   "headline": "Seigler delivers late triple as Red Sox take down Miami",
   "morning_brew": [
     "I been sayin' it all year, this team just refuses to quit when the lights get bright. Monday night in Miami was a perfect example, as Anthony Seigler ripped that go-ahead triple in the ninth to secure a 4-2 win against the Marlins. It wasn't the prettiest game we've played all season, but a win is a win, and starting this series on the right foot is huge with the Yankees looming later this week. I was watching the late innings and honestly, for once, I didn't feel the need to hide behind my couch cushions like I was watching a horror flick with neighbor Rick.",
     "Suarez gave us five solid frames and kept the damage minimal, which is exactly what we need while the rotation finds its footing. The bullpen had a few tense moments, but seeing E.E. Miller and Aroldis Chapman lock it down in the final frames was a massive relief compared to the headaches we dealt with earlier this month. Even Uncle Carmine managed to stay awake for the ninth-inning rally, though he claims he was actually analyzing the defensive shifts the entire time he had his eyes closed and snoring.",
     "We keep the momentum rolling tonight with another tilt against the Marlins before the schedule gets real tough in the Bronx. This win puts us at 72-59 and keeps the pressure on, so let's hope the bats stay warm. I'm not making any bold predictions until we get through the weekend, but for now, we've got a little deposit in the Duck Boat fund and a team that finally looks like it\u2019s playing with some damn purpose."
+  ],
+  "news_digest": [
+    {
+      "headline": "Pete Fairbanks leaves Marlins' loss with nerve irritation",
+      "url": "https://www.espn.com/mlb/story/_/id/49718230/pete-fairbanks-leaves-marlins-loss-nerve-irritation",
+      "dans_take": "Nerve issues in a throwing arm are never a good sign, so let's just hope the guy can get it sorted out properly."
+    },
+    {
+      "headline": "Patriots trade Kayshon Boutte to Texans for Jaylen Reed, pick",
+      "url": "https://www.espn.com/nfl/story/_/id/49714288/patriots-trading-boutte-texans-reed-draft-pick",
+      "dans_take": "Interesting move to shuffle the depth chart, and I'm curious if Jaylen Reed actually brings the juice we need this season."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Suarez",
       "trend": "Five innings, one earned run, four strikeouts",
       "dans_take": "He gave us exactly what we needed to keep this one within reach, and thank goodness he actually stayed in the zone."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Pete Fairbanks leaves Marlins' loss with nerve irritation",
-      "url": "https://www.espn.com/mlb/story/_/id/49718230/pete-fairbanks-leaves-marlins-loss-nerve-irritation",
-      "dans_take": "Nerve issues in a throwing arm are never a good sign, so let's just hope the guy can get it sorted out properly."
-    },
-    {
-      "headline": "Patriots trade Kayshon Boutte to Texans for Jaylen Reed, pick",
-      "url": "https://www.espn.com/nfl/story/_/id/49714288/patriots-trading-boutte-texans-reed-draft-pick",
-      "dans_take": "Interesting move to shuffle the depth chart, and I'm curious if Jaylen Reed actually brings the juice we need this season."
     }
   ],
   "box_scores": {
@@ -126,5 +128,6 @@
       "time_et": "TBD"
     }
   ],
-  "generated_at": "2026-08-25T08:46:22.451480+00:00"
+  "_stale": null,
+  "_fallback": null
 }
