@@ -1,9 +1,23 @@
 {
+  "date": "2026-08-27",
+  "generated_at": "2026-08-27T19:00:54.742976+00:00",
   "headline": "Red Sox bats go cold in embarrassing shutout loss to Marlins",
   "morning_brew": [
     "Tuesday night at Fenway was a total disaster, and watching that goose egg on the board made me want to jump into the Charles. We scratched out five hits and played defense like we were wearing oven mitts, committing four errors that basically handed the Marlins the win on a silver platter. It was one of those nights where nothing was gonna break our way, and the frustration in the stands was thick enough to cut with a knife. After the high-energy ball we've seen lately, this was a tough pill to swallow.",
     "Sonny Gray gave us five solid innings of work, but he's walking away with the loss because the guys behind him couldn't stop tripping over their own feet. Then the bullpen decided to join the party, and watching Justin Olds cough up those runs late just took the air right out of the building. It is a pathetic way to end a run, and I am praying for a clean effort when we head to the Bronx tomorrow. Honestly, even my cousin Jimmy could have fielded some of those grounders, and that guy has been playing like he has two left hands since the neighborhood league folded in ninety-four.",
     "Now we shift our focus to New York for a massive series that kicks off tomorrow night. I am choosing to dump this game in the trash where it belongs, especially since we have plenty of baseball left in this final month. The standings are still tight, and I expect the boys to show up with some serious fire in the belly once the first pitch is thrown at Yankee Stadium. We need to hit the reset button, clear our heads, and get back to the gritty, winning baseball that we know this group is capable of producing."
+  ],
+  "news_digest": [
+    {
+      "headline": "MLB Power Rankings Week 22: Who's No. 1 ahead of final month?",
+      "url": "https://www.espn.com/mlb/story/_/id/49734689/mlb-2026-power-rankings-week-22-brewers-dodgers-cubs-braves-padres-guardians",
+      "dans_take": "These lists don't mean a lick when you're playing like we did on Tuesday, so let's keep the focus on the scoreboard."
+    },
+    {
+      "headline": "Updated 2026 MLB farm system rankings: Prospect insights, analysis",
+      "url": "https://www.espn.com/mlb/story/_/id/49734496/2026-mlb-prospect-rankings-update-farm-systems-30-teams-brewers-dodgers-orioles-rays",
+      "dans_take": "It is nice to hear the experts like our kids, but I would rather see them helping us win games at Fenway right now."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Moran",
       "trend": "Two scoreless innings",
       "dans_take": "He was the only guy on the mound who looked like he knew what he was doing last night, which is a damn shame."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "MLB Power Rankings Week 22: Who's No. 1 ahead of final month?",
-      "url": "https://www.espn.com/mlb/story/_/id/49734689/mlb-2026-power-rankings-week-22-brewers-dodgers-cubs-braves-padres-guardians",
-      "dans_take": "These lists don't mean a lick when you're playing like we did on Tuesday, so let's keep the focus on the scoreboard."
-    },
-    {
-      "headline": "Updated 2026 MLB farm system rankings: Prospect insights, analysis",
-      "url": "https://www.espn.com/mlb/story/_/id/49734496/2026-mlb-prospect-rankings-update-farm-systems-30-teams-brewers-dodgers-orioles-rays",
-      "dans_take": "It is nice to hear the experts like our kids, but I would rather see them helping us win games at Fenway right now."
     }
   ],
   "box_scores": {
@@ -126,10 +128,6 @@
       "time_et": "TBD"
     }
   ],
-  "generated_at": "2026-08-27T19:00:54.742976+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "repetition: number-masked sentence skeleton \"even my neighbor rick who usually has a folder full of\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: number-masked sentence skeleton \"face the yankees staying in the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
