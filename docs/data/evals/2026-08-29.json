@@ -1,10 +1,10 @@
 {
   "date": "2026-08-29",
-  "generated_at": "2026-08-29T13:43:15.163926+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
+  "generated_at": "2026-08-29T14:37:20.485310+00:00",
+  "outcome": "retry",
+  "winning_attempt": 3,
   "total_attempts": 3,
-  "generation_seconds": 248.4,
+  "generation_seconds": 251.4,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -13,32 +13,27 @@
     {
       "attempt": 1,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "low",
       "flags": [
-        "fabricated statistics: The content claims there is a 'doubleheader' today (2026-08-29) and refers to a 'twin bill', but the source data for 2026-08-29 does not indicate a doubleheader (the schedule shows two separate games, but the source data for the Red Sox status and rolling_7day does not confirm a doubleheader status for today)."
+        "repetition: number-masked sentence skeleton \"we are sitting at # # wins\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
       ],
-      "duration_seconds": 2.1
+      "duration_seconds": 3.3
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "medium",
+      "severity": "high",
       "flags": [
-        "rule 12: game coverage gap - the morning_brew fails to mention that today is a doubleheader, despite the schedule showing two games today, and the commentary implies only one game remains tonight.",
-        "repetition: number-masked sentence skeleton \"tonight it is about damn time we\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: formulaic paragraph opener \"my neighbor rick ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-        "repetition: formulaic paragraph opener \"red sox look ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        "fabricated statistics: The content claims today is a 'twin bill' or 'doubleheader', but the source data for 2026-08-29 shows two separate games scheduled, not a doubleheader (which requires two games on the same day in the rolling_7day data). The content incorrectly characterizes the upcoming schedule as a doubleheader."
       ],
-      "duration_seconds": 2.0
+      "duration_seconds": 3.2
     },
     {
       "attempt": 3,
-      "verdict": "FAIL",
-      "severity": "high",
-      "flags": [
-        "fabricated statistics: The headline and body claim today is a 'twin bill' or 'doubleheader', but the source data for 2026-08-29 shows two separate games scheduled, not a doubleheader (which requires two games on the same day in the rolling_7day data). The content incorrectly characterizes the upcoming schedule as a doubleheader."
-      ],
-      "duration_seconds": 2.0
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 1.5
     }
   ]
 }

@@ -1,90 +1,85 @@
 {
-  "headline": "Red Sox look to rebound as the rivalry hits Yankee Stadium",
+  "headline": "Red Sox shut out in Bronx as offense stays ice cold",
   "morning_brew": [
-    "Wednesday was a dead quiet day on the diamond for us, which gave the whole city a chance to actually breathe for once after the week we've been having. We are sitting at seventy-three wins as we turn the page toward the most critical stretch of the schedule. The boys have had a full day to reflect on the recent struggles and get their minds right, because there is no easing into this next phase with a trip to the Bronx staring us in the face.",
-    "My neighbor Rick has been pacing his driveway all morning, muttering about the strike zone and how the league office treats these Bronx matchups like a personal favor, but I told him to save the conspiracy theories for the postgame. We know what this rivalry means to every townie from here to the Cape, and I expect the intensity to be cranked up from the moment the first pitch leaves the hand tonight. It is about damn time we reminded those guys in pinstripes who actually owns the division.",
-    "I am looking for our hitters to come out swinging and put the pressure on their defense immediately. We have enough talent in that clubhouse to make a run at the top of the wild card standings, but it requires playing clean baseball in hostile territory. If we can grab the opener, the energy for the rest of the series is gonna be electric. Let's get back to playing our game and show them why we never count ourselves out until the final out is recorded."
+    "Friday morning feels like a massive hangover after watching that lineup go completely silent in the Bronx. We managed just five hits and zero runs against the Yankees in a game that felt like a funeral procession for our bats. I watched every pitch through my fingers, just waiting for someone to drive a ball into the gap, but it never happened. It is absolutely infuriating to watch us get blanked like that when every win is supposed to matter so much this time of year.",
+    "Sandoval gave us a gritty start by going into the sixth, but he takes the loss because he had zero margin for error with the way our hitters were swinging. The bullpen actually looked respectable, putting up scoreless work to keep us within striking distance, but our hitters just could not capitalize when the moment arrived. My mother watched the final three innings and just shook her head before walking out of the room. She has been watching this team for decades and even she looked like she had seen enough of the struggling offense.",
+    "Now we have to regroup for a long day of baseball ahead. It is a grind, but we have to find a way to manufacture some runs if we want to stay in the mix. I trust the guys to bounce back because they have shown us flashes of fight before, but we need to stop the bleeding and get some production at the plate. Fenway isn't gonna be happy if we don't start putting up crooked numbers, so it is time to turn the page and get after it."
   ],
   "trend_watch": [
     {
+      "category": "Cold Snap",
+      "player": "Wilyer Abreu",
+      "trend": "Two hits in three at-bats",
+      "dans_take": "He was the only one showing any signs of life at the plate while everyone else took a nap."
+    },
+    {
       "category": "Heater",
-      "player": "Sonny Gray",
-      "trend": "Consistent workhorse in the rotation",
-      "dans_take": "He has been our most reliable arm and we need him to shove tonight so I don't have to sweat through my shirt."
+      "player": "Olds",
+      "trend": "One inning of scoreless relief with two strikeouts",
+      "dans_take": "He came in and threw strikes, which is more than I can say for the black holes in the lineup."
     },
     {
       "category": "Cold Snap",
-      "player": "Justin Olds",
-      "trend": "Struggling to find the zone in late innings",
-      "dans_take": "He needs to stop leaving pitches hanging in the heart of the plate like he's gift-wrapping them for the Yankees."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "E.E. Miller",
-      "trend": "Showing flashes of sharp command",
-      "dans_take": "The way he navigated the traffic in his last appearance shows he has the stones to handle the heat."
+      "player": "Willson Contreras",
+      "trend": "Hitless in four at-bats",
+      "dans_take": "We need our veteran presence to set the tone, not pull a vanishing act when it matters most."
     }
   ],
   "news_digest": [
     {
-      "headline": "MLB Power Rankings Week 22: Who's No. 1 ahead of final month?",
-      "url": "https://www.espn.com/mlb/story/_/id/49734689/mlb-2026-power-rankings-week-22-brewers-dodgers-cubs-braves-padres-guardians",
-      "dans_take": "Rankings are just toilet paper for the front office; our performance against the Yankees is the only thing that moves the needle."
+      "headline": "Yankees nip rival Red Sox 1-0 in series opener behind Goldschmidt, Bellinger and Schlittler",
+      "url": "http://www.espn.com/mlb/recap?gameId=401816702",
+      "dans_take": "Losing a one-run game to those guys in the Bronx is a special kind of misery that makes me want to drive my car into the harbor."
     },
     {
-      "headline": "Updated 2026 MLB farm system rankings: Prospect insights, analysis",
-      "url": "https://www.espn.com/mlb/story/_/id/49734496/2026-mlb-prospect-rankings-update-farm-systems-30-teams-brewers-dodgers-orioles-rays",
-      "dans_take": "Good to know the system is deep, but the veterans need to stop taking naps and start winning games."
+      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
+      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
+      "dans_take": "Maybe we should start challenging the umpire on why we forgot how to swing a bat."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
+      "home_team": "unknown",
+      "away_team": "unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-08-27",
+      "game_date": "2026-08-28",
       "played": false,
       "season_type": "offseason"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
+      "home_team": "unknown",
+      "away_team": "unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-08-27",
+      "game_date": "2026-08-28",
       "played": false,
       "season_type": "offseason"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-08-27",
-      "played": false,
+      "home_team": "New York Yankees",
+      "away_team": "Boston Red Sox",
+      "home_score": 1,
+      "away_score": 0,
+      "game_date": "2026-08-28",
+      "played": true,
       "season_type": "regular"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
+      "home_team": "unknown",
+      "away_team": "unknown",
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-08-27",
+      "game_date": "2026-08-28",
       "played": false,
       "season_type": "offseason"
     }
   },
   "schedule": [
-    {
-      "date": "2026-08-28",
-      "matchup": "Boston Red Sox at New York Yankees",
-      "time_et": "7:15 PM ET"
-    },
     {
       "date": "2026-08-29",
       "matchup": "Boston Red Sox at New York Yankees",
@@ -126,17 +121,14 @@
       "time_et": "7:05 PM ET"
     },
     {
-      "date": "9999-12-30",
-      "matchup": "New England Patriots at Cleveland Browns",
-      "time_et": "TBD"
+      "date": "2026-09-05",
+      "matchup": "Boston Red Sox at Baltimore Orioles",
+      "time_et": "7:05 PM ET"
     }
   ],
-  "generated_at": "2026-08-28T00:12:25.200043+00:00",
+  "generated_at": "2026-08-29T14:41:31.930533+00:00",
   "_regenerated": true,
   "_regeneration_reason": [
-    "repetition: number-masked sentence skeleton \"was # of those nights where\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ],
-  "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: fabricated statistics: The headline and body claim today is a 'twin bill' or 'doubleheader', but the source data for 2026-08-29 shows two separate games scheduled, not a doubleheader (which requires t",
-  "_stale_age_hours": 37.6
+    "fabricated statistics: The content claims today is a 'twin bill' or 'doubleheader', but the source data for 2026-08-29 shows two separate games scheduled, not a doubleheader (which requires two games on the same day in the rolling_7day data). The content incorrectly characterizes the upcoming schedule as a doubleheader."
+  ]
 }
