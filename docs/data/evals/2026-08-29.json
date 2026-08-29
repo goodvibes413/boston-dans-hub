@@ -1,0 +1,44 @@
+{
+  "date": "2026-08-29",
+  "generated_at": "2026-08-29T13:43:15.163926+00:00",
+  "outcome": "fallback",
+  "winning_attempt": null,
+  "total_attempts": 3,
+  "generation_seconds": 248.4,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "fabricated statistics: The content claims there is a 'doubleheader' today (2026-08-29) and refers to a 'twin bill', but the source data for 2026-08-29 does not indicate a doubleheader (the schedule shows two separate games, but the source data for the Red Sox status and rolling_7day does not confirm a doubleheader status for today)."
+      ],
+      "duration_seconds": 2.1
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        "rule 12: game coverage gap - the morning_brew fails to mention that today is a doubleheader, despite the schedule showing two games today, and the commentary implies only one game remains tonight.",
+        "repetition: number-masked sentence skeleton \"tonight it is about damn time we\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: formulaic paragraph opener \"my neighbor rick ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: formulaic paragraph opener \"red sox look ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      ],
+      "duration_seconds": 2.0
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "fabricated statistics: The headline and body claim today is a 'twin bill' or 'doubleheader', but the source data for 2026-08-29 shows two separate games scheduled, not a doubleheader (which requires two games on the same day in the rolling_7day data). The content incorrectly characterizes the upcoming schedule as a doubleheader."
+      ],
+      "duration_seconds": 2.0
+    }
+  ]
+}
