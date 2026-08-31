@@ -1,9 +1,28 @@
 {
+  "date": "2026-08-31",
+  "generated_at": "2026-08-31T16:00:46.641065+00:00",
   "headline": "Red Sox embarrassed at Fenway in blowout loss to New York",
   "morning_brew": [
     "Watching that absolute circus at Fenway yesterday was enough to make a man walk straight into the Charles. We got steamrolled by the Yankees in a game that turned into a glorified batting practice session by the middle innings. Giving up sixteen runs is beyond inexcusable, it is a complete, soul-crushing organizational failure. I sat through all nine innings because that is what we do, but I was watching through my fingers like it was a low-budget horror flick the second the bullpen started warming up.",
     "My neighbor Rick is currently pacing his porch with a legal pad and a magnifying glass because he thinks the game was rigged, but even his wildest conspiracy theories cannot explain why our arms looked like they were lobbing beach balls to the plate. Suarez could not keep them off the board to start, and then the relief corps turned into the most expensive arson squad I have ever seen. It really puts into perspective how far away we are from being a serious threat when we fold this easily against our biggest rival. It is a damn tough pill to swallow after the optimism I had earlier in the week.",
     "The schedule does not offer any time to lick our wounds with Seattle visiting the Hub tonight. We need to get our heads right and stop letting these games turn into track meets. If we want to stay relevant in the playoff hunt, the guys need to find some pride and show a pulse. I am not ready to write off the season yet, but another showing like that and the Duck Boat fund is going to be locked up for good."
+  ],
+  "news_digest": [
+    {
+      "headline": "Red Sox broadcaster rips Jazz Chisholm Jr. as 'bush league player'",
+      "url": "https://www.espn.com/mlb/story/_/id/49782322/red-sox-broadcaster-rips-jazz-chisholm-jr-bush-league-player",
+      "dans_take": "Maybe the guy in the booth should focus on the absolute garbage coming from our pitching staff instead of chirping at the opposition."
+    },
+    {
+      "headline": "Patriots place LB Harold Landry on PUP List",
+      "url": "https://www.espn.com/video/clip/_/id/49779574/patriots-place-lb-harold-landry-pup-list",
+      "dans_take": "Depth issues are the absolute last thing we need before the season even gets off the ground."
+    },
+    {
+      "headline": "Jaylen Brown receives key to city in farewell party to Boston",
+      "url": "https://www.espn.com/nba/story/_/id/49778671/jaylen-brown-boston-celtics-farewell-block-party-key-city-nba",
+      "dans_take": "A classy sendoff for a guy who gave us everything, but it still feels like the end of an era."
+    }
   ],
   "trend_watch": [
     {
@@ -23,23 +42,6 @@
       "player": "Suarez",
       "trend": "Six earned runs in five and one-third innings",
       "dans_take": "When your starter cannot buy an out, the whole afternoon becomes one long, miserable walk in the rain."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Red Sox broadcaster rips Jazz Chisholm Jr. as 'bush league player'",
-      "url": "https://www.espn.com/mlb/story/_/id/49782322/red-sox-broadcaster-rips-jazz-chisholm-jr-bush-league-player",
-      "dans_take": "Maybe the guy in the booth should focus on the absolute garbage coming from our pitching staff instead of chirping at the opposition."
-    },
-    {
-      "headline": "Patriots place LB Harold Landry on PUP List",
-      "url": "https://www.espn.com/video/clip/_/id/49779574/patriots-place-lb-harold-landry-pup-list",
-      "dans_take": "Depth issues are the absolute last thing we need before the season even gets off the ground."
-    },
-    {
-      "headline": "Jaylen Brown receives key to city in farewell party to Boston",
-      "url": "https://www.espn.com/nba/story/_/id/49778671/jaylen-brown-boston-celtics-farewell-block-party-key-city-nba",
-      "dans_take": "A classy sendoff for a guy who gave us everything, but it still feels like the end of an era."
     }
   ],
   "box_scores": {
@@ -126,10 +128,6 @@
       "time_et": "1:35 PM ET"
     }
   ],
-  "generated_at": "2026-08-31T16:00:46.641065+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "repetition: formulaic paragraph opener \"saturday was a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
-    "repetition: formulaic paragraph opener \"we have to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
