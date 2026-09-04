@@ -1,0 +1,81 @@
+name: Model Health — Gemini pin still valid?
+
+# Why this exists: the daily pipeline pins a specific Gemini model on purpose
+# (AGENTS.md Model Strategy). A pin is only safer than the "-latest" alias if
+# somebody notices when the pinned model is retired or loses its free tier —
+# otherwise the first signal is a morning of 429s, which is exactly the
+# 2026-07-01 outage the pin was created to prevent.
+#
+# Weekly, not daily: model retirements are announced months ahead, and this
+# spends the same free-tier quota the real pipeline needs.
+
+on:
+  schedule:
+    # Mondays 14:00 UTC — deliberately away from the morning_brew cron slots
+    # (08:00-15:00 UTC) so the probe never competes with a real generation run
+    # for the same per-minute quota.
+    - cron: '0 14 * * 1'
+  workflow_dispatch:
+    inputs:
+      extra_models:
+        description: 'Extra model ids to check alongside the pins (comma-separated) — use to vet an upgrade candidate'
+        type: string
+        required: false
+        default: ''
+
+concurrency:
+  group: model-health
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check pinned Gemini models
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install "google-genai==2.22.0"
+
+      - name: Check pinned models
+        id: check
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          EXTRA_MODELS: ${{ inputs.extra_models }}
+        run: python3 scripts/check_model_health.py
+
+      - name: Open/update model-health issue
+        # Mirrors the degraded-publish issue step in morning_brew.yml: comment on
+        # the open issue if one exists rather than filing a duplicate every week.
+        if: failure() && steps.check.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="Gemini model pin needs attention: $(date +%Y-%m-%d)"
+          body="\`check_model_health.py\` failed — a pinned Gemini model is missing from \`models.list()\`, or no longer answers on this key's free tier.
+
+          This is the signal the model pin depends on. The daily pipeline has NOT necessarily failed yet; fix this before it does.
+
+          Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          Next steps are in the job log, and the full rationale is in AGENTS.md → Model Strategy. Do not switch the pin without running \`--check-quota\` and a voice bake-off against the candidate first."
+          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number' || true)
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body" --label "pipeline-degraded" || \
+              gh issue create --title "$title" --body "$body"
+          fi

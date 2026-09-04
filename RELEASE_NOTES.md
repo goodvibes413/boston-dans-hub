@@ -5,6 +5,99 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-04 — Gemini Upgrade Review: Instrumentation, Pinned Thinking Level, Provable Retry Budget
+
+**Context:** Google shipped several new Gemini models (3.5/3.6/3.8 Flash, 3.1 Pro)
+since the 2026-07-01 pin. Question asked: should we upgrade? Judged on latency and
+free-tier traffic rather than dollars, since at ~3 calls/day cost is $0 either way.
+
+**What the evidence said.** Pulled 120 workflow runs from the Actions API
+(07-26 → 09-03) and every published `daily_output.json` in git history:
+
+- **Zero runs failed for a Gemini reason.** The one non-success (run `31120055179`,
+  08-06, 903s, `cancelled`) has `runner_id: 0` and no runner name — GitHub capacity
+  starvation, never a model timeout.
+- Generation-run durations: min 143s, median ~280s, max 476s, against a 1500s job
+  timeout. Worst observed run used 32% of budget.
+- Quality is the actual problem: **6 `_quality_warning` publishes + 1 `_stale`
+  fallback in 47 days (~15% degraded)**. The 08-29 fallback was
+  `"safety judge FAILed after 3 attempts: fabricated statistics"` — HIGH severity,
+  burned the full correction loop, shipped yesterday's content. This matches the
+  lite-model failure modes already logged on 07-01, 07-05 and 07-07.
+- Publish *lateness* since 08-27 (first run of day 12:36–18:56, early cron slots
+  never firing, `run_started_at == created_at` throughout) is GitHub's scheduler
+  dropping runs. Not a model problem — do not spend model changes on it.
+
+**The trap found while scoping the upgrade.** `thinking_level` was set nowhere.
+Its default **differs per model**: `gemini-3.1-flash-lite` defaults to `minimal`,
+full Flash models default to high/dynamic. So swapping `DEFAULT_MODEL` to a full
+Flash model would have silently moved the pipeline to high thinking, whose
+published p95 time-to-first-token (~50s) sits inside the 90s per-request timeout
+before grounding and a ~30KB prompt are added — reproducing the 2026-07-01 hang.
+Conversely a full Flash model at `thinking_level="low"` may be both better *and*
+faster than today's pin. That is the upgrade worth testing, and it is only safe
+with the level pinned.
+
+**A real latent bug, found by writing the budget down.** The old retry ladder
+(`MAX_RETRIES=4`, `[5,15,30,60]`, 90s timeout, 3 chained calls + judge) had a
+worst case of **2390s against a 1500s job timeout**. The pipeline could have been
+force-cancelled before `publish.py` wrote a sentinel — precisely the 2026-07-01
+failure the ladder was supposed to survive. It had simply never been multiplied out.
+
+**What shipped (no model change — the pin stays until the bake-off runs):**
+1. **Per-call instrumentation** — `generate_rant.py` and `safety_judge.py` log
+   wall-clock latency and `usage_metadata` (including `thoughts_token_count`,
+   which bills as output and drives latency) and write a `_timings` block onto the
+   output JSON, so it lands in git history like `_quality_warning` does. Future
+   economics questions get answered from our own data, not from blog posts.
+2. **`thinking_level` pinned to `minimal`** via `DEFAULT_THINKING_LEVEL` +
+   `thinking_config()`, applied only to `gemini-3*` ids — pre-3.x Gemini errors on
+   the kwarg and Gemma rejects it, and `eval_models.py` drives both through the
+   same path. Behavior today is unchanged; it just no longer depends on an
+   undocumented per-model default.
+3. **Retry budget made explicit and asserted.** `MAX_RETRIES` 4 → 2, backoff
+   `[5,15]`, shared by both scripts, with `tests/test_pipeline.py::TestRetryBudget`
+   failing CI if the worst case stops fitting the job timeout. Now ~1460s of 1500s.
+   Less of a cut than it looks: generate_rant already makes two independent call
+   paths, so a bad morning still gets 6 API attempts before the sentinel, and
+   AGENTS.md was always explicit that 1–2h spikes are the cron slots' job.
+4. **`eval_models.py --check-quota`** — asks the API whether a model still exists,
+   is `generateContent`-capable, and answers on this key's free tier, unpacking
+   `QuotaFailure` via the existing `describe_api_error()`. **`--thinking-level`**
+   added so a bake-off compares like with like, and the comparison table now
+   carries slowest-call latency and thinking tokens with an explicit gate
+   (slowest call < 45s = half the request timeout, so one retry still fits).
+5. **`check_model_health.py` + `model_health.yml`** — weekly check that the pinned
+   models still exist and are still free, filing a `pipeline-degraded` issue if
+   not. AGENTS.md told a human to do this manually and reactively; nobody did.
+6. **`google-genai` pinned to 2.22.0** in all three workflows. It was installed
+   unpinned on every production run — a breaking release would have shipped
+   straight into the morning brew, the same silent-upstream-change class the
+   model pin exists to prevent.
+7. **Docs corrected.** `docs/under-the-hood.html` publicly said **"Never pin the
+   Gemini model version"** — the exact opposite of the live decision, so anyone
+   acting on the published page would have undone the fix. It also described a
+   backoff ladder and a no-grounding architecture that were both wrong. `README.md`
+   still said "Gemini 2.5 Flash" in four places. `AGENTS.md` misdescribed its own
+   error handling ("2s → 5s → 10s … exits with code 1"; the code exits **0** with a
+   sentinel on purpose). `QUALITY_ROADMAP.md`'s anti-multi-agent argument was
+   re-baselined: its quota premise is dead, but its job-timeout premise is now
+   provable and stronger.
+
+**Open — needs `GEMINI_API_KEY`, so it runs in CI or locally, not from a review
+session:** the actual bake-off (step 2–3 above). Verify a candidate's free tier
+with `--check-quota`, then run the incumbent against it at `--thinking-level low`
+and gate on both latency and the three documented failure modes. Only then move
+`DEFAULT_MODEL`.
+
+**Lesson learned:** "should we upgrade the model" looked like a pricing question
+and was actually a latency question with a per-model default hiding in it. The
+budget that made it answerable — worst-case retry time vs. job timeout — had been
+described in three docs and never once multiplied out. Write the invariant as a
+test, not as a sentence.
+
+---
+
 ## 2026-07-07 — Full Audit: Voice Overhaul (Bar-Buddy Persona, PG-13, Punch-Up Pass) + Security & Ops Fixes
 
 **Context:** full project audit requested (effectiveness, security, everything). Owner's top complaint: Dan reads deadpan, not passionate or funny. Root-cause analysis found four compounding causes: (1) `gemini-3.1-flash-lite` hedges — comedy needs commitment; (2) the 291-line prompt is overwhelmingly prohibitions; (3) 14 judge rules + three layers of repetition policing sand off personality, with zero counter-pressure (there's a safety judge but nothing ever fails Dan for being boring); (4) every correction retry drifts more conservative. Also: the quota scarcity that shaped the whole Quality Roadmap is gone — 500 RPD vs ~5 used.

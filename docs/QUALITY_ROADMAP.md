@@ -28,7 +28,7 @@ The user asked whether the next move should be **graduating to a 4-agent system*
 
 **Don't build the 4-agent system.** Two reasons:
 
-1. **Cost math doesn't work.** A 4-agent collaboration with critique loops is 5–6x API calls per day. Gemini free-tier daily quota is already strained — that's why we use `gemini-flash-latest` (highest quota allocation) and why the morning of 2026-04-26 had a retry storm that burned the job timeout. Multi-agent breaks the $0 constraint.
+1. **The time math doesn't work.** A 4-agent collaboration with critique loops is 5–6x API calls per day. *(Re-baselined 2026-09-04: the quota half of this argument no longer holds — the pipeline was re-pinned off `gemini-flash-latest` to `gemini-3.1-flash-lite` on 2026-07-01, and at ~3 calls/day against a 500+ RPD free tier the daily quota is nowhere near strained. The **job-timeout** argument in §2 below is the one that still stands, and it got tighter, not looser: worst-case model time is now provably ~1160s of a 1500s budget. Adding 3 sequential calls does not fit.)*
 2. **The failures aren't context-collision failures.** A "stats agent" wouldn't have prevented "added nine players in total" — that's a draft-coverage instruction issue, not a stats issue. Each specialist would inherit the same anti-template flaw the integrator had.
 
 **The path forward is cheaper and more effective:** structured pre-passes + judge expansion + better evals + richer source data. Tiers below.
@@ -41,11 +41,11 @@ The user asked whether the next move should be **graduating to a 4-agent system*
 
 | Architecture | Calls/day | Free tier impact |
 |---|---|---|
-| Today (generate + judge + occasional correction) | 2–3 | Comfortable inside flash-latest daily quota |
-| 4-agent sequential (stats → news → history → Dan + judge) | 5 | Quota strained; one retry storm = quota exhausted |
-| 4-agent with critique/voting loops | 7–10 | Breaks $0 constraint outright |
+| Today (grounded generate + punch-up + judge) | ~3 | Far inside the pinned model's daily quota — under 1% of it |
+| 4-agent sequential (stats → news → history → Dan + judge) | 5 | Quota fine; **worst-case retry time blows the 25-min job timeout** |
+| 4-agent with critique/voting loops | 7–10 | Job timeout breached even without a retry storm |
 
-The retry-budget fix (committed `b59f8b6` on 2026-04-26) was needed *because* we were already brushing the quota ceiling at 2–3 calls/day. Multiplying by 2–4x is structurally incompatible with the free-tier strategy documented in `CLAUDE.md` → "Model Strategy: `gemini-flash-latest` for Higher Daily Quota."
+The binding constraint is **wall-clock, not quota**. `tests/test_pipeline.py::TestRetryBudget` now asserts it directly: `MAX_CALLS_PER_RUN` (3) worst-case calls plus the judge plus a 300s non-model allowance must fit the 25-min job timeout, and that already lands at ~1460s of 1500s. There is no room for a fourth, fifth or sixth sequential call. See `AGENTS.md` → "Model Strategy" and "Thinking Level".
 
 ### 2. Coordination latency vs. 25-min job timeout
 

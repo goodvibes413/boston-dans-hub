@@ -31,12 +31,14 @@ import os
 import re
 import subprocess
 import sys
+import time
 from datetime import date
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO / "scripts"))
 from eval_voice import split_fixture, summarize  # reuse — no duplication
+import generate_rant  # reuse describe_api_error + the retry/timeout budget
 
 RUNS_DIR = REPO / "evals" / "runs"
 SHIPPED_OUTPUT = REPO / "docs" / "data" / "daily_output.json"
@@ -99,17 +101,46 @@ def write_fixture_sections(label: str, sections) -> dict:
     return base_env
 
 
-def run_model(model: str, base_env: dict, label: str, n: int) -> list:
+def read_timings(path) -> dict:
+    """
+    Pull generate_rant's `_timings` block off a run's output and reduce it to
+    the numbers a bake-off is decided on: total latency, the slowest single
+    call, and thinking tokens.
+
+    Slowest-call matters more than the total here. The per-request timeout
+    applies per call, so a run of three 40s calls is safe while one 100s call
+    is a timeout in production — an average would hide exactly that.
+    """
+    try:
+        timings = json.loads(Path(path).read_text()).get("_timings") or []
+    except Exception:
+        return {}
+    if not timings:
+        return {}
+    secs = [t.get("seconds") or 0 for t in timings]
+    return {
+        "calls": len(timings),
+        "total_s": round(sum(secs), 1),
+        "max_call_s": round(max(secs), 1),
+        "thinking_tokens": sum(t.get("thinking_tokens") or 0 for t in timings),
+    }
+
+
+def run_model(model: str, base_env: dict, label: str, n: int,
+              thinking_level: str = None) -> list:
     """Run generate_rant.py n times for one model; return list of summary rows."""
     model_dir = RUNS_DIR / slug(model)
     model_dir.mkdir(parents=True, exist_ok=True)
-    print(f"\n=== model: {model} ===")
+    print(f"\n=== model: {model}"
+          + (f" (thinking={thinking_level})" if thinking_level else "") + " ===")
     rows = []
     for i in range(1, n + 1):
         out_path = model_dir / f"{label}_{i}.json"
         env = base_env.copy()
         env["LLM_MODEL"] = model
         env["OUTPUT_PATH"] = str(out_path)
+        if thinking_level:
+            env["THINKING_LEVEL"] = thinking_level
         print(f"  run {i}/{n} → {slug(model)}/{out_path.name}")
         result = subprocess.run(
             [sys.executable, str(REPO / "scripts" / "generate_rant.py")],
@@ -131,7 +162,8 @@ def run_model(model: str, base_env: dict, label: str, n: int) -> list:
                 print(f"      {ln}", file=sys.stderr)
             rows.append({"run": i, "error": "empty/invalid output", "path": str(out_path), **s})
             continue
-        rows.append({"run": i, "path": str(out_path), **summarize(out_path)})
+        rows.append({"run": i, "path": str(out_path),
+                     **summarize(out_path), **read_timings(out_path)})
     return rows
 
 
@@ -140,7 +172,8 @@ def print_comparison(order: list, results: dict, refs: set) -> None:
     print("COMPARISON (averaged across runs — read the JSON files for real judgment)")
     print("=" * 78)
     header = (f"{'model':<22}{'ok':>6}{'keys':>6}{'paras':>7}"
-              f"{'words':>7}{'trends':>8}{'news':>6}{'#stats':>8}")
+              f"{'words':>7}{'trends':>8}{'news':>6}{'#stats':>8}"
+              f"{'slowest':>9}{'think tok':>10}")
     print(header)
     print("-" * len(header))
     for label in order:
@@ -153,9 +186,29 @@ def print_comparison(order: list, results: dict, refs: set) -> None:
         keys_ok = sum(1 for r in good if REQUIRED_KEYS.issubset(set(r.get("keys", []))))
         avg_stats = (sum(len(r.get("stat_numbers", [])) for r in good) / len(good)) if good else 0
         ok_str = "ref" if label in refs else f"{len(good)}/{len(rows)}"
+        # Worst single call across every run of this model — the number the
+        # latency gate is judged on, since the request timeout is per call.
+        call_times = [r["max_call_s"] for r in good if r.get("max_call_s")]
+        slowest = f"{max(call_times):.0f}s" if call_times else "-"
+        think = avg("thinking_tokens")
         print(f"{label:<22}{ok_str:>6}{keys_ok:>6}{avg('brew_paragraphs'):>7.1f}"
               f"{avg('brew_words'):>7.0f}{avg('trend_count'):>8.1f}"
-              f"{avg('news_count'):>6.1f}{avg_stats:>8.1f}")
+              f"{avg('news_count'):>6.1f}{avg_stats:>8.1f}"
+              f"{slowest:>9}{think:>10.0f}")
+
+    # The gate from the upgrade review: the per-request timeout is
+    # REQUEST_TIMEOUT_S, and a candidate needs room for one full retry inside
+    # it, so a slowest call above half the timeout fails regardless of voice.
+    gate = generate_rant.REQUEST_TIMEOUT_S / 2
+    print(f"\nlatency gate: slowest single call must stay under {gate:.0f}s "
+          f"(half the {generate_rant.REQUEST_TIMEOUT_S}s request timeout, "
+          f"so one retry still fits)")
+    for label in order:
+        if label in refs:
+            continue
+        call_times = [r["max_call_s"] for r in results[label] if r.get("max_call_s")]
+        if call_times and max(call_times) > gate:
+            print(f"  FAIL {label}: slowest call {max(call_times):.0f}s > {gate:.0f}s")
 
 
 def print_previews(order: list, results: dict) -> None:
@@ -195,6 +248,79 @@ def list_models() -> None:
     print("\n".join(rows))
 
 
+def check_quota(models: list, thinking_level: str = None) -> int:
+    """
+    Answer "can we actually run this model, for free, today?" from the API
+    rather than from documentation.
+
+    The 2026-07-01 outage happened because the model behind an alias changed
+    and nobody could tell until production started failing. Google's own docs
+    have also disagreed with themselves on free-tier daily quotas. So this
+    asks the API three things per model:
+
+      1. does the id still exist and support generateContent (catches retirement)
+      2. does a real call succeed on this key
+      3. if not, WHY — describe_api_error() unpacks the QuotaFailure
+         violations, and a free-tier `limit: 0` is the unambiguous
+         "no free tier" signal AGENTS.md's availability list relies on
+
+    Returns a process exit code: 0 = every model usable, 1 = at least one is not.
+    """
+    try:
+        from google import genai
+    except ImportError:
+        sys.exit("error: google-genai not installed. Run: python3 -m pip install google-genai")
+
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        sys.exit("error: GEMINI_API_KEY not set")
+    client = genai.Client(api_key=api_key)
+
+    try:
+        available = {
+            m.name.split("/")[-1]
+            for m in client.models.list()
+            if "generateContent" in (list(getattr(m, "supported_actions", None) or []))
+        }
+    except Exception as e:
+        sys.exit(f"error: could not list models: {generate_rant.describe_api_error(e)}")
+
+    print(f"checking {len(models)} model(s) against {len(available)} "
+          f"generateContent-capable ids on this key\n")
+    failures = []
+    for model in models:
+        if model not in available:
+            print(f"  {model}: GONE — not in models.list(); retired or renamed")
+            failures.append(model)
+            continue
+
+        # Smallest call that still exercises the real quota path. Kept tiny on
+        # purpose: this runs weekly in CI against the same free tier the daily
+        # pipeline depends on, so the check must not be what exhausts it.
+        cfg = {"max_output_tokens": 8, **generate_rant.thinking_kwargs(model, thinking_level)}
+        t0 = time.perf_counter()
+        try:
+            client.models.generate_content(
+                model=model, contents="Reply with the single word: ok",
+                config=cfg,
+            )
+            print(f"  {model}: OK ({time.perf_counter() - t0:.1f}s)")
+        except Exception as e:
+            detail = generate_rant.describe_api_error(e)
+            # "limit: 0" on a free-tier quota metric means the model is paid-only
+            # for this key — a different problem from a transient 429, and the
+            # only one that should stop a pin from being adopted.
+            verdict = "NO FREE TIER" if "limit: 0" in detail or "limit=0" in detail else "ERROR"
+            print(f"  {model}: {verdict} — {detail}")
+            failures.append(model)
+
+    if failures:
+        print(f"\nFAIL: {len(failures)} model(s) unusable: {', '.join(failures)}")
+        return 1
+    print("\nAll models present and callable on this key.")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--fixture", help="Path to a fixture JSON (omit with --live)")
@@ -208,11 +334,27 @@ def main():
                     help="Comma-separated model ids, e.g. "
                          "'gemini-3.1-flash-lite,gemma-3-27b-it'")
     ap.add_argument("--label", help="Output filename label")
+    ap.add_argument("--thinking-level",
+                    choices=["minimal", "low", "medium", "high"],
+                    help="Override THINKING_LEVEL for every model in this run. "
+                         "Gemini 3.x only; ignored for Gemma and older ids. "
+                         "The full Flash models default to high/dynamic thinking "
+                         "while flash-lite defaults to minimal, so a like-for-like "
+                         "bake-off has to set this explicitly.")
+    ap.add_argument("--check-quota", action="store_true",
+                    help="For each --models id: confirm it still exists, is "
+                         "generateContent-capable, and has a usable free tier. "
+                         "Then exit. Use before switching the production pin.")
     args = ap.parse_args()
 
     if args.list_models:
         list_models()
         return
+    if args.check_quota:
+        if not args.models:
+            sys.exit("error: --check-quota needs --models 'a,b'")
+        sys.exit(check_quota([m.strip() for m in args.models.split(",") if m.strip()],
+                             args.thinking_level))
     if not args.models:
         sys.exit("error: --models is required (or use --list-models)")
 
@@ -255,7 +397,8 @@ def main():
 
     for model in models:
         order.append(model)
-        results[model] = run_model(model, base_env, label, args.n)
+        results[model] = run_model(model, base_env, label, args.n,
+                                   args.thinking_level)
 
     print_comparison(order, results, refs)
     print_previews(order, results)

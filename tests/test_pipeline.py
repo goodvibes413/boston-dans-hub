@@ -425,5 +425,105 @@ class TestRuleTitlesSync(unittest.TestCase):
         self.assertGreaterEqual(max(safety_judge.RULE_TITLES), 14)
 
 
+# Workflow job timeout from .github/workflows/morning_brew.yml (timeout-minutes: 25).
+# Mirrored here rather than parsed so a drop in the workflow file is a visible,
+# reviewed edit in both places.
+JOB_TIMEOUT_S = 25 * 60
+# Wall-clock the job needs outside the model calls: 9 fetchers, update_store,
+# publish, healthcheck, and the git pull/push retry loop. Observed floor is
+# ~140s for a whole run; 300s is that with room to spare.
+NON_MODEL_ALLOWANCE_S = 300
+
+
+class TestRetryBudget(unittest.TestCase):
+    """
+    The 2026-07-01 incident was not a slow model — it was the job being
+    force-cancelled at the 25-min timeout *before* publish.py could write a
+    sentinel and pick a fallback, so the day produced no commit at all.
+
+    That makes "worst-case retry time fits inside the job timeout, with room
+    for the sentinel path to still run" a real invariant, not a style
+    preference. These tests fail if someone lengthens the retry ladder, raises
+    MAX_RETRIES, or bumps the per-request timeout without redoing the math.
+    """
+
+    def test_worst_case_generate_run_fits_job_timeout(self):
+        import safety_judge
+
+        # generate_rant chains up to MAX_CALLS_PER_RUN calls (grounded →
+        # ungrounded fallback → punch-up), then publish.py runs the judge once.
+        # The multi-regeneration path cannot coexist with a full-timeout
+        # outage: a judge whose API call fails is treated as PASS and returns
+        # immediately, so the regen loop only runs while the API is healthy.
+        generate = generate_rant.MAX_CALLS_PER_RUN * generate_rant.worst_case_call_seconds()
+        judge = safety_judge.worst_case_call_seconds()
+        total = generate + judge + NON_MODEL_ALLOWANCE_S
+
+        self.assertLess(
+            total, JOB_TIMEOUT_S,
+            f"worst-case pipeline {total}s exceeds the {JOB_TIMEOUT_S}s job timeout "
+            f"(generate={generate}s, judge={judge}s, overhead={NON_MODEL_ALLOWANCE_S}s). "
+            "Lower MAX_RETRIES/BACKOFF_DELAYS or raise timeout-minutes in morning_brew.yml.",
+        )
+
+    def test_backoff_ladder_covers_every_retry(self):
+        # call_with_retry indexes backoff_delays[attempt] for attempt in
+        # range(max_retries), so a ladder shorter than MAX_RETRIES would
+        # IndexError on the last retry — in production, mid-outage.
+        self.assertGreaterEqual(len(generate_rant.BACKOFF_DELAYS), generate_rant.MAX_RETRIES)
+
+    def test_judge_shares_the_budget_constants(self):
+        # Two copies of the ladder is how they drift. safety_judge imports
+        # them; this asserts nobody re-hardcoded a local copy.
+        import safety_judge
+
+        self.assertIs(safety_judge.BACKOFF_DELAYS, generate_rant.BACKOFF_DELAYS)
+        self.assertEqual(safety_judge.MAX_RETRIES, generate_rant.MAX_RETRIES)
+
+
+class TestThinkingConfig(unittest.TestCase):
+    """
+    thinking_level is a Gemini 3.x-only parameter, and eval_models.py drives
+    this same code path with Gemma and older Gemini ids. Sending the kwarg to a
+    model that rejects it turns an eval run into an API error.
+    """
+
+    def test_applied_to_gemini_3x(self):
+        self.assertEqual(
+            generate_rant.thinking_level_for("gemini-3.1-flash-lite"),
+            generate_rant.DEFAULT_THINKING_LEVEL,
+        )
+
+    def test_explicit_level_wins(self):
+        self.assertEqual(
+            generate_rant.thinking_level_for("gemini-3.8-flash", "low"), "low")
+
+    def test_omitted_for_models_that_reject_it(self):
+        for model in ("gemma-3-27b-it", "gemini-2.5-flash", "gemini-2.5-pro"):
+            with self.subTest(model=model):
+                self.assertIsNone(generate_rant.thinking_level_for(model))
+                self.assertEqual(generate_rant.thinking_kwargs(model), {})
+
+    def test_kwargs_nest_under_thinking_config(self):
+        # Regression guard: GenerateContentConfig has no top-level
+        # thinking_level field — it lives on a ThinkingConfig object. Passing it
+        # flat raises a pydantic validation error on every Gemini 3.x call, so
+        # this asserts the shape the SDK actually accepts.
+        try:
+            from google.genai import types
+        except ImportError:
+            self.skipTest("google-genai not installed")
+        kwargs = generate_rant.thinking_kwargs("gemini-3.1-flash-lite")
+        self.assertIn("thinking_config", kwargs)
+        # The SDK coerces the string to a ThinkingLevel enum, so compare on
+        # value and case-insensitively rather than to the raw literal.
+        self.assertEqual(
+            str(kwargs["thinking_config"].thinking_level.value).lower(),
+            generate_rant.DEFAULT_THINKING_LEVEL.lower())
+        # Must construct cleanly, or production dies on the first call.
+        cfg = types.GenerateContentConfig(temperature=0.9, **kwargs)
+        self.assertIsNotNone(cfg.thinking_config)
+
+
 if __name__ == "__main__":
     unittest.main()
