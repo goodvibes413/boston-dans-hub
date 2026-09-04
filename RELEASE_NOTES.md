@@ -5,6 +5,126 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-04 — The Stretch Run: Dan Covers a Pennant Race, But Only in September
+
+**Context:** It's September 4th, the Red Sox are in a live wild-card race, and Dan
+doesn't speak to it. Yesterday's brew got as close as *"We have a long road ahead if
+we want to stay in the postseason conversation"* — vague, unanchored, and a sentence
+he could have written in June.
+
+He couldn't do better, for a good reason: **the data wasn't there.**
+`fetch_season_memory.py` wrote wins/losses/win_pct and *division* games-behind, but
+nothing about the wild card, which is the entire story for this team. Division
+games-back is worse than useless here — 3rd in the AL East reads as "buried" while
+they comfortably hold a wild-card spot. And Stats Discipline is absolute, enforced by
+judge rule 7 at HIGH severity: any number not in `rolling_7day` or `season_memory` is
+a fabricated stat. Dan was structurally forced into mush.
+
+**The risk on the other side.** Just telling Dan "talk about the playoffs" gets you
+playoff math in April, and "the magic number is sixteen" as the daily ticker sentence
+that goes stale by day three — the exact repetition failure the Continuity rules exist
+to prevent. The feature is only worth shipping if it has an off switch that can't be
+talked out of.
+
+**The design: gate on data presence, not on instructions.** The topic is unlocked by
+the presence of a `playoff_race` block on the team's `current_season` entry. No block,
+no race talk. That single fact does all the work, because
+`season_current.json` already feeds three consumers:
+
+- **The prompt** — `build_season_memory()` merges it into `SEASON_MEMORY`.
+- **The safety judge** — `source_data.season_memory.current_season` reads the same
+  file, so the new figures become legal to cite *and nothing else does*.
+- **The evals** — `eval_voice.py` points `SEASON_CURRENT_PATH` at fixture data, so a
+  fixture can switch the race on or off.
+
+One write reaches all three. No changes to `generate_rant.py`, `safety_judge.py`,
+`publish.py`, the workflow, or the eval harness — the insertion point was chosen for
+exactly that reason.
+
+The gate is *structural*, which is the point. Outside the window there is no
+instruction for Dan to disobey, because there is no data to reason from; and if he
+invents a magic number anyway, the judge fails him for a fabricated stat. Two
+independent mechanisms, neither of them a polite request.
+
+**Two gates, in `build_playoff_race()`:**
+
+1. **Window** — `regular_season` and `games_remaining <= STRETCH_RUN_WINDOW[sport]`
+   (MLB 40, NBA/NHL 20, NFL 6). Defined in *games remaining* rather than calendar
+   dates so it self-adjusts to a shortened or shifted season. For MLB that opens
+   around mid-August.
+2. **Elimination** — no block when StatsAPI reports `"E"` for both division and wild
+   card. Actual elimination is already owned by `season_overrides.json`, whose rules
+   are absolute. Two authorities on the same fact is how contradictions ship.
+
+Five `race_status` tiers, each mapping to a distinct register in the persona:
+`clinched`, `clinch_watch` (magic ≤ 10), `in_position`, `chasing`,
+`playing_out_the_string`. That last one was a deliberate call — when the Sox are alive
+on paper only, Dan gets honest gallows humor (the register the persona already uses
+for long slumps) rather than either silence or manufactured hope. "Stranger things
+have happened" is not a take, it's a cope.
+
+**Source: MLB StatsAPI, not ESPN.** `statsapi.mlb.com` — the host `fetch_mlb.py`
+already uses — returns `magicNumber`, `wildCardRank`, `wildCardGamesBack` and
+`eliminationNumber` directly, so Dan cites real figures instead of derived guesses.
+One call covers the whole AL, so the closest chaser ("5.5 up on Cleveland") comes from
+the same payload rather than a second request.
+
+**The parsing hazard, which is not theoretical.** StatsAPI sends these as *strings*
+with sentinels: `gamesBack` can be `"-"` or `"+2.5"`, `magicNumber` is `"-"` when not
+applicable, `eliminationNumber` is `"E"` when the team is out. A `"-"` reaching the
+prompt is a non-number Dan would then cite as a stat. Everything goes through
+`_parse_gb()` / `_parse_count()`, which return `None` for anything that isn't a real
+number so the field is *omitted* rather than emitted as a sentinel.
+
+`build_playoff_race()` re-normalizes its own inputs rather than trusting the caller.
+That wasn't the original design — the test feeding it raw strings turned up a
+`TypeError` on the magic-number comparison. In production `fetch_mlb_standings_race()`
+pre-parses so it would never have fired, but this function is the shared entry point
+for the other three sports' fetchers, and that crash would have landed at 6am in CI
+the first time someone wired up the NBA.
+
+**Direction is encoded in the field name.** `wild_card_games_up` is a cushion,
+`wild_card_games_back` is a deficit; only one is ever present. Naming them apart means
+Dan can't invert the sign and report a 5.5-game lead as a 5.5-game hole.
+
+**Persona changes** (`prompts/boston_dan_system.txt`, +3.6KB / +7.7%, comfortably
+inside the prompt budget the 09-04 timeout work sized):
+
+- New **The Stretch Run** section, placed between Season Context and SEASON_OVERRIDES
+  so it reads correctly top-to-bottom: general context → the race → elimination trumps
+  everything.
+- **One race beat per brew, tied to what last night's result did to the picture.**
+  "That win knocks another one off the magic number" is a race beat; "the Sox hold the
+  second wild card at 79-62" is a wire report. Never lead on the race two days running.
+- Register per tier, plus a superstition rule: Dan never declares them in, which is
+  both his voice and a hedge against overclaiming.
+- Run it through the **bits that already exist**. The Duck Boat fund now has a real
+  ledger behind it — a September bullpen meltdown is a bigger withdrawal than an April
+  one — rather than adopting a new voice for the race.
+- Continuity gains a **playoff-race frame rotation** rule; Stats Discipline extends to
+  magic numbers, wild-card rank, and games back/up.
+
+**Coverage:** 25 new unit tests. The one that matters most is `test_april_gets_no_block`
+— 40 games played, 122 left, no block. That's the regression test for the whole
+premise. Three eval fixtures: an in-position September day (with `recent_dan_output`
+that already used the magic-number frame, to exercise the no-repeat rule), a
+`playing_out_the_string` day, and `race_offseason_no_talk` — a May control where the
+pass condition is that the words "playoff", "postseason" and "October" don't appear at
+all.
+
+**Scope:** MLB only. The gate, the block shape and the persona rules are
+sport-agnostic and `STRETCH_RUN_WINDOW` already carries thresholds for the other
+three; each needs one standings fetcher to light up. Not built on spec.
+
+**Still open:** the live fetch is unverified — `statsapi.mlb.com` is blocked by the
+egress proxy in the authoring environment, so `fetch_mlb_standings_race()` has not run
+against the real endpoint. The gate logic is pure and fully tested; the field mapping
+is the part that needs one real run to confirm. Verify on the next CI run that
+`data/season_current.json` carries a Red Sox `playoff_race` block with a sane magic
+number and no `"-"` or `"E"` in any numeric field.
+
+---
+
 ## 2026-09-04 — Gemini Upgrade Review: Instrumentation, Pinned Thinking Level, Provable Retry Budget
 
 **Context:** Google shipped several new Gemini models (3.5/3.6/3.8 Flash, 3.1 Pro)

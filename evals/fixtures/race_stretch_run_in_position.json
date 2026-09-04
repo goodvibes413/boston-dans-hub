@@ -1,0 +1,94 @@
+{
+  "_fixture_notes": "September, Red Sox holding the No. 2 AL wild card with a 5.5-game cushion on Cleveland and a magic number of 16. They won last night. The playoff_race block is present, so the race is unlocked. recent_dan_output has Dan leading yesterday with the magic-number frame, so today must come at the race from a different angle. PASS: covers the game first; at most ONE race beat, tied to what the win did to the picture; every race figure matches the block exactly (16, 5.5, 21, second wild card); frames it differently from yesterday's magic-number lead; stays anxious rather than celebratory (race_status is in_position, not clinched). FAIL: invents a number or a playoff percentage; states the magic number as anything but 16; calls 5.5 a deficit instead of a cushion; opens with the magic-number frame again; turns the brew into a standings recap or a playoff-picture column; declares them in.",
+  "today": "2026-09-14",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-09-14",
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-09-13",
+            "home_team": "Boston Red Sox",
+            "away_team": "New York Yankees",
+            "home_score": 5,
+            "away_score": 2,
+            "result": "Red Sox won 5-2",
+            "players": [
+              { "name": "Ceddanne Rafaela", "ab": 4, "h": 2, "hr": 1, "rbi": 3 },
+              { "name": "Garrett Whitlock", "ip": 6.1, "er": 1, "k": 8, "bb": 1 }
+            ]
+          },
+          "news": { "articles": [] }
+        },
+        "celtics":  { "boxscore": { "game_date": "2026-09-13", "played": false, "season_type": "offseason" }, "news": { "articles": [] } },
+        "bruins":   { "boxscore": { "game_date": "2026-09-13", "played": false, "season_type": "offseason" }, "news": { "articles": [] } },
+        "patriots": { "boxscore": { "game_date": "2026-09-13", "played": false, "season_type": "regular" }, "news": { "articles": [] } }
+      },
+      {
+        "date": "2026-09-13",
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-09-12",
+            "home_team": "Boston Red Sox",
+            "away_team": "New York Yankees",
+            "home_score": 3,
+            "away_score": 4,
+            "result": "Red Sox lost 3-4"
+          },
+          "news": { "articles": [] }
+        },
+        "celtics":  { "boxscore": { "game_date": "2026-09-12", "played": false, "season_type": "offseason" }, "news": { "articles": [] } },
+        "bruins":   { "boxscore": { "game_date": "2026-09-12", "played": false, "season_type": "offseason" }, "news": { "articles": [] } },
+        "patriots": { "boxscore": { "game_date": "2026-09-12", "played": false, "season_type": "regular" }, "news": { "articles": [] } }
+      }
+    ]
+  },
+  "recent_dan_output": [
+    {
+      "date": "2026-09-13",
+      "headline": "Bullpen coughs up another one as the Yankees steal the opener",
+      "morning_brew": [
+        "One run. That's what separated us from a night worth celebrating, and instead I'm sitting here with cold coffee and a worse mood than when I woke up. The bats did their part early and then went to sleep like it was August in a beach chair.",
+        "The magic number is still sixteen and it didn't budge an inch last night, which is exactly the kind of stalled-out evening that makes September feel twice as long. We're second in the wild card and I'd like to stop checking that every morning, but here we are.",
+        "Rick has a theory about the strike zone in the seventh. I told him to write it down and we'd revisit it in October, assuming we get there."
+      ]
+    }
+  ],
+  "season_memory": {
+    "past_seasons": {
+      "redsox": {
+        "past_seasons": [
+          { "year": 2024, "record": "81-81", "result": "Missed playoffs" },
+          { "year": 2025, "record": "89-73", "result": "Lost Wild Card Series vs Astros 2-1" }
+        ]
+      }
+    },
+    "current_season": {
+      "redsox": {
+        "status": "regular_season",
+        "wins": 79,
+        "losses": 62,
+        "win_pct": 0.56,
+        "summary": "79-62",
+        "streak": "W1",
+        "division": "American League East",
+        "conference": "American League",
+        "playoff_race": {
+          "phase": "stretch_run",
+          "games_remaining": 21,
+          "race_status": "in_position",
+          "division_rank": 3,
+          "division_games_back": 8.0,
+          "wild_card_rank": 2,
+          "wild_card_games_up": 5.5,
+          "magic_number": 16,
+          "closest_chaser": "Cleveland Guardians"
+        }
+      }
+    }
+  }
+}

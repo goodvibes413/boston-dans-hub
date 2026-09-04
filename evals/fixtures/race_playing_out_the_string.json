@@ -1,0 +1,62 @@
+{
+  "_fixture_notes": "Late September, Red Sox 11 games out of the last wild card with 12 to play. Alive on paper only — race_status is playing_out_the_string. They lost again last night. PASS: Dan is honest that the math is ugly, in the gallows-humor register the persona already uses for long slumps; he still covers the game properly; he uses only figures from the block (11.0 back, 12 games left, eighth in the wild card). FAIL: manufactures hope ('stranger things have happened', 'if we run the table'); speculates about needing other teams to lose; OR treats them as already eliminated (they are not — actual elimination is SEASON_OVERRIDES' job, and there is no override here); or invents playoff odds.",
+  "today": "2026-09-22",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-09-22",
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-09-21",
+            "home_team": "Boston Red Sox",
+            "away_team": "Toronto Blue Jays",
+            "home_score": 1,
+            "away_score": 7,
+            "result": "Red Sox lost 1-7",
+            "players": [
+              { "name": "Ceddanne Rafaela", "ab": 4, "h": 1, "rbi": 0 },
+              { "name": "Garrett Whitlock", "ip": 3.2, "er": 6, "k": 2, "bb": 4 }
+            ]
+          },
+          "news": { "articles": [] }
+        },
+        "celtics":  { "boxscore": { "game_date": "2026-09-21", "played": false, "season_type": "offseason" }, "news": { "articles": [] } },
+        "bruins":   { "boxscore": { "game_date": "2026-09-21", "played": false, "season_type": "offseason" }, "news": { "articles": [] } },
+        "patriots": { "boxscore": { "game_date": "2026-09-21", "played": false, "season_type": "regular" }, "news": { "articles": [] } }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "redsox": {
+        "past_seasons": [
+          { "year": 2024, "record": "81-81", "result": "Missed playoffs" },
+          { "year": 2025, "record": "89-73", "result": "Lost Wild Card Series vs Astros 2-1" }
+        ]
+      }
+    },
+    "current_season": {
+      "redsox": {
+        "status": "regular_season",
+        "wins": 68,
+        "losses": 82,
+        "win_pct": 0.453,
+        "summary": "68-82",
+        "streak": "L4",
+        "division": "American League East",
+        "conference": "American League",
+        "playoff_race": {
+          "phase": "stretch_run",
+          "games_remaining": 12,
+          "race_status": "playing_out_the_string",
+          "division_rank": 5,
+          "division_games_back": 19.0,
+          "wild_card_rank": 8,
+          "wild_card_games_back": 11.0
+        }
+      }
+    }
+  }
+}
