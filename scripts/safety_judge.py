@@ -6,6 +6,7 @@ Returns JSON {verdict, severity, flags} on stdout. Exit 0 = PASS, 1 = FAIL.
 Env vars:
   GEMINI_API_KEY        required
   JUDGE_MODEL           optional, default "gemini-3.1-flash-lite"
+  THINKING_LEVEL        optional, default "minimal" — Gemini 3.x reasoning depth
   INPUT_PATH            optional, default data/raw_dan_output.json
   SEASON_STATIC_PATH    optional, past-seasons JSON (cross-referenced for stat claims)
   SEASON_CURRENT_PATH   optional, current-season JSON (cross-referenced for stat claims)
@@ -40,6 +41,21 @@ DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
 # (500 RPD free tier) after "gemini-flash-latest" resolved to a model whose
 # free tier was persistently exhausted on 2026-07-01.
 DEFAULT_MODEL = "gemini-3.1-flash-lite"
+
+# thinking_level and per-call timing are shared with generate_rant rather than
+# copied — describe_api_error/call_with_retry are already duplicated verbatim
+# across these two files and a third copy of the same logic is not worth it.
+# Same sys.path pattern publish.py uses to import RULE_TITLES from here.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from generate_rant import (  # noqa: E402
+    BACKOFF_DELAYS,
+    MAX_RETRIES,
+    REQUEST_TIMEOUT_S,
+    record_timing,
+    thinking_kwargs,
+    thinking_level_for,
+    worst_case_call_seconds,
+)
 
 # Signature-phrase patterns that should never recur in 3+ consecutive
 # daily outputs. Conservative list (9 entries); expand only after observing
@@ -305,20 +321,17 @@ def describe_api_error(e) -> str:
     return " | ".join(parts) if parts else str(e)[:200]
 
 
-def call_with_retry(fn, max_retries=3):
+def call_with_retry(fn, max_retries=MAX_RETRIES):
     """
     Call fn() with exponential backoff retry on 503/429 errors.
 
-    On 503 UNAVAILABLE: wait 5s, 15s, 30s (up to ~50s total)
-    On 429 QUOTA_EXCEEDED: parse retryDelay from error, wait that duration
-    On other errors: fail immediately
-
-    Budget capped at ~50s/call so the judge-correction-judge chain inside
-    publish.py can't burn the workflow's 25-min job timeout. If quota is
-    truly exhausted, the existing exception handler treats the API failure
-    as PASS so content still publishes.
+    Shares generate_rant's retry budget constants so the two halves of the
+    pipeline cannot drift apart — tests/test_pipeline.py::TestRetryBudget
+    asserts the combined worst case still fits the workflow's 25-min job
+    timeout. If quota is truly exhausted, the existing exception handler
+    treats the API failure as PASS so content still publishes.
     """
-    backoff_delays = [5, 15, 30]
+    backoff_delays = BACKOFF_DELAYS
 
     for attempt in range(max_retries + 1):
         try:
@@ -579,6 +592,19 @@ def main():
 
     content = input_path.read_text()
 
+    # Strip underscore-prefixed pipeline metadata (_timings, _generation_failed,
+    # …) before showing the draft to the judge. It is bookkeeping, not Dan's
+    # writing, and feeding token counts into a rubric that flags fabricated
+    # statistics is asking for a false positive.
+    try:
+        _obj = json.loads(content)
+        if isinstance(_obj, dict) and any(k.startswith("_") for k in _obj):
+            content = json.dumps(
+                {k: v for k, v in _obj.items() if not k.startswith("_")}, indent=2
+            )
+    except json.JSONDecodeError:
+        pass  # non-JSON content is the judge's problem to flag, not ours to hide
+
     # Cross-reference sources: rolling_7day, season_memory (static + current), and draft_picks.
     # The judge uses these to flag fabricated stats and player names.
     draft_picks_path = Path(os.environ.get("DRAFT_PICKS_PATH", DEFAULT_DRAFT_PICKS))
@@ -623,18 +649,20 @@ def main():
 
     # Bounded request timeout — see generate_rant.py's call_gemini() for why an
     # unbounded HTTP call is dangerous inside a 25-min job (2026-07-01 incident).
-    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=90_000))
+    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=REQUEST_TIMEOUT_S * 1000))
+    judge_config = dict(temperature=0.0, response_mime_type="application/json")
+    judge_config.update(thinking_kwargs(model_name))
+    _t0 = time.perf_counter()
     try:
         resp = call_with_retry(
             lambda: client.models.generate_content(
                 model=model_name,
                 contents=full_prompt,
-                config=types.GenerateContentConfig(
-                    temperature=0.0,
-                    response_mime_type="application/json",
-                ),
+                config=types.GenerateContentConfig(**judge_config),
             )
         )
+        record_timing("judge", model_name, time.perf_counter() - _t0, resp,
+                          thinking_level_for(model_name))
     except Exception as e:
         # API unavailable or quota exhausted — PASS with a warning so content
         # still publishes. A judge that can't run should not block publication;

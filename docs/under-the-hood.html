@@ -1067,12 +1067,12 @@
       icon: 'psychology',
       title: 'AI Generation',
       desc: 'Gemini Flash generates structured JSON at temperature 0.9 — Dan\'s full morning commentary in a single call. The 6KB persona defines his voice, rules, and Boston-isms.',
-      tags: ['gemini-flash-latest', 'temp: 0.9', 'JSON output', 'morning_brew[3]', 'trend_watch', 'news_digest', 'box_scores', 'schedule'],
+      tags: ['gemini-3.1-flash-lite', 'temp: 0.9', 'thinking: minimal', 'JSON output', 'morning_brew[3]', 'trend_watch', 'news_digest', 'box_scores', 'schedule'],
       timingMs: 3200,
-      what: '<code>prompts/boston_dan_system.txt</code> is the system instruction. The assembled context blob is the user message. Temperature 0.9 gives Dan personality variance without hallucinating — structured JSON output constrains the format. Retries use exponential backoff [5, 15, 30, 60, 90, 120, 180]s for 503/429 errors.',
+      what: '<code>prompts/boston_dan_system.txt</code> is the system instruction. The assembled context blob is the user message. Temperature 0.9 gives Dan personality variance without hallucinating — structured JSON output constrains the format. Retries use exponential backoff [5, 15]s for 503/429 errors — a short ladder on purpose, so the worst case still leaves room for the fallback path to run inside the 25-minute job timeout.',
       files: ['scripts/generate_rant.py', 'prompts/boston_dan_system.txt', 'data/raw_dan_output.json'],
-      decision: '<code>gemini-flash-latest</code> (never pinned). Pinned model versions have lower free-tier daily quotas. The <code>-latest</code> alias always routes to the highest-quota tier. Model improvements to voice quality are a feature, not a risk to manage.',
-      insight: 'Gemini\'s <code>response_mime_type="application/json"</code> is incompatible with search grounding in the current SDK. Rather than building a two-call workaround, all grounding is done via injected context (the 8 JSON sources in the prompt). This eliminates the conflict entirely — simpler and more reliable than hybrid grounding.'
+      decision: '<code>gemini-3.1-flash-lite</code>, pinned — and <code>thinking_level</code> pinned with it. This reverses an earlier decision to float on the <code>-latest</code> alias; see the decision log below.',
+      insight: 'Gemini\'s <code>response_mime_type="application/json"</code> is incompatible with search grounding in the current SDK. So the call is made twice-over: attempt 1 uses live Google Search grounding with no mime type, and if that fails or returns unparseable JSON, attempt 2 drops grounding and forces JSON mode. Injected context (the 8 JSON sources in the prompt) is what the second attempt falls back on.'
     },
     {
       id: 4,
@@ -1144,9 +1144,9 @@
     },
     {
       icon: 'update',
-      title: 'Never pin the Gemini model version',
-      decision: 'Always <code>gemini-flash-latest</code>, never a pinned version like <code>gemini-2.5-flash</code>. Pinned models get lower free-tier daily quotas; the alias routes to the highest-quota tier.',
-      tradeoff: 'Model updates may subtly shift Dan\'s voice (accepted — usually an improvement)'
+      title: 'Pin the Gemini model version — and its thinking level',
+      decision: 'Reversed on 2026-07-01. This used to say the opposite: always <code>gemini-flash-latest</code>, on the theory that the alias routes to the highest free-tier quota. Then Google remapped the alias to a freshly-launched model whose free tier was exhausted for hours, and three spaced pipeline runs failed in a row. A pin is a known quantity; an alias is whatever Google points it at that morning. <code>thinking_level</code> is pinned for the same reason — its default varies per model, so inheriting it would make latency depend on an undocumented default.',
+      tradeoff: 'Somebody has to notice when the pinned model is retired — so <code>model_health.yml</code> checks weekly and files an issue'
     },
     {
       icon: 'history',

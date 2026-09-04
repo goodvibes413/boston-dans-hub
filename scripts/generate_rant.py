@@ -8,6 +8,7 @@ back, writes data/raw_dan_output.json.
 Env vars:
   GEMINI_API_KEY        required
   GEMINI_MODEL          optional, default "gemini-3.1-flash-lite"
+  THINKING_LEVEL        optional, default "minimal" — Gemini 3.x reasoning depth
   ROLLING_STORE_PATH    optional, lets eval_voice.py swap in a fixture
   SCHEDULE_PATH         optional
   NEWS_PATH             optional
@@ -90,6 +91,85 @@ TEAM_KEYS = ("celtics", "bruins", "redsox", "patriots")
 # a given day. See AGENTS.md Model Strategy for the full rationale.
 DEFAULT_MODEL = "gemini-3.1-flash-lite"
 
+# 2026-09-04: pinned explicitly rather than inherited. Every Gemini 3.x model
+# accepts thinking_level, but the DEFAULT differs per model — gemini-3.1-flash-lite
+# defaults to "minimal" while the full Flash models default to high/dynamic
+# thinking. That meant this pipeline's latency profile depended on an undocumented
+# per-model default: swapping DEFAULT_MODEL to a full Flash model would silently
+# jump to high thinking, whose measured p95 time-to-first-token (~50s) does not
+# fit the 90s per-request timeout below once grounding and a ~30KB prompt are
+# added. Same lesson as the model pin itself — a known constant beats whatever
+# Google currently maps a default to. See AGENTS.md Model Strategy.
+DEFAULT_THINKING_LEVEL = "minimal"
+
+# Per-call latency + token accounting, written to the output JSON as `_timings`
+# so cost/latency questions are answerable from our own history instead of
+# third-party benchmarks. Appended to by call_gemini(); read by main().
+CALL_TIMINGS = []
+
+
+def thinking_level_for(model_name: str, level: str | None = None) -> str | None:
+    """
+    Which thinking_level applies to this model, or None if it must not be sent.
+
+    thinking_level is a Gemini 3.x parameter: earlier Gemini models return an
+    error for it, and the Gemma open models rejected it along with
+    system_instruction/tools/response_mime_type. eval_models.py A/Bs Gemma and
+    older ids through this same code path, so the guard is load-bearing, not
+    defensive padding.
+
+    Kept free of any SDK import so it stays unit-testable without google-genai.
+    """
+    if not model_name.lower().startswith("gemini-3"):
+        return None
+    return level or os.environ.get("THINKING_LEVEL", DEFAULT_THINKING_LEVEL)
+
+
+def thinking_kwargs(model_name: str, level: str | None = None) -> dict:
+    """
+    The GenerateContentConfig kwargs that pin thinking depth, or {} if this
+    model does not take them.
+
+    Note the nesting: the SDK has no top-level `thinking_level` field — it is
+    `thinking_config=types.ThinkingConfig(thinking_level=...)`. Passing it flat
+    raises a pydantic validation error on every call.
+    """
+    lvl = thinking_level_for(model_name, level)
+    if not lvl:
+        return {}
+    from google.genai import types
+    return {"thinking_config": types.ThinkingConfig(thinking_level=lvl)}
+
+
+def record_timing(label: str, model_name: str, seconds: float, resp,
+                  level: str = None) -> None:
+    """
+    Append one call's wall-clock latency and token usage to CALL_TIMINGS.
+
+    thoughts_token_count is the number worth having: thinking tokens bill as
+    output and are the main latency driver on Gemini 3.x, so a latency
+    regression after a model or thinking_level change is otherwise invisible.
+    usage_metadata is read defensively — a blocked or truncated candidate can
+    leave fields absent, and instrumentation must never be what breaks the run.
+    """
+    usage = getattr(resp, "usage_metadata", None)
+    entry = {
+        "label": label,
+        "model": model_name,
+        # Passed in, not re-derived: call_gemini drops the kwarg and retries if
+        # the model rejects it, and a timing row that claims a level the call
+        # did not actually use would poison the bake-off it exists to inform.
+        "thinking_level": level,
+        "seconds": round(seconds, 2),
+        "prompt_tokens": getattr(usage, "prompt_token_count", None),
+        "output_tokens": getattr(usage, "candidates_token_count", None),
+        "thinking_tokens": getattr(usage, "thoughts_token_count", None),
+    }
+    CALL_TIMINGS.append(entry)
+    print(f"  [timing] {label}: {entry['seconds']}s "
+          f"prompt={entry['prompt_tokens']} out={entry['output_tokens']} "
+          f"thinking={entry['thinking_tokens']}", file=sys.stderr)
+
 
 def describe_api_error(e) -> str:
     """
@@ -160,21 +240,50 @@ def describe_api_error(e) -> str:
     return " | ".join(parts) if parts else str(e)[:200]
 
 
-def call_with_retry(fn, max_retries=4):
+# --- Retry/timeout budget -------------------------------------------------
+# These four constants are the whole time model of the pipeline. They are named
+# (not inlined) because the invariant they satisfy is asserted in
+# tests/test_pipeline.py::TestRetryBudget, so changing one without rerunning the
+# math fails CI rather than production.
+#
+# The failure this bounds is the 2026-07-01 incident: the job hit the workflow's
+# 25-min timeout and GitHub force-cancelled it *before* publish.py ran, so no
+# sentinel was written, no fallback chosen, no commit made — just a red X. Every
+# in-process retry has to leave enough room for the sentinel path to still run.
+#
+# The dominant term is REQUEST_TIMEOUT_S × attempts, not the backoff sleeps, so
+# the lever that matters is MAX_RETRIES. It was lowered from 4 to 2 on
+# 2026-09-04 to make the budget provably fit. That is less of a cut than it
+# looks: generate_rant already makes two independent call paths (grounded, then
+# ungrounded+JSON), so a bad morning still gets 2 × (1 + MAX_RETRIES) = 6 API
+# attempts before the sentinel, and per AGENTS.md the 1–2h spikes were never
+# meant to be absorbed in-process anyway — that is what the five spaced cron
+# slots in morning_brew.yml are for.
+REQUEST_TIMEOUT_S = 90          # http_options timeout on every client below
+MAX_RETRIES = 2
+BACKOFF_DELAYS = [5, 15]
+MAX_CALLS_PER_RUN = 3           # grounded → ungrounded fallback → punch-up
+
+
+def worst_case_call_seconds(max_retries=MAX_RETRIES, backoff=BACKOFF_DELAYS,
+                            timeout_s=REQUEST_TIMEOUT_S) -> int:
+    """Upper bound on one call_with_retry(), every attempt hitting the timeout."""
+    return (max_retries + 1) * timeout_s + sum(backoff[:max_retries])
+
+
+def call_with_retry(fn, max_retries=MAX_RETRIES):
     """
     Call fn() with exponential backoff retry on 503/429 errors.
 
-    On 503 UNAVAILABLE: wait 5s, 15s, 30s, 60s (up to ~110s total)
+    On 503 UNAVAILABLE: wait BACKOFF_DELAYS in order
     On 429 QUOTA_EXCEEDED: parse retryDelay from error, wait that duration
     On other errors: fail immediately
 
-    Budget capped at ~110s/call. publish.py can chain up to 3 Gemini calls
-    (judge → correction generate_rant → judge), so worst case ≈ 5 min — fits
-    comfortably inside the workflow's 25-min job timeout. If Gemini is down
-    for longer than that, the existing fallbacks (sentinel + treat-as-PASS)
-    take over.
+    See the budget block above for why the ladder is this short. If Gemini is
+    down longer than the budget, the existing fallbacks (sentinel in
+    generate_rant, treat-as-PASS in safety_judge) take over.
     """
-    backoff_delays = [5, 15, 30, 60]
+    backoff_delays = BACKOFF_DELAYS
 
     for attempt in range(max_retries + 1):
         try:
@@ -1174,7 +1283,7 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
     # bounded per-request timeout turns that hang into a normal exception, which
     # the existing try/except around call_gemini() already handles by writing
     # the sentinel and letting publish.py's fallback take over.
-    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=90_000))
+    client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=REQUEST_TIMEOUT_S * 1000))
 
     # Gemma open models are served through the same Gemini API + GEMINI_API_KEY,
     # but unlike the Gemini models they reject system_instruction, tools (Google
@@ -1183,6 +1292,7 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
     # This lets eval_models.py A/B a free open model against Gemini with no extra
     # dependency. use_grounding/force_json are intentionally ignored for Gemma.
     if model_name.lower().startswith("gemma"):
+        _t0 = time.perf_counter()
         resp = call_with_retry(
             lambda: client.models.generate_content(
                 model=model_name,
@@ -1193,6 +1303,7 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
                 ),
             )
         )
+        record_timing("generate[gemma]", model_name, time.perf_counter() - _t0, resp)
         # resp.text can be empty/None when a candidate is blocked or truncated;
         # accessing .text may even raise. Capture defensively and, under
         # LLM_DEBUG_RAW, log finish_reason + a snippet so eval failures are
@@ -1224,14 +1335,37 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
         config_kwargs["tools"] = [types.Tool(google_search=types.GoogleSearch())]
     if force_json:
         config_kwargs["response_mime_type"] = "application/json"
+    config_kwargs.update(thinking_kwargs(model_name))
 
-    resp = call_with_retry(
-        lambda: client.models.generate_content(
-            model=model_name,
-            contents=user_message,
-            config=types.GenerateContentConfig(**config_kwargs),
+    label = f"generate[{'grounded' if use_grounding else 'nogrounding'}]"
+
+    def _call(kwargs):
+        return call_with_retry(
+            lambda: client.models.generate_content(
+                model=model_name,
+                contents=user_message,
+                config=types.GenerateContentConfig(**kwargs),
+            )
         )
-    )
+
+    _t0 = time.perf_counter()
+    try:
+        resp = _call(config_kwargs)
+    except Exception as e:
+        # thinking_level is newer than some SDK/model combinations and, at
+        # "minimal", can 400 on a model that wants thought signatures. That is a
+        # config problem, not a content problem, so drop the kwarg and try once
+        # more rather than failing the day's generation over an optional knob.
+        if "thinking" not in str(e).lower() or "thinking_config" not in config_kwargs:
+            raise
+        print(f"  warn: thinking_level rejected ({describe_api_error(e)}); "
+              f"retrying without it", file=sys.stderr)
+        config_kwargs.pop("thinking_config")
+        _t0 = time.perf_counter()
+        resp = _call(config_kwargs)
+
+    record_timing(label, model_name, time.perf_counter() - _t0, resp,
+                  thinking_level_for(model_name) if "thinking_config" in config_kwargs else None)
     return resp.text
 
 
@@ -1506,6 +1640,9 @@ def main():
                 "_generation_failed": True,
                 "reason": reason,
                 "timestamp": datetime.now(timezone.utc).isoformat(),
+                # Keep timings even on the failure path — a day that burned the
+                # full retry budget is exactly the day the latency numbers matter.
+                "_timings": CALL_TIMINGS,
             }
             output_path.parent.mkdir(parents=True, exist_ok=True)
             output_path.write_text(json.dumps(sentinel, indent=2))
@@ -1531,10 +1668,17 @@ def main():
     # is authoritative and complete, so we never let Gemini own this field.
     parsed["schedule"] = build_schedule_from_fetcher(schedule_path)
 
+    # Per-call latency/token record. Underscore-prefixed like _quality_warning
+    # and _stale, so publish.py's existing marker handling and the frontend both
+    # ignore it, but it lands in git history where it can be read back later.
+    parsed["_timings"] = CALL_TIMINGS
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(parsed, indent=2))
     print(f"  wrote: {output_path}")
     print(f"  keys:  {list(parsed.keys())}")
+    total = sum(t["seconds"] for t in CALL_TIMINGS)
+    print(f"  model calls: {len(CALL_TIMINGS)}, {total:.1f}s total")
 
 
 if __name__ == "__main__":

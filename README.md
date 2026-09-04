@@ -10,7 +10,7 @@
 
 Boston Dan's Morning Brew is a daily sports digest written entirely by an AI persona — Boston Dan, a high-energy, opinionated Celtics/Bruins/Red Sox/Patriots fan with a distinct voice, strong takes, and a deep distrust of anyone who calls it Jersey Street.
 
-Every morning at 3:00 AM ET, a GitHub Actions pipeline wakes up, pulls live game data from four sports APIs, feeds it to Gemini 2.5 Flash, runs the output through a safety judge, and publishes a fresh static site to GitHub Pages — all with no server, no database, and no ongoing cost.
+Every morning at 3:00 AM ET, a GitHub Actions pipeline wakes up, pulls live game data from four sports APIs, feeds it to Gemini 3.1 Flash-Lite, runs the output through a safety judge, and publishes a fresh static site to GitHub Pages — all with no server, no database, and no ongoing cost.
 
 ---
 
@@ -40,7 +40,7 @@ Every morning at 3:00 AM ET, a GitHub Actions pipeline wakes up, pulls live game
                         │
           ┌─────────────▼─────────────┐
           │      AI Generation        │
-          │  generate_rant.py         │  Gemini 2.5 Flash + Google Search
+          │  generate_rant.py         │  Gemini 3.1 Flash-Lite + Google Search
           │                           │  grounding; persona from system prompt;
           │                           │  outputs morning_brew, trends,         │
           │                           │  news_digest, box_scores, schedule
@@ -91,8 +91,8 @@ Every morning at 3:00 AM ET, a GitHub Actions pipeline wakes up, pulls live game
 
 | Layer | Technology |
 |---|---|
-| AI generation | Gemini 2.5 Flash (`google-genai` SDK) |
-| Safety judge | Gemini 2.5 Flash (separate call, separate rubric) |
+| AI generation | `gemini-3.1-flash-lite` (`google-genai` SDK, pinned — see AGENTS.md Model Strategy) |
+| Safety judge | `gemini-3.1-flash-lite` (separate call, separate rubric) |
 | Sports data | Public ESPN, NHL, and MLB REST APIs (no auth) |
 | CI/CD | GitHub Actions (daily cron) |
 | Hosting | GitHub Pages (static) |

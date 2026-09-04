@@ -61,7 +61,11 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip install google-genai pydantic
+          # Pinned: this is the only third-party dependency the daily pipeline
+          # has, and it was installed unpinned on every production run until
+          # 2026-09-04 — a breaking release would have shipped straight into
+          # the morning brew. Bump deliberately, not by accident.
+          pip install "google-genai==2.22.0" pydantic
 
       - name: Fetch today's real data (live mode)
         if: inputs.mode == 'live'

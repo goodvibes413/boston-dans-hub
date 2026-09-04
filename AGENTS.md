@@ -71,6 +71,54 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 
 **Note**: Free tier vs. paid is not the distinction here — `gemini-flash-latest`, `gemini-2.5-flash`, and `gemini-3.1-flash-lite` are all free. The distinction is daily request quota, and whether that quota is a fixed known value (pinned) or whatever Google currently maps "latest" to (floating).
 
+### Thinking Level: `minimal`, Pinned For The Same Reason The Model Is
+
+**Decision (2026-09-04): pin `thinking_level` explicitly. Do NOT inherit the model's default.**
+
+`thinking_level` is a Gemini 3.x parameter controlling how many internal
+reasoning tokens the model may spend before answering. Its **default differs per
+model**: `gemini-3.1-flash-lite` defaults to `minimal`, while the full Flash
+models default to high/dynamic thinking. Until 2026-09-04 this pipeline set it
+nowhere, so its latency profile silently depended on that per-model default.
+
+Why that matters here, and why it is a *latency* decision rather than a cost one:
+
+- Thinking tokens bill as **output** tokens and are the dominant latency driver.
+  Published benchmarks put a full Flash model's time-to-first-token at ~10s
+  median but ~50s p95 at high thinking, against this pipeline's **90s
+  per-request timeout** — before grounding and a ~30KB prompt are added.
+- So swapping `DEFAULT_MODEL` to a full Flash model *without* setting
+  `thinking_level` would not just be "a better model" — it would quietly move
+  the pipeline from `minimal` to `high` thinking and put single calls within
+  reach of the timeout. That is the 2026-07-01 failure shape again: a hung call,
+  a force-cancelled job, no sentinel, no fallback.
+- A pinned constant is a known quantity; a per-model default is whatever Google
+  decides it is. Identical reasoning to the model pin above.
+
+`thinking_config()` in `generate_rant.py` applies the kwarg **only to `gemini-3*`
+ids** — earlier Gemini models error on it and the Gemma open models reject it,
+and `eval_models.py` drives both through this same code path. Override per-run
+with `THINKING_LEVEL`, or per-eval with `eval_models.py --thinking-level`.
+
+**Before switching to a full Flash model**, run the bake-off at an explicit
+level and check the latency gate (slowest single call under 45s — half the
+request timeout, so one retry still fits):
+
+```
+python3 scripts/eval_models.py --check-quota --models "<candidate>"
+python3 scripts/eval_models.py --fixture evals/fixtures/voice_rivalry.json \
+    --n 3 --models "gemini-3.1-flash-lite,<candidate>" --thinking-level low
+```
+
+### Watching for model drift: `check_model_health.py`
+
+A pin is only safer than the alias if somebody notices when the pinned model is
+retired or loses its free tier. `.github/workflows/model_health.yml` runs
+`scripts/check_model_health.py` weekly: it reads the pins from the same
+constants/env vars production reads, confirms each is still in `models.list()`
+and still answers on the free tier, and files a `pipeline-degraded` issue if not.
+Vet an upgrade candidate through it with the `extra_models` workflow input.
+
 ### Evaluating open models (dev-only) with `eval_models.py`
 
 To gauge whether a free/open model could replace Gemini, you can A/B candidate
@@ -303,7 +351,7 @@ resp = client.models.generate_content(
 ### Retry logic (503/429)
 Both `generate_rant.py` and `safety_judge.py` use `call_with_retry()`, with intentionally
 capped budgets (so `publish.py` chaining up to 3 calls stays inside the 25-min job timeout):
-- 503 UNAVAILABLE: `generate_rant.py` retries 4× with backoff `[5, 15, 30, 60]` seconds (~110s/call); `safety_judge.py` retries 3× with `[5, 15, 30]`. Longer (1–2h) spikes are covered by the spaced safety-net cron slots in `morning_brew.yml`, not by extending these.
+- 503 UNAVAILABLE: both scripts retry `MAX_RETRIES` (2) times with backoff `[5, 15]` (~290s/call worst case, dominated by the 90s per-request timeout, not the sleeps). Longer (1–2h) spikes are covered by the spaced safety-net cron slots in `morning_brew.yml`, not by extending these.
 - 429 QUOTA_EXCEEDED: parse `retryDelay` from the error response and wait that duration; otherwise fall back to the same backoff schedule. (Note: the Google-Search-grounded generation call has hit 429 even when the non-grounded fallback only sees 503 — grounding appears to draw on a stricter quota; the two-attempt grounding→no-grounding fallback in `generate_rant.py` handles this.)
 - Other errors (400, 401): fail immediately, no retry
 - On exhaustion:
@@ -311,8 +359,8 @@ capped budgets (so `publish.py` chaining up to 3 calls stays inside the 25-min j
   - `generate_rant.py` writes a `{"_generation_failed": true, ...}` sentinel to `data/raw_dan_output.json` and exits 0 — `publish.py` then decides between yesterday's content (<48h old) and `SAFE_FALLBACK`. This keeps `publish.py` the single fallback decision point rather than having the workflow die mid-pipeline.
 
 ### Free tier model availability
-- `gemini-3.1-flash-lite`: ✅ free tier available, 500 RPD — **current production pin** (see Model Strategy above)
-- `gemini-2.5-flash`: ✅ free tier available
+- `gemini-3.1-flash-lite`: ✅ free tier available — **current production pin**. The 500 RPD figure came from Google's docs at pin time; other sources have since reported 1,500 RPD for this model. Nobody has measured it, and at ~3 calls/day the difference is immaterial — run `python3 scripts/eval_models.py --check-quota --models gemini-3.1-flash-lite` if you need the real number rather than trusting either (see Model Strategy above)
+- `gemini-2.5-flash`: ⚠️ free tier available, but **slated for retirement 2026-10-16** — do not adopt it as a fallback
 - `gemini-2.5-pro`: ❌ no free tier (limit: 0) — do not use as default
 - `gemini-flash-latest` (the `-latest` alias): ⚠️ do not use — floats to whatever Google currently maps "latest" to, which can carry a much tighter quota with no warning (see Model Strategy history above)
 
@@ -779,6 +827,8 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `GEMINI_MODEL` | `generate_rant.py` | Default: `gemini-3.1-flash-lite` (see Model Strategy — pinned deliberately, do not switch to `-latest`) |
 | `LLM_MODEL` | `generate_rant.py`, `eval_models.py` | Eval-only override of the model (e.g. `gemma-3-27b-it`); takes precedence over `GEMINI_MODEL`. Leave unset in production |
 | `JUDGE_MODEL` | `safety_judge.py` | Default: `gemini-3.1-flash-lite` (see Model Strategy — pinned deliberately, do not switch to `-latest`) |
+| `THINKING_LEVEL` | `generate_rant.py`, `safety_judge.py` | Default: `minimal`. Gemini 3.x reasoning depth (`minimal`/`low`/`medium`/`high`); ignored for Gemma and pre-3.x ids. Pinned rather than inherited — see Thinking Level above |
+| `EXTRA_MODELS` | `check_model_health.py` | Comma-separated extra ids to health-check alongside the pins. Used to vet an upgrade candidate |
 | `ROLLING_STORE_PATH` | `generate_rant.py` | Default: `data/rolling_7day.json`; override in evals to point at fixtures |
 | `OUTPUT_PATH` | `generate_rant.py` | Default: `data/raw_dan_output.json`; override in evals |
 | `INPUT_PATH` | `safety_judge.py` | Default: `data/raw_dan_output.json` |
@@ -801,8 +851,9 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 ## Error Handling Conventions
 
 - Every fetcher script must write an empty-but-valid JSON on failure so downstream scripts don't crash
-- `generate_rant.py` uses exponential backoff retry (2s → 5s → 10s) on 503/429, then exits with code 1
-- `safety_judge.py` uses the same retry pattern
+- `generate_rant.py` retries 503/429 with backoff `BACKOFF_DELAYS` (`[5, 15]`, `MAX_RETRIES=2`), then **exits 0** after writing a `_generation_failed` sentinel — it deliberately does NOT exit 1, because a non-zero exit kills the workflow before `publish.py` can choose a fallback (that is the 2026-07-01 failure mode)
+- `safety_judge.py` imports the same constants from `generate_rant` so the two ladders cannot drift; on API failure it treats the verdict as PASS so content still publishes
+- The retry budget is asserted in `tests/test_pipeline.py::TestRetryBudget`: worst-case model time + a 300s non-model allowance must fit the workflow's 25-min job timeout. Lengthening the ladder without redoing that math fails CI
 - `publish.py` owns the safety gate and fallback logic — it is the final arbiter
 - All scripts print clear status messages: what they're doing, what they found, where they saved output
 - Exit code `0` = success, `1` = failure
