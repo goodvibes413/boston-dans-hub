@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-04",
+  "generated_at": "2026-09-04T12:36:24.040545+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 144.9,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "repetition: formulaic paragraph opener \"now we have ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      ],
+      "duration_seconds": 6.7
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 3.5
+    }
+  ]
+}

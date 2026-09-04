@@ -1,9 +1,23 @@
 {
+  "date": "2026-09-04",
+  "generated_at": "2026-09-04T12:38:48.963529+00:00",
   "headline": "Red Sox finally stop the bleeding with gritty road win in Baltimore",
   "morning_brew": [
     "That felt like a damn exorcism. After what I watched the last few nights, seeing the boys actually hold onto a lead felt foreign, but I will take it. Bennett gave us a solid start to keep things tight, and even though the bullpen had me sweating through my shirt like I was sitting in traffic on the Pike in mid-July, they finally got the job done. It is about time we stopped handing out freebies like we are running a charity for the AL East.",
     "Anthony showed me something tonight. That blast was exactly the kind of spark this lineup has been missing, and watching the team grind out runs in the middle innings was a massive shift from the lifeless baseball we have been stuck with lately. I am not about to plan a parade route or make big deposits into the Duck Boat fund just yet, but snapping that skid brings a little bit of sanity back to my morning coffee.",
     "My mother watched that ninth inning through her fingers and told me if they pulled that heart-attack special again tomorrow, she is taking her TV to the dump. She has a point. We have a long road ahead if we want to stay in the postseason conversation, but a win is a win. Let us keep this momentum rolling into the next one down in Maryland and see if we can make it two in a row."
+  ],
+  "news_digest": [
+    {
+      "headline": "Impact of 12 MLB stars' down 2026 seasons on their teams",
+      "url": "https://www.espn.com/mlb/story/_/id/49815111/mlb-2026-fallen-stars-bad-gameplay-injuries-impact-raleigh-judge-skenes-vlad-jr",
+      "dans_take": "Always tough watching the big names struggle when the team needs them most."
+    },
+    {
+      "headline": "MLB playoff tracker 2026: Clinching scenarios, bracket, schedule",
+      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
+      "dans_take": "The math is getting real and we need to keep winning to stay in the hunt."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Red Sox Team",
       "trend": "Ending a frustrating losing streak with a victory",
       "dans_take": "A breath of fresh air after a week that felt like a total disastah."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Impact of 12 MLB stars' down 2026 seasons on their teams",
-      "url": "https://www.espn.com/mlb/story/_/id/49815111/mlb-2026-fallen-stars-bad-gameplay-injuries-impact-raleigh-judge-skenes-vlad-jr",
-      "dans_take": "Always tough watching the big names struggle when the team needs them most."
-    },
-    {
-      "headline": "MLB playoff tracker 2026: Clinching scenarios, bracket, schedule",
-      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
-      "dans_take": "The math is getting real and we need to keep winning to stay in the hunt."
     }
   ],
   "box_scores": {
@@ -116,9 +118,6 @@
       "time_et": "7:10 PM ET"
     }
   ],
-  "generated_at": "2026-09-04T12:38:48.963529+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    "repetition: formulaic paragraph opener \"now we have ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-  ]
+  "_stale": null,
+  "_fallback": null
 }
