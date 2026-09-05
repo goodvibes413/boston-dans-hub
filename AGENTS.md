@@ -158,7 +158,7 @@ fetch_draft.py      → data/boston_drafts.json  (all 4 teams' current draft pic
 update_store.py            → data/rolling_7day.json  (rolling 7-entry window)
 fetch_schedule.py          → data/upcoming_schedule.json  (merged, sorted)
 fetch_news.py              → data/latest_news.json  (merged, most-recent-first)
-fetch_season_memory.py     → data/season_current.json  (current records/seeds/status)
+fetch_season_memory.py     → data/season_current.json  (current records/seeds/status + stretch-run playoff_race)
     ↓
 generate_rant.py    → data/raw_dan_output.json  (gemini-3.1-flash-lite + grounding,
                       then a punch-up pass: one extra call that amps emotion/humor in
@@ -189,7 +189,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/update_store.py` | ✅ Done | `rolling_7day.json` (7-entry rolling window) |
 | `scripts/fetch_schedule.py` | ✅ Done | `upcoming_schedule.json` (merged, sorted) |
 | `scripts/fetch_news.py` | ✅ Done | `latest_news.json` (merged, most-recent-first) |
-| `scripts/fetch_season_memory.py` | ✅ Done | `season_current.json` (current records/seeds/status from ESPN) |
+| `scripts/fetch_season_memory.py` | ✅ Done | `season_current.json` (current records/seeds/status from ESPN, plus the stretch-run `playoff_race` block from MLB StatsAPI) |
 | `scripts/generate_rant.py` | ✅ Done | `raw_dan_output.json` (loads persona from `prompts/boston_dan_system.txt`) |
 | `scripts/eval_voice.py` | ✅ Done | `evals/runs/{label}_{N}.json` (manual eyeball harness) |
 | `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (gemini-3.1-flash-lite) |
@@ -507,6 +507,40 @@ Shape is status-conditional. `fetch_season_memory.py` writes one entry per team 
 { "status": "offseason", "last_season_wins": 7, "last_season_losses": 10, "last_season_summary": "7-10" }
 ```
 
+**Stretch run** — a `regular_season` entry additionally carries a `playoff_race` block once the team enters its sport's stretch run:
+```json
+{ "status": "regular_season", "wins": 79, "losses": 62, "summary": "79-62", "division": "American League East",
+  "playoff_race": {
+    "phase": "stretch_run", "games_remaining": 21, "race_status": "in_position",
+    "division_rank": 3, "division_games_back": 8.0,
+    "wild_card_rank": 2, "wild_card_games_up": 5.5,
+    "magic_number": 16, "closest_chaser": "Cleveland Guardians"
+  } }
+```
+
+**This block is the only thing that unlocks playoff talk in the persona.** No block, no race commentary — that is how Dan covers a pennant race in September without doing playoff math in April. The gate is structural rather than an instruction he could disobey, and it is enforced in two places at once: with no block there is nothing in `SEASON_MEMORY` to reason from, and any race figure he invents fails the judge's fabricated-stat rule.
+
+Written by `build_playoff_race()` in `fetch_season_memory.py`, which returns `None` (so the key is omitted) unless **both** gates pass:
+
+| Gate | Rule |
+|---|---|
+| Window | `status == "regular_season"` and `games_remaining <= STRETCH_RUN_WINDOW[sport]` — MLB 40, NBA/NHL 20, NFL 6. Defined in games remaining, not calendar dates, so it self-adjusts to a shortened season. |
+| Elimination | Skipped when StatsAPI reports `"E"` for **both** division and wild card. Real elimination belongs to `season_overrides.json`, whose rules are absolute; two authorities on one fact is how contradictions ship. |
+
+`race_status` tiers, checked in order — each maps to a distinct emotional register in the persona:
+
+| Tier | Condition |
+|---|---|
+| `clinched` | `clinched: true` |
+| `clinch_watch` | magic number ≤ 10 |
+| `in_position` | holding a wild-card spot (rank ≤ 3) or leading the division |
+| `chasing` | within 8 games of a spot, and within the games remaining |
+| `playing_out_the_string` | alive on paper only |
+
+**Field direction matters**: `wild_card_games_up` is a cushion, `wild_card_games_back` is a deficit. Only one is ever present, named for what the number means so it cannot be inverted.
+
+**Source**: MLB StatsAPI standings (`statsapi.mlb.com`, the same host `fetch_mlb.py` uses), which returns magic number, wild-card rank and elimination number directly. ESPN's team endpoint carries division games-behind only, which misleads for a wild-card team: 3rd in the AL East reads as "buried" while they comfortably hold a wild-card spot. Only MLB is wired to a standings source today; the other three sports share the same gate and block shape and need one fetcher each. On any fetch failure the block is omitted and Dan degrades to qualitative season talk.
+
 **Runtime merge**: `generate_rant.py` loads both files via `build_season_memory()` and injects a `SEASON_MEMORY` block into the prompt:
 ```json
 { "celtics": { "current_season": {...}, "past_seasons": [...] }, ... }
@@ -795,6 +829,7 @@ Full persona lives in `prompts/boston_dan_system.txt` — that is the source of 
 - **The Lookback Rule**: Dan always references the full 7-day window — streaks, slumps, notable events from days ago.
 - **Continuity**: Dan reads his last 3 days of output (`RECENT_DAN_OUTPUT` block) and avoids repeating signature phrases or re-introducing stories he already covered. Stories evolve day-to-day rather than being re-stated.
 - **Season Memory** (deferred to Week 4+): Dan is aware of current season context (record, playoff position, key injuries) and past season trends (rebuilds, streaks, notable trades). This gives his takes historical grounding beyond the 7-day window.
+- **The Stretch Run**: Dan discusses the playoff race only when the team's `current_season` entry carries a `playoff_race` block (see `season_current.json` above) — roughly mid-August onward for the Sox, and never in April. Even then it is one beat per brew, tied to what the night's result did to the picture, never a standings recap. Run through existing bits (the Duck Boat fund now has a real ledger) rather than a new voice.
 - **Stats discipline**: Every cited number must exactly match the structured input data. Zero hallucination.
 - **Off-field conduct**: Dan uses a league-policy-based framework — not a blanket ban. Pure personal news (divorce, relationships) = silence. Conduct situations covered by league policy (NFL Personal Conduct Policy, NBA/MLB/NHL conduct rules) = brief human decency + defer to process + conditional "if" language for on-field impact. Never speculates on guilt or editorializes on character.
 

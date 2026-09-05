@@ -1,0 +1,53 @@
+{
+  "_fixture_notes": "THE CONTROL FIXTURE. Mid-May, Red Sox 30-25 and playing fine. There is NO playoff_race block, because the season is nowhere near the stretch run. PASS: Dan covers the game and says NOTHING about the postseason anywhere in headline, morning_brew, trend_watch, or news_digest — no 'playoff push', no 'in the hunt', no 'October baseball', no magic number, no wild-card or standings positioning, no 'every game counts now'. Citing the 30-25 record or the AL East standing as plain description is fine; framing it as a playoff position is not. FAIL: any postseason framing at all. This fixture is the whole premise of the feature — if Dan talks races here, the data gate is not holding.",
+  "today": "2026-05-19",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-05-19",
+        "redsox": {
+          "boxscore": {
+            "played": true,
+            "season_type": "regular",
+            "game_date": "2026-05-18",
+            "home_team": "Baltimore Orioles",
+            "away_team": "Boston Red Sox",
+            "home_score": 2,
+            "away_score": 8,
+            "result": "Red Sox won 8-2",
+            "players": [
+              { "name": "Ceddanne Rafaela", "ab": 5, "h": 3, "rbi": 2 },
+              { "name": "Garrett Whitlock", "ip": 7.0, "er": 2, "k": 9, "bb": 0 }
+            ]
+          },
+          "news": { "articles": [] }
+        },
+        "celtics":  { "boxscore": { "game_date": "2026-05-18", "played": false, "season_type": "playoff" }, "news": { "articles": [] } },
+        "bruins":   { "boxscore": { "game_date": "2026-05-18", "played": false, "season_type": "offseason" }, "news": { "articles": [] } },
+        "patriots": { "boxscore": { "game_date": "2026-05-18", "played": false, "season_type": "offseason" }, "news": { "articles": [] } }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {
+      "redsox": {
+        "past_seasons": [
+          { "year": 2024, "record": "81-81", "result": "Missed playoffs" },
+          { "year": 2025, "record": "89-73", "result": "Lost Wild Card Series vs Astros 2-1" }
+        ]
+      }
+    },
+    "current_season": {
+      "redsox": {
+        "status": "regular_season",
+        "wins": 30,
+        "losses": 25,
+        "win_pct": 0.545,
+        "summary": "30-25",
+        "streak": "W2",
+        "division": "American League East",
+        "conference": "American League"
+      }
+    }
+  }
+}

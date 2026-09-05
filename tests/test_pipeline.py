@@ -20,6 +20,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import generate_rant  # noqa: E402
+import fetch_season_memory  # noqa: E402
 
 
 def make_rolling(date_str, team="redsox", played=True, games=None):
@@ -523,6 +524,195 @@ class TestThinkingConfig(unittest.TestCase):
         # Must construct cleanly, or production dies on the first call.
         cfg = types.GenerateContentConfig(temperature=0.9, **kwargs)
         self.assertIsNotNone(cfg.thinking_config)
+
+
+
+def race_raw(**overrides):
+    """A live wild-card contender's StatsAPI fields, mid-September."""
+    raw = {
+        "wins": 76, "losses": 65, "games_played": 141,
+        "division_rank": 3, "division_games_back": 8.0,
+        "wild_card_rank": 2, "wild_card_games_back": 5.5,
+        "magic_number": None,
+        "elimination_number": "16", "wild_card_elimination_number": "16",
+        "clinched": False, "closest_chaser": "Cleveland Guardians",
+    }
+    raw.update(overrides)
+    return raw
+
+
+class TestParseGamesBehind(unittest.TestCase):
+    """StatsAPI sends these as strings with sentinels. Letting "-" through as a
+    number is how a non-stat ends up in the prompt as something Dan cites."""
+
+    def test_sentinels_are_not_numbers(self):
+        for sentinel in ("-", "E", "--", "", None):
+            self.assertIsNone(fetch_season_memory._parse_gb(sentinel))
+            self.assertIsNone(fetch_season_memory._parse_count(sentinel))
+
+    def test_leading_plus_is_a_cushion_not_a_parse_error(self):
+        self.assertEqual(fetch_season_memory._parse_gb("+2.5"), 2.5)
+
+    def test_plain_and_numeric_values(self):
+        self.assertEqual(fetch_season_memory._parse_gb("4.5"), 4.5)
+        self.assertEqual(fetch_season_memory._parse_gb(3), 3.0)
+        self.assertEqual(fetch_season_memory._parse_count("16"), 16)
+
+    def test_garbage_is_dropped_rather_than_raised(self):
+        self.assertIsNone(fetch_season_memory._parse_gb("n/a"))
+        self.assertIsNone(fetch_season_memory._parse_count("n/a"))
+
+    def test_unparseable_games_played_does_not_raise(self):
+        """Every other field is parsed defensively; games_played feeds the
+        window arithmetic, so a bad value must degrade, not crash the fetch."""
+        block = fetch_season_memory.build_playoff_race(
+            "baseball", "regular_season",
+            race_raw(games_played="n/a"), 76, 65)
+        self.assertEqual(block["games_remaining"], 162 - 141)
+
+    def test_no_usable_game_count_returns_none(self):
+        block = fetch_season_memory.build_playoff_race(
+            "baseball", "regular_season",
+            race_raw(games_played=None), None, None)
+        self.assertIsNone(block)
+
+
+class TestPlayoffRaceWindow(unittest.TestCase):
+    """The window gate is the whole feature: Dan talks about the race in
+    September precisely because there is no block to talk about in April."""
+
+    def build(self, **overrides):
+        return fetch_season_memory.build_playoff_race(
+            "baseball", "regular_season", race_raw(**overrides), 76, 65)
+
+    def test_april_gets_no_block(self):
+        # 40 games played, 122 left — far outside the 40-game window.
+        block = fetch_season_memory.build_playoff_race(
+            "baseball", "regular_season",
+            race_raw(games_played=40, wins=22, losses=18), 22, 18)
+        self.assertIsNone(block)
+
+    def test_stretch_run_gets_a_block(self):
+        block = self.build(games_played=124)  # 38 remaining
+        self.assertIsNotNone(block)
+        self.assertEqual(block["games_remaining"], 38)
+        self.assertEqual(block["phase"], "stretch_run")
+
+    def test_window_boundary_is_inclusive(self):
+        self.assertIsNotNone(self.build(games_played=122))  # exactly 40 left
+        self.assertIsNone(self.build(games_played=121))     # 41 left
+
+    def test_offseason_and_playoffs_get_no_block(self):
+        for status in ("offseason", "in_playoffs"):
+            self.assertIsNone(fetch_season_memory.build_playoff_race(
+                "baseball", status, race_raw(), 76, 65))
+
+    def test_no_standings_data_means_no_block(self):
+        self.assertIsNone(fetch_season_memory.build_playoff_race(
+            "baseball", "regular_season", {}, 76, 65))
+
+    def test_games_played_falls_back_to_win_loss(self):
+        block = fetch_season_memory.build_playoff_race(
+            "baseball", "regular_season",
+            race_raw(games_played=None), 76, 65)
+        self.assertEqual(block["games_remaining"], 162 - 141)
+
+    def test_eliminated_defers_to_season_overrides(self):
+        block = self.build(elimination_number="E",
+                           wild_card_elimination_number="E")
+        self.assertIsNone(block)
+
+    def test_still_alive_in_division_is_not_eliminated(self):
+        block = self.build(elimination_number="12",
+                           wild_card_elimination_number="E")
+        self.assertIsNotNone(block)
+
+
+class TestPlayoffRaceTiers(unittest.TestCase):
+    def build(self, **overrides):
+        return fetch_season_memory.build_playoff_race(
+            "baseball", "regular_season", race_raw(**overrides), 76, 65)
+
+    def test_clinched(self):
+        self.assertEqual(self.build(clinched=True)["race_status"], "clinched")
+
+    def test_clinch_watch_on_small_magic_number(self):
+        self.assertEqual(self.build(magic_number=6)["race_status"], "clinch_watch")
+
+    def test_in_position_holding_a_wild_card_spot(self):
+        self.assertEqual(self.build()["race_status"], "in_position")
+
+    def test_in_position_leading_the_division(self):
+        self.assertEqual(
+            self.build(division_rank=1, wild_card_rank=None)["race_status"],
+            "in_position")
+
+    def test_chasing_when_within_reach(self):
+        block = self.build(wild_card_rank=5, wild_card_games_back=4.0,
+                           division_rank=4)
+        self.assertEqual(block["race_status"], "chasing")
+
+    def test_playing_out_the_string_when_buried(self):
+        block = self.build(games_played=150, wild_card_rank=8,
+                           wild_card_games_back=11.0, division_rank=5)
+        self.assertEqual(block["race_status"], "playing_out_the_string")
+
+    def test_more_games_back_than_games_left_is_not_chasing(self):
+        block = self.build(games_played=155, wild_card_rank=7,
+                           wild_card_games_back=9.0, division_rank=5)
+        self.assertEqual(block["race_status"], "playing_out_the_string")
+
+
+class TestPlayoffRaceFields(unittest.TestCase):
+    def build(self, **overrides):
+        return fetch_season_memory.build_playoff_race(
+            "baseball", "regular_season", race_raw(**overrides), 76, 65)
+
+    def test_cushion_and_deficit_are_named_differently(self):
+        """Dan reads the field name to know which way the number points, so a
+        cushion must never be published under the deficit's name."""
+        holding = self.build()
+        self.assertEqual(holding["wild_card_games_up"], 5.5)
+        self.assertNotIn("wild_card_games_back", holding)
+
+        chasing = self.build(wild_card_rank=5, wild_card_games_back=4.0,
+                             division_rank=4)
+        self.assertEqual(chasing["wild_card_games_back"], 4.0)
+        self.assertNotIn("wild_card_games_up", chasing)
+
+    def test_absent_fields_are_omitted_not_nulled(self):
+        block = self.build(magic_number=None, division_games_back=None,
+                           wild_card_games_back=None)
+        self.assertNotIn("magic_number", block)
+        self.assertNotIn("division_games_back", block)
+        self.assertNotIn("wild_card_games_up", block)
+
+    def test_chaser_only_when_we_hold_a_spot(self):
+        self.assertEqual(self.build()["closest_chaser"], "Cleveland Guardians")
+        chasing = self.build(wild_card_rank=5, wild_card_games_back=4.0,
+                             division_rank=4)
+        self.assertNotIn("closest_chaser", chasing)
+
+    def test_no_sentinel_strings_reach_the_block(self):
+        block = self.build(division_games_back="-", wild_card_games_back="-",
+                           magic_number="-")
+        for value in block.values():
+            self.assertNotIn(value, ("-", "E", "--"))
+
+
+class TestStretchRunWindowCoversAllSports(unittest.TestCase):
+    """The other three sports share the gate and block shape; each needs only
+    a standings fetcher to light up."""
+
+    def test_every_sport_has_a_window_and_a_season_length(self):
+        for sport in fetch_season_memory.SEASON_LENGTH:
+            self.assertIn(sport, fetch_season_memory.STRETCH_RUN_WINDOW)
+
+    def test_window_is_a_fraction_of_the_season(self):
+        for sport, total in fetch_season_memory.SEASON_LENGTH.items():
+            window = fetch_season_memory.STRETCH_RUN_WINDOW[sport]
+            self.assertLess(window, total / 2,
+                            f"{sport} window is more than half the season")
 
 
 if __name__ == "__main__":
