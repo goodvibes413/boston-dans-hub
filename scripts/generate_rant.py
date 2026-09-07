@@ -24,6 +24,8 @@ import os
 import sys
 import time
 from datetime import date, datetime, timedelta, timezone
+
+from pipeline_dates import as_of_iso
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -444,137 +446,131 @@ def normalize_box_scores(data: dict) -> dict:
     return data
 
 
-def repair_box_scores_from_fetchers(data: dict) -> dict:
-    """
-    After normalize_box_scores runs, Gemini may have emitted played:false with empty
-    teams/scores even though the fetcher JSONs contain real game results.  This happens
-    when grounding is ON but Gemini still doesn't reliably populate the box_scores object
-    (it writes the narrative correctly in morning_brew but leaves box_scores blank).
+BOX_SCORE_TEAMS = {
+    # team_key: (sport, Boston's full name, the fetcher's Boston-score field)
+    "celtics":  ("NBA", "Boston Celtics",      "celtics_score"),
+    "bruins":   ("NHL", "Boston Bruins",       "bruins_score"),
+    "redsox":   ("MLB", "Boston Red Sox",      "redsox_score"),
+    "patriots": ("NFL", "New England Patriots", "patriots_score"),
+}
 
-    This function reads the raw fetcher output files and, for any team whose normalized
-    entry has played:false + null scores, overwrites it with the real fetcher data
-    (if the fetcher says played:true).
+
+def _entry_from_fetcher(team_key: str, raw: dict | None) -> dict | None:
+    """
+    Build one normalized box_scores entry from a fetcher file.
+
+    Returns None when the fetcher has nothing usable (missing file, or an error
+    sentinel) — only then may the caller fall back to what Gemini wrote.
 
     Fetcher schemas:
-      celtics_boxscore.json : { played, home (bool), celtics_score, opponent, opponent_score, game_date, season_type }
-      bruins_boxscore.json  : { played, home (bool), bruins_score,  opponent, opponent_score, game_date, season_type }
-      redsox_boxscore.json  : { played, home (bool), redsox_score,  opponent, opponent_score, game_date, season_type }
-                              OR { games: [{ played, home, redsox_score, opponent, opponent_score, ... }] }
-      patriots_boxscore.json: { played, home (bool), patriots_score, opponent, opponent_score, game_date, season_type }
+      celtics/bruins/patriots: { played, home (bool), <team>_score, opponent,
+                                 opponent_score, game_date, season_type }
+      redsox:                  same, or { played, games: [ {...}, ... ] }
     """
-    if "box_scores" not in data:
-        return data
+    if not raw or raw.get("error"):
+        return None
 
-    fetcher_files = {
-        "celtics":  REPO / "data" / "celtics_boxscore.json",
-        "bruins":   REPO / "data" / "bruins_boxscore.json",
-        "redsox":   REPO / "data" / "redsox_boxscore.json",
-        "patriots": REPO / "data" / "patriots_boxscore.json",
-    }
-    boston_score_keys = {
-        "celtics":  "celtics_score",
-        "bruins":   "bruins_score",
-        "redsox":   "redsox_score",
-        "patriots": "patriots_score",
-    }
-    boston_full_names = {
-        "celtics":  "Boston Celtics",
-        "bruins":   "Boston Bruins",
-        "redsox":   "Boston Red Sox",
-        "patriots": "New England Patriots",
-    }
-    sport_map = {
-        "celtics":  "NBA",
-        "bruins":   "NHL",
-        "redsox":   "MLB",
-        "patriots": "NFL",
-    }
+    sport, boston_full_name, boston_score_key = BOX_SCORE_TEAMS[team_key]
+    season_type = raw.get("season_type", "unknown")
 
-    for team_key, fetcher_path in fetcher_files.items():
-        existing = data["box_scores"].get(team_key, {})
-        already_has_scores = (
-            existing.get("played") and
-            existing.get("home_score") is not None and
-            existing.get("away_score") is not None
-        )
-
-        # Load the fetcher BEFORE deciding to skip. Gemini having *a* score is
-        # not proof it has the whole day: on a doubleheader it typically emits
-        # one flat game, and gating purely on already_has_scores discarded the
-        # fetcher's second game (2026-07-22 Orioles twin bill published as a
-        # single 1-5 loss). Repair also runs when the fetcher saw more games
-        # than the current entry carries.
-        raw = load_json(fetcher_path)
-        if not raw or raw.get("error"):
-            continue  # Fetcher also failed — nothing to repair from
-
-        raw_games = raw.get("games") if isinstance(raw.get("games"), list) else None
-        existing_games = existing.get("games") if isinstance(existing.get("games"), list) else []
-        missing_games = bool(raw_games) and len(raw_games) > max(len(existing_games), 1)
-
-        if already_has_scores and not missing_games:
-            continue  # Gemini got it right — leave it alone
-
-        # Red Sox may wrap in a games array. Individual game dicts carry no
-        # "played" key — that lives on the top-level boxscore — so check the
-        # level we're actually reading from (checking game.get("played") after
-        # unwrapping made this repair a silent no-op for the games-array format).
-        game = raw
-        if raw_games:
-            game = raw_games[0]
-            if not raw.get("played"):
-                continue  # Fetcher says no game — respect that
-        elif not game.get("played"):
-            continue  # Fetcher also says no game — respect that
-
-        boston_score_key = boston_score_keys[team_key]
-        boston_full_name = boston_full_names[team_key]
-        sport = sport_map[team_key]
-        is_home = game.get("home")
-        boston_score = game.get(boston_score_key)
-        opp_score = game.get("opponent_score")
-        opponent = game.get("opponent", "")
-        game_date = game.get("game_date") or raw.get("game_date", "")
-        season_type = game.get("season_type") or raw.get("season_type", "unknown")
-
-        if is_home is not None:
-            home_team  = boston_full_name if is_home else opponent
-            away_team  = opponent if is_home else boston_full_name
-            home_score = boston_score if is_home else opp_score
-            away_score = opp_score if is_home else boston_score
-        else:
-            home_team  = boston_full_name
-            away_team  = opponent
-            home_score = boston_score
-            away_score = opp_score
-
-        repaired = {
-            "sport":      sport,
-            "home_team":  home_team,
-            "away_team":  away_team,
-            "home_score": home_score,
-            "away_score": away_score,
-            "game_date":  game_date,
-            "played":     True,
+    if not raw.get("played"):
+        # No game happened. Emit an explicit blank rather than leaving Gemini's
+        # guess in place: asked for a box score on an offseason day it invents
+        # plausible matchups ("Philadelphia 76ers", "Buffalo Sabres", and an
+        # away_team of "Unknown" for the Patriots on 2026-09-07).
+        return {
+            "sport":       sport,
+            "home_team":   None,
+            "away_team":   None,
+            "home_score":  None,
+            "away_score":  None,
+            "game_date":   raw.get("game_date", ""),
+            "played":      False,
             "season_type": season_type,
         }
-        if raw_games and len(raw_games) > 1:
-            repaired["doubleheader"] = True
-            repaired["games"] = [
-                {
-                    "game_number": g.get("game_number", i + 1),
-                    "home_team": boston_full_name if g.get("home") else g.get("opponent", "Unknown"),
-                    "away_team": g.get("opponent", "Unknown") if g.get("home") else boston_full_name,
-                    "home_score": g.get(boston_score_key) if g.get("home") else g.get("opponent_score"),
-                    "away_score": g.get("opponent_score") if g.get("home") else g.get(boston_score_key),
-                }
-                for i, g in enumerate(raw_games)
-            ]
-        data["box_scores"][team_key] = repaired
-        suffix = f" (+{len(raw_games) - 1} more game(s), doubleheader)" if repaired.get("doubleheader") else ""
-        print(f"  repaired box_score for {team_key}: {home_team} {home_score}–{away_score} {away_team}{suffix}", file=sys.stderr)
 
-    return data
+    raw_games = raw.get("games") if isinstance(raw.get("games"), list) else None
+    game = raw_games[0] if raw_games else raw
+
+    is_home      = game.get("home")
+    boston_score = game.get(boston_score_key)
+    opp_score    = game.get("opponent_score")
+    opponent     = game.get("opponent", "")
+    # Per-game date first: fetch_mlb's parse_game now records each game's own
+    # officialDate, which is more trustworthy than the file-level queried date.
+    game_date    = game.get("game_date") or raw.get("game_date", "")
+
+    if is_home is not None:
+        home_team,  away_team  = (boston_full_name, opponent) if is_home else (opponent, boston_full_name)
+        home_score, away_score = (boston_score, opp_score)    if is_home else (opp_score, boston_score)
+    else:
+        home_team,  away_team  = boston_full_name, opponent
+        home_score, away_score = boston_score, opp_score
+
+    entry = {
+        "sport":       sport,
+        "home_team":   home_team,
+        "away_team":   away_team,
+        "home_score":  home_score,
+        "away_score":  away_score,
+        "game_date":   game_date,
+        "played":      True,
+        "season_type": season_type,
+    }
+
+    if raw_games and len(raw_games) > 1:
+        entry["doubleheader"] = True
+        entry["games"] = [
+            {
+                "game_number": g.get("game_number", i + 1),
+                "home_team":  boston_full_name if g.get("home") else g.get("opponent", "Unknown"),
+                "away_team":  g.get("opponent", "Unknown") if g.get("home") else boston_full_name,
+                "home_score": g.get(boston_score_key) if g.get("home") else g.get("opponent_score"),
+                "away_score": g.get("opponent_score") if g.get("home") else g.get(boston_score_key),
+            }
+            for i, g in enumerate(raw_games)
+        ]
+    return entry
+
+
+def build_box_scores_from_fetchers(model_box_scores: dict | None) -> dict:
+    """
+    Build box_scores from the fetcher files, exactly as build_schedule_from_fetcher
+    does for the schedule. The fetcher wins outright wherever it has an answer.
+
+    This replaces repair_box_scores_from_fetchers(), which only patched entries
+    Gemini had left blank and skipped any team where it had already written
+    scores ("Gemini got it right — leave it alone"). That gate meant a score the
+    model produced was published without ever being compared to the fetcher. On
+    2026-09-07 a forced re-run at 20:42 UTC — after that afternoon's game had
+    finished and reached the news feed and the grounding search — published that
+    game as the previous day's recap, opponent, score and all, while the
+    fetcher's actual result sat unread on disk.
+
+    Gemini's own block is used ONLY for a team whose fetcher file is missing or
+    carries an error, so a fetcher outage still degrades to something rather than
+    a blank scoreboard.
+    """
+    model_box_scores = model_box_scores if isinstance(model_box_scores, dict) else {}
+    fetcher_files = {
+        team_key: REPO / "data" / f"{team_key}_boxscore.json"
+        for team_key in BOX_SCORE_TEAMS
+    }
+
+    box_scores = {}
+    for team_key, fetcher_path in fetcher_files.items():
+        entry = _entry_from_fetcher(team_key, load_json(fetcher_path))
+        if entry is not None:
+            box_scores[team_key] = entry
+            continue
+
+        fallback = model_box_scores.get(team_key)
+        if isinstance(fallback, dict) and fallback:
+            print(f"  warn: no fetcher data for {team_key} — falling back to model's box score",
+                  file=sys.stderr)
+            box_scores[team_key] = fallback
+
+    return box_scores
 
 
 def build_season_memory(static_data: dict, current_data: dict) -> dict:
@@ -613,7 +609,7 @@ def load_recent_dan_output(archive_dir: Path, days: int = DEFAULT_MEMORY_DAYS) -
     if not archive_dir.exists() or not archive_dir.is_dir():
         return []
 
-    today_iso = datetime.now(timezone.utc).date().isoformat()
+    today_iso = as_of_iso()
 
     try:
         archive_files = sorted(
@@ -1020,7 +1016,7 @@ def detect_slow_day(rolling: dict | None, news: dict | list | None, schedule: di
     Uses _extract_team_games() to correctly navigate the rolling_7day structure.
     """
     if today_iso is None:
-        today_iso = datetime.now(timezone.utc).date().isoformat()
+        today_iso = as_of_iso()
     yesterday = (date.fromisoformat(today_iso) - timedelta(days=1)).isoformat()
 
     # Check if any team played yesterday
@@ -1069,7 +1065,7 @@ def _build_overrides_block(season_overrides: dict, today_iso: str | None = None)
     if not eliminations:
         return ""
     if today_iso is None:
-        today_iso = datetime.now(timezone.utc).date().isoformat()
+        today_iso = as_of_iso()
 
     lines = []
     for team_key, info in eliminations.items():
@@ -1103,7 +1099,7 @@ def _build_overrides_block(season_overrides: dict, today_iso: str | None = None)
 
 def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None) -> str:
     if today_iso is None:
-        today_iso = datetime.now(timezone.utc).date().isoformat()
+        today_iso = as_of_iso()
 
     message = (
         f"TODAY: {today_iso}\n\n"
@@ -1519,7 +1515,10 @@ def main():
     # TODAY_OVERRIDE lets eval fixtures pin "today" to a specific date so
     # freshness-sensitive scenarios (e.g. 5 days post-draft) stay reproducible
     # as the real calendar moves forward. Production leaves this unset.
-    today_iso = os.environ.get("TODAY_OVERRIDE") or datetime.now(timezone.utc).date().isoformat()
+    # TODAY_OVERRIDE keeps precedence (eval fixtures pin it); AS_OF_DATE is the
+    # pipeline-wide pin the fetchers and update_store read, so a forced re-run
+    # reproduces one day end to end instead of each stage re-deriving "today".
+    today_iso = os.environ.get("TODAY_OVERRIDE") or as_of_iso()
     todays_callers = select_daily_callers(callers_data, today_iso)
     todays_stories = select_daily_stories(stories_data, today_iso)
     print(f"  today:          {today_iso}")
@@ -1662,10 +1661,14 @@ def main():
         except Exception as e:
             print(f"  warn: punch-up pass failed ({type(e).__name__}: {str(e)[:120]}); keeping original draft", file=sys.stderr)
 
-    # Normalize box_scores schema for consistent frontend rendering
+    # Normalize Gemini's box_scores into the frontend schema. This is now only
+    # the FALLBACK source — build_box_scores_from_fetchers reads it solely for a
+    # team whose fetcher file is missing or errored.
     parsed = normalize_box_scores(parsed)
-    # Repair any entries where Gemini left played:false despite fetcher data showing a real game
-    parsed = repair_box_scores_from_fetchers(parsed)
+    # The fetcher owns box_scores, same as it owns schedule below. Gemini writing
+    # a plausible score is not evidence the score is real: on 2026-09-07 it wrote
+    # up that afternoon's game as the previous day's recap.
+    parsed["box_scores"] = build_box_scores_from_fetchers(parsed.get("box_scores"))
     # Always overwrite Gemini's schedule with data directly from upcoming_schedule.json.
     # Gemini selectively drops teams (e.g. Celtics during playoffs) — the fetcher data
     # is authoritative and complete, so we never let Gemini own this field.

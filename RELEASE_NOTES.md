@@ -5,6 +5,95 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-07 — The Fetcher Owns The Scoreboard: A Re-Run Published Today's Game As Yesterday's
+
+**Context:** A forced re-run at 20:42 UTC on 2026-09-07, after that day's 1:35 PM ET
+Angels game had finished, published a post recapping **today's** game with no mention of
+**yesterday's**. The document contradicted itself in public: `box_scores.redsox` read
+"Angels at Red Sox, 5-2, game_date 2026-09-06" while `schedule[0]` listed that same
+matchup as *upcoming* on 2026-09-07. Yesterday's real result (Red Sox 3 @ Orioles 1,
+which the 14:04 UTC run had published correctly) was gone.
+
+**Why the schedule was right and the box score was wrong.** The schedule is correct
+because the fetcher owns it: `parsed["schedule"] = build_schedule_from_fetcher(...)`
+overwrites Gemini unconditionally, and reads each game's own `officialDate`. `box_scores`
+got the opposite treatment. Gemini authored it, and `repair_box_scores_from_fetchers()`
+was only a patch-up pass that bailed out early:
+
+```python
+if already_has_scores and not missing_games:
+    continue  # Gemini got it right — leave it alone
+```
+
+Any score the model produced was published without ever being compared to the fetcher's
+opponent, score, or date. Reproduced against the old code: with the Orioles game sitting
+in `redsox_boxscore.json`, feeding it the model's Angels block returns the Angels.
+
+**Where the wrong game came from.** The likely source is the model. The 14:04 run issued
+the identical `date=2026-09-06` query and got Baltimore, so the API honours the date
+parameter. What changed by 20:42 is that the Angels game had finished, putting it in
+`LATEST_NEWS` and within reach of the attempt-1 grounding search. Gemini took the fresher
+result, stamped it `game_date: "2026-09-06"` because it had been asked for yesterday, and
+the repair gate waved it through. This could not be proven from the authoring environment
+(`data/` is gitignored and `statsapi.mlb.com` is blocked by the egress proxy), so the fix
+closes the fetcher path too and logs which one fired.
+
+**Three changes, in the order the wrong game could enter:**
+
+1. **`pipeline_dates.py`** — one definition of "which day". Four fetchers plus
+   `update_store.py` each re-derived the target from the wall clock; `publish.py`,
+   `safety_judge.py` and `fetch_draft.py` each had their own "today". Eleven independent
+   copies, no way to pin them together, so a re-run later the same day was not
+   reproducible. Now one `AS_OF_DATE` env var (a `workflow_dispatch` input) with
+   `as_of_date()` and `target_game_date()`; `TODAY_OVERRIDE` keeps precedence for eval
+   fixtures. A malformed value warns and falls back rather than silently shifting the day.
+
+2. **`fetch_mlb.games_on_date()`** — the API is the authority on when a game was played;
+   the queried date is only what we asked for. `parse_game()` now records each game's own
+   `officialDate` (the field `fetch_schedule()` twenty lines away had always read), and an
+   off-date game is discarded with a warning rather than relabelled. Same defect class as
+   the `boxscoreName` fix that shipped hours earlier: the authoritative field was sitting
+   in the payload, unread. NHL/NBA/NFL fetch by date in the URL, so they get the date pin
+   but no invented field checks.
+
+3. **`build_box_scores_from_fetchers()`** — replaces the repair pass. The fetcher wins
+   outright wherever it has an answer, mirroring the schedule precedent exactly; Gemini's
+   block is the fallback only for a team whose fetcher file is missing or errored. A
+   `played: false` day now emits null team names, killing the invented offseason matchups
+   the same post shipped ("Philadelphia 76ers" for the Celtics, "Buffalo Sabres" for the
+   Bruins, an away_team of "Unknown" for the Patriots).
+
+**And the prose, which fixing box_scores alone would have left contradicting the
+scoreboard.** A Coverage Window section in the persona: yesterday's games are the ceiling,
+never recap a game played today even when you know the score, today's game is something to
+look forward to. Plus `check_coverage_window()` in publish.py — if a team played on the
+target date and its opponent appears nowhere in the headline or morning_brew, that is a
+FAIL fed into the existing `regenerate_with_correction()` loop. Run against the real
+2026-09-07 output, it flags.
+
+Judge rules 7 (fabricated stats) and 12 (game coverage gap) both point straight at this
+and both passed the post. Attempt 1 was flagged only for a repetition skeleton, so the
+judge was reading; it simply did not cross-check the score. A checklist item inside an LLM
+prompt is not a dependable place for a check a dozen lines of code can make certain.
+
+The coverage check is deliberately narrow: it does not try to catch a post that covers
+yesterday correctly AND also recaps today, because separating that from the forward-look
+the persona actively wants ("we're back at it against the Angels this afternoon") needs
+proximity heuristics that would false-positive on good posts — and these flags drive an
+automatic regeneration, so a false positive costs a call and a worse draft.
+
+**Coverage:** 16 new unit tests (94 total). The one that matters is
+`test_fetcher_result_wins_over_a_contradicting_model_block` — model says Angels 5-2,
+fetcher says Orioles 3-1, published output must read Orioles. Verified it fails on the
+pre-fix code by running the old `repair_box_scores_from_fetchers` against the same inputs.
+
+**Still open:** grounding stays on — considered and rejected as the fix, since it earns
+its keep on storylines and the coverage window constrains it more precisely than switching
+it off. The next live run's log will show whether the `officialDate` warning ever fires,
+which is what settles fetcher-vs-model as the original source.
+
+---
+
 ## 2026-09-07 — Player Names Everywhere, and Trend Watch Goes Back to Writing Sentences
 
 **Context:** The Trends cards on the live site had quietly stopped reading like Dan.

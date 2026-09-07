@@ -17,6 +17,8 @@ import urllib.error
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+from pipeline_dates import target_game_date
+
 # ---------------------------------------------------------------------------
 # Constants & paths
 # ---------------------------------------------------------------------------
@@ -204,9 +206,9 @@ def fetch_boxscore() -> None:
     Uses UTC for "yesterday" because ESPN's dates= parameter is UTC-anchored.
     """
     # Define game_date_iso before the try block so the error handler can use it.
-    yesterday_utc  = datetime.now(timezone.utc) - timedelta(days=1)
-    date_param     = yesterday_utc.strftime("%Y%m%d")   # "20250406"
-    game_date_iso  = yesterday_utc.strftime("%Y-%m-%d") # "2025-04-06"
+    target         = target_game_date()
+    date_param     = target.strftime("%Y%m%d")   # "20250406"
+    game_date_iso  = target.isoformat()          # "2025-04-06"
 
     try:
         # --- 1. Fetch scoreboard for yesterday ---

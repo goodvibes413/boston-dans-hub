@@ -23,6 +23,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from pipeline_dates import as_of_iso
+
 # ---------------------------------------------------------------------------
 # Constants & paths
 # ---------------------------------------------------------------------------
@@ -166,7 +168,7 @@ def main() -> None:
 
     DATA_DIR.mkdir(exist_ok=True)
 
-    today_utc = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    today_utc = as_of_iso()
     print(f"\n  Date: {today_utc}")
 
     # --- 1. Build today's entry ---
