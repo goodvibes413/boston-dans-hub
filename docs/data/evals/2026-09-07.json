@@ -1,10 +1,10 @@
 {
   "date": "2026-09-07",
-  "generated_at": "2026-09-07T20:42:16.490397+00:00",
-  "outcome": "retry",
-  "winning_attempt": 2,
-  "total_attempts": 2,
-  "generation_seconds": 38.9,
+  "generated_at": "2026-09-07T21:40:16.334136+00:00",
+  "outcome": "fallback",
+  "winning_attempt": null,
+  "total_attempts": 3,
+  "generation_seconds": 64.1,
   "pre_pass": {
     "repetition_check": "pass",
     "flagged_phrases": []
@@ -13,18 +13,34 @@
     {
       "attempt": 1,
       "verdict": "FAIL",
-      "severity": "low",
+      "severity": "high",
       "flags": [
-        "repetition: number-masked sentence skeleton \"holding that second wild card spot\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        "rule 7: fabricated statistics - the headline and morning_brew claim a 5-2 win against the Angels, but the source_data for 2026-09-06 shows a 3-1 win against the Orioles.",
+        "rule 12: game coverage gap - the morning_brew fails to mention the actual game played on 2026-09-06 (Red Sox vs Orioles, 3-1 win) and instead fabricates a game against the Angels.",
+        "coverage window: the redsox played Baltimore Orioles on 2026-09-06 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
       ],
-      "duration_seconds": 1.4
+      "duration_seconds": 1.8
     },
     {
       "attempt": 2,
-      "verdict": "PASS",
+      "verdict": "FAIL",
       "severity": "low",
-      "flags": [],
-      "duration_seconds": 2.5
+      "flags": [
+        "repetition: number-masked sentence skeleton \"baltimore this afternoon and i am not looking\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)",
+        "repetition: formulaic paragraph opener \"we have another ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      ],
+      "duration_seconds": 1.6
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        "rule 7: fabricated statistics - the headline and morning_brew claim a 5-2 win over the Angels, but the source_data for 2026-09-06 shows a 3-1 win over the Orioles. The morning_brew also claims the game was at 'the Fens' (Fenway), but the source_data indicates the game was away.",
+        "rule 12: game coverage gap - the morning_brew fails to mention the actual game played on 2026-09-06 (Red Sox vs Orioles, 3-1 win) and instead fabricates a game against the Angels.",
+        "coverage window: the redsox played Baltimore Orioles on 2026-09-06 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+      ],
+      "duration_seconds": 2.2
     }
   ]
 }
