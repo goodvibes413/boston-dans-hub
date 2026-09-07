@@ -190,7 +190,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/fetch_nba.py` | ✅ Done | `celtics_boxscore.json`, `celtics_schedule.json`, `celtics_news.json` |
 | `scripts/fetch_nhl.py` | ✅ Done | `bruins_boxscore.json`, `bruins_schedule.json`, `bruins_news.json` |
 | `scripts/fetch_mlb.py` | ✅ Done | `redsox_boxscore.json`, `redsox_schedule.json`, `redsox_news.json` |
-| `scripts/fetch_nfl.py` | ✅ Done | `patriots_news.json`, `patriots_boxscore.json`, `patriots_schedule.json` |
+| `scripts/fetch_nfl.py` | ✅ Done | `patriots_news.json`, `patriots_boxscore.json`, `patriots_schedule.json` (box score queries the target day **and the next**, then filters by ET date — see Sports API Endpoints) |
 | `scripts/fetch_draft.py` | ✅ Done | `boston_drafts.json` (all 4 Boston teams' current draft picks) |
 | `scripts/update_store.py` | ✅ Done | `rolling_7day.json` (7-entry rolling window) |
 | `scripts/fetch_schedule.py` | ✅ Done | `upcoming_schedule.json` (merged, sorted) |
@@ -421,7 +421,32 @@ python3 scripts/eval_voice.py --fixture evals/fixtures/voice_no_games.json --n 3
 | Red Sox (MLB) | `https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=YYYY-MM-DD&teamId=111&hydrate=linescore,boxscore` |
 | Patriots (NFL) | `https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?team=ne` |
 
-**Celtics team ID**: `"2"` (string). Always use UTC for date parameters — ESPN is UTC-anchored.
+**Celtics team ID**: `"2"` (string). Date parameters are formatted from UTC dates.
+
+**ESPN's `dates=` bucketing is NOT documented, and this file used to assert it was
+"UTC-anchored" as though it were settled.** Nobody has verified it. The two candidate
+conventions disagree exactly where an evening game sits: a 7:30 PM ET tip-off is 00:30 UTC
+the *next* day, so under UTC bucketing it would land in the next day's scoreboard. Weak
+evidence says ESPN buckets by game day — Celtics and Bruins evening box scores have been
+publishing correctly for a season, which UTC bucketing would have broken — but that is
+inference, not a check.
+
+`fetch_nfl.py` no longer depends on the answer. It queries the target day **and the day
+after**, then keeps whichever events carry the target's ET date (`event_et_date()` /
+`select_patriots_event()`), which is correct under either convention. The follow-up call is
+best-effort, so a failure there degrades to the old single-day behaviour rather than losing
+the game.
+
+Only the NFL fetcher does this, deliberately. The other three sports play near-daily, so a
+misfiled game is a one-day blip the 7-day window absorbs, and they have a season of
+evidence that the current code works. The NFL plays **once a week**: a misfiled Sunday or
+Monday night game erases the only Patriots game of that week, and `check_coverage_window()`
+skips `played: false`, so nothing would flag it.
+
+`select_patriots_event()` prints a loud `NOTE:` if it ever recovers a game from the
+following day's bucket. **That line appearing in the logs is the experiment resolving**: it
+proves ESPN buckets by UTC, and that `fetch_nba.py` and `fetch_nhl.py` need the same
+day-pair fix. Until it appears, leave them alone.
 
 ---
 
@@ -1049,6 +1074,11 @@ game:
 1. Run that sport's fetcher and **read the JSON it wrote**, not just its exit
    code. Every fetcher degrades gracefully by design, so a broken cold path
    prints a clean success and writes a sentinel.
+1b. Check a **night game** specifically, not just an afternoon one. Whether a
+   late kickoff lands in the target day's scoreboard bucket or the next one
+   depends on an ESPN convention nobody here has verified (see Sports API
+   Endpoints). For a sport that plays daily this is a blip; for the NFL it is
+   the whole week.
 2. Run `fetch_schedule.py` and confirm the sport's games appear with a real
    date and a real ET time. A `9999-*` date or a wrong `TBD` means
    `normalize_dt` disagrees with what that sport's fetcher writes.

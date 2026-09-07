@@ -1296,5 +1296,113 @@ class TestOpponentTokensDoNotMatchFragments(unittest.TestCase):
         self.assertEqual(publish._opponent_tokens(None), [])
 
 
+def nfl_event(event_id, utc_iso, patriots=True, opponent_abbrev="NYJ"):
+    """A scoreboard event shaped the way ESPN returns them."""
+    competitors = [{"team": {"abbreviation": opponent_abbrev, "id": "20"}}]
+    if patriots:
+        competitors.append({"team": {"abbreviation": "NE", "id": "17"}})
+    return {"id": str(event_id), "date": utc_iso,
+            "competitions": [{"competitors": competitors}]}
+
+
+class TestEventEtDate(unittest.TestCase):
+    """A game belongs to the day it was watched in Boston, not to whichever
+    UTC day its kickoff happened to fall in."""
+
+    def test_sunday_night_kickoff_is_a_sunday_game(self):
+        # 8:20 PM ET Sunday 2026-09-13 == 00:20 UTC Monday 2026-09-14.
+        self.assertEqual(
+            fetch_nfl.event_et_date({"date": "2026-09-14T00:20Z"}),
+            date(2026, 9, 13))
+
+    def test_sunday_afternoon_kickoff_is_a_sunday_game(self):
+        self.assertEqual(
+            fetch_nfl.event_et_date({"date": "2026-09-13T17:00Z"}),
+            date(2026, 9, 13))
+
+    def test_monday_night_kickoff_is_a_monday_game(self):
+        self.assertEqual(
+            fetch_nfl.event_et_date({"date": "2026-09-15T00:15Z"}),
+            date(2026, 9, 14))
+
+    def test_unparseable_and_missing_are_none(self):
+        for event in [{}, None, {"date": ""}, {"date": "soon"}, {"date": None}]:
+            with self.subTest(event=event):
+                self.assertIsNone(fetch_nfl.event_et_date(event))
+
+
+class TestSelectPatriotsEvent(unittest.TestCase):
+    """
+    ESPN's `dates=` bucketing is undocumented and the two plausible conventions
+    disagree precisely where the NFL lives. Selecting by each event's own ET
+    date is correct under either, so these tests assert BOTH.
+
+    This matters far more for football than for the other three sports: they
+    play near-daily, so a misfiled game is a one-day blip the 7-day window
+    absorbs. The NFL plays once a week, so it would erase the only Patriots
+    game of that week — and check_coverage_window skips played:false, so
+    nothing would flag it.
+    """
+
+    TARGET = date(2026, 9, 13)          # Sunday
+    SNF    = "2026-09-14T00:20Z"        # 8:20 PM ET Sunday
+    AFTERNOON = "2026-09-13T17:00Z"     # 1:00 PM ET Sunday
+    MONDAY = "2026-09-15T00:15Z"        # 8:15 PM ET Monday
+
+    def test_game_day_bucketing_afternoon_game(self):
+        events = [nfl_event("A", self.AFTERNOON)]
+        got = fetch_nfl.select_patriots_event(events, self.TARGET, {"A"})
+        self.assertEqual(got["id"], "A")
+
+    def test_game_day_bucketing_night_game(self):
+        # Under ET bucketing the Sunday query already carries the SNF game.
+        events = [nfl_event("A", self.SNF)]
+        got = fetch_nfl.select_patriots_event(events, self.TARGET, {"A"})
+        self.assertEqual(got["id"], "A")
+
+    def test_utc_bucketing_night_game_is_recovered_from_the_next_day(self):
+        # Under UTC bucketing the Sunday query is EMPTY and the game arrives
+        # only via the following day's scoreboard. This is the case the old
+        # single-day fetch recorded as played:false.
+        events = [nfl_event("A", self.SNF)]
+        got = fetch_nfl.select_patriots_event(events, self.TARGET, primary_ids=set())
+        self.assertEqual(got["id"], "A")
+
+    def test_a_genuine_monday_game_is_not_claimed_as_sunday(self):
+        events = [nfl_event("B", self.MONDAY)]
+        self.assertIsNone(
+            fetch_nfl.select_patriots_event(events, self.TARGET, set()))
+
+    def test_picks_the_target_day_game_out_of_a_mixed_pair(self):
+        events = [nfl_event("B", self.MONDAY), nfl_event("A", self.SNF)]
+        got = fetch_nfl.select_patriots_event(events, self.TARGET, {"B"})
+        self.assertEqual(got["id"], "A")
+
+    def test_non_patriots_games_are_ignored(self):
+        events = [nfl_event("C", self.AFTERNOON, patriots=False)]
+        self.assertIsNone(
+            fetch_nfl.select_patriots_event(events, self.TARGET, {"C"}))
+
+    def test_unparseable_date_is_trusted_only_from_the_target_day_query(self):
+        events = [nfl_event("A", "not-a-date")]
+        self.assertEqual(
+            fetch_nfl.select_patriots_event(events, self.TARGET, {"A"})["id"], "A")
+        # Same record arriving via the follow-up day is not promoted.
+        self.assertIsNone(
+            fetch_nfl.select_patriots_event(events, self.TARGET, set()))
+
+    def test_empty_and_malformed_input(self):
+        for events in [[], None, [None], ["nonsense"], [{}]]:
+            with self.subTest(events=events):
+                self.assertIsNone(
+                    fetch_nfl.select_patriots_event(events, self.TARGET, set()))
+
+    def test_find_patriots_event_still_returns_the_first_match(self):
+        events = [nfl_event("C", self.AFTERNOON, patriots=False),
+                  nfl_event("A", self.SNF)]
+        self.assertEqual(fetch_nfl.find_patriots_event(events)["id"], "A")
+        self.assertIsNone(fetch_nfl.find_patriots_event([]))
+
+
 if __name__ == "__main__":
     unittest.main()

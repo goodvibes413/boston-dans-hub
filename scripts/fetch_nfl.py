@@ -36,6 +36,7 @@ import urllib.request
 import urllib.error
 from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from pipeline_dates import as_of_date, target_game_date
 
@@ -60,6 +61,9 @@ ESPN_SUMMARY     = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/s
 ESPN_SCHEDULE    = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/17/schedule"
 
 NEWS_TOP_N = 3
+
+# A game belongs to the day a Boston reader watched it, which is its ET date.
+ET = ZoneInfo("America/New_York")
 
 # ESPN's season-type codes, shared across its sports endpoints. These beat any
 # calendar guess about which phase a given game belongs to.
@@ -207,17 +211,105 @@ def is_nfl_offseason() -> bool:
     return classify_nfl_season() in ("offseason", "preseason")
 
 
+def is_patriots_event(event: dict) -> bool:
+    """True if the Patriots are one of the competitors in this event."""
+    if not isinstance(event, dict):
+        return False
+    try:
+        competitors = event.get("competitions", [{}])[0].get("competitors", [])
+    except (AttributeError, IndexError, TypeError):
+        return False
+    for comp in competitors or []:
+        if not isinstance(comp, dict):
+            continue
+        team = comp.get("team", {}) or {}
+        if (
+            team.get("abbreviation") == PATRIOTS_ABBREV
+            or team.get("id") == PATRIOTS_TEAM_ID
+        ):
+            return True
+    return False
+
+
 def find_patriots_event(events: list):
     """Return the first event in which the Patriots appear, or None."""
-    for event in events:
-        competitors = event.get("competitions", [{}])[0].get("competitors", [])
-        for comp in competitors:
-            team = comp.get("team", {})
-            if (
-                team.get("abbreviation") == PATRIOTS_ABBREV
-                or team.get("id") == PATRIOTS_TEAM_ID
-            ):
-                return event
+    for event in events or []:
+        if is_patriots_event(event):
+            return event
+    return None
+
+
+def event_et_date(event: dict) -> date | None:
+    """
+    The calendar day this game belongs to, in Eastern time.
+
+    ESPN stamps every event with a full UTC timestamp in "date". Converting
+    that to ET is what makes the day unambiguous: a Sunday night kickoff at
+    8:20 PM ET is 00:20 UTC on Monday, and it is emphatically a Sunday game.
+
+    Returns None for a missing or unparseable value so callers can decide,
+    rather than guessing a day (AGENTS.md Rule #5).
+    """
+    raw = (event or {}).get("date") if isinstance(event, dict) else None
+    if not raw:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+    except (ValueError, TypeError):
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(ET).date()
+
+
+def select_patriots_event(events: list, target: date,
+                          primary_ids: set | None = None):
+    """
+    Pick the Patriots game actually PLAYED on `target`, judged by each event's
+    own kickoff time rather than by which query returned it.
+
+    ESPN's `dates=` bucketing is not documented, and the two plausible
+    conventions disagree exactly where the NFL lives. Under UTC bucketing a
+    Sunday Night Football kickoff (00:20 UTC Monday) lands in MONDAY's bucket,
+    so querying Sunday alone returns nothing and the fetcher records
+    played:false. Every other Boston team plays near-daily, so a misfiled game
+    is a one-day blip the 7-day window absorbs; the NFL plays once a week, so
+    it would silently erase the only Patriots game of that week — and
+    check_coverage_window skips played:false, so nothing would flag it.
+
+    Caller therefore hands us both days' events and this filters by ET date,
+    which is correct under EITHER convention and needs no assumption about
+    which one ESPN uses.
+
+    `primary_ids` are the ids that came from the target day's own query. An
+    event whose timestamp will not parse is only trusted if it came from
+    there, so a malformed record from the following day can never be promoted
+    into the slot of a game that was not played.
+    """
+    candidates = [e for e in (events or []) if is_patriots_event(e)]
+    if not candidates:
+        return None
+
+    for event in candidates:
+        if event_et_date(event) == target:
+            if primary_ids is not None and str(event.get("id")) not in primary_ids:
+                # Only reachable under UTC bucketing. Worth saying loudly: it
+                # means fetch_nba.py's "ESPN's dates= parameter is UTC-anchored"
+                # comment is right and the NBA/NHL fetchers need this same fix.
+                print(f"  NOTE: the {target.isoformat()} game was filed under the "
+                      f"following day's scoreboard — ESPN buckets by UTC, so "
+                      f"fetch_nba.py and fetch_nhl.py need this same day-pair fix.")
+            return event
+
+    for event in candidates:
+        if event_et_date(event) is None and (
+            primary_ids is None or str(event.get("id")) in primary_ids
+        ):
+            print(f"  warn: Patriots event {event.get('id')} has no parseable "
+                  f"date; accepting it because the {target.isoformat()} query "
+                  f"returned it.")
+            return event
+
     return None
 
 
@@ -401,12 +493,34 @@ def fetch_boxscore() -> None:
             return
 
         # ── Regular season: fetch scoreboard ─────────────────────────────
+        # The target day, plus the day after it. See select_patriots_event():
+        # a Sunday or Monday night kickoff is already past midnight UTC, so
+        # under UTC bucketing it sits in the FOLLOWING day's scoreboard. The
+        # ET-date filter then keeps whichever events actually belong to the
+        # target day, so this is correct under either bucketing convention.
         date_param = target.strftime("%Y%m%d")
         print(f"  Fetching NFL scoreboard for {game_date_iso}...")
         scoreboard = fetch_json(f"{ESPN_SCOREBOARD}?dates={date_param}")
 
-        events     = scoreboard.get("events", [])
-        pats_event = find_patriots_event(events)
+        events      = scoreboard.get("events", []) or []
+        primary_ids = {str(e.get("id")) for e in events if isinstance(e, dict)}
+
+        # Supplementary and best-effort: a failure here must never cost us the
+        # target day's game, which the primary call above already has.
+        next_day = target + timedelta(days=1)
+        try:
+            spill = fetch_json(
+                f"{ESPN_SCOREBOARD}?dates={next_day.strftime('%Y%m%d')}"
+            ).get("events", []) or []
+            events = events + [
+                e for e in spill
+                if isinstance(e, dict) and str(e.get("id")) not in primary_ids
+            ]
+        except RuntimeError as e:
+            print(f"  warn: follow-up scoreboard for {next_day.isoformat()} "
+                  f"failed ({e}); a late-night kickoff could be missed.")
+
+        pats_event = select_patriots_event(events, target, primary_ids)
 
         if pats_event is None:
             print(f"  No Patriots game found for {game_date_iso}.")
