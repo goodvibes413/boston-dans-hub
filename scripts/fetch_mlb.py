@@ -202,6 +202,23 @@ def pitcher_decision(pitching_stats: dict) -> str:
     return ""
 
 
+def player_display_name(person: dict) -> str:
+    """
+    Full name for prose. MLB's `boxscoreName` is the abbreviated display form
+    ("Tolle", "Chapman, A") — Dan can't write a first name he was never given,
+    so it is only a last resort. `fullName` is present on the same person object.
+    """
+    person = person or {}
+    full = (person.get("fullName") or "").strip()
+    if full:
+        return full
+    first = (person.get("firstName") or "").strip()
+    last  = (person.get("lastName") or "").strip()
+    if first and last:
+        return f"{first} {last}"
+    return (person.get("boxscoreName") or "").strip() or "Unknown"
+
+
 def parse_inning_label(inning_num: int, total_innings: int) -> str:
     """Return a readable inning label, tagging extras."""
     suffix = {1: "st", 2: "nd", 3: "rd"}.get(
@@ -273,10 +290,7 @@ def parse_game_boxscore(game_pk: int, redsox_home: bool, opponent_name: str) -> 
         if ip_str == "0.0" and safe_int(pstats.get("outs")) == 0:
             continue
 
-        name     = (
-            player.get("person", {}).get("boxscoreName")
-            or player.get("person", {}).get("fullName", "Unknown")
-        )
+        name     = player_display_name(player.get("person", {}))
         decision = pitcher_decision(pstats)
         line = {
             "name":           name,
@@ -308,10 +322,7 @@ def parse_game_boxscore(game_pk: int, redsox_home: bool, opponent_name: str) -> 
             continue       # Didn't bat (pinch runner, etc.)
 
         ops_val = safe_float(season.get("ops", "0") or "0")
-        name    = (
-            player.get("person", {}).get("boxscoreName")
-            or player.get("person", {}).get("fullName", "Unknown")
-        )
+        name    = player_display_name(player.get("person", {}))
 
         hitter_rows.append({
             "name":       name,

@@ -1,0 +1,114 @@
+{
+  "_fixture_notes": {
+    "label": "player_names_and_trend_form",
+    "scenario": "A Red Sox win in the production boxscore shape, where every player name in the data is a BARE LAST NAME (\"Tolle\", \"Chapman\") the way MLB's boxscoreName hands them over. CURRENT_ROSTER carries the full names. This is the September 2026 regression: the fetcher fix now sends fullName, but the persona must still resolve a bare last name from the roster rather than shipping it, and must spend those full names the way a writer does.",
+    "why_this_exists": "Every other fixture hand-writes full names, so none of them exercised the resolution path or the trend-field format. The published 2026-09-07 post opened \"Tolle was absolute nails on the mound\" and set trend to \"6.0 innings, 12 strikeouts, 1 earned run\".",
+    "pass_criteria": [
+      "trend_watch[].player is a full first-and-last name on EVERY entry (\"Payton Tolle\", not \"Tolle\")",
+      "trend_watch[].trend is one complete sentence carrying the stats (\"Struck out twelve over six innings and gave up a single earned run.\")",
+      "trend_watch[].trend does not open with a digit and contains no em dash",
+      "In morning_brew, each player's FIRST appearance is the full name",
+      "In morning_brew, LATER appearances of that same player are last name / nickname / pronoun, not the full name again",
+      "The three-reliever run reads naturally as bare last names in one clause (\"Miller, Moran, and Chapman\"), not as three full names in a row"
+    ],
+    "fail_criteria": [
+      "Any bare last name in a trend_watch player field",
+      "trend set to a comma-joined stat line (\"6.0 innings, 12 strikeouts, 1 earned run\")",
+      "A body that never introduces anyone by full name (the pre-fix failure)",
+      "A body that repeats the full name on every mention (the over-correction: reads like a press release)",
+      "\"LastName, Initial\" format anywhere in the output"
+    ],
+    "review": "Manual, per eval_voice.py — the interesting failure is the middle ground, so read the runs rather than grepping for one full name and calling it green. Run n=3: the body rule is a judgement call the model can get right once by luck."
+  },
+  "today": "2026-09-07",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-09-07",
+        "celtics": {
+          "boxscore": {"game_date": "2026-09-06", "played": false, "season_type": "offseason"},
+          "news": {"articles": []}
+        },
+        "bruins": {
+          "boxscore": {"game_date": "2026-09-06", "played": false, "season_type": "offseason"},
+          "news": {"articles": []}
+        },
+        "patriots": {
+          "boxscore": {"game_date": "2026-09-06", "played": false, "season_type": "regular"},
+          "news": {"articles": []}
+        },
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-09-06",
+            "played": true,
+            "season_type": "regular",
+            "doubleheader": false,
+            "games": [
+              {
+                "game_pk": 812004,
+                "game_number": 1,
+                "status": "Final",
+                "innings_played": 9,
+                "extra_innings": false,
+                "home": false,
+                "redsox_score": 3,
+                "opponent": "Baltimore Orioles",
+                "opponent_score": 1,
+                "redsox_hits": 8,
+                "redsox_errors": 0,
+                "starting_pitcher": {
+                  "name": "Tolle",
+                  "innings_pitched": "6.0",
+                  "hits": 3,
+                  "earned_runs": 1,
+                  "runs": 1,
+                  "strikeouts": 12,
+                  "walks": 1,
+                  "decision": "W"
+                },
+                "bullpen": [
+                  {"name": "Miller", "innings_pitched": "1.0", "hits": 0, "earned_runs": 0, "runs": 0, "strikeouts": 1, "walks": 0, "decision": "H"},
+                  {"name": "Moran", "innings_pitched": "1.0", "hits": 1, "earned_runs": 0, "runs": 0, "strikeouts": 0, "walks": 0, "decision": "H"},
+                  {"name": "Chapman", "innings_pitched": "1.0", "hits": 1, "earned_runs": 0, "runs": 0, "strikeouts": 2, "walks": 0, "decision": "S"}
+                ],
+                "top_hitters": [
+                  {"name": "Campbell", "ab": 4, "hits": 2, "hr": 1, "rbi": 2, "season_avg": ".288", "season_ops": ".841"},
+                  {"name": "Rafaela", "ab": 4, "hits": 2, "hr": 0, "rbi": 1, "season_avg": ".271", "season_ops": ".776"},
+                  {"name": "Abreu", "ab": 3, "hits": 0, "hr": 0, "rbi": 0, "season_avg": ".254", "season_ops": ".749"}
+                ]
+              }
+            ]
+          },
+          "news": {"articles": []}
+        }
+      }
+    ]
+  },
+  "boston_roster": {
+    "generated_at": "2026-09-07T08:00:00Z",
+    "rosters": {
+      "redsox": [
+        {"name": "Payton Tolle", "position": "SP"},
+        {"name": "Justin Miller", "position": "RP"},
+        {"name": "Jovani Moran", "position": "RP"},
+        {"name": "Aroldis Chapman", "position": "RP"},
+        {"name": "Kristian Campbell", "position": "2B"},
+        {"name": "Ceddanne Rafaela", "position": "CF"},
+        {"name": "Wilyer Abreu", "position": "RF"}
+      ],
+      "celtics": [{"name": "Jayson Tatum", "position": "SF"}],
+      "bruins": [{"name": "David Pastrnak", "position": "RW"}],
+      "patriots": [{"name": "Drake Maye", "position": "QB"}]
+    }
+  },
+  "season_memory": {
+    "current_season": {
+      "redsox": {
+        "season": "2026",
+        "record": "77-67",
+        "notes": "Holding the third wild card in the American League."
+      }
+    },
+    "past_seasons": {}
+  }
+}

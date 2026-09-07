@@ -1244,7 +1244,10 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
         "Generate Boston Dan's Hub JSON output. Return ONLY the JSON object, "
         "no prose, no markdown fences. Keys: headline (punchy newspaper-style headline in Dan's voice — complete thought, no cut-off phrases, 10–16 words max), "
         "morning_brew (3 paragraphs), "
-        "trend_watch (array of objects with category, player — always use FULL first and last name, never initials or abbreviations, trend, dans_take), "
+        "trend_watch (array of objects with category, player — the trend_watch "
+        "player field is a card label so it is ALWAYS the FULL first and last name, "
+        "never initials or abbreviations, trend — ONE COMPLETE SENTENCE carrying the "
+        "stats, never a bare comma-separated stat line, dans_take), "
         "box_scores, schedule (next 3 days)."
     )
     return message

@@ -5,6 +5,100 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-07 — Player Names Everywhere, and Trend Watch Goes Back to Writing Sentences
+
+**Context:** The Trends cards on the live site had quietly stopped reading like Dan.
+The 2026-09-07 post shipped `"player": "Tolle"` with
+`"trend": "6.0 innings, 12 strikeouts, 1 earned run"`. Compare 2026-05-10:
+`"player": "Connelly Early"`, `"trend": "Tossed seven scoreless innings with eight
+strikeouts against Tampa."` The body had the same disease — it opened *"Tolle was
+absolute nails on the mound"* and no player was introduced by a full name anywhere in
+the post.
+
+**Root cause 1: the model was never given a first name.** `parse_game_boxscore()` in
+`fetch_mlb.py` preferred MLB StatsAPI's `boxscoreName` over `fullName`:
+
+```python
+name = (person.get("boxscoreName") or person.get("fullName", "Unknown"))
+```
+
+`boxscoreName` is the *abbreviated display* form — a bare last name ("Tolle"), or
+"Chapman, A" when a surname is shared. `fullName` ("Payton Tolle") sits on the same
+person object. Those names flow into `starting_pitcher` / `bullpen` / `top_hitters`,
+into `rolling_7day`, and straight into the prompt. Dan cannot restore a first name he
+was never handed, and the fallback order made the abbreviated form the default path
+rather than the last resort. Both call sites now go through
+`player_display_name()`: `fullName`, then `firstName + lastName`, then
+`boxscoreName`, then `"Unknown"`.
+
+`fetch_nhl.py` had the same bug latent in it — the NHL API abbreviates `name.default`
+to "D. Pastrnak" and carries `firstName.default` / `lastName.default` alongside, and
+goal scorers, assists and goalies all read the abbreviated field. Fixed the same way,
+pre-emptively, while the Bruins are still in the offseason. `fetch_nba.py` and
+`fetch_nfl.py` already use ESPN's `displayName`, which is the full name; unchanged.
+
+**Root cause 2: the persona sanctioned the truncation, then over-corrected.** One line
+demanded a full first-and-last name in `trend_watch`; the line above it granted an
+escape hatch ("if you can only resolve a last name ... use just the last name") that
+fired by default once the data arrived pre-truncated. And the full-name rule closed
+with *"This rule applies everywhere: morning_brew, trend_watch, news_digest,
+everywhere"* — which, read literally, mandates a full name on every mention in prose.
+That is not what the good output did either.
+
+The Player Names section now separates two jobs it had been conflating: **making a
+full name available**, and **deciding where to spend it.**
+
+- *Resolution*: a bare last name in the data gets looked up in `CURRENT_ROSTER` (which
+  was already in the prompt, carrying full names, and which nothing had ever pointed
+  the model at) before any fallback.
+- *In prose*: first mention is the full name, every mention after it is a last name, a
+  nickname, or a pronoun. "Connelly Early went seven scoreless innings ... this
+  rotation needs young arms like Early to step up" is the target. Repeating the full
+  name reads like a press release; nothing but last names reads like a boxscore.
+- *Let the sentence win*: a run of names in one clause stays bare ("Miller, Morán, and
+  Chapman closed the door"), and a name the whole city knows on sight doesn't need a
+  formal introduction. A natural mix, not a quota.
+- *The one exception* is the `trend_watch` `"player"` field, which is a label on a
+  card, not a sentence: always the full name, every entry.
+
+**Root cause 3: `trend` had no format spec at all.** The Trend Watch section said how
+many entries to write and who to cover; neither it nor the Output Format block ever
+said what shape the string takes. With structured numeric player lines now in
+`rolling_7day` and Stats Discipline demanding exact numbers, the model transcribed the
+fields it was handed — today's two strings are literally
+`innings_pitched, strikeouts, earned_runs` joined with commas. The stat-line form also
+dodges the persona's own "never start a sentence with a digit" rule by not being a
+sentence. `trend` is now specified as one complete sentence carrying the stats, in
+three places the model reads the field contract: the Trend Watch section, the Output
+Format block, and the key list in `build_user_message()`.
+
+**Why the prompt fix alone wouldn't have held:** `punch_up_draft()` merges only
+`dans_take` per entry — `player` and `trend` always come from the original draft by
+design, so nothing downstream was ever going to repair either field. The data fix is
+what makes the persona rule satisfiable.
+
+**Coverage:** 8 new unit tests on `player_display_name()` for both leagues, asserting
+on `"Payton Tolle"`-shaped output (a truthiness assertion would have passed before the
+fix too). New eval fixture `player_names_and_trend_form.json`: a production-shaped Red
+Sox boxscore where every name is a bare last name and `boston_roster` can resolve it,
+with three relievers to exercise the run-of-names case. Its pass criteria fail *both*
+directions — a body of bare last names and a body that repeats the full name every
+time. The interesting failure here is the middle ground, so the review stays manual.
+
+**Still open:** the eval has not been run against a live model — no `GEMINI_API_KEY`
+in the authoring environment, and `statsapi.mlb.com` is blocked by the egress proxy,
+so neither the live fetch nor the generation path has executed. The data layer is
+pure and fully tested; what needs a real run is the persona half. Verify on the next
+CI run that `trend_watch[].player` carries full names and `trend_watch[].trend` is a
+sentence, and read the body for the first-mention-full pattern.
+
+**Noted, not fixed:** `docs/app.js` is dead code. `docs/index.html` renders the site
+from its own inline script (`buildTrendPulseWidget()`); nothing loads `app.js`. Both
+are pure passthroughs of the four trend fields, so neither was implicated here, but
+the duplicate is a trap for the next person who goes looking for the renderer.
+
+---
+
 ## 2026-09-04 — The Stretch Run: Dan Covers a Pennant Race, But Only in September
 
 **Context:** It's September 4th, the Red Sox are in a live wild-card race, and Dan
