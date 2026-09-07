@@ -5,6 +5,58 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-07 — What The Corrective Run Taught Us: Keep The Best Draft, And Stop Feeding Dan Today's Game
+
+**Context:** The corrective run (#591) that was supposed to replace the bad 2026-09-07
+post instead proved the guards work and then fell back to stale. The attempt log is the
+whole story:
+
+| attempt | verdict | what happened |
+|---|---|---|
+| 1 | FAIL **high** | Angels again. Caught by `check_coverage_window` AND judge rules 7 + 12 |
+| 2 | FAIL **low** | **Recapped Baltimore correctly.** Failed only on repetition nits |
+| 3 | FAIL **high** | Regressed to the Angels. Attempts exhausted, fell back to stale |
+
+**The open question from the previous entry is now settled.** The judge's own flag reads
+*"source_data for 2026-09-06 shows a 3-1 win against the Orioles."* The fetcher had
+Baltimore all along, so **the model was the source** of the wrong game. The `officialDate`
+verification shipped earlier is defensive-only, not the cause. Worth noting the judge
+caught on this run what it had missed on the identical data before, which is the argument
+for the deterministic check restated as evidence.
+
+**Three fixes.**
+
+1. **A coverage miss is HIGH severity, not MEDIUM.** This is a bug in the previous entry's
+   own work. `publish.py` ships LOW and MEDIUM with a quality warning rather than serving
+   stale, so grading a wrong-game post MEDIUM would have let it publish on any run where
+   the judge missed it — exactly the case the deterministic check exists to cover. It only
+   held on run #591 because attempt 3 happened to be HIGH for an unrelated reason. A post
+   recapping a game that did not happen is a content-integrity failure, same tier as a
+   fabricated stat.
+
+2. **Publish the BEST attempt, not the last.** Regeneration is not monotonic: attempt 2 was
+   a correct, publishable post and the loop threw it away because only
+   `evals_doc["attempts"][-1]` was ever read. The loop now tracks the least-bad draft it has
+   seen and publishes that. `SEVERITY_RANK` deliberately omits HIGH, so a fabricated-stat or
+   wrong-game draft can never become the "best" attempt — those still fall back.
+
+3. **Stop putting today's game in front of Dan.** Two sources were feeding it to him and the
+   persona rule alone was losing to both:
+   - `fetch_news.drop_articles_after()` trims the digest to the coverage window. The feed is
+     sorted newest-first and fetched at run time, so an afternoon re-run led with a story
+     about a game played TODAY. Undated articles are kept, not dropped — the feed's
+     timestamps are best-effort and silently starving the digest would be worse.
+   - Grounding is now OFF on correction retries. A correction is the judge saying Dan cited
+     something the source data does not support, and a live search is the most likely place
+     he got it. Regenerating with search still on invites the same answer back — which is
+     precisely what attempt 3 did. Attempt 1 keeps grounding; the storylines are why it
+     exists.
+
+**Coverage:** 7 new tests (101 total), including a replay of the #591 severity sequence
+(`high, low, high`) asserting attempt 2 is what ships.
+
+---
+
 ## 2026-09-07 — The Fetcher Owns The Scoreboard: A Re-Run Published Today's Game As Yesterday's
 
 **Context:** A forced re-run at 20:42 UTC on 2026-09-07, after that day's 1:35 PM ET

@@ -36,6 +36,11 @@ ARCHIVE_RETENTION_DAYS = 9  # generate_rant reads 5; extra buffer covers UTC dat
 STALE_MAX_AGE_HOURS = 48
 MAX_JUDGE_ATTEMPTS = 3  # original + 2 regenerations with correction notes
 
+# Lower is better. HIGH is absent deliberately: a HIGH-severity draft (fabricated
+# stat, wrong game, safety violation) is never publishable, so it can never be the
+# "best" attempt — the run falls back to stale content instead.
+SEVERITY_RANK = {"low": 1, "medium": 2}
+
 # Evals dashboard constants
 DOCS_EVALS_DIR = Path("docs/data/evals")
 DOCS_POSTS_DIR = Path("docs/data/posts")
@@ -611,6 +616,7 @@ def main():
 
     # Step 2: Judge, regenerate on FAIL, re-judge (up to MAX_JUDGE_ATTEMPTS times)
     last_flags: list[str] = []
+    best_attempt: dict | None = None  # least-bad draft seen across all attempts
     original_raw_output = dict(raw_output)  # save before any retry overwrites it
     try:
         for attempt in range(1, MAX_JUDGE_ATTEMPTS + 1):
@@ -629,11 +635,14 @@ def main():
                     verdict = {"verdict": "FAIL", "severity": "medium", "flags": []}
                 verdict["flags"] = list(verdict.get("flags", [])) + coverage_flags
                 verdict["verdict"] = "FAIL"
-                # Coverage is MEDIUM: a post about the wrong game is worse than a
-                # voice nit but, unlike a fabricated stat, still publishable over
-                # serving yesterday's post if regeneration can't fix it.
-                if verdict.get("severity") not in ("high",):
-                    verdict["severity"] = "medium"
+                # HIGH, and never anything less. The fallback path below publishes
+                # LOW and MEDIUM with a quality warning rather than serving stale,
+                # so grading coverage MEDIUM would have let a post about the wrong
+                # game ship whenever the judge missed it — which is exactly the
+                # case this check exists to cover. A post recapping a game that
+                # did not happen is a content-integrity failure, same tier as a
+                # fabricated stat.
+                verdict["severity"] = "high"
                 exit_code = 1
 
             # Extract pre-pass info from enriched verdict (first attempt only — pre-pass
@@ -687,6 +696,23 @@ def main():
             last_flags = list(verdict.get("flags", [])) if verdict else []
             print(f"  ❌ safety judge FAILED: {last_flags}")
 
+            # Remember the least-bad draft seen so far. On 2026-09-07 attempt 2
+            # recapped the right game and failed only on repetition nits, then
+            # attempt 3 regressed to the wrong game and the run fell back to
+            # stale — a good post was generated and thrown away, because only the
+            # FINAL attempt's severity was ever consulted.
+            severity = (verdict.get("severity") if verdict else None)
+            rank = SEVERITY_RANK.get(severity)
+            if rank is not None and (best_attempt is None or rank < best_attempt["rank"]):
+                best_attempt = {
+                    "rank": rank,
+                    "severity": severity,
+                    "attempt": attempt,
+                    "output": dict(raw_output),
+                    "flags": list(last_flags),
+                }
+                print(f"  (best draft so far: attempt {attempt}, {severity} severity)")
+
             if attempt >= MAX_JUDGE_ATTEMPTS:
                 print("  exhausted regeneration attempts; falling back")
                 break
@@ -715,25 +741,29 @@ def main():
         except Exception:
             pass
 
-    # All attempts failed.
-    # If the final attempt was LOW or MEDIUM severity, publish with a quality warning
-    # rather than serving stale content. LOW flags are voice/quality issues (repeated
-    # phrasing); MEDIUM flags are coverage/attribution issues (missed milestone,
-    # off-roster phrasing, misattributed story) — an imperfect fresh post beats
-    # serving yesterday's post entirely. Only HIGH (fabricated stats, safety
-    # violations) requires fallback: content integrity is the one non-negotiable.
-    last_severity = (evals_doc["attempts"][-1].get("severity") if evals_doc["attempts"] else None)
-    if last_severity in ("low", "medium"):
-        print(f"  ⚠️  final attempt was {last_severity.upper()} severity only — publishing with quality warning")
-        output = dict(raw_output)
+    # All attempts failed. Publish the BEST attempt if it was LOW or MEDIUM
+    # severity, rather than serving stale content. LOW flags are voice/quality
+    # issues (repeated phrasing); MEDIUM flags are coverage/attribution issues
+    # (missed milestone, off-roster phrasing, misattributed story) — an imperfect
+    # fresh post beats serving yesterday's post entirely. Only HIGH (fabricated
+    # stats, wrong game, safety violations) requires fallback: content integrity
+    # is the one non-negotiable.
+    #
+    # BEST, not last. Regeneration is not monotonic — a later attempt can be
+    # worse than an earlier one, and reading only the final attempt's severity
+    # throws away a good draft that was already in hand.
+    if best_attempt and best_attempt["severity"] in ("low", "medium"):
+        print(f"  ⚠️  best attempt was #{best_attempt['attempt']} at "
+              f"{best_attempt['severity'].upper()} severity only — publishing with quality warning")
+        output = dict(best_attempt["output"])
         output["generated_at"] = now_iso()
         output["_quality_warning"] = True
-        output["_quality_flags"] = last_flags
+        output["_quality_flags"] = best_attempt["flags"]
         output = patch_box_score_season_types(output)
         success = write_json(PUBLISHED_OUTPUT_PATH, output)
         if success:
             archive_dan_output(output)
-            _finalize_evals("retry", winning_attempt=MAX_JUDGE_ATTEMPTS)
+            _finalize_evals("retry", winning_attempt=best_attempt["attempt"])
         return 0 if success else 1
 
     reason = f"safety judge FAILed after {MAX_JUDGE_ATTEMPTS} attempts: {'; '.join(last_flags)[:200]}"

@@ -1608,11 +1608,22 @@ def main():
             "---\n"
         )
 
-    # Attempt 1: grounding ON so Dan can pull live storylines
-    # If grounding fails (503 exhausted) or returns bad JSON → fall back to attempt 2
+    # Attempt 1: grounding ON so Dan can pull live storylines.
+    # If grounding fails (503 exhausted) or returns bad JSON → fall back to attempt 2.
+    #
+    # EXCEPT on a correction retry. A correction is the judge saying Dan cited
+    # something the source data does not support, and a live Google Search is the
+    # most likely place he got it: on 2026-09-07 the retries kept re-reaching for
+    # that afternoon's result, which was all over the web but absent from
+    # rolling_7day. Regenerating with search still on invites the same answer
+    # back. The retry's job is to write what the structured data says, so it runs
+    # against the data alone.
+    use_grounding = not correction_notes
+    if correction_notes:
+        print("  correction retry: grounding OFF (source data only)")
     parsed = None
     try:
-        raw = call_gemini(system_prompt, user_message, model_name, use_grounding=True)
+        raw = call_gemini(system_prompt, user_message, model_name, use_grounding=use_grounding)
         try:
             parsed = json.loads(raw)
         except json.JSONDecodeError:

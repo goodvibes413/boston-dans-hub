@@ -21,6 +21,8 @@ Run this after all four fetch_*.py scripts have completed.
 import json
 import sys
 from datetime import datetime, timezone
+
+from pipeline_dates import as_of_date
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -84,6 +86,40 @@ def parse_published(raw: str) -> datetime:
 # Entry point
 # ---------------------------------------------------------------------------
 
+def drop_articles_after(articles: list, cutoff_date) -> list:
+    """
+    Drop articles published after the end of `cutoff_date` (UTC).
+
+    Dan's coverage window ends with the target day's games, but the news feed is
+    sorted newest-first and fetched at run time, so an afternoon re-run leads
+    with a story about a game played TODAY. On 2026-09-07 that is how a result
+    the structured data did not contain reached the prompt as the freshest,
+    most prominent thing in it, and three generation attempts kept reaching for
+    it. Out-of-window news is not a scoop, it is tomorrow's brew.
+
+    An article with an unparseable or missing timestamp is KEPT: the feed's
+    dates are best-effort, and silently dropping undated stories would quietly
+    starve the digest.
+    """
+    end_of_day = datetime(
+        cutoff_date.year, cutoff_date.month, cutoff_date.day,
+        23, 59, 59, tzinfo=timezone.utc,
+    )
+    kept, dropped = [], 0
+    for a in articles:
+        raw = a.get("published", "")
+        published = parse_published(raw)
+        # parse_published returns datetime.min for unparseable/missing values.
+        if raw and published != datetime.min.replace(tzinfo=timezone.utc) and published > end_of_day:
+            dropped += 1
+            continue
+        kept.append(a)
+    if dropped:
+        print(f"  dropped {dropped} article(s) published after {cutoff_date.isoformat()} "
+              f"(outside Dan's coverage window)")
+    return kept
+
+
 def main() -> None:
     print("=" * 52)
     print("  Boston Dan's Hub — Unified News Feed Builder")
@@ -128,6 +164,9 @@ def main() -> None:
         key=lambda a: parse_published(a["published"]),
         reverse=True,
     )
+
+    # Keep the digest inside the coverage window the persona writes to.
+    all_articles = drop_articles_after(all_articles, as_of_date())
 
     now_utc = datetime.now(timezone.utc)
     result = {
