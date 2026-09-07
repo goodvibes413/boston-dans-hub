@@ -23,6 +23,8 @@ import sys
 import tempfile
 import time
 from datetime import datetime, timezone
+
+from pipeline_dates import as_of_iso
 from pathlib import Path
 
 # Constants
@@ -146,7 +148,7 @@ def archive_dan_output(published: dict, archive_dir: Path = ARCHIVE_DIR,
                 dt = dt.replace(tzinfo=timezone.utc)
             date_str = dt.astimezone(timezone.utc).date().isoformat()
         else:
-            date_str = datetime.now(timezone.utc).date().isoformat()
+            date_str = as_of_iso()
 
         archive_dir.mkdir(parents=True, exist_ok=True)
         slim = {
@@ -184,7 +186,7 @@ def archive_evals(evals_doc: dict, archive_dir: Path = ARCHIVE_DIR,
     eval archiving must NEVER block publishing.
     """
     try:
-        date_str = evals_doc.get("date") or datetime.now(timezone.utc).date().isoformat()
+        date_str = evals_doc.get("date") or as_of_iso()
         archive_dir.mkdir(parents=True, exist_ok=True)
         evals_path = archive_dir / f"{date_str}.evals.json"
         with open(evals_path, "w") as f:
@@ -221,7 +223,7 @@ def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
     Wrapped in try/except — failure must never block publishing.
     """
     try:
-        today_iso = datetime.now(timezone.utc).date().isoformat()
+        today_iso = as_of_iso()
 
         # --- Evals: docs/data/evals/<date>.json ---
         DOCS_EVALS_DIR.mkdir(parents=True, exist_ok=True)
@@ -450,6 +452,101 @@ def run_judge(save_path: Path | None = None) -> tuple[int | None, dict | None, d
     return result.returncode, verdict, enriched
 
 
+BOSTON_TEAM_NAMES = (
+    "boston red sox", "red sox", "boston celtics", "celtics",
+    "boston bruins", "bruins", "new england patriots", "patriots",
+)
+
+BOXSCORE_FILES = {
+    "celtics":  Path("data/celtics_boxscore.json"),
+    "bruins":   Path("data/bruins_boxscore.json"),
+    "redsox":   Path("data/redsox_boxscore.json"),
+    "patriots": Path("data/patriots_boxscore.json"),
+}
+
+
+def _opponent_tokens(opponent: str) -> list[str]:
+    """Lowercased ways Dan might name an opponent: full name and bare nickname,
+    plus the city when the city alone actually identifies the team.
+
+    "Baltimore Orioles" -> ["baltimore", "baltimore orioles", "orioles"]
+    "New York Jets"     -> ["jets", "new york jets"]
+
+    The city used to be `parts[0]`, which for a two-word city is a fragment
+    rather than a name: "New York Jets" yielded the token "new", and "new"
+    appears in any brew that says "New England Patriots" — which is nearly all
+    of them once football starts. That made this check pass vacuously for the
+    Jets and the Giants, both of them Patriots opponents, on exactly the weeks
+    it was supposed to be watching. Multi-word cities are dropped instead of
+    truncated: "New York" would not disambiguate the Jets from the Yankees
+    anyway, and the nickname always does.
+    """
+    name = (opponent or "").strip().lower()
+    if not name:
+        return []
+    parts = name.split()
+    tokens = {name}
+    if len(parts) > 1:
+        tokens.add(parts[-1])          # "orioles", "jets"
+        if len(parts) == 2:
+            tokens.add(parts[0])       # "baltimore" — a whole city, not a fragment
+    return sorted(tokens)
+
+
+def check_coverage_window(output: dict) -> list[str]:
+    """
+    Deterministic check that the post recaps the day it was asked to recap.
+
+    The safety judge already has two rules pointed straight at this — 7
+    (fabricated stats) and 12 (game coverage gap) — and both passed the
+    2026-09-07 post that wrote up that afternoon's game and never mentioned the
+    previous day's. A checklist item inside an LLM prompt is not a dependable
+    place for a check that a dozen lines of code can make certain.
+
+    Reads the FETCHER box scores, never the model's: if a Boston team played on
+    the target date and its opponent appears nowhere in the headline or
+    morning_brew, the post missed the game it exists to cover.
+
+    Deliberately narrow. It does not try to detect a post that covers yesterday
+    correctly AND also recaps today's game, because separating "recapping the
+    Angels" from the forward-look the persona actively wants ("we're back at it
+    against the Angels this afternoon") needs proximity heuristics that would
+    false-positive on good posts — and these flags drive an automatic
+    regeneration, so a false positive costs a Gemini call and a worse draft.
+    The persona's Coverage Window rule handles that case.
+    """
+    text_parts = [str(output.get("headline") or "")]
+    brew = output.get("morning_brew")
+    if isinstance(brew, list):
+        text_parts.extend(str(p) for p in brew)
+    text = " ".join(text_parts).lower()
+    if not text.strip():
+        return []
+
+    flags = []
+    for team_key, path in BOXSCORE_FILES.items():
+        raw = read_json(path)
+        if not raw or raw.get("error") or not raw.get("played"):
+            continue
+
+        games = raw.get("games") if isinstance(raw.get("games"), list) else None
+        game = games[0] if games else raw
+        opponent = game.get("opponent", "")
+        tokens = _opponent_tokens(opponent)
+        if not tokens:
+            continue
+
+        if not any(t in text for t in tokens):
+            game_date = game.get("game_date") or raw.get("game_date", "")
+            flags.append(
+                f"coverage window: the {team_key} played {opponent} on {game_date} "
+                f"and the morning_brew never mentions that game. Recap THAT game. "
+                f"Do not write up a game played today, even if you know the result."
+            )
+
+    return flags
+
+
 def regenerate_with_correction(flags: list[str]) -> int:
     """
     Re-run generate_rant.py with CORRECTION_NOTES set so Dan sees the
@@ -481,7 +578,7 @@ def main():
     print("=" * 60)
 
     pipeline_start = time.time()
-    today_iso = datetime.now(timezone.utc).date().isoformat()
+    today_iso = as_of_iso()
 
     # Evals document — built incrementally as attempts run, persisted at end.
     evals_doc: dict = {
@@ -533,6 +630,23 @@ def main():
             attempt_start = time.time()
             exit_code, verdict, enriched = run_judge(save_path=judge_save_path)
             attempt_duration = round(time.time() - attempt_start, 1)
+
+            # Deterministic coverage check, merged into the judge's verdict. The
+            # judge is an LLM reading a 14-rule checklist and it has already let
+            # a missed-game post through; this cannot.
+            coverage_flags = check_coverage_window(raw_output)
+            if coverage_flags:
+                print(f"  ❌ coverage check FAILED: {coverage_flags}")
+                if verdict is None:
+                    verdict = {"verdict": "FAIL", "severity": "medium", "flags": []}
+                verdict["flags"] = list(verdict.get("flags", [])) + coverage_flags
+                verdict["verdict"] = "FAIL"
+                # Coverage is MEDIUM: a post about the wrong game is worse than a
+                # voice nit but, unlike a fabricated stat, still publishable over
+                # serving yesterday's post if regeneration can't fix it.
+                if verdict.get("severity") not in ("high",):
+                    verdict["severity"] = "medium"
+                exit_code = 1
 
             # Extract pre-pass info from enriched verdict (first attempt only — pre-pass
             # reflects the original generation; subsequent attempts have their own pre-pass).

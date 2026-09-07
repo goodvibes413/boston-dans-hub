@@ -24,7 +24,7 @@ import json
 import sys
 import urllib.request
 import urllib.error
-from datetime import datetime, timezone
+from datetime import datetime, time as dt_time, timezone
 from pathlib import Path
 
 # The NFL calendar lives in fetch_nfl.py and is imported rather than restated.
@@ -35,6 +35,7 @@ from pathlib import Path
 # for the same day. Same reasoning as safety_judge.py importing its retry
 # constants from generate_rant.
 import fetch_nfl
+from pipeline_dates import as_of_date
 
 SCRIPT_DIR        = Path(__file__).resolve().parent
 PROJECT_ROOT      = SCRIPT_DIR.parent
@@ -579,9 +580,16 @@ def main() -> None:
     print("=" * 52)
 
     DATA_DIR.mkdir(exist_ok=True)
-    now = datetime.now(timezone.utc)
 
-    out = {"generated_at": now.isoformat()}
+    # Status classification follows the run's as-of day. PR #39 pinned the four
+    # game fetchers and update_store to AS_OF_DATE but not this module, so a
+    # pinned replay produced box scores for the pinned day alongside a season
+    # status derived from the real wall clock — the same split-brain the
+    # as-of-date work exists to close. generated_at stays the true wall clock:
+    # it records when the fetch ran, which is a different fact.
+    now = datetime.combine(as_of_date(), dt_time.min, tzinfo=timezone.utc)
+
+    out = {"generated_at": datetime.now(timezone.utc).isoformat()}
 
     for team_key, (sport, league, team_id) in TEAM_ENDPOINTS.items():
         print(f"\n[{team_key}] {league.upper()} / team_id={team_id}")

@@ -12,6 +12,8 @@ would have caught it. Now they do.
 Run: python3 -m unittest discover -s tests -v
 """
 
+import json
+import os
 import sys
 import unittest
 from datetime import date, datetime, timezone
@@ -23,6 +25,8 @@ import generate_rant  # noqa: E402
 import fetch_season_memory  # noqa: E402
 import fetch_mlb  # noqa: E402
 import fetch_nhl  # noqa: E402
+import pipeline_dates  # noqa: E402
+import publish  # noqa: E402
 import fetch_nfl  # noqa: E402
 import fetch_schedule  # noqa: E402
 
@@ -167,11 +171,15 @@ class TestNormalizeBoxScoresDoubleheader(unittest.TestCase):
         self.assertEqual(rs["home_score"], 6)
 
 
-class TestRepairBoxScoresDoubleheader(unittest.TestCase):
-    """repair_box_scores_from_fetchers gated purely on 'Gemini already produced
-    scores', but on a doubleheader Gemini emits ONE flat game while the fetcher
-    holds both. The gate skipped repair and the second game was discarded — the
-    2026-07-22 Orioles twin bill published as a lone 1-5 loss."""
+class TestBuildBoxScoresFromFetchers(unittest.TestCase):
+    """The fetcher owns box_scores, the way it already owned schedule.
+
+    Two bugs live here. The doubleheader one: Gemini emits ONE flat game while
+    the fetcher holds both, and the old repair pass skipped any team that
+    already had scores, so game 2 was discarded (2026-07-22 Orioles twin bill
+    published as a lone 1-5 loss). The wrong-game one: on 2026-09-07 a forced
+    re-run published that afternoon's game as the previous day's recap, and the
+    same gate meant the fetcher's real result was never even compared."""
 
     def setUp(self):
         import json as _json
@@ -198,7 +206,7 @@ class TestRepairBoxScoresDoubleheader(unittest.TestCase):
             "away_team": "Baltimore Orioles", "home_score": 1, "away_score": 5,
             "game_date": "2026-07-22", "played": True, "season_type": "regular",
         }}}
-        out = generate_rant.repair_box_scores_from_fetchers(data)
+        out = {"box_scores": generate_rant.build_box_scores_from_fetchers(data["box_scores"])}
         rs = out["box_scores"]["redsox"]
         self.assertTrue(rs.get("doubleheader"))
         self.assertEqual(len(rs.get("games", [])), 2)
@@ -207,7 +215,7 @@ class TestRepairBoxScoresDoubleheader(unittest.TestCase):
         self.assertEqual(rs["games"][1]["home_score"], 4)
         self.assertEqual(rs["games"][1]["away_score"], 2)
 
-    def test_complete_single_game_still_left_alone(self):
+    def test_fetcher_agrees_with_model_so_output_is_unchanged(self):
         import json as _json
         (Path(self._tmp.name) / "data" / "redsox_boxscore.json").write_text(_json.dumps({
             "game_date": "2026-07-10", "played": True, "season_type": "regular",
@@ -216,9 +224,8 @@ class TestRepairBoxScoresDoubleheader(unittest.TestCase):
         original = {"sport": "MLB", "home_team": "Boston Red Sox",
                     "away_team": "Tampa Bay Rays", "home_score": 6, "away_score": 2,
                     "game_date": "2026-07-10", "played": True, "season_type": "regular"}
-        out = generate_rant.repair_box_scores_from_fetchers(
-            {"box_scores": {"redsox": dict(original)}})
-        self.assertEqual(out["box_scores"]["redsox"], original)
+        out = generate_rant.build_box_scores_from_fetchers({"redsox": dict(original)})
+        self.assertEqual(out["redsox"], original)
 
 
 class TestDetectSlowDay(unittest.TestCase):
@@ -763,6 +770,200 @@ class TestPlayerDisplayName(unittest.TestCase):
         self.assertEqual(fetch_nhl.player_display_name(None), "Unknown")
 
 
+class TestPipelineDates(unittest.TestCase):
+    """Every stage used to re-derive "today" from the wall clock independently,
+    so a forced re-run could not be pinned to a day."""
+
+    def setUp(self):
+        self._orig = os.environ.get("AS_OF_DATE")
+        self.addCleanup(self._restore)
+
+    def _restore(self):
+        if self._orig is None:
+            os.environ.pop("AS_OF_DATE", None)
+        else:
+            os.environ["AS_OF_DATE"] = self._orig
+
+    def test_override_pins_the_run(self):
+        os.environ["AS_OF_DATE"] = "2026-09-07"
+        self.assertEqual(pipeline_dates.as_of_iso(), "2026-09-07")
+        self.assertEqual(pipeline_dates.target_game_iso(), "2026-09-06")
+
+    def test_target_is_always_the_day_before(self):
+        os.environ["AS_OF_DATE"] = "2026-01-01"
+        self.assertEqual(pipeline_dates.target_game_iso(), "2025-12-31")
+
+    def test_unset_falls_back_to_utc_today(self):
+        os.environ.pop("AS_OF_DATE", None)
+        self.assertEqual(pipeline_dates.as_of_iso(),
+                         datetime.now(timezone.utc).date().isoformat())
+
+    def test_malformed_override_does_not_silently_shift_the_day(self):
+        os.environ["AS_OF_DATE"] = "yesterday please"
+        self.assertEqual(pipeline_dates.as_of_iso(),
+                         datetime.now(timezone.utc).date().isoformat())
+
+    def test_empty_override_is_treated_as_unset(self):
+        # The workflow passes '' when the dispatch input is left blank.
+        os.environ["AS_OF_DATE"] = ""
+        self.assertEqual(pipeline_dates.as_of_iso(),
+                         datetime.now(timezone.utc).date().isoformat())
+
+
+class TestBoxScoreDateVerification(unittest.TestCase):
+    """fetch_boxscore stamped the QUERIED date onto whatever the API returned.
+    parse_game recorded no date at all, so an off-date game was undetectable —
+    while fetch_schedule twenty lines away had always read officialDate."""
+
+    @staticmethod
+    def _api_game(game_pk, official_date, state="Final"):
+        return {
+            "gamePk": game_pk,
+            "officialDate": official_date,
+            "status": {"abstractGameState": state, "detailedState": state},
+        }
+
+    def test_off_date_game_is_discarded(self):
+        games = [self._api_game(1, "2026-09-07")]
+        kept = fetch_mlb.games_on_date(games, "2026-09-06")
+        self.assertEqual(kept, [])
+
+    def test_on_date_game_is_kept(self):
+        games = [self._api_game(1, "2026-09-06")]
+        kept = fetch_mlb.games_on_date(games, "2026-09-06")
+        self.assertEqual([g["gamePk"] for g in kept], [1])
+
+    def test_doubleheader_on_date_both_kept(self):
+        games = [self._api_game(1, "2026-09-06"), self._api_game(2, "2026-09-06")]
+        kept = fetch_mlb.games_on_date(games, "2026-09-06")
+        self.assertEqual([g["gamePk"] for g in kept], [1, 2])
+
+    def test_missing_official_date_is_kept_but_unverified(self):
+        games = [{"gamePk": 3, "status": {"abstractGameState": "Final"}}]
+        kept = fetch_mlb.games_on_date(games, "2026-09-06")
+        self.assertEqual([g["gamePk"] for g in kept], [3])
+
+
+class TestBoxScoresIgnoreModelWhenFetcherDisagrees(unittest.TestCase):
+    """The regression test for 2026-09-07.
+
+    Gemini wrote up that afternoon's Angels game as the previous day's recap.
+    repair_box_scores_from_fetchers saw scores present, said "Gemini got it
+    right — leave it alone", and published it while the fetcher's real Orioles
+    result sat unread on disk."""
+
+    def setUp(self):
+        import json as _json
+        import tempfile
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        root = Path(self._tmp.name)
+        (root / "data").mkdir()
+        self.root = root
+        # What actually happened on the target date.
+        (root / "data" / "redsox_boxscore.json").write_text(_json.dumps({
+            "game_date": "2026-09-06", "played": True, "season_type": "regular",
+            "games": [make_mlb_game(3, 1, home=False, opponent="Baltimore Orioles")],
+        }))
+        self._orig_repo = generate_rant.REPO
+        generate_rant.REPO = root
+        self.addCleanup(lambda: setattr(generate_rant, "REPO", self._orig_repo))
+
+    def test_fetcher_result_wins_over_a_contradicting_model_block(self):
+        # What Gemini emitted: today's game, stamped with yesterday's date.
+        model = {"redsox": {
+            "sport": "MLB", "home_team": "Boston Red Sox",
+            "away_team": "Los Angeles Angels", "home_score": 5, "away_score": 2,
+            "game_date": "2026-09-06", "played": True, "season_type": "regular",
+        }}
+        out = generate_rant.build_box_scores_from_fetchers(model)
+        rs = out["redsox"]
+        self.assertEqual(rs["away_team"], "Boston Red Sox")
+        self.assertEqual(rs["home_team"], "Baltimore Orioles")
+        self.assertEqual((rs["home_score"], rs["away_score"]), (1, 3))
+        self.assertNotIn("Angels", json.dumps(out))
+
+    def test_no_game_means_no_invented_matchup(self):
+        import json as _json
+        (self.root / "data" / "celtics_boxscore.json").write_text(_json.dumps({
+            "game_date": "2026-09-06", "played": False, "season_type": "offseason",
+        }))
+        # Gemini invented a plausible offseason matchup on 2026-09-07.
+        model = {"celtics": {
+            "sport": "NBA", "home_team": "Boston Celtics",
+            "away_team": "Philadelphia 76ers", "home_score": None,
+            "away_score": None, "game_date": "2026-09-06", "played": False,
+            "season_type": "offseason",
+        }}
+        out = generate_rant.build_box_scores_from_fetchers(model)
+        celtics = out["celtics"]
+        self.assertFalse(celtics["played"])
+        self.assertIsNone(celtics["home_team"])
+        self.assertIsNone(celtics["away_team"])
+
+    def test_model_is_the_fallback_when_the_fetcher_failed(self):
+        import json as _json
+        (self.root / "data" / "bruins_boxscore.json").write_text(
+            _json.dumps({"game_date": "2026-09-06", "error": "HTTP 503"}))
+        model = {"bruins": {
+            "sport": "NHL", "home_team": "Boston Bruins", "away_team": "Buffalo Sabres",
+            "home_score": 4, "away_score": 1, "game_date": "2026-09-06",
+            "played": True, "season_type": "regular",
+        }}
+        out = generate_rant.build_box_scores_from_fetchers(model)
+        self.assertEqual(out["bruins"], model["bruins"])
+
+
+class TestCoverageWindowCheck(unittest.TestCase):
+    """Judge rules 7 and 12 both target a missed game and both passed the
+    2026-09-07 post. This check is deterministic so it cannot."""
+
+    def setUp(self):
+        import json as _json
+        import tempfile
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        root = Path(self._tmp.name)
+        (root / "data").mkdir()
+        (root / "data" / "redsox_boxscore.json").write_text(_json.dumps({
+            "game_date": "2026-09-06", "played": True, "season_type": "regular",
+            "games": [make_mlb_game(3, 1, home=False, opponent="Baltimore Orioles")],
+        }))
+        self._cwd = os.getcwd()
+        os.chdir(root)
+        self.addCleanup(lambda: os.chdir(self._cwd))
+
+    def test_flags_a_post_that_recapped_the_wrong_game(self):
+        # The real 2026-09-07 output: all Angels, no Baltimore anywhere.
+        output = {
+            "headline": "Rutschman goes deep as Sox burn rubber with five straight",
+            "morning_brew": [
+                "Adley Rutschman absolutely electrified the Fens last night, "
+                "giving us the breathing room we needed to put the Angels away.",
+            ],
+        }
+        flags = publish.check_coverage_window(output)
+        self.assertEqual(len(flags), 1)
+        self.assertIn("Baltimore Orioles", flags[0])
+
+    def test_silent_when_the_game_is_covered(self):
+        output = {
+            "headline": "Sox take down Baltimore behind a gem",
+            "morning_brew": ["Tolle shut the Orioles down for six innings last night."],
+        }
+        self.assertEqual(publish.check_coverage_window(output), [])
+
+    def test_city_name_alone_counts_as_coverage(self):
+        output = {"headline": "Sox win in Baltimore", "morning_brew": ["What a night."]}
+        self.assertEqual(publish.check_coverage_window(output), [])
+
+    def test_silent_when_no_game_was_played(self):
+        import json as _json
+        Path("data/redsox_boxscore.json").write_text(
+            _json.dumps({"game_date": "2026-09-06", "played": False,
+                         "season_type": "offseason"}))
+        output = {"headline": "Quiet day", "morning_brew": ["Nothing doing."]}
+        self.assertEqual(publish.check_coverage_window(output), [])
 class TestScheduleNormalizeDt(unittest.TestCase):
     """
     Every NFL game shipped to the site dated "9999-12-30" the week the 2026
@@ -978,6 +1179,121 @@ class TestPlayoffRaceCountsTies(unittest.TestCase):
             "baseball", "regular_season", {"division_rank": 1},
             wins=80, losses=60)
         self.assertEqual(race["games_remaining"], 22)
+
+
+class TestNflClassifierHonoursAsOfDate(unittest.TestCase):
+    """
+    PR #39 pinned the four game fetchers to AS_OF_DATE but classify_nfl_season()
+    still defaulted to the wall clock, so a pinned replay queried the right day
+    and then classified it by the real one. Worse than a mislabel: when the real
+    today fell in the offseason or preseason, fetch_boxscore()'s short-circuit
+    fired and recorded played:false for a game that was played — and
+    check_coverage_window() skips played:false, so nothing flagged it.
+    """
+
+    def setUp(self):
+        self._orig = os.environ.get("AS_OF_DATE")
+        self.addCleanup(self._restore)
+
+    def _restore(self):
+        if self._orig is None:
+            os.environ.pop("AS_OF_DATE", None)
+        else:
+            os.environ["AS_OF_DATE"] = self._orig
+
+    def test_default_follows_as_of_date_not_the_wall_clock(self):
+        os.environ["AS_OF_DATE"] = "2027-01-16"
+        self.assertEqual(fetch_nfl.classify_nfl_season(), "playoff")
+
+    def test_pinned_replay_does_not_trip_the_offseason_short_circuit(self):
+        os.environ["AS_OF_DATE"] = "2027-01-16"
+        self.assertNotIn(fetch_nfl.classify_nfl_season(),
+                         ("offseason", "preseason"))
+
+    def test_explicit_date_still_wins_over_the_env_var(self):
+        os.environ["AS_OF_DATE"] = "2027-01-16"
+        self.assertEqual(fetch_nfl.classify_nfl_season(date(2026, 6, 1)),
+                         "offseason")
+
+    def test_target_day_classification_beats_run_day_across_the_week_18_line(self):
+        # A game played Jan 7 is Week 18 even though the run fires on Jan 8,
+        # by which date the calendar has moved to the playoffs.
+        os.environ["AS_OF_DATE"] = "2027-01-08"
+        self.assertEqual(fetch_nfl.classify_nfl_season(), "playoff")
+        self.assertEqual(
+            fetch_nfl.classify_nfl_season(pipeline_dates.target_game_date()),
+            "regular")
+
+
+class TestSeasonMemoryHonoursAsOfDate(unittest.TestCase):
+    """fetch_season_memory was the one stage PR #39 did not pin, so a replay
+    produced box scores for the pinned day beside a season status derived from
+    the wall clock."""
+
+    def setUp(self):
+        self._orig = os.environ.get("AS_OF_DATE")
+        self.addCleanup(self._restore)
+
+    def _restore(self):
+        if self._orig is None:
+            os.environ.pop("AS_OF_DATE", None)
+        else:
+            os.environ["AS_OF_DATE"] = self._orig
+
+    def _as_of_now(self):
+        from datetime import time as _t
+        return datetime.combine(pipeline_dates.as_of_date(), _t.min,
+                                tzinfo=timezone.utc)
+
+    def test_football_status_follows_the_pinned_day(self):
+        os.environ["AS_OF_DATE"] = "2026-12-20"
+        self.assertEqual(
+            fetch_season_memory.classify_status("football", self._as_of_now(),
+                                                "patriots"),
+            "regular_season")
+
+    def test_baseball_status_follows_the_pinned_day(self):
+        os.environ["AS_OF_DATE"] = "2026-12-20"
+        self.assertEqual(
+            fetch_season_memory.classify_status("baseball", self._as_of_now(),
+                                                "redsox"),
+            "offseason")
+
+
+class TestOpponentTokensDoNotMatchFragments(unittest.TestCase):
+    """
+    The city token was parts[0], which truncates a two-word city to a fragment.
+    "New York Jets" produced "new", and "new" appears in any brew that says
+    "New England Patriots" — so the coverage check passed vacuously for two
+    Patriots opponents.
+    """
+
+    def test_two_word_city_is_not_truncated_to_a_fragment(self):
+        self.assertNotIn("new", publish._opponent_tokens("New York Jets"))
+        self.assertNotIn("los", publish._opponent_tokens("Los Angeles Chargers"))
+
+    def test_nickname_and_full_name_still_present(self):
+        tokens = publish._opponent_tokens("New York Jets")
+        self.assertIn("jets", tokens)
+        self.assertIn("new york jets", tokens)
+
+    def test_single_word_city_is_still_a_valid_token(self):
+        self.assertIn("baltimore", publish._opponent_tokens("Baltimore Orioles"))
+
+    def test_uncovered_jets_game_is_flagged_despite_new_england_in_the_brew(self):
+        brew = ("The Sox took care of business at Fenway. "
+                "The New England Patriots are getting ready for Sunday.")
+        tokens = publish._opponent_tokens("New York Jets")
+        self.assertFalse(any(t in brew.lower() for t in tokens))
+
+    def test_covered_jets_game_still_passes(self):
+        brew = "The Pats ran the Jets out of the building."
+        tokens = publish._opponent_tokens("New York Jets")
+        self.assertTrue(any(t in brew.lower() for t in tokens))
+
+    def test_empty_opponent_yields_nothing(self):
+        self.assertEqual(publish._opponent_tokens(""), [])
+        self.assertEqual(publish._opponent_tokens(None), [])
 
 
 if __name__ == "__main__":

@@ -37,6 +37,8 @@ import urllib.error
 from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
+from pipeline_dates import as_of_date, target_game_date
+
 # ---------------------------------------------------------------------------
 # Constants & paths
 # ---------------------------------------------------------------------------
@@ -172,7 +174,14 @@ def classify_nfl_season(today: date | None = None) -> str:
     Boundaries are deliberately approximate: ESPN is the authority whenever it
     answers, so this only has to be right on the days it stands alone.
     """
-    d = today or datetime.now(timezone.utc).date()
+    # Defaults to the run's as-of day, NOT the wall clock. The wall clock is
+    # exactly what pipeline_dates exists to stop each stage re-deriving on its
+    # own: with AS_OF_DATE pinned to a January playoff Saturday, a wall-clock
+    # default classified the run by TODAY's real date instead, so a replay
+    # stamped the wrong phase and (when today happened to be the offseason)
+    # tripped the short-circuit below and recorded played:false for a game that
+    # was played.
+    d = today or as_of_date()
     month, day = d.month, d.day
 
     if 3 <= month <= 7:
@@ -371,12 +380,15 @@ def fetch_boxscore() -> None:
         - Quarter-by-quarter scoring
         - Passing / rushing / receiving leaders (name + display string)
     """
-    yesterday_utc = datetime.now(timezone.utc) - timedelta(days=1)
-    game_date_iso = yesterday_utc.strftime("%Y-%m-%d")
+    target        = target_game_date()
+    game_date_iso = target.isoformat()
 
     try:
         # ── Offseason short-circuit ───────────────────────────────────────
-        season = classify_nfl_season()
+        # Classified by the day being RECAPPED, not the day the run happens.
+        # A game played Jan 7 is a Week 18 regular-season game even when the
+        # pipeline fires on Jan 8, by which date the calendar says "playoff".
+        season = classify_nfl_season(target)
         if season in ("offseason", "preseason"):
             print(f"  NFL {season} — no game data available for {game_date_iso}.")
             result = {
@@ -389,7 +401,7 @@ def fetch_boxscore() -> None:
             return
 
         # ── Regular season: fetch scoreboard ─────────────────────────────
-        date_param = yesterday_utc.strftime("%Y%m%d")
+        date_param = target.strftime("%Y%m%d")
         print(f"  Fetching NFL scoreboard for {game_date_iso}...")
         scoreboard = fetch_json(f"{ESPN_SCOREBOARD}?dates={date_param}")
 
@@ -401,7 +413,7 @@ def fetch_boxscore() -> None:
             result = {
                 "game_date":   game_date_iso,
                 "played":      False,
-                "season_type": classify_nfl_season(),
+                "season_type": classify_nfl_season(target),
             }
             BOXSCORE_PATH.write_text(json.dumps(result, indent=2))
             print(f"  Saved to {BOXSCORE_PATH}")
@@ -456,7 +468,7 @@ def fetch_boxscore() -> None:
             "played":         True,
             # ESPN tags the event itself — a January playoff game says so
             # rather than inheriting whatever the calendar guessed.
-            "season_type":    espn_season_type(pats_event) or classify_nfl_season(),
+            "season_type":    espn_season_type(pats_event) or classify_nfl_season(target),
             "status":         status,
             "home":           pats_home,
             "patriots_score": pats_score,
