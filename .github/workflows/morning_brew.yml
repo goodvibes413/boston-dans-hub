@@ -22,6 +22,16 @@ on:
         type: boolean
         required: false
         default: false
+      as_of_date:
+        description: >-
+          Pin the run to a specific day (YYYY-MM-DD). Every fetcher recaps the day
+          BEFORE this one. Leave blank for the current UTC date. Set it when
+          re-running a past day: without it each stage re-derives "today" from the
+          wall clock, so an afternoon re-run can pick up a game that finished after
+          the original run.
+        type: string
+        required: false
+        default: ''
 
 # Serialize overlapping runs instead of letting them race each other to git push.
 concurrency:
@@ -36,6 +46,11 @@ jobs:
     permissions:
       contents: write
       issues: write
+
+    env:
+      # Blank means "use the current UTC date" — pipeline_dates.as_of_date()
+      # ignores an empty value. Set via workflow_dispatch to replay a past day.
+      AS_OF_DATE: ${{ inputs.as_of_date }}
 
     steps:
       - name: Checkout repo

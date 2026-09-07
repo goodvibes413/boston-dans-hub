@@ -19,6 +19,8 @@ import urllib.error
 from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
+from pipeline_dates import target_game_iso
+
 # ---------------------------------------------------------------------------
 # Constants & paths
 # ---------------------------------------------------------------------------
@@ -303,8 +305,7 @@ def fetch_boxscore() -> None:
         1. /v1/score/{date}              — game summary, goals, period data
         2. /v1/gamecenter/{id}/boxscore  — detailed goalie stat lines
     """
-    yesterday_utc = datetime.now(timezone.utc) - timedelta(days=1)
-    game_date_iso = yesterday_utc.strftime("%Y-%m-%d")
+    game_date_iso = target_game_iso()
 
     try:
         # --- 1. Fetch daily scoreboard ---

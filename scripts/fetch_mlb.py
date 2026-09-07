@@ -23,6 +23,8 @@ import urllib.error
 from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
+from pipeline_dates import target_game_iso
+
 # ---------------------------------------------------------------------------
 # Constants & paths
 # ---------------------------------------------------------------------------
@@ -219,6 +221,40 @@ def player_display_name(person: dict) -> str:
     return (person.get("boxscoreName") or "").strip() or "Unknown"
 
 
+def games_on_date(games: list, game_date_iso: str) -> list:
+    """
+    Keep only games the API says were played on `game_date_iso`.
+
+    The API is the authority on when a game happened; the queried date is only
+    what we asked for. fetch_boxscore used to stamp the queried date onto
+    whatever came back, so an off-date game was undetectable — which is the
+    shape of the 2026-09-07 failure, where a re-run at 20:42 UTC published that
+    afternoon's game as the previous day's recap. An off-date game is discarded
+    rather than relabelled.
+
+    A game with no officialDate is kept (nothing to check it against) but logged,
+    so the run's own output says whether the date was verified.
+    """
+    kept = []
+    for g in games:
+        official = g.get("officialDate", "")
+        if official and official != game_date_iso:
+            print(
+                f"  warn: API returned game {g.get('gamePk')} dated {official} "
+                f"for a query of {game_date_iso} — discarding",
+                file=sys.stderr,
+            )
+            continue
+        if not official:
+            print(
+                f"  warn: game {g.get('gamePk')} has no officialDate — "
+                f"date unverified, assuming {game_date_iso}",
+                file=sys.stderr,
+            )
+        kept.append(g)
+    return kept
+
+
 def parse_inning_label(inning_num: int, total_innings: int) -> str:
     """Return a readable inning label, tagging extras."""
     suffix = {1: "st", 2: "nd", 3: "rd"}.get(
@@ -386,6 +422,10 @@ def parse_game(game: dict, game_date_iso: str) -> dict:
     return {
         "game_pk":         game_pk,
         "game_number":     safe_int(game.get("gameNumber", 1)),
+        # The game's OWN date, not the date we asked for. fetch_schedule() has
+        # always read officialDate; the boxscore path used to stamp the queried
+        # date onto whatever came back, so an off-date game was undetectable.
+        "game_date":       game.get("officialDate", ""),
         "status":          game["status"]["detailedState"],
         "innings_played":  current_inn,
         "extra_innings":   extra_innings,
@@ -415,8 +455,7 @@ def fetch_boxscore() -> None:
       - Single game: games array with one entry
       - Doubleheader: games array with two entries, doubleheader:true
     """
-    yesterday_utc = datetime.now(timezone.utc) - timedelta(days=1)
-    game_date_iso = yesterday_utc.strftime("%Y-%m-%d")
+    game_date_iso = target_game_iso()
 
     try:
         url = (
@@ -446,6 +485,9 @@ def fetch_boxscore() -> None:
             g for g in games_raw
             if g.get("status", {}).get("abstractGameState") == "Final"
         ]
+
+        # Then drop anything whose OWN date isn't the date we asked for.
+        final_games = games_on_date(final_games, game_date_iso)
 
         if not final_games:
             print(

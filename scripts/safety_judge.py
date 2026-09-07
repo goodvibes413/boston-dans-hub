@@ -25,6 +25,8 @@ import re
 import sys
 import time
 from datetime import datetime, timezone
+
+from pipeline_dates import as_of_iso
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -384,7 +386,7 @@ def _load_recent_archives(archive_dir: Path, days: int = REPETITION_LOOKBACK_DAY
     """
     if not archive_dir.exists() or not archive_dir.is_dir():
         return []
-    today_iso = datetime.now(timezone.utc).date().isoformat()
+    today_iso = as_of_iso()
     try:
         files = sorted(
             (p for p in archive_dir.glob("*.json") if p.stem != today_iso),
@@ -638,7 +640,7 @@ def main():
     if pre_pass_flags:
         print(f"  pre-pass: {len(pre_pass_flags)} repetition flag(s) detected", file=sys.stderr)
 
-    today_iso = datetime.now(timezone.utc).date().isoformat()
+    today_iso = as_of_iso()
     full_prompt = (
         f"TODAY: {today_iso}\n\n"
         + JUDGE_PROMPT

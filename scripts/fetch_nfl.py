@@ -31,6 +31,8 @@ import urllib.error
 from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
+from pipeline_dates import target_game_date
+
 # ---------------------------------------------------------------------------
 # Constants & paths
 # ---------------------------------------------------------------------------
@@ -307,8 +309,8 @@ def fetch_boxscore() -> None:
         - Quarter-by-quarter scoring
         - Passing / rushing / receiving leaders (name + display string)
     """
-    yesterday_utc = datetime.now(timezone.utc) - timedelta(days=1)
-    game_date_iso = yesterday_utc.strftime("%Y-%m-%d")
+    target        = target_game_date()
+    game_date_iso = target.isoformat()
 
     try:
         # ── Offseason short-circuit ───────────────────────────────────────
@@ -325,7 +327,7 @@ def fetch_boxscore() -> None:
             return
 
         # ── Regular season: fetch scoreboard ─────────────────────────────
-        date_param = yesterday_utc.strftime("%Y%m%d")
+        date_param = target.strftime("%Y%m%d")
         print(f"  Fetching NFL scoreboard for {game_date_iso}...")
         scoreboard = fetch_json(f"{ESPN_SCOREBOARD}?dates={date_param}")
 

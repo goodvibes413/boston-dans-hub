@@ -22,6 +22,8 @@ import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
+from pipeline_dates import as_of_iso
+
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
@@ -325,7 +327,7 @@ def main():
         except (json.JSONDecodeError, IOError):
             prior = {}
 
-    today_iso = datetime.now(timezone.utc).date().isoformat()
+    today_iso = as_of_iso()
 
     def _draft_key(d: dict) -> tuple:
         return (d.get("sport"), d.get("team"))
