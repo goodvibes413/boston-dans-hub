@@ -27,6 +27,15 @@ import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
+# The NFL calendar lives in fetch_nfl.py and is imported rather than restated.
+# Two hand-maintained copies of the same calendar drifted apart exactly as you
+# would expect: this module called all of January and February "in_playoffs"
+# while fetch_nfl called January "regular" and late February "playoff", so the
+# season_type on a box score could contradict the status on the season entry
+# for the same day. Same reasoning as safety_judge.py importing its retry
+# constants from generate_rant.
+import fetch_nfl
+
 SCRIPT_DIR        = Path(__file__).resolve().parent
 PROJECT_ROOT      = SCRIPT_DIR.parent
 DATA_DIR          = PROJECT_ROOT / "data"
@@ -165,12 +174,16 @@ def classify_status(sport: str, now: datetime, team_key: str = "") -> str:
         else:
             return "regular_season"
     elif sport == "football":  # NFL
-        if month in (1, 2):
+        phase = fetch_nfl.classify_nfl_season(now.date())
+        if phase == "playoff":
             calendar_status = "in_playoffs"
-        elif month in (3, 4, 5, 6, 7, 8):
-            return "offseason"
-        else:
+        elif phase == "regular":
             return "regular_season"
+        else:
+            # preseason, offseason, or unknown. This module has no preseason
+            # status, and a team that has not kicked off yet has no current
+            # record worth publishing as one.
+            return "offseason"
     else:
         return "regular_season"
 
@@ -312,7 +325,8 @@ def fetch_mlb_standings_race(team_id: int = MLB_REDSOX_ID) -> dict:
 
 
 def build_playoff_race(sport: str, status: str, raw: dict,
-                       wins: int | None, losses: int | None) -> dict | None:
+                       wins: int | None, losses: int | None,
+                       ties: int | None = None) -> dict | None:
     """
     Gate and shape the playoff_race block. Pure — no network, no clock.
 
@@ -350,7 +364,11 @@ def build_playoff_race(sport: str, status: str, raw: dict,
         w, l = _parse_count(wins), _parse_count(losses)
         if w is None or l is None:
             return None
-        played = w + l
+        # The NFL and NHL both have results that are neither a win nor a loss
+        # (a tie; a regulation loss that went to OT). Dropping them undercounts
+        # games played, which inflates games_remaining and can hold the stretch
+        # run window shut on the very week it should open.
+        played = w + l + (_parse_count(ties) or 0)
     games_remaining = total - played
     if games_remaining < 0 or games_remaining > window:
         return None
@@ -545,7 +563,8 @@ def build_team_entry(team_key: str, sport: str, league: str, team_id: str,
     if sport == "baseball":
         raw = fetch_mlb_standings_race()
         race = build_playoff_race(sport, status, raw,
-                                  record.get("wins"), record.get("losses"))
+                                  record.get("wins"), record.get("losses"),
+                                  record.get("ties"))
         if race:
             entry["playoff_race"] = race
             print(f"  playoff_race: {race['race_status']}, "

@@ -15,13 +15,19 @@ Outputs:
     data/patriots_schedule.json  — Patriots games in the next 7 days
 
 Offseason note:
-    Box scores only exist September–February (regular season + playoffs).
-    During March–August the boxscore fetcher writes {"played": false, "offseason": true}
-    and returns cleanly without hitting the scoreboard API.
+    Box scores only exist from Week 1 through the Super Bowl. Outside that,
+    fetch_boxscore() writes {"played": false, "season_type": "offseason"|"preseason"}
+    and returns cleanly without hitting the scoreboard API. Preseason games are
+    deliberately inside that short-circuit — Dan does not cover them.
 
-    TODO: Verify leader stat field names against a live regular-season game once
-    the 2026 season kicks off in September, and adjust LEADER_NAMES if ESPN has
-    changed the key strings.
+    TODO (still open, 2026-09-07): Verify LEADER_NAMES against a live
+    regular-season summary payload once the Patriots have actually played, and
+    adjust the key strings if ESPN has changed them. This has never run against
+    a real NFL game — the code path was written in the offseason and the
+    offseason short-circuit below means it has not executed since. A wrong key
+    here degrades quietly: parse_leaders() returns all-None rather than raising,
+    so the box score publishes with no passing/rushing/receiving leaders and
+    nothing goes red. Check the first Monday after Week 1.
 """
 
 import json
@@ -52,6 +58,10 @@ ESPN_SUMMARY     = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/s
 ESPN_SCHEDULE    = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/17/schedule"
 
 NEWS_TOP_N = 3
+
+# ESPN's season-type codes, shared across its sports endpoints. These beat any
+# calendar guess about which phase a given game belongs to.
+ESPN_SEASON_TYPES = {1: "preseason", 2: "regular", 3: "playoff", 4: "offseason"}
 
 # ESPN leader stat name strings for NFL summary response
 LEADER_NAMES = {
@@ -110,22 +120,76 @@ def parse_pub_date(raw: str) -> str:
         return raw
 
 
-def classify_nfl_season() -> str:
+def espn_season_type(event: dict) -> str | None:
     """
-    Return the current NFL season classification.
+    Read ESPN's OWN season type off a scoreboard or schedule event.
 
-    Returns: "offseason" (Mar–Aug), "preseason" (Aug–Sep early),
-             "regular" (Sep–Jan), or "playoff" (Jan–Feb).
+    ESPN knows exactly which phase a game belongs to and says so; a calendar
+    guess is only ever an approximation of that. Prefer this whenever the
+    payload carries it.
+
+    The value turns up as `event["season"]["type"]` on the scoreboard and as
+    `event["seasonType"]` on the team schedule — sometimes a dict with a
+    "type" key, sometimes the bare code — and has shipped as both an int and
+    a numeric string. Returns None for anything unrecognised so the caller
+    falls back to the calendar (AGENTS.md Rule #5: ESPN shapes change without
+    warning).
     """
-    month = date.today().month
+    if not isinstance(event, dict):
+        return None
+
+    candidates = []
+    for holder in (event.get("season"), event.get("seasonType")):
+        if isinstance(holder, dict):
+            candidates.append(holder.get("type"))
+        elif holder is not None:
+            candidates.append(holder)
+
+    for raw in candidates:
+        if isinstance(raw, bool):  # bool subclasses int — not a season code
+            continue
+        try:
+            return ESPN_SEASON_TYPES[int(raw)]
+        except (TypeError, ValueError, KeyError):
+            continue
+    return None
+
+
+def classify_nfl_season(today: date | None = None) -> str:
+    """
+    Calendar fallback for the current NFL season phase, used whenever ESPN
+    does not hand us a season type (no game found, or a shape we don't know).
+
+    Month alone is too coarse at both ends of the season and had two windows
+    wrong:
+      - January returned "regular" for the whole month, so every Wild Card and
+        Divisional game would have been written with season_type="regular".
+        fetch_season_memory.classify_status() already called January
+        "in_playoffs", so the two classifiers actively disagreed.
+      - September returned "regular" from the 1st, though Week 1 does not kick
+        off until after Labor Day.
+
+    Boundaries are deliberately approximate: ESPN is the authority whenever it
+    answers, so this only has to be right on the days it stands alone.
+    """
+    d = today or datetime.now(timezone.utc).date()
+    month, day = d.month, d.day
+
     if 3 <= month <= 7:
         return "offseason"
     if month == 8:
         return "preseason"
-    if month in (9, 10, 11, 12, 1):
+    if month == 9:
+        # Week 1 kicks off the Thursday after Labor Day — never before the 4th.
+        return "preseason" if day < 8 else "regular"
+    if month in (10, 11, 12):
         return "regular"
+    if month == 1:
+        # Week 18 closes out the first weekend; the playoffs run from there.
+        return "regular" if day <= 7 else "playoff"
     if month == 2:
-        return "playoff"
+        # Super Bowl is the second Sunday at the latest; then it's over.
+        return "playoff" if day <= 15 else "offseason"
     return "unknown"
 
 
@@ -390,7 +454,9 @@ def fetch_boxscore() -> None:
         result = {
             "game_date":      game_date_iso,
             "played":         True,
-            "season_type":    classify_nfl_season(),
+            # ESPN tags the event itself — a January playoff game says so
+            # rather than inheriting whatever the calendar guessed.
+            "season_type":    espn_season_type(pats_event) or classify_nfl_season(),
             "status":         status,
             "home":           pats_home,
             "patriots_score": pats_score,
@@ -477,7 +543,7 @@ def fetch_schedule() -> None:
                 "home":       pats_home,
                 "status":     status,
                 "venue":      venue,
-                "season_type": classify_nfl_season(),
+                "season_type": espn_season_type(event) or classify_nfl_season(),
             })
 
         print(f"  Found {len(games)} game(s) in the next 7 days.")

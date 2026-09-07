@@ -14,7 +14,7 @@ Run: python3 -m unittest discover -s tests -v
 
 import sys
 import unittest
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
@@ -23,6 +23,8 @@ import generate_rant  # noqa: E402
 import fetch_season_memory  # noqa: E402
 import fetch_mlb  # noqa: E402
 import fetch_nhl  # noqa: E402
+import fetch_nfl  # noqa: E402
+import fetch_schedule  # noqa: E402
 
 
 def make_rolling(date_str, team="redsox", played=True, games=None):
@@ -759,6 +761,223 @@ class TestPlayerDisplayName(unittest.TestCase):
     def test_nhl_empty_player_is_unknown(self):
         self.assertEqual(fetch_nhl.player_display_name({}), "Unknown")
         self.assertEqual(fetch_nhl.player_display_name(None), "Unknown")
+
+
+class TestScheduleNormalizeDt(unittest.TestCase):
+    """
+    Every NFL game shipped to the site dated "9999-12-30" the week the 2026
+    season opened.
+
+    fetch_nfl.py writes ESPN's full ISO timestamp into the schedule entry's
+    "date" field (exactly as fetch_nba.py does), but fetch_schedule.py's NFL
+    branch appended "T00:00:00Z" to it the way the NHL and MLB branches do for
+    their bare-date fields. That produced "2026-09-13T17:00ZT00:00:00Z", which
+    does not parse, so normalize_dt fell through to its year-9999 sort
+    sentinel. Invisible all offseason because no Patriots game ever landed in
+    the 7-day window.
+    """
+
+    def test_nfl_full_iso_date_parses(self):
+        dt, time_known = fetch_schedule.normalize_dt(
+            {"date": "2026-09-13T17:00Z"}, "NFL")
+        self.assertEqual(dt.year, 2026)
+        self.assertEqual((dt.month, dt.day, dt.hour), (9, 13, 17))
+        self.assertTrue(time_known)
+
+    def test_nfl_game_is_not_sorted_to_the_year_9999_sentinel(self):
+        dt, _ = fetch_schedule.normalize_dt({"date": "2026-09-13T17:00Z"}, "NFL")
+        self.assertNotEqual(dt.year, 9999)
+
+    def test_nfl_game_renders_a_real_et_kickoff_time(self):
+        game = {"date": "2026-09-13T17:00Z", "home": False,
+                "opponent": "Seattle Seahawks"}
+        out = fetch_schedule.normalize_game(
+            game, "patriots",
+            {"sport": "NFL", "name": "New England Patriots"})
+        self.assertEqual(out["date"], "2026-09-13")
+        self.assertEqual(out["time_et"], "1:00 PM ET")
+
+    def test_nba_full_iso_still_parses(self):
+        dt, time_known = fetch_schedule.normalize_dt(
+            {"date": "2026-11-04T00:30Z"}, "NBA")
+        self.assertEqual((dt.month, dt.day, dt.hour, dt.minute), (11, 4, 0, 30))
+        self.assertTrue(time_known)
+
+    def test_nhl_uses_start_time_utc_over_bare_date(self):
+        dt, time_known = fetch_schedule.normalize_dt(
+            {"date": "2026-10-15", "start_time_utc": "2026-10-15T23:00:00Z"},
+            "NHL")
+        self.assertEqual(dt.hour, 23)
+        self.assertTrue(time_known)
+
+    def test_mlb_uses_game_time_utc_over_bare_date(self):
+        dt, time_known = fetch_schedule.normalize_dt(
+            {"date": "2026-09-11", "game_time_utc": "2026-09-11T23:10:00Z"},
+            "MLB")
+        self.assertEqual(dt.hour, 23)
+        self.assertTrue(time_known)
+
+    def test_bare_date_reports_no_known_time(self):
+        dt, time_known = fetch_schedule.normalize_dt({"date": "2026-10-15"}, "NHL")
+        self.assertEqual((dt.hour, dt.minute), (0, 0))
+        self.assertFalse(time_known)
+
+    def test_unparseable_date_still_sorts_last(self):
+        dt, time_known = fetch_schedule.normalize_dt({"date": "garbage"}, "NFL")
+        self.assertEqual(dt.year, 9999)
+        self.assertFalse(time_known)
+
+    def test_missing_date_still_sorts_last(self):
+        dt, _ = fetch_schedule.normalize_dt({}, "NFL")
+        self.assertEqual(dt.year, 9999)
+
+
+class TestScheduleFormatTimeEt(unittest.TestCase):
+    """
+    "TBD" used to be inferred from the clock reading exactly midnight UTC,
+    which cannot tell a missing time from a real one. Under EST a 7:00 PM ET
+    tip-off IS 00:00 UTC, so every Celtics and Bruins game at the single most
+    common start time in either sport printed "TBD" from November to March.
+    """
+
+    def test_seven_pm_est_is_not_mistaken_for_an_unannounced_time(self):
+        # 2027-01-15 00:00 UTC == 2027-01-14 7:00 PM EST.
+        dt = datetime(2027, 1, 15, 0, 0, tzinfo=timezone.utc)
+        self.assertEqual(fetch_schedule.format_time_et(dt, True), "7:00 PM ET")
+
+    def test_seven_pm_est_game_keeps_its_own_et_date(self):
+        game = {"date": "2027-01-14", "start_time_utc": "2027-01-15T00:00:00Z",
+                "home": True, "opponent": "Montreal Canadiens"}
+        out = fetch_schedule.normalize_game(
+            game, "bruins", {"sport": "NHL", "name": "Boston Bruins"})
+        self.assertEqual(out["date"], "2027-01-14")
+        self.assertEqual(out["time_et"], "7:00 PM ET")
+
+    def test_unknown_time_is_still_tbd(self):
+        dt = datetime(2026, 9, 13, 0, 0, tzinfo=timezone.utc)
+        self.assertEqual(fetch_schedule.format_time_et(dt, False), "TBD")
+
+
+class TestNflSeasonClassification(unittest.TestCase):
+    """
+    The calendar fallback called all of January "regular", so every Wild Card
+    and Divisional game would have been tagged season_type="regular" —
+    directly contradicting fetch_season_memory.classify_status(), which calls
+    January "in_playoffs".
+    """
+
+    def test_january_playoffs_are_not_called_regular_season(self):
+        self.assertEqual(fetch_nfl.classify_nfl_season(date(2027, 1, 17)), "playoff")
+
+    def test_week_18_in_early_january_is_still_regular_season(self):
+        self.assertEqual(fetch_nfl.classify_nfl_season(date(2027, 1, 3)), "regular")
+
+    def test_early_september_is_preseason_not_regular(self):
+        self.assertEqual(fetch_nfl.classify_nfl_season(date(2026, 9, 2)), "preseason")
+
+    def test_mid_september_is_regular_season(self):
+        self.assertEqual(fetch_nfl.classify_nfl_season(date(2026, 9, 13)), "regular")
+
+    def test_late_february_is_offseason_not_playoffs(self):
+        self.assertEqual(fetch_nfl.classify_nfl_season(date(2027, 2, 24)), "offseason")
+
+    def test_super_bowl_window_is_playoff(self):
+        self.assertEqual(fetch_nfl.classify_nfl_season(date(2027, 2, 7)), "playoff")
+
+    def test_summer_is_offseason(self):
+        self.assertEqual(fetch_nfl.classify_nfl_season(date(2026, 6, 1)), "offseason")
+
+    def test_agrees_with_season_memory_classifier_year_round(self):
+        """
+        Two classifiers, one fact. They disagreed on January for as long as
+        both have existed; assert they stay reconciled on the phase boundaries
+        that matter (in-season vs not).
+        """
+        in_season = {"regular", "playoff"}
+        for month, day in [(1, 3), (1, 17), (2, 7), (2, 24), (5, 1), (7, 4),
+                           (9, 13), (11, 20), (12, 25)]:
+            d = date(2027 if month <= 2 else 2026, month, day)
+            nfl = fetch_nfl.classify_nfl_season(d)
+            memory = fetch_season_memory.classify_status(
+                "football", datetime(d.year, d.month, d.day, tzinfo=timezone.utc))
+            with self.subTest(date=d.isoformat()):
+                self.assertEqual(
+                    nfl in in_season,
+                    memory in ("regular_season", "in_playoffs"),
+                    f"{d}: fetch_nfl says {nfl!r}, season_memory says {memory!r}")
+
+
+class TestEspnSeasonType(unittest.TestCase):
+    """
+    ESPN tags each event with its own season type, which beats a calendar
+    guess. It must degrade to None (so the caller falls back) on any shape we
+    don't recognise — see AGENTS.md Rule #5.
+    """
+
+    def test_reads_scoreboard_shape(self):
+        self.assertEqual(
+            fetch_nfl.espn_season_type({"season": {"type": 3}}), "playoff")
+
+    def test_reads_schedule_shape(self):
+        self.assertEqual(
+            fetch_nfl.espn_season_type({"seasonType": {"type": 2}}), "regular")
+
+    def test_reads_bare_code(self):
+        self.assertEqual(fetch_nfl.espn_season_type({"seasonType": 1}), "preseason")
+
+    def test_reads_numeric_string(self):
+        self.assertEqual(
+            fetch_nfl.espn_season_type({"season": {"type": "3"}}), "playoff")
+
+    def test_unknown_code_falls_back(self):
+        self.assertIsNone(fetch_nfl.espn_season_type({"season": {"type": 99}}))
+
+    def test_missing_and_malformed_fall_back(self):
+        for event in [{}, None, {"season": None}, {"season": {}},
+                      {"season": {"type": "postseason"}}, {"season": []}]:
+            with self.subTest(event=event):
+                self.assertIsNone(fetch_nfl.espn_season_type(event))
+
+    def test_bool_is_not_a_season_code(self):
+        self.assertIsNone(fetch_nfl.espn_season_type({"seasonType": True}))
+
+
+class TestPlayoffRaceCountsTies(unittest.TestCase):
+    """
+    games_played was wins + losses, which is only true in a sport with no
+    third outcome. The NFL has ties and the NHL has OT losses; undercounting
+    games played inflates games_remaining, which can hold the stretch-run
+    window shut in the week it should open.
+    """
+
+    def test_ties_count_toward_games_played(self):
+        # NFL: 17-game season, 6-game stretch window. 10-0-1 is 11 played and
+        # 6 remaining — just inside the window.
+        race = fetch_season_memory.build_playoff_race(
+            "football", "regular_season", {"division_rank": 1},
+            wins=10, losses=0, ties=1)
+        self.assertIsNotNone(race)
+        self.assertEqual(race["games_remaining"], 6)
+
+    def test_ignoring_ties_would_have_missed_the_window(self):
+        # Same team without the tie counted: 10 played, 7 remaining, outside.
+        race = fetch_season_memory.build_playoff_race(
+            "football", "regular_season", {"division_rank": 1},
+            wins=10, losses=0)
+        self.assertIsNone(race)
+
+    def test_explicit_games_played_still_wins(self):
+        race = fetch_season_memory.build_playoff_race(
+            "football", "regular_season",
+            {"games_played": 12, "division_rank": 1},
+            wins=10, losses=1, ties=1)
+        self.assertEqual(race["games_remaining"], 5)
+
+    def test_baseball_is_unaffected(self):
+        race = fetch_season_memory.build_playoff_race(
+            "baseball", "regular_season", {"division_rank": 1},
+            wins=80, losses=60)
+        self.assertEqual(race["games_remaining"], 22)
 
 
 if __name__ == "__main__":
