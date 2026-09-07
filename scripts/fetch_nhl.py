@@ -112,6 +112,28 @@ def current_nhl_season() -> str:
     return f"{start_year}{start_year + 1}"
 
 
+def player_display_name(p: dict) -> str:
+    """
+    Full name for prose from an NHL API player object.
+
+    The API abbreviates `name.default` to "D. Pastrnak" on goal, assist and
+    goalie entries, and carries `firstName.default` / `lastName.default`
+    alongside it. Prefer those; the abbreviated form is only a fallback.
+    """
+    p = p or {}
+
+    def _d(key: str) -> str:
+        val = p.get(key)
+        if isinstance(val, dict):
+            return (val.get("default") or "").strip()
+        return (val or "").strip() if isinstance(val, str) else ""
+
+    first, last = _d("firstName"), _d("lastName")
+    if first and last:
+        return f"{first} {last}"
+    return _d("name") or last or first or "Unknown"
+
+
 def get_team_name(team: dict) -> str:
     """
     Extract the best human-readable team name from an NHL API team dict.
@@ -326,12 +348,12 @@ def fetch_boxscore() -> None:
         goal_scorers = []
         for goal in raw_goals:
             assists = [
-                a.get("name", {}).get("default", "Unknown")
+                player_display_name(a)
                 for a in goal.get("assists", [])
             ]
             goal_scorers.append({
                 "team":      goal.get("teamAbbrev", ""),
-                "scorer":    goal.get("name", {}).get("default", "Unknown"),
+                "scorer":    player_display_name(goal),
                 "assists":   assists,
                 "period":    goal.get("period", 0),
                 "period_label": PERIOD_LABELS.get(goal.get("period", 0), ""),
@@ -354,7 +376,7 @@ def fetch_boxscore() -> None:
         for g in raw_goalies:
             save_pct = g.get("savePctg", 0.0)
             goalies.append({
-                "name":         g.get("name", {}).get("default", "Unknown"),
+                "name":         player_display_name(g),
                 "decision":     g.get("decision", ""),       # "W", "L", "OTL", ""
                 "saves":        g.get("saves", 0),
                 "shots_against": g.get("shotsAgainst", 0),

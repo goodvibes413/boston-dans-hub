@@ -21,6 +21,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import generate_rant  # noqa: E402
 import fetch_season_memory  # noqa: E402
+import fetch_mlb  # noqa: E402
+import fetch_nhl  # noqa: E402
 
 
 def make_rolling(date_str, team="redsox", played=True, games=None):
@@ -713,6 +715,50 @@ class TestStretchRunWindowCoversAllSports(unittest.TestCase):
             window = fetch_season_memory.STRETCH_RUN_WINDOW[sport]
             self.assertLess(window, total / 2,
                             f"{sport} window is more than half the season")
+
+
+class TestPlayerDisplayName(unittest.TestCase):
+    """Both leagues hand us an abbreviated display name alongside the real one.
+    Picking the abbreviated one is how "Payton Tolle" reached the site as
+    "Tolle" in September 2026: the model can't restore a first name it was
+    never given, so the trend cards and the body both lost them."""
+
+    def test_mlb_full_name_wins_over_boxscore_name(self):
+        person = {"fullName": "Payton Tolle", "boxscoreName": "Tolle"}
+        self.assertEqual(fetch_mlb.player_display_name(person), "Payton Tolle")
+
+    def test_mlb_first_and_last_used_when_full_name_absent(self):
+        person = {"firstName": "Aroldis", "lastName": "Chapman",
+                  "boxscoreName": "Chapman, A"}
+        self.assertEqual(fetch_mlb.player_display_name(person), "Aroldis Chapman")
+
+    def test_mlb_boxscore_name_is_the_last_resort_not_the_default(self):
+        self.assertEqual(fetch_mlb.player_display_name({"boxscoreName": "Tolle"}),
+                         "Tolle")
+
+    def test_mlb_empty_person_is_unknown(self):
+        self.assertEqual(fetch_mlb.player_display_name({}), "Unknown")
+        self.assertEqual(fetch_mlb.player_display_name(None), "Unknown")
+
+    def test_nhl_first_and_last_beat_abbreviated_name(self):
+        player = {"firstName": {"default": "David"},
+                  "lastName": {"default": "Pastrnak"},
+                  "name": {"default": "D. Pastrnak"}}
+        self.assertEqual(fetch_nhl.player_display_name(player), "David Pastrnak")
+
+    def test_nhl_falls_back_to_name_default(self):
+        self.assertEqual(
+            fetch_nhl.player_display_name({"name": {"default": "D. Pastrnak"}}),
+            "D. Pastrnak")
+
+    def test_nhl_partial_name_does_not_produce_a_dangling_space(self):
+        self.assertEqual(
+            fetch_nhl.player_display_name({"lastName": {"default": "Swayman"}}),
+            "Swayman")
+
+    def test_nhl_empty_player_is_unknown(self):
+        self.assertEqual(fetch_nhl.player_display_name({}), "Unknown")
+        self.assertEqual(fetch_nhl.player_display_name(None), "Unknown")
 
 
 if __name__ == "__main__":
