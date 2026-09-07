@@ -80,24 +80,24 @@
   ],
   "summary_5day": {
     "fresh": 1,
-    "retry": 3,
-    "fallback": 1,
+    "retry": 4,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 16,
+        "count": 19,
         "title": "Voice repetition"
+      },
+      {
+        "rule": 7,
+        "count": 3,
+        "title": "Fabricated statistics"
       },
       {
         "rule": 1,
         "count": 3,
         "title": "Profanity"
-      },
-      {
-        "rule": 7,
-        "count": 2,
-        "title": "Fabricated statistics"
       }
     ]
   }
