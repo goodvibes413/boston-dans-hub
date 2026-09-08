@@ -27,6 +27,7 @@ import fetch_mlb  # noqa: E402
 import fetch_nhl  # noqa: E402
 import pipeline_dates  # noqa: E402
 import publish  # noqa: E402
+import fetch_news  # noqa: E402
 import fetch_nfl  # noqa: E402
 import fetch_schedule  # noqa: E402
 
@@ -1272,6 +1273,18 @@ class TestOpponentTokensDoNotMatchFragments(unittest.TestCase):
         self.assertNotIn("new", publish._opponent_tokens("New York Jets"))
         self.assertNotIn("los", publish._opponent_tokens("Los Angeles Chargers"))
 
+    def test_two_word_city_is_kept_whole(self):
+        self.assertIn("new york", publish._opponent_tokens("New York Jets"))
+        self.assertIn("los angeles", publish._opponent_tokens("Los Angeles Chargers"))
+
+    def test_city_only_recap_is_not_failed_over_word_choice(self):
+        """Coverage flags are HIGH severity now, so a false positive costs the
+        whole day's post. A brew that names the city but never the nickname is
+        a real recap and must pass."""
+        brew = "The Pats went down to New York and took care of business."
+        tokens = publish._opponent_tokens("New York Jets")
+        self.assertTrue(any(t in brew.lower() for t in tokens))
+
     def test_nickname_and_full_name_still_present(self):
         tokens = publish._opponent_tokens("New York Jets")
         self.assertIn("jets", tokens)
@@ -1402,6 +1415,80 @@ class TestSelectPatriotsEvent(unittest.TestCase):
                   nfl_event("A", self.SNF)]
         self.assertEqual(fetch_nfl.find_patriots_event(events)["id"], "A")
         self.assertIsNone(fetch_nfl.find_patriots_event([]))
+
+
+class TestCoverageFailureIsNeverPublishable(unittest.TestCase):
+    """publish.py ships LOW and MEDIUM severity with a quality warning rather
+    than serving stale. Grading a coverage miss MEDIUM would therefore let a post
+    about the wrong game ship whenever the judge missed it — the exact case the
+    deterministic check exists for."""
+
+    def test_coverage_is_ranked_above_publishable(self):
+        self.assertNotIn("high", publish.SEVERITY_RANK)
+        self.assertEqual(sorted(publish.SEVERITY_RANK), ["low", "medium"])
+
+
+class TestBestAttemptWins(unittest.TestCase):
+    """Regeneration is not monotonic. On 2026-09-07 attempt 2 recapped the right
+    game and failed only on repetition, attempt 3 regressed to the wrong game,
+    and the run fell back to stale because only the LAST attempt's severity was
+    ever read."""
+
+    @staticmethod
+    def _best_of(severities):
+        """Mirror of the loop's tracker: lowest rank wins, ties keep the earliest."""
+        best = None
+        for i, sev in enumerate(severities, start=1):
+            rank = publish.SEVERITY_RANK.get(sev)
+            if rank is not None and (best is None or rank < best["rank"]):
+                best = {"rank": rank, "severity": sev, "attempt": i}
+        return best
+
+    def test_the_2026_09_07_sequence_keeps_attempt_two(self):
+        best = self._best_of(["high", "low", "high"])
+        self.assertIsNotNone(best)
+        self.assertEqual(best["attempt"], 2)
+        self.assertEqual(best["severity"], "low")
+
+    def test_all_high_has_no_publishable_best(self):
+        self.assertIsNone(self._best_of(["high", "high", "high"]))
+
+    def test_low_beats_medium_regardless_of_order(self):
+        self.assertEqual(self._best_of(["medium", "low"])["attempt"], 2)
+        self.assertEqual(self._best_of(["low", "medium"])["attempt"], 1)
+
+
+class TestNewsCoverageWindow(unittest.TestCase):
+    """The news feed is sorted newest-first and fetched at run time, so an
+    afternoon re-run leads with a story about a game played TODAY — which is how
+    a result absent from the structured data became the most prominent thing in
+    the prompt."""
+
+    @staticmethod
+    def _article(published):
+        return {"headline": f"story {published}", "published": published}
+
+    def test_articles_after_the_window_are_dropped(self):
+        from datetime import date
+        articles = [
+            self._article("2026-09-07T18:30:00+00:00"),  # today's game
+            self._article("2026-09-06T23:10:00+00:00"),  # last night
+        ]
+        kept = fetch_news.drop_articles_after(articles, date(2026, 9, 6))
+        self.assertEqual([a["published"] for a in kept], ["2026-09-06T23:10:00+00:00"])
+
+    def test_late_night_article_on_the_cutoff_day_is_kept(self):
+        from datetime import date
+        articles = [self._article("2026-09-06T23:59:00+00:00")]
+        kept = fetch_news.drop_articles_after(articles, date(2026, 9, 6))
+        self.assertEqual(len(kept), 1)
+
+    def test_undated_articles_are_kept_not_silently_starved(self):
+        from datetime import date
+        articles = [self._article(""), {"headline": "no published key"},
+                    self._article("not a timestamp")]
+        kept = fetch_news.drop_articles_after(articles, date(2026, 9, 6))
+        self.assertEqual(len(kept), 3)
 
 
 if __name__ == "__main__":
