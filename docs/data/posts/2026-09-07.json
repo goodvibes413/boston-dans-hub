@@ -1,5 +1,4 @@
 {
-  "date": "2026-09-07",
   "generated_at": "2026-09-07T21:49:11.030174+00:00",
   "headline": "Payton Tolle silences Baltimore as the Sox stay red hot",
   "morning_brew": [
@@ -14,99 +13,5 @@
       "dans_take": "It is a tough one to swallow, but the city turned out to give him the proper send-off he earned."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Payton Tolle",
-      "trend": "Pitched six innings of one-run ball while racking up twelve strikeouts against Baltimore.",
-      "dans_take": "That is the kind of absolute filth that makes professional hitters look like they belong in a beer league."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Aroldis Chapman",
-      "trend": "Shut the door with a scoreless ninth inning while striking out two batters.",
-      "dans_take": "The arson squad took the night off, and he has definitely earned his real name back after that gem."
-    }
-  ],
-  "box_scores": {
-    "celtics": {
-      "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-09-06",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "bruins": {
-      "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-09-06",
-      "played": false,
-      "season_type": "offseason"
-    },
-    "redsox": {
-      "sport": "MLB",
-      "home_team": "Baltimore Orioles",
-      "away_team": "Boston Red Sox",
-      "home_score": 1,
-      "away_score": 3,
-      "game_date": "2026-09-06",
-      "played": true,
-      "season_type": "regular"
-    },
-    "patriots": {
-      "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-09-06",
-      "played": false,
-      "season_type": "regular"
-    }
-  },
-  "schedule": [
-    {
-      "date": "2026-09-07",
-      "matchup": "Los Angeles Angels at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "2026-09-08",
-      "matchup": "Los Angeles Angels at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-09-09",
-      "matchup": "Los Angeles Angels at Boston Red Sox",
-      "time_et": "6:45 PM ET"
-    },
-    {
-      "date": "2026-09-11",
-      "matchup": "Kansas City Royals at Boston Red Sox",
-      "time_et": "7:10 PM ET"
-    },
-    {
-      "date": "2026-09-12",
-      "matchup": "Kansas City Royals at Boston Red Sox",
-      "time_et": "4:10 PM ET"
-    },
-    {
-      "date": "2026-09-13",
-      "matchup": "Kansas City Royals at Boston Red Sox",
-      "time_et": "1:35 PM ET"
-    },
-    {
-      "date": "9999-12-30",
-      "matchup": "New England Patriots at Seattle Seahawks",
-      "time_et": "TBD"
-    }
-  ],
-  "_stale": null,
-  "_fallback": null
+  "date": "2026-09-07"
 }
