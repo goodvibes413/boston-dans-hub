@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-09",
+  "generated_at": "2026-09-09T12:48:58.409926+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 100.7,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        "rule 14: milestone omission - the Bruins signing Fraser Minten to a 7-year, $50.4M deal is a major milestone surfaced in LATEST_NEWS that requires a self-contained 2-sentence chunk in the morning_brew, but it is only mentioned in the news_digest.",
+        "repetition: number-masked sentence skeleton \"i am not looking at the standings or worrying about what\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      ],
+      "duration_seconds": 41.7
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 4.1
+    }
+  ]
+}
