@@ -50,6 +50,18 @@ fails the job outright — upstream of `publish.py`, which owns the stale/fallba
 graceful-degradation path never got a chance to run, so there was no stale republish either.
 The later safety-net cron slots would have hit the identical deterministic crash.
 
+**One more instance of the same bug, in the frontend.** `docs/app.js` picked the
+winner with `game.home_score > game.away_score`, and JS compares strings
+lexicographically too — a 10-9 game would have put the `winner` class on the loser.
+Now coerced with `Number()`. The fetchers make this moot for their own output, but a
+model-authored box score still reaches that function when a fetcher has nothing usable.
+
+**Verified on run #604** (dispatched on the fix branch with `force=true`): generation
+succeeded in 36s and the healthcheck reported `fresh`, `real content (not fallback)`.
+The run still ended red at the very last step — `git push` is written for `main`
+(`git pull --rebase origin main` rewrites a feature branch's SHAs, so the push back to
+the branch is a non-fast-forward). That is a branch-run artifact, not a pipeline fault.
+
 **Coverage:** 6 new tests (107 total) pinning both halves — the TypeError and the
 lexicographic comparison — plus the fetcher coercion, against the real string-score shape.
 
