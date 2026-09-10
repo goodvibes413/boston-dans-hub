@@ -112,6 +112,22 @@ def parse_fg_pct(fg_str: str):
     return round((made / attempted) * 100, 1)
 
 
+def safe_int(val, default=0) -> int:
+    """
+    Convert val to int, returning default on failure.
+
+    ESPN reports competitor scores as strings ("120"), while the NHL API and
+    fetch_mlb.py store ints. Downstream readers do arithmetic and comparisons
+    on these fields, so the four boxscore files must agree on the type: a
+    string score crashed generate_rant.compute_emotional_context on the
+    2026-09-10 run (Patriots opener). Coerce here, at the source.
+    """
+    try:
+        return int(val)
+    except (TypeError, ValueError):
+        return default
+
+
 # ---------------------------------------------------------------------------
 # Boxscore
 # ---------------------------------------------------------------------------
@@ -266,10 +282,10 @@ def fetch_boxscore() -> None:
             team_name = comp.get("team", {}).get("displayName", "Unknown")
 
             if team_id == CELTICS_TEAM_ID:
-                celtics_score = score
+                celtics_score = safe_int(score)
                 home = (home_away == "home")
             else:
-                opponent_score = score
+                opponent_score = safe_int(score)
                 opponent_name  = team_name
 
         # --- 5. Parse player boxscore ---

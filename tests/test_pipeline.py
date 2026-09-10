@@ -25,6 +25,8 @@ import generate_rant  # noqa: E402
 import fetch_season_memory  # noqa: E402
 import fetch_mlb  # noqa: E402
 import fetch_nhl  # noqa: E402
+import fetch_nba  # noqa: E402
+import fetch_nfl  # noqa: E402
 import pipeline_dates  # noqa: E402
 import publish  # noqa: E402
 import fetch_news  # noqa: E402
@@ -141,6 +143,70 @@ class TestEmotionalContext(unittest.TestCase):
         rolling = make_rolling("2026-06-10", played=True)  # no games, no scores
         ctx = generate_rant.compute_emotional_context(rolling, None)
         self.assertNotIn("redsox", ctx)
+
+
+def make_espn_game(team_key, our_score, their_score, opponent="Las Vegas Raiders"):
+    """A flat boxscore as fetch_nfl/fetch_nba wrote it before 2026-09-10:
+    ESPN reports competitor scores as STRINGS, so that is what landed in the
+    rolling store."""
+    return {"days": [{"date": "2026-09-09", team_key: {"boxscore": {
+        "game_date": "2026-09-09", "played": True, "home": True,
+        f"{team_key}_score": our_score, "opponent": opponent,
+        "opponent_score": their_score}}}]}
+
+
+class TestStringScoresFromESPN(unittest.TestCase):
+    """ESPN's scoreboard reports scores as strings; the NHL/MLB fetchers store
+    ints. _game_outcome had only ever been fed MLB games, so the mismatch stayed
+    latent from August until the Patriots opener on 2026-09-09 put a string
+    score in the rolling store — `abs(our - their)` raised TypeError and the
+    whole 2026-09-10 run died before generation (issue #43).
+
+    Both halves are pinned here: the crash, and the string comparison that would
+    have called a 10-9 loss a win even if the arithmetic had held."""
+
+    def test_string_scores_do_not_crash(self):
+        ctx = generate_rant.compute_emotional_context(
+            make_espn_game("patriots", "20", "23"), None)
+        self.assertEqual(ctx["patriots"]["last_result"], "loss")
+        self.assertEqual(ctx["patriots"]["margin"], 3)
+
+    def test_string_scores_compare_numerically_not_lexicographically(self):
+        # "9" > "10" is True as strings — a one-run loss must still be a loss.
+        ctx = generate_rant.compute_emotional_context(
+            make_espn_game("celtics", "9", "10"), None)
+        self.assertEqual(ctx["celtics"]["last_result"], "loss")
+        self.assertEqual(ctx["celtics"]["margin"], 1)
+
+    def test_fixture_schema_string_scores_also_coerced(self):
+        rolling = make_rolling("2026-06-10", games=[
+            {"home_team": "Tampa Bay Rays", "away_team": "Boston Red Sox",
+             "home_score": "4", "away_score": "3"}])
+        ctx = generate_rant.compute_emotional_context(rolling, None)
+        self.assertEqual(ctx["redsox"]["last_result"], "loss")
+        self.assertEqual(ctx["redsox"]["margin"], 1)
+
+    def test_unreadable_score_falls_back_to_zero(self):
+        self.assertEqual(generate_rant._score_int(None), 0)
+        self.assertEqual(generate_rant._score_int(""), 0)
+        self.assertEqual(generate_rant._score_int("--"), 0)
+        self.assertEqual(generate_rant._score_int("20"), 20)
+        self.assertEqual(generate_rant._score_int(20), 20)
+
+
+class TestFetchersStoreIntScores(unittest.TestCase):
+    """The real fix is at the source: all four boxscore files must agree that a
+    score is an int, so no downstream reader has to guess."""
+
+    def test_nfl_scoreboard_strings_become_ints(self):
+        self.assertEqual(fetch_nfl.safe_int("23"), 23)
+        self.assertEqual(fetch_nfl.safe_int(23), 23)
+        self.assertEqual(fetch_nfl.safe_int(None), 0)
+
+    def test_nba_scoreboard_strings_become_ints(self):
+        self.assertEqual(fetch_nba.safe_int("120"), 120)
+        self.assertEqual(fetch_nba.safe_int(120), 120)
+        self.assertEqual(fetch_nba.safe_int(None), 0)
 
 
 class TestNormalizeBoxScoresDoubleheader(unittest.TestCase):
