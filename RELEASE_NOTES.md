@@ -5,6 +5,68 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-10 — Opening Night Broke The Pipeline: ESPN Scores Are Strings
+
+**Context:** Run #603 died in `generate_rant.py` before it reached Gemini, 26 seconds in,
+and filed issue #43. Nothing to do with quota this time:
+
+```
+File "scripts/generate_rant.py", line 847, in _game_outcome
+    "margin": abs(our - their),
+TypeError: unsupported operand type(s) for -: 'str' and 'str'
+```
+
+**The Patriots opener is the trigger, and it is not a coincidence.** ESPN's scoreboard and
+summary APIs report a competitor's score as a **string** (`"20"`), while the NHL API and
+`fetch_mlb.safe_int` store **ints**. `fetch_nfl.py` and `fetch_nba.py` passed ESPN's value
+through untouched, so two of the four boxscore files disagreed with the other two about
+what type a score is.
+
+That mismatch sat latent because of the calendar. `_game_outcome` was written 2026-08-03,
+by which point the Celtics and Bruins were long into the offseason — so **every game it had
+ever read came from MLB**, the one in-season fetcher that coerces. The Patriots' 20-23 loss
+on 9/9 was the first non-MLB game with a score to reach it, and it crashed on the first
+piece of arithmetic. Left alone, the NBA opener in October would have done the same thing.
+
+**The quieter half of the same bug:** even where nothing crashed, `won` was a string
+comparison. `"9" > "10"` is `True`, so a 10-9 loss would have read as a win and Dan would
+have written the wrong emotional register off correct data. Worth naming because it is the
+half that fails silently — the judge might or might not catch it, and it never goes red.
+
+**Two layers of fix, on purpose.**
+
+1. **The fetchers own the type.** `fetch_nfl.py` and `fetch_nba.py` now coerce through a
+   local `safe_int` (same shape as `fetch_mlb.safe_int`) when writing `*_score` /
+   `opponent_score`. All four boxscore files now agree that a score is an int, so no
+   downstream reader has to guess. Note their quarter/period tables were *already*
+   int-coerced — it was only the final team scores that leaked strings.
+2. **`_game_outcome` coerces anyway.** `_score_int` normalizes both supported schemas
+   before any arithmetic. The rolling store also carries entries the model wrote and the
+   eval fixtures, so the reader cannot assume the fetchers are the only source. A bad score
+   should degrade to 0, never take down the whole day's run before generation.
+
+**Why the day was lost rather than degraded:** this crashed in the generation *step*, which
+fails the job outright — upstream of `publish.py`, which owns the stale/fallback ladder. The
+graceful-degradation path never got a chance to run, so there was no stale republish either.
+The later safety-net cron slots would have hit the identical deterministic crash.
+
+**One more instance of the same bug, in the frontend.** `docs/app.js` picked the
+winner with `game.home_score > game.away_score`, and JS compares strings
+lexicographically too — a 10-9 game would have put the `winner` class on the loser.
+Now coerced with `Number()`. The fetchers make this moot for their own output, but a
+model-authored box score still reaches that function when a fetcher has nothing usable.
+
+**Verified on run #604** (dispatched on the fix branch with `force=true`): generation
+succeeded in 36s and the healthcheck reported `fresh`, `real content (not fallback)`.
+The run still ended red at the very last step — `git push` is written for `main`
+(`git pull --rebase origin main` rewrites a feature branch's SHAs, so the push back to
+the branch is a non-fast-forward). That is a branch-run artifact, not a pipeline fault.
+
+**Coverage:** 6 new tests (107 total) pinning both halves — the TypeError and the
+lexicographic comparison — plus the fetcher coercion, against the real string-score shape.
+
+---
+
 ## 2026-09-07 — What The Corrective Run Taught Us: Keep The Best Draft, And Stop Feeding Dan Today's Game
 
 **Context:** The corrective run (#591) that was supposed to replace the bad 2026-09-07

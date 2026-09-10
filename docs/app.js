@@ -133,7 +133,12 @@ function renderBoxScores(scores) {
 
     section.style.display = 'block';
     const renderCard = (game, sportLabel, gameDate) => {
-        const homeWon = game.home_score > game.away_score;
+        // Number(): the same string-score bug that crashed the 2026-09-10
+        // pipeline is silent here — JS compares "9" > "10" lexicographically as
+        // true, so a 10-9 game would put the 'winner' class on the loser. The
+        // fetchers now write ints, but a model-authored box score still reaches
+        // this function when a fetcher has nothing usable.
+        const homeWon = Number(game.home_score) > Number(game.away_score);
         return `
             <div class="score-card">
                 <div class="score-sport">${escapeHtml(sportLabel)}</div>
