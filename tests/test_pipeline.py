@@ -28,6 +28,8 @@ import fetch_nhl  # noqa: E402
 import pipeline_dates  # noqa: E402
 import publish  # noqa: E402
 import fetch_news  # noqa: E402
+import fetch_schedule  # noqa: E402
+import safety_judge  # noqa: E402
 
 
 def make_rolling(date_str, team="redsox", played=True, games=None):
@@ -243,6 +245,25 @@ class TestDetectSlowDay(unittest.TestCase):
     def test_news_blocks_slow_day(self):
         rolling = make_rolling("2026-06-10", played=False)
         news = [{"headline": "a"}, {"headline": "b"}]
+        self.assertFalse(generate_rant.detect_slow_day(rolling, news, [], today_iso="2026-06-11"))
+
+    def test_news_blocks_slow_day_in_the_shape_fetch_news_actually_writes(self):
+        """Every test above passes a bare list, so the dict branch was never
+        exercised — and the dict branch read "stories"/"headlines" while
+        fetch_news.py writes "articles". The production feed therefore always
+        counted as zero news. Survivable in baseball season; not in the NFL,
+        which plays once a week and leaves six game-less days on which a
+        Patriots signing would trip SLOW_DAY_MODE and get told to write fiction
+        instead."""
+        rolling = make_rolling("2026-06-10", played=False)
+        news = {
+            "generated_at": "2026-06-11T08:00:00+00:00",
+            "article_count": 2,
+            "articles": [
+                {"headline": "Sources: Christian Gonzalez, Patriots reach 4-year, $135M deal"},
+                {"headline": "Patriots open camp with Maye entrenched as starter"},
+            ],
+        }
         self.assertFalse(generate_rant.detect_slow_day(rolling, news, [], today_iso="2026-06-11"))
 
 
@@ -1037,6 +1058,238 @@ class TestNewsCoverageWindow(unittest.TestCase):
                     self._article("not a timestamp")]
         kept = fetch_news.drop_articles_after(articles, date(2026, 9, 6))
         self.assertEqual(len(kept), 3)
+
+
+class TestScheduleNormalizeDt(unittest.TestCase):
+    """Every sport puts its start time somewhere different, and 'date' is a bare
+    day for some and a full ISO timestamp for others. The NFL/fallback branch
+    used to append "T00:00:00Z" unconditionally, so fetch_nfl.py's
+    "2026-09-13T20:05Z" became "2026-09-13T20:05ZT00:00:00Z" — unparseable.
+    Every Patriots game landed on the year-9999 sentinel, and the 2026 Week 1
+    opener was published to the site as "9999-12-30 ... TBD"."""
+
+    def test_nfl_full_iso_in_date_field(self):
+        # Shaped exactly as fetch_nfl.py's fetch_schedule() writes it.
+        dt = fetch_schedule.normalize_dt({"date": "2026-09-13T20:05Z"}, "NFL")
+        self.assertEqual(dt, datetime(2026, 9, 13, 20, 5, tzinfo=timezone.utc))
+
+    def test_nfl_game_renders_with_real_date_and_kickoff(self):
+        game = {"game_id": "401", "date": "2026-09-13T20:05Z",
+                "opponent": "Seattle Seahawks", "home": False}
+        out = fetch_schedule.normalize_game(
+            game, "patriots", {"sport": "NFL", "name": "New England Patriots"})
+        self.assertEqual(out["date"], "2026-09-13")
+        self.assertEqual(out["time_et"], "4:05 PM ET")
+        self.assertEqual(out["away_team"], "New England Patriots")
+
+    def test_nba_full_iso_in_date_field(self):
+        dt = fetch_schedule.normalize_dt({"date": "2026-01-05T00:30Z"}, "NBA")
+        self.assertEqual(dt, datetime(2026, 1, 5, 0, 30, tzinfo=timezone.utc))
+
+    def test_nhl_uses_start_time_utc(self):
+        dt = fetch_schedule.normalize_dt(
+            {"date": "2026-01-05", "start_time_utc": "2026-01-06T00:00:00Z"}, "NHL")
+        self.assertEqual(dt, datetime(2026, 1, 6, 0, 0, tzinfo=timezone.utc))
+
+    def test_mlb_uses_game_time_utc(self):
+        dt = fetch_schedule.normalize_dt(
+            {"date": "2026-09-08", "game_time_utc": "2026-09-08T22:45:00Z"}, "MLB")
+        self.assertEqual(dt, datetime(2026, 9, 8, 22, 45, tzinfo=timezone.utc))
+
+    def test_bare_date_still_gets_midnight_utc(self):
+        dt = fetch_schedule.normalize_dt({"date": "2026-09-13"}, "NFL")
+        self.assertEqual(dt, datetime(2026, 9, 13, 0, 0, tzinfo=timezone.utc))
+
+    def test_genuinely_unparseable_still_sorts_last(self):
+        for bad in ({"date": ""}, {"date": "not a date"}, {}):
+            self.assertEqual(fetch_schedule.normalize_dt(bad, "NFL"),
+                             fetch_schedule.UNPARSEABLE_DT)
+
+
+class TestScheduleHorizonGuard(unittest.TestCase):
+    """A sentinel date must never reach the site as a scheduled game again."""
+
+    def _write(self, tmpdir, games):
+        p = Path(tmpdir) / "upcoming_schedule.json"
+        p.write_text(json.dumps({"games": games}))
+        return p
+
+    def test_sentinel_dated_game_is_dropped(self):
+        import tempfile
+        real = {"date": "2026-09-11", "home_team": "Boston Red Sox",
+                "away_team": "Kansas City Royals", "time_et": "7:10 PM ET"}
+        sentinel = {"date": "9999-12-30", "home_team": "Seattle Seahawks",
+                    "away_team": "New England Patriots", "time_et": "TBD"}
+        with tempfile.TemporaryDirectory() as td:
+            path = self._write(td, [real, sentinel])
+            out = generate_rant.build_schedule_from_fetcher(path, today_iso="2026-09-10")
+        self.assertEqual([g["date"] for g in out], ["2026-09-11"])
+
+    def test_real_games_across_the_full_week_survive(self):
+        import tempfile
+        games = [{"date": f"2026-09-{d:02d}", "home_team": "Boston Red Sox",
+                  "away_team": "Kansas City Royals", "time_et": "7:10 PM ET"}
+                 for d in range(9, 17)]
+        with tempfile.TemporaryDirectory() as td:
+            path = self._write(td, games)
+            out = generate_rant.build_schedule_from_fetcher(path, today_iso="2026-09-10")
+        self.assertEqual(len(out), len(games))
+
+
+class TestMilestoneOmissionPrePass(unittest.TestCase):
+    """Rule 14 was unenforceable: the judge was told to check LATEST_NEWS but
+    never received it. On 2026-09-08 it flagged the Christian Gonzalez
+    extension on attempt 1 and passed the identical omission on attempts 2 and
+    3, at temperature 0.0. This pre-pass makes the check deterministic."""
+
+    GONZALEZ = "Sources: Christian Gonzalez, Patriots reach 4-year, $135M deal"
+    MAYE_PREVIEW = "Can Patriots QB Drake Maye repeat MVP-caliber season in 2026?"
+
+    @staticmethod
+    def _brew(*paragraphs):
+        return {"headline": "Sox roll", "morning_brew": list(paragraphs)}
+
+    @staticmethod
+    def _news(*headlines):
+        return {"articles": [{"headline": h} for h in headlines]}
+
+    def test_flags_milestone_absent_from_brew(self):
+        today = self._brew("Brayan Bello was nails against the Angels.")
+        flags = safety_judge.detect_milestone_omission(today, self._news(self.GONZALEZ))
+        self.assertEqual(len(flags), 1)
+        self.assertIn("rule 14", flags[0])
+        self.assertIn("Gonzalez", flags[0])
+
+    def test_news_digest_alone_does_not_satisfy_the_rule(self):
+        # The exact shape that shipped on 2026-09-08: the story is in the
+        # digest, and nowhere in the brew.
+        today = self._brew("Brayan Bello was nails against the Angels.")
+        today["news_digest"] = [{"headline": self.GONZALEZ,
+                                 "dans_take": "Finally, something that makes sense."}]
+        flags = safety_judge.detect_milestone_omission(today, self._news(self.GONZALEZ))
+        self.assertEqual(len(flags), 1)
+
+    def test_no_flag_when_the_brew_covers_it(self):
+        today = self._brew(
+            "Brayan Bello was nails against the Angels.",
+            "Christian Gonzalez finally got paid. Gonzalez is the best corner "
+            "this team has had in a decade.")
+        self.assertEqual(safety_judge.detect_milestone_omission(today, self._news(self.GONZALEZ)), [])
+
+    def test_preview_and_question_headlines_are_not_milestones(self):
+        today = self._brew("Brayan Bello was nails against the Angels.")
+        self.assertEqual(
+            safety_judge.detect_milestone_omission(today, self._news(self.MAYE_PREVIEW)), [])
+
+    def test_speculation_is_not_a_milestone(self):
+        today = self._brew("Brayan Bello was nails against the Angels.")
+        news = self._news("Report: Bruins might explore a trade for a top-six winger",
+                          "Why the Celtics could be trade deadline players")
+        self.assertEqual(safety_judge.detect_milestone_omission(today, news), [])
+
+    def test_team_name_in_brew_is_not_evidence_of_coverage(self):
+        # "Patriots" appears in nearly every Boston headline — matching it must
+        # never count as having covered the story.
+        today = self._brew("The Patriots open the season on Sunday.")
+        flags = safety_judge.detect_milestone_omission(today, self._news(self.GONZALEZ))
+        self.assertEqual(len(flags), 1)
+
+    def test_rule_14_exception_three_milestones_two_covered(self):
+        today = self._brew(
+            "Christian Gonzalez got paid.",
+            "Rafael Devers is out for the season, which guts the lineup.")
+        news = self._news(
+            self.GONZALEZ,
+            "Rafael Devers out for the season with a torn labrum",
+            "Bruins acquire Tyler Bertuzzi from the Sabres")
+        self.assertEqual(safety_judge.detect_milestone_omission(today, news), [])
+
+    def test_missing_or_empty_feed_never_flags(self):
+        today = self._brew("Brayan Bello was nails against the Angels.")
+        for feed in (None, {}, {"articles": []}, []):
+            self.assertEqual(safety_judge.detect_milestone_omission(today, feed), [])
+
+    def test_headline_with_no_verifiable_subject_is_skipped(self):
+        # No player name to check against — flagging would be a guess.
+        today = self._brew("Brayan Bello was nails against the Angels.")
+        news = self._news("Patriots sign veteran receiver to a one-year deal")
+        self.assertEqual(safety_judge.detect_milestone_omission(today, news), [])
+
+
+class TestCorrectionFlagRouting(unittest.TestCase):
+    """A correction for "you invented a stat" and one for "you skipped a
+    milestone" need opposite instructions. Every rejection used to get the
+    fabricated-stat script, which told Dan to cite nothing outside
+    rolling_7day/season_memory, drop anything unverifiable, and keep 3
+    paragraphs — the exact opposite of what rule 14 was asking for."""
+
+    MILESTONE_FLAG = (
+        "  - rule 14: milestone omission - the Christian Gonzalez contract extension "
+        "($135M) is a major milestone surfaced in LATEST_NEWS that requires a "
+        "self-contained 2-sentence chunk in the morning_brew, but it is only mentioned "
+        "in the news_digest.\n"
+        "  - repetition: number-masked sentence skeleton \"deposit in the duck boat fund\" "
+        "recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    )
+    STAT_FLAG = (
+        "  - rule 7: fabricated statistic - 'twelve strikeouts' does not appear in source "
+        "data; Bello recorded 7 per rolling_7day"
+    )
+
+    COVERAGE_WINDOW_FLAG = (
+        "  - coverage window: the redsox played Baltimore Orioles on 2026-09-06 and the "
+        "morning_brew never mentions that game. Recap THAT game. Do not write up a game "
+        "played today, even if you know the result."
+    )
+
+    def test_milestone_flag_routes_to_coverage_and_milestone(self):
+        self.assertEqual(generate_rant.classify_correction_flags(self.MILESTONE_FLAG),
+                         (True, True, False))
+
+    def test_stat_flag_routes_to_stat_only(self):
+        self.assertEqual(generate_rant.classify_correction_flags(self.STAT_FLAG),
+                         (False, False, True))
+
+    def test_unrecognised_flag_gets_coverage_and_stat_but_not_milestone(self):
+        # The milestone block is the only one that widens what Dan may cite, so
+        # it is never handed out on a flag we could not classify.
+        self.assertEqual(generate_rant.classify_correction_flags("  - something odd"),
+                         (True, False, True))
+
+    def test_wrong_game_flag_is_never_told_latest_news_is_fair_game(self):
+        """check_coverage_window's flag also contains the word "coverage", but
+        its failure mode is the opposite one: on 2026-09-07 the retries kept
+        reaching for that afternoon's result, which was all over the news feed
+        and absent from rolling_7day. Authorising LATEST_NEWS there would
+        reopen exactly that hole."""
+        coverage, milestone, stat = generate_rant.classify_correction_flags(
+            self.COVERAGE_WINDOW_FLAG)
+        self.assertTrue(coverage)
+        self.assertFalse(milestone)
+        # A wrong-game recap is also a source-discipline failure, so it keeps
+        # the stat block that predates this routing.
+        self.assertTrue(stat)
+        block = generate_rant.build_correction_block(self.COVERAGE_WINDOW_FLAG)
+        self.assertIn("ADDING the missing coverage", block)
+        self.assertIn("MUST appear verbatim in the rolling_7day", block)
+        self.assertNotIn("LATEST_NEWS is a valid source", block)
+        self.assertNotIn("EXPAND to 4 or 5", block)
+
+    def test_coverage_block_authorises_latest_news_and_expansion(self):
+        block = generate_rant.build_correction_block(self.MILESTONE_FLAG)
+        self.assertIn("LATEST_NEWS is a valid source", block)
+        self.assertIn("EXPAND to 4 or 5", block)
+        # The stat script must NOT appear — it is what suppressed the fix.
+        self.assertNotIn("MUST appear verbatim in the rolling_7day", block)
+
+    def test_judge_bookkeeping_numbers_are_not_banned(self):
+        # "rule 14", "2-sentence chunk", "1 of the last 3 day(s)" and
+        # "(threshold: 2 consecutive days)" are the judge describing itself.
+        # On 2026-09-08 they were scraped into the ban list as 1, 2, 3, 14.
+        self.assertEqual(generate_rant.extract_flagged_numbers(self.MILESTONE_FLAG), [])
+
+    def test_real_fabricated_numbers_are_still_banned(self):
+        self.assertIn("7", generate_rant.extract_flagged_numbers(self.STAT_FLAG))
 
 
 if __name__ == "__main__":

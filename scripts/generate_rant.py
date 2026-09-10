@@ -21,6 +21,7 @@ Env vars:
 
 import json
 import os
+import re
 import sys
 import time
 from datetime import date, datetime, timedelta, timezone
@@ -45,6 +46,12 @@ DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
 DEFAULT_DAN_STORIES = REPO / "data" / "dan_stories.json"
 DEFAULT_STORY_SEEDS = REPO / "data" / "story_seeds.json"
 DEFAULT_OUTPUT = REPO / "data" / "raw_dan_output.json"
+
+# Schedule sanity horizon. Every fetcher windows its own schedule to 7 days, so
+# nothing legitimate lands beyond this; anything further out is an upstream
+# parse failure wearing fetch_schedule.py's year-9999 sentinel. Generous on
+# purpose — this is a corruption guard, not a coverage window.
+SCHEDULE_HORIZON_DAYS = 30
 
 # Caller flavor: how many archetypes to inject per day. 2-3 keeps the prompt
 # focused without locking Dan into a single voice. Picked deterministically
@@ -1026,12 +1033,19 @@ def detect_slow_day(rolling: dict | None, news: dict | list | None, schedule: di
             if g.get("game_date", "").startswith(yesterday) and g.get("played"):
                 return False
 
-    # Check news count
+    # Check news count. "articles" is the key fetch_news.py actually writes to
+    # latest_news.json — until 2026-09-10 this read only "stories"/"headlines",
+    # so the production feed always counted as zero articles and this guard
+    # never fired. That is survivable in baseball season (a game most days
+    # short-circuits above), but the NFL plays once a week: a Patriots
+    # signing on a game-less day would have tripped SLOW_DAY_MODE and pushed
+    # Dan into a fictional story instead of the news.
     news_items = []
     if isinstance(news, list):
         news_items = news
     elif isinstance(news, dict):
-        news_items = news.get("stories", []) or news.get("headlines", []) or []
+        news_items = (news.get("articles", []) or news.get("stories", [])
+                      or news.get("headlines", []) or [])
     if len(news_items) >= 2:
         return False
 
@@ -1429,14 +1443,165 @@ def punch_up_draft(parsed: dict, system_prompt: str, model_name: str) -> dict:
     return merged
 
 
-def build_schedule_from_fetcher(schedule_path: Path) -> list:
+# Which failure a judge flag describes. A correction for "you invented a stat"
+# and a correction for "you skipped a milestone" need OPPOSITE instructions, and
+# until 2026-09-10 every rejection got the fabricated-stat script regardless.
+# That is how the Christian Gonzalez extension died: attempt 1 was told it had
+# omitted the extension AND, in the same breath, that it could cite nothing
+# outside rolling_7day/season_memory, should drop anything unverifiable, and
+# must keep 3 paragraphs. It complied with the second half.
+COVERAGE_FLAG_MARKERS = (
+    "rule 12", "rule 13", "rule 14", "milestone omission", "coverage",
+    "misattribut", "missing from morning_brew", "not covered",
+)
+# A milestone omission is the ONE coverage failure whose fix needs figures from
+# LATEST_NEWS. The other coverage failure — check_coverage_window's "you
+# recapped the wrong game" — must NOT be told the news feed is fair game: on
+# 2026-09-07 the retries kept reaching for that afternoon's result, which was
+# all over the web and absent from rolling_7day. That is why this is a narrower
+# test than COVERAGE_FLAG_MARKERS and not the same list.
+MILESTONE_FLAG_MARKERS = ("rule 14", "milestone")
+STAT_FLAG_MARKERS = (
+    "rule 7", "rule 8", "fabricat", "could not be verified", "not in source",
+    "unsupported", "invented", "does not appear in source",
+    # A wrong-game recap IS a source-discipline failure — Dan wrote up a game
+    # the structured data does not contain — so it gets the stat block too.
+    "coverage window",
+)
+
+_RULE_LABEL_RX = re.compile(r"\brule\s+\d+\b", re.IGNORECASE)
+_THRESHOLD_RX = re.compile(r"\(threshold:[^)]*\)", re.IGNORECASE)
+_LOOKBACK_RX = re.compile(r"\b\d+\s+of\s+the\s+last\s+\d+\s+day\(?s?\)?", re.IGNORECASE)
+_SENTENCE_COUNT_RX = re.compile(r"\b\d+-(?:sentence|paragraph|word)\b", re.IGNORECASE)
+
+
+def classify_correction_flags(notes: str) -> tuple[bool, bool, bool]:
+    """
+    Decide which correction blocks a set of judge flags needs.
+
+    Returns (needs_coverage, needs_milestone, needs_stat). More than one can be
+    true — a single attempt can invent a stat AND skip a milestone. A milestone
+    flag always implies coverage. An unrecognised flag gets the coverage and
+    stat blocks (the old behaviour) but never the milestone block, which is the
+    only one that widens what Dan may cite.
+    """
+    low = (notes or "").lower()
+    coverage = any(m in low for m in COVERAGE_FLAG_MARKERS)
+    milestone = any(m in low for m in MILESTONE_FLAG_MARKERS)
+    stat = any(m in low for m in STAT_FLAG_MARKERS)
+    if not coverage and not stat:
+        return True, milestone, True
+    return coverage or milestone, milestone, stat
+
+
+def extract_flagged_numbers(notes: str) -> list[str]:
+    """
+    Numbers from the rejected output that the judge could not verify.
+
+    Strips the judge's own bookkeeping first. "rule 14", "(threshold: 2
+    consecutive days)", "1 of the last 3 day(s)" and "2-sentence chunk" are the
+    judge describing ITSELF, not numbers Dan wrote — on 2026-09-08 they got
+    scraped into the ban list and Dan was told not to use 1, 2, 3 or 14.
+    """
+    cleaned = _RULE_LABEL_RX.sub(" ", notes or "")
+    cleaned = _THRESHOLD_RX.sub(" ", cleaned)
+    cleaned = _LOOKBACK_RX.sub(" ", cleaned)
+    cleaned = _SENTENCE_COUNT_RX.sub(" ", cleaned)
+    return sorted(set(re.findall(r"\b\d+(?:\.\d+)?\b", cleaned)))
+
+
+def build_correction_block(correction_notes: str) -> str:
+    """
+    Build the correction text appended to the user message on a judge retry,
+    matched to what was actually flagged.
+    """
+    needs_coverage, needs_milestone, needs_stat = classify_correction_flags(correction_notes)
+
+    block = (
+        "\n\n---\n"
+        "IMPORTANT — YOUR PREVIOUS RESPONSE WAS REJECTED BY THE SAFETY JUDGE.\n\n"
+        "Flags from the judge:\n"
+        f"{correction_notes}\n\n"
+        "Regenerate your response and fix ALL of the above issues. Hard rules:\n"
+    )
+
+    if needs_coverage:
+        block += (
+            "- A COVERAGE flag means something is MISSING from morning_brew. Fix it by "
+            "ADDING the missing coverage, not by trimming or hedging what you already wrote.\n"
+        )
+
+    if needs_milestone:
+        block += (
+            "- The flagged milestone MUST get its own self-contained chunk of at least 2 "
+            "sentences in morning_brew, as real prose. A news_digest entry does NOT satisfy "
+            "this, and neither does a passing clause tacked onto another team's paragraph.\n"
+            "- You MAY cite the specific figures in THAT STORY (contract years, dollar "
+            "amounts, player and team names) directly from the LATEST_NEWS headlines and "
+            "descriptions above. LATEST_NEWS is a valid source for news facts — the "
+            "rolling_7day/season_memory restriction covers GAME STATS, not what a "
+            "headline reports. This does NOT extend to game results: a score still has to "
+            "come from the structured data.\n"
+            "- EXPAND to 4 or 5 morning_brew paragraphs if that is what fitting the "
+            "milestone takes. Cutting a milestone to preserve a 3-paragraph shape is itself "
+            "a coverage failure.\n"
+        )
+
+    if needs_stat:
+        flagged_numbers = extract_flagged_numbers(correction_notes)
+        block += (
+            "- Every stat, score, game number, record, and date you cite MUST appear "
+            "verbatim in the rolling_7day OR season_memory data provided above. "
+            "No exceptions. Search the data before writing any number.\n"
+        )
+        if flagged_numbers:
+            block += (
+                f"- The following specific numbers appeared in your rejected output and "
+                f"could NOT be verified in SOURCE_DATA — do NOT use them: "
+                f"{', '.join(flagged_numbers)}. If you cannot find an exact number in "
+                f"SOURCE_DATA, use qualitative language instead "
+                f"('solid outing', 'tough stretch', 'working innings').\n"
+            )
+        block += (
+            "- Do NOT reference games that haven't happened yet, or speculate on "
+            "upcoming game numbers/series scores. Use 'tonight', 'later this week', "
+            "'coming up' — never 'Game 3' or 'down 2-1' unless those exact figures "
+            "are in the data.\n"
+            "- If you're unsure whether a GAME STAT is in the source data, leave it out "
+            "and stick to qualitative commentary ('solid night', 'tough stretch').\n"
+        )
+
+    block += (
+        "- Do NOT repeat phrasing, sentences, or player references that appear in "
+        "RECENT_DAN_OUTPUT. Read those past outputs and avoid any phrases you used "
+        "in the last 5 days.\n"
+        "- Keep Dan's voice and the rest of the structure (headline, trend_watch, etc.) "
+        "— just fix the flagged issues.\n"
+        "---\n"
+    )
+    return block
+
+
+def build_schedule_from_fetcher(schedule_path: Path, today_iso: str | None = None) -> list:
     """
     Build the schedule list directly from upcoming_schedule.json instead of
     relying on Gemini, which selectively omits teams (e.g. Celtics in playoffs).
 
-    Returns a list of {date, matchup, time_et} dicts for the next 5 days,
-    sorted chronologically. Falls back to [] if the file is missing/broken.
+    Returns every game in the file (each fetcher already windows to 7 days),
+    in the order the merger sorted them. Falls back to [] if the file is
+    missing/broken.
+
+    Games dated absurdly far out are dropped. fetch_schedule.py parks a game it
+    cannot date on a year-9999 sentinel so it sorts last, and on 2026-09-08 an
+    NFL parsing bug sent every Patriots game there — the Week 1 opener was
+    published to the site as "9999-12-30 ... TBD" and told the model the
+    Patriots' next game was 8,000 years away. The parsing bug is fixed, but a
+    sentinel must never again be rendered as a real scheduled game.
     """
+    if today_iso is None:
+        today_iso = as_of_iso()
+    horizon = (date.fromisoformat(today_iso) + timedelta(days=SCHEDULE_HORIZON_DAYS)).isoformat()
+
     try:
         data = json.loads(schedule_path.read_text()) if schedule_path.exists() else {}
         games = data.get("games", [])
@@ -1444,17 +1609,26 @@ def build_schedule_from_fetcher(schedule_path: Path) -> list:
             return []
 
         result = []
+        dropped = 0
         for g in games:
             home = g.get("home_team", "")
             away = g.get("away_team", "")
             if not home and not away:
                 continue
+            game_date = g.get("date", "")
+            if game_date > horizon:
+                dropped += 1
+                continue
             matchup = f"{away} at {home}" if away and home else (home or away)
             result.append({
-                "date":     g.get("date", ""),
+                "date":     game_date,
                 "matchup":  matchup,
                 "time_et":  g.get("time_et", "TBD"),
             })
+
+        if dropped:
+            print(f"  warn: dropped {dropped} schedule entr(ies) dated past {horizon} "
+                  f"— upstream could not parse a real game date", file=sys.stderr)
 
         # Already sorted by upcoming_schedule.json; just return all games
         return result
@@ -1551,6 +1725,20 @@ def main():
         story_seeds=todays_seeds,
     )
 
+    # If the safety judge rejected a previous attempt this run, publish.py
+    # re-invokes us with CORRECTION_NOTES set. Append the judge's flags to
+    # the user message so Dan sees exactly what to fix.
+    correction_notes = os.environ.get("CORRECTION_NOTES", "").strip()
+    if correction_notes:
+        needs_coverage, needs_milestone, needs_stat = classify_correction_flags(correction_notes)
+        kinds = ", ".join(
+            k for k, on in (("coverage", needs_coverage),
+                            ("milestone", needs_milestone),
+                            ("stats", needs_stat)) if on
+        )
+        print(f"  correction mode: regenerating with judge feedback ({kinds})")
+        user_message += build_correction_block(correction_notes)
+
     # DRY_RUN=1 prints the assembled prompt and exits before any LLM call.
     # Used for the look-before-leap pass during risky deploys. Costs nothing,
     # gives a chance to eyeball changes against real production data before
@@ -1565,48 +1753,6 @@ def main():
         print(f"--- USER MESSAGE ({len(user_message)} chars) ---")
         print(user_message)
         return
-
-    # If the safety judge rejected a previous attempt this run, publish.py
-    # re-invokes us with CORRECTION_NOTES set. Append the judge's flags to
-    # the user message so Dan sees exactly what to fix.
-    correction_notes = os.environ.get("CORRECTION_NOTES", "").strip()
-    if correction_notes:
-        print(f"  correction mode: regenerating with judge feedback")
-        # Extract any numbers from the flags so Dan can't re-use them
-        import re as _re
-        flagged_numbers = sorted(set(_re.findall(r"\b\d+(?:\.\d+)?\b", correction_notes)))
-        numbers_warning = ""
-        if flagged_numbers:
-            numbers_warning = (
-                f"- The following specific numbers appeared in your rejected output and "
-                f"could NOT be verified in SOURCE_DATA — do NOT use them: "
-                f"{', '.join(flagged_numbers)}. If you cannot find an exact number in "
-                f"SOURCE_DATA, use qualitative language instead "
-                f"('solid outing', 'tough stretch', 'working innings').\n"
-            )
-        user_message += (
-            "\n\n---\n"
-            "IMPORTANT — YOUR PREVIOUS RESPONSE WAS REJECTED BY THE SAFETY JUDGE.\n\n"
-            "Flags from the judge:\n"
-            f"{correction_notes}\n\n"
-            "Regenerate your response and fix ALL of the above issues. Hard rules:\n"
-            "- Every stat, score, game number, record, and date you cite MUST appear "
-            "verbatim in the rolling_7day OR season_memory data provided above. "
-            "No exceptions. Search the data before writing any number.\n"
-            f"{numbers_warning}"
-            "- Do NOT reference games that haven't happened yet, or speculate on "
-            "upcoming game numbers/series scores. Use 'tonight', 'later this week', "
-            "'coming up' — never 'Game 3' or 'down 2-1' unless those exact figures "
-            "are in the data.\n"
-            "- Do NOT repeat phrasing, sentences, or player references that appear in "
-            "RECENT_DAN_OUTPUT. Read those past outputs and avoid any phrases you used "
-            "in the last 5 days.\n"
-            "- If you're unsure whether a stat is in the source data, leave it out "
-            "and stick to qualitative commentary ('solid night', 'tough stretch').\n"
-            "- Keep Dan's voice and the rest of the structure (headline, 3 paragraphs, "
-            "trend_watch, etc.) — just fix the flagged issues.\n"
-            "---\n"
-        )
 
     # Attempt 1: grounding ON so Dan can pull live storylines.
     # If grounding fails (503 exhausted) or returns bad JSON → fall back to attempt 2.

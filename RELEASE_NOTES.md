@@ -5,6 +5,87 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-10 — The Patriots Were Invisible: Four Bugs In A Row On NFL Opening Week
+
+**Context:** NFL Week 1, the Christian Gonzalez extension breaking, and the 2026-09-08
+morning brew was one hundred percent Red Sox. The Patriots appeared only in the News
+Digest strip. Four independent defects lined up, each one masking the next.
+
+**1. Every Patriots game was dated year 9999.** `fetch_nfl.py` writes ESPN's full ISO
+timestamp into the `date` key. `fetch_schedule.py`'s NFL/fallback branch assumed `date`
+was a bare day and appended `"T00:00:00Z"` to it, producing
+`"2026-09-13T20:05ZT00:00:00Z"` — unparseable, so every Patriots game fell through to the
+sort-last year-9999 sentinel. The Week 1 opener was published to the site as
+`{"date": "9999-12-30", "matchup": "New England Patriots at Seattle Seahawks",
+"time_et": "TBD"}`, and `UPCOMING_SCHEDULE` told the model the Patriots' next game was
+8,000 years out. No season-opener urgency to write about, because as far as the data was
+concerned there was no season opener.
+
+The other three sports escaped by accident: NBA's branch read `date` directly, NHL and MLB
+carry separate `start_time_utc`/`game_time_utc` keys. `normalize_dt()` now supplies
+midnight only when the time is genuinely absent, on one shared path. **This file was
+written 2026-08-02, mid-offseason — the first real Patriots game ever to run through it
+was this one.** Worth remembering when adding a code path for a sport that is out of
+season: it is untested by definition until the season starts.
+
+`build_schedule_from_fetcher()` now also drops anything dated past a 30-day horizon, so a
+sentinel can never again be rendered as a scheduled game.
+
+**2. The safety judge was asked to check a feed it never received.** Rules 13 and 14 both
+say "check LATEST_NEWS". `source_data` never contained it. The judge's only view of the
+day's headlines was whatever Dan chose to put in his own `news_digest` — so rule 14, the
+rule whose entire job is catching a milestone that reached the digest but not the brew,
+was reasoning from the digest. It flagged the Gonzalez extension on attempt 1 and passed
+the identical omission on attempts 2 and 3. **Judge temperature is 0.0: that is not
+sampling noise, it is a rule with no ground truth under it.** `latest_news` is now in
+`source_data`.
+
+**3. The correction prompt argued against the fix.** Every judge rejection got the same
+fabricated-stat script, written for the 2026-09-07 incident. Handed a milestone-omission
+flag it told Dan to cite nothing outside `rolling_7day`/`season_memory` (LATEST_NEWS was
+not on the list, so the $135M and the four-year term were out of bounds), to drop anything
+he could not verify, and to keep 3 paragraphs — while rule 14 was demanding he expand to
+4 or 5. Attempt 1 was told "you omitted the Gonzalez extension" and, in the same breath,
+everything it needed to not fix it. It complied with the second half.
+
+Corrections are now routed by flag type. Coverage flags get an ADD-the-coverage block that
+explicitly authorises citing LATEST_NEWS figures and expanding the brew; stat flags keep
+the original script verbatim, because it is correct for that failure. An unrecognised flag
+gets both, which is the old behaviour.
+
+Also: `flagged_numbers` scraped digits out of the judge's own prose. On 2026-09-08 it
+banned 1, 2, 3 and 14 — harvested from "rule 14", "2-sentence chunk" and "1 of the last 3
+day(s)". It now strips the judge's bookkeeping before extracting, and only runs for stat
+flags.
+
+**4. `detect_slow_day` read a key that does not exist.** It looked for
+`news["stories"]`/`news["headlines"]`; `fetch_news.py` writes `news["articles"]`. The
+production feed therefore always counted as zero news. Harmless in baseball season, where
+a game most days short-circuits the check earlier — but the NFL plays once a week, and on
+the six game-less days a Patriots signing would have tripped `SLOW_DAY_MODE` and pushed
+Dan into a fictional story instead of the news. Every existing test passed a bare list, so
+the dict branch was never exercised.
+
+**Rule 14 is now deterministic.** `detect_milestone_omission()` joins the existing
+repetition pre-passes: it reads LATEST_NEWS directly, matches rule 14's own verb list plus
+dollar-figure and contract-term patterns, and flags when a milestone's subject appears
+nowhere in `morning_brew`. It is **biased toward silence** — speculative and question
+headlines are skipped, and a headline with no verifiable subject name is never flagged,
+because a false positive costs three full generations every single day. It carries MEDIUM
+severity, which required teaching the pre-pass merge to carry a per-group severity instead
+of hardcoding LOW. `publish.py` publishes MEDIUM with a quality warning, so this can
+never strand the site on stale content; the worst case is a fresh post carrying a visible
+flag. Milestone flags are reported separately from repetition flags so the evals dashboard
+does not file a missed milestone under rule 10.
+
+**Tests.** `fetch_schedule.py` had no test coverage at all — it was not even imported by
+the suite. It is now, with the NFL entry shape as the lead case. 25 new tests; 126 total.
+
+**Not done:** the 2026-09-08 post was left as it shipped. Fix-forward only — the story was
+still fresh enough for the next run to cover it properly.
+
+---
+
 ## 2026-09-07 — What The Corrective Run Taught Us: Keep The Best Draft, And Stop Feeding Dan Today's Game
 
 **Context:** The corrective run (#591) that was supposed to replace the bad 2026-09-07

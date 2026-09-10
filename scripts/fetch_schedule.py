@@ -36,6 +36,12 @@ OUTPUT_PATH = DATA_DIR / "upcoming_schedule.json"
 
 ET = ZoneInfo("America/New_York")
 
+# Sort-last sentinel for a game whose date cannot be parsed at all. Downstream
+# consumers treat this as "not a real date" — see generate_rant.py's
+# build_schedule_from_fetcher(), which drops games this far out so a sentinel
+# can never be rendered on the site as a scheduled game again.
+UNPARSEABLE_DT = datetime(9999, 12, 31, tzinfo=timezone.utc)
+
 # Maps team key → source schedule file + Boston full name + sport label
 TEAMS = {
     "celtics": {
@@ -86,30 +92,51 @@ def load_schedule(path: Path, team: str):
     return data
 
 
+def _ensure_time_component(raw: str) -> str:
+    """
+    Fill in midnight UTC for a bare 'YYYY-MM-DD', leave a full timestamp alone.
+
+    The 'date' field is a bare day for some sports and a full ISO 8601 string
+    for others, so the midnight default has to be conditional. Appending it
+    unconditionally is what produced "2026-09-13T20:05ZT00:00:00Z".
+    """
+    raw = (raw or "").strip()
+    if not raw or "T" in raw:
+        return raw
+    return raw + "T00:00:00Z"
+
+
 def normalize_dt(game: dict, sport: str) -> datetime:
     """
     Parse the game's date/time into a timezone-aware UTC datetime.
 
-    NBA bundles time in the 'date' field (ISO 8601 with Z).
-    NHL uses 'start_time_utc'; MLB uses 'game_time_utc'.
-    NFL and fallback cases use the bare date with midnight UTC.
-    """
-    raw = None
-    if sport == "NBA":
-        raw = game.get("date", "")
-    elif sport == "NHL":
-        raw = game.get("start_time_utc") or (game.get("date", "") + "T00:00:00Z")
-    elif sport == "MLB":
-        raw = game.get("game_time_utc") or (game.get("date", "") + "T00:00:00Z")
-    else:  # NFL and any future sport
-        raw = game.get("start_time_utc") or (game.get("date", "") + "T00:00:00Z")
+    Sports disagree about where the start time lives: NHL carries it in
+    'start_time_utc', MLB in 'game_time_utc', and NBA/NFL bundle it into
+    'date' as a full ISO 8601 string. Every branch then goes through
+    _ensure_time_component(), which supplies midnight only when the time is
+    genuinely missing.
 
-    raw = (raw or "").replace("Z", "+00:00").strip()
+    Until 2026-09-10 the NFL/fallback branch appended "T00:00:00Z"
+    unconditionally, turning fetch_nfl.py's "2026-09-13T20:05Z" into
+    "2026-09-13T20:05ZT00:00:00Z" — unparseable, so EVERY Patriots game fell
+    through to the sentinel below and reached the site dated 9999-12-30 with a
+    "TBD" time. NBA escaped only because its branch happened to read 'date'
+    directly. This file was written in the NFL offseason, so the first real
+    Patriots game to hit it was the 2026 Week 1 opener.
+    """
+    if sport == "MLB":
+        raw = game.get("game_time_utc") or game.get("date", "")
+    else:
+        # NHL carries 'start_time_utc'. NBA and NFL bundle the time into
+        # 'date', so the fallback picks it up there.
+        raw = game.get("start_time_utc") or game.get("date", "")
+
+    raw = _ensure_time_component(raw).replace("Z", "+00:00").strip()
     try:
         return datetime.fromisoformat(raw)
     except ValueError:
-        # Unparseable — sort last
-        return datetime(9999, 12, 31, tzinfo=timezone.utc)
+        # Genuinely unparseable — sort last. A real date must never land here.
+        return UNPARSEABLE_DT
 
 
 def format_time_et(dt_utc: datetime) -> str:

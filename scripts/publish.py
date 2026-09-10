@@ -581,7 +581,8 @@ def main():
         "winning_attempt": None,
         "total_attempts": 0,
         "generation_seconds": None,
-        "pre_pass": {"repetition_check": "unknown", "flagged_phrases": []},
+        "pre_pass": {"repetition_check": "unknown", "flagged_phrases": [],
+                     "milestone_check": "unknown", "milestone_flags": []},
         "attempts": [],
     }
 
@@ -649,9 +650,15 @@ def main():
             # reflects the original generation; subsequent attempts have their own pre-pass).
             if enriched:
                 pre_pass_flags = enriched.get("pre_pass_flags", [])
+                milestone_flags = enriched.get("milestone_flags", [])
                 evals_doc["pre_pass"] = {
                     "repetition_check": "fail" if pre_pass_flags else "pass",
                     "flagged_phrases": pre_pass_flags,
+                    # Reported separately: a missed milestone is a coverage
+                    # failure, not a repeated phrase, and filing it under
+                    # repetition would misread the dashboard.
+                    "milestone_check": "fail" if milestone_flags else "pass",
+                    "milestone_flags": milestone_flags,
                 }
 
             # Record this attempt

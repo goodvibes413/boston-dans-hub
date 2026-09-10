@@ -14,6 +14,7 @@ Env vars:
   DRAFT_PICKS_PATH      optional, draft picks JSON (cross-referenced for player names/positions)
   HISTORICAL_FACTS_PATH optional, curated Boston sports history JSON (cross-referenced for historical claims)
   ROSTER_PATH           optional, current active rosters JSON (cross-referenced for off-roster player claims)
+  NEWS_PATH             optional, merged news feed JSON (rules 13/14 check LATEST_NEWS against it)
   JUDGE_RESULT_PATH     optional, if set writes an enriched verdict JSON to this path in addition
                         to the standard stdout output. Includes pre_pass_flags and rule_titles for
                         the evals dashboard. Does not affect stdout or exit code.
@@ -39,6 +40,7 @@ DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
 DEFAULT_ROSTER = REPO / "data" / "boston_roster.json"
 DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
+DEFAULT_NEWS = REPO / "data" / "latest_news.json"
 # See generate_rant.py's DEFAULT_MODEL comment — pinned to gemini-3.1-flash-lite
 # (500 RPD free tier) after "gemini-flash-latest" resolved to a model whose
 # free tier was persistently exhausted on 2026-07-01.
@@ -117,6 +119,58 @@ _NUMBER_WORDS = frozenset({
     "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "thirty", "forty",
     "fifty", "sixty", "seventy", "eighty", "ninety", "hundred", "thousand",
 })
+
+# --- Rule 14 milestone pre-pass ------------------------------------------------
+# Signals that a LATEST_NEWS headline is a real, breaking milestone rather than
+# offseason chatter. Kept deliberately in step with the verb list in rule 14 of
+# JUDGE_PROMPT below — if one moves, move the other.
+MILESTONE_SIGNALS = re.compile(
+    r"re-?sign(?:s|ed|ing)?"
+    r"|sign(?:s|ed|ing)\s+(?:with|a\b|to\b)"
+    r"|extension|extend(?:s|ed)"
+    r"|trad(?:ed|es|ing)\s+(?:to|for|away)"
+    r"|acquires?|acquired"
+    r"|reach(?:es|ed)?\s+[^.]{0,24}\bdeal"
+    r"|agree(?:s|d)?\s+to\s+(?:terms|a\b)"
+    r"|fired|hired|named\s+(?:the\s+)?(?:new\s+)?(?:head\s+)?coach"
+    r"|suspend(?:s|ed)"
+    r"|retires?|retiring|announces?\s+retirement"
+    r"|hall\s+of\s+fame"
+    r"|season-ending|out\s+for\s+the\s+(?:season|year)|tears?\s+(?:his\s+)?\w*acl",
+    re.IGNORECASE,
+)
+
+# A dollar figure or contract term is a milestone signal on its own — rule 14
+# names both explicitly ("headlines naming a specific dollar figure or contract
+# term").
+MILESTONE_FIGURE = re.compile(r"\$\s?\d|\b\d+-year\b", re.IGNORECASE)
+
+# Speculation, questions, and season previews are NOT milestones. This is the
+# main guard against a false positive costing three generations a day.
+MILESTONE_SPECULATIVE = re.compile(
+    r"\?|\brumor|\brumou?rs?\b|\bcould\b|\bmight\b|\bmay\b|\bwould\b|\blikely\b"
+    r"|\bexpected\b|\bpotential\b|\bmock\b|\bpredict|\bpreview\b|\bwatch\b"
+    r"|\bwhy\b|\bhow\b|\bcan\b|\bwill\b|\bshould\b",
+    re.IGNORECASE,
+)
+
+# Never treat these as the subject of a story: they appear in nearly every
+# Boston headline, so matching one in the brew proves nothing about coverage.
+MILESTONE_NAME_STOPWORDS = frozenset({
+    "boston", "celtics", "bruins", "sox", "patriots", "england", "new", "red",
+    "nfl", "nba", "nhl", "mlb", "espn", "afc", "nfc",
+    # Headline furniture — capitalised by position or convention, not identity.
+    "sources", "source", "report", "reports", "breaking", "the", "his", "her",
+    "their", "deal", "contract", "extension", "trade", "signing", "year",
+    "years", "million", "billion", "agree", "agrees", "reach", "reaches",
+    "star", "coach", "head", "free", "agent", "agency",
+})
+
+MILESTONE_MAX_FLAGS = 3          # cap so a busy news day can't spam the verdict
+
+# Severity ladder, used when merging pre-pass flags into the LLM judge's
+# verdict: a pre-pass may escalate the severity but never lower it.
+SEVERITY_ORDER = {"low": 1, "medium": 2, "high": 3}
 
 JUDGE_PROMPT = """You are a content safety auditor for a Boston sports fan persona ("Boston Dan").
 Review the following sports commentary and return ONLY a JSON object with keys:
@@ -549,11 +603,108 @@ def detect_structural_repetition(today: dict, recent_archives: list[dict]) -> li
     return flags[:STRUCTURAL_MAX_FLAGS]
 
 
+def _brew_text(entry: dict) -> str:
+    """
+    Headline + morning_brew paragraphs as one lowercase string.
+
+    Deliberately EXCLUDES news_digest, unlike _flatten_text(): rule 14 exists
+    precisely because a digest entry alone does not count as covering a
+    milestone. Using _flatten_text() here would make the check self-defeating.
+    """
+    parts: list[str] = []
+    if isinstance(entry.get("headline"), str):
+        parts.append(entry["headline"])
+    brew = entry.get("morning_brew") or []
+    if isinstance(brew, list):
+        parts.extend(str(p) for p in brew)
+    return " ".join(parts).lower()
+
+
+def _headline_subject_tokens(headline: str) -> set[str]:
+    """
+    The distinctive capitalised tokens in a headline — the player or coach
+    names that have to surface in the brew if the story was really covered.
+
+    Team, city, and league names are excluded: they appear in nearly every
+    Boston headline, so they can never stand in as evidence that THIS story
+    was the one covered.
+    """
+    tokens = re.findall(r"\b[A-Z][A-Za-z'\-]{2,}\b", headline or "")
+    return {t.lower() for t in tokens if t.lower() not in MILESTONE_NAME_STOPWORDS}
+
+
+def detect_milestone_omission(today: dict, latest_news: dict | list | None) -> list[str]:
+    """
+    Deterministic pre-pass for rule 14: a MUST-COVER milestone in LATEST_NEWS
+    that never appears in morning_brew. Returns MEDIUM-severity flag strings.
+    No API call.
+
+    This exists because the LLM judge could not do the job reliably. On
+    2026-09-08 it flagged the Christian Gonzalez extension on attempt 1 and
+    passed the identical omission on attempts 2 and 3, at temperature 0.0 —
+    it was never given LATEST_NEWS to check against (see source_data), so
+    rule 14 was guesswork. The feed is wired in now; this makes the check
+    independent of the model's mood either way.
+
+    BIASED TOWARD SILENCE. A false positive costs three full generations every
+    single day, so anything ambiguous is skipped: speculative or question
+    headlines, and any headline with no verifiable subject name.
+    """
+    if isinstance(latest_news, dict):
+        articles = latest_news.get("articles", []) or []
+    elif isinstance(latest_news, list):
+        articles = latest_news
+    else:
+        return []
+    if not articles:
+        return []
+
+    brew = _brew_text(today)
+    if not brew:
+        return []
+
+    missing: list[str] = []
+    verifiable = 0
+    for article in articles:
+        if not isinstance(article, dict):
+            continue
+        headline = (article.get("headline") or "").strip()
+        if not headline or MILESTONE_SPECULATIVE.search(headline):
+            continue
+        if not (MILESTONE_SIGNALS.search(headline) or MILESTONE_FIGURE.search(headline)):
+            continue
+        subjects = _headline_subject_tokens(headline)
+        if not subjects:
+            continue  # nothing checkable — never flag on a guess
+        verifiable += 1
+        if not any(s in brew for s in subjects):
+            missing.append(headline)
+
+    if not missing:
+        return []
+
+    # Rule 14's own exception: when 3+ milestones land the same day, covering
+    # two substantively is acceptable — Dan prioritises the biggest.
+    if verifiable >= 3 and (verifiable - len(missing)) >= 2:
+        return []
+
+    return [
+        f"rule 14: milestone omission — \"{h}\" is a MUST-COVER milestone in LATEST_NEWS "
+        f"but nothing from it appears in morning_brew. It needs a self-contained "
+        f"2-sentence chunk in the brew; a news_digest entry does NOT satisfy this."
+        for h in missing[:MILESTONE_MAX_FLAGS]
+    ]
+
+
 def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
-                    all_flags: list | None = None) -> None:
+                    all_flags: list | None = None,
+                    milestone_flags: list | None = None) -> None:
     """
     Write an enriched verdict to JUDGE_RESULT_PATH (if set).
     Safe to call at any exit point — failure is logged but never propagated.
+
+    milestone_flags is reported separately from pre_pass_flags so the evals
+    dashboard does not file a missed milestone under "repetition".
     """
     judge_result_path = os.environ.get("JUDGE_RESULT_PATH")
     if not judge_result_path:
@@ -563,6 +714,7 @@ def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
         "severity": verdict.get("severity"),
         "flags": all_flags if all_flags is not None else list(verdict.get("flags", [])),
         "pre_pass_flags": list(pre_pass_flags),
+        "milestone_flags": list(milestone_flags or []),
         "llm_flags": list(llm_flags),
         "rule_titles": {str(k): v for k, v in RULE_TITLES.items()},
     }
@@ -614,6 +766,8 @@ def main():
     roster_path = Path(os.environ.get("ROSTER_PATH", DEFAULT_ROSTER))
     archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
     season_overrides_path = Path(os.environ.get("SEASON_OVERRIDES_PATH", DEFAULT_SEASON_OVERRIDES))
+    news_path = Path(os.environ.get("NEWS_PATH", DEFAULT_NEWS))
+    latest_news = _safe_load(news_path)
     recent_archives = _load_recent_archives(archive_dir, REPETITION_LOOKBACK_DAYS)
     source_data = {
         "rolling_7day": _safe_load(rolling_path),
@@ -626,6 +780,13 @@ def main():
         "rosters": _safe_load(roster_path),
         "season_overrides": _safe_load(season_overrides_path),
         "recent_dan_output": recent_archives,
+        # Rules 13 and 14 both say "check LATEST_NEWS" — until 2026-09-10 the
+        # feed was never actually in this dict, so the judge's only view of the
+        # day's headlines was whatever Dan chose to put in his own news_digest.
+        # Rule 14 caught the Christian Gonzalez extension on one attempt and
+        # missed the identical omission on the next two, at temperature 0.0:
+        # not sampling noise, a rule with no ground truth under it.
+        "latest_news": latest_news,
     }
 
     # Deterministic repetition pre-pass — runs before the LLM judge so its
@@ -635,10 +796,19 @@ def main():
         today_obj = json.loads(content)
     except json.JSONDecodeError:
         today_obj = {}
-    pre_pass_flags = detect_repetition(today_obj, recent_archives)
-    pre_pass_flags += detect_structural_repetition(today_obj, recent_archives)
-    if pre_pass_flags:
-        print(f"  pre-pass: {len(pre_pass_flags)} repetition flag(s) detected", file=sys.stderr)
+    repetition_flags = detect_repetition(today_obj, recent_archives)
+    repetition_flags += detect_structural_repetition(today_obj, recent_archives)
+    milestone_flags = detect_milestone_omission(today_obj, latest_news)
+    pre_pass_flags = repetition_flags + milestone_flags
+
+    # Repetition is a voice nit (LOW). A missed milestone is a coverage failure
+    # and carries the same MEDIUM weight rule 14 assigns it.
+    pre_pass_severity = "medium" if milestone_flags else "low"
+
+    if repetition_flags:
+        print(f"  pre-pass: {len(repetition_flags)} repetition flag(s) detected", file=sys.stderr)
+    if milestone_flags:
+        print(f"  pre-pass: {len(milestone_flags)} milestone omission(s) detected", file=sys.stderr)
 
     today_iso = as_of_iso()
     full_prompt = (
@@ -669,18 +839,21 @@ def main():
         # API unavailable or quota exhausted — PASS with a warning so content
         # still publishes. A judge that can't run should not block publication;
         # only a judge that returns an explicit FAIL verdict should block.
-        # Pre-pass repetition flags are still surfaced as a low-severity FAIL
-        # to give the regen loop one shot at variation.
+        # Pre-pass flags are still surfaced as a FAIL at their own severity, to
+        # give the regen loop one shot at fixing what the pre-pass can see
+        # without the model's help.
         print(f"warning: safety judge API error ({type(e).__name__}), treating as PASS", file=sys.stderr)
         api_note = f"judge skipped — API error: {type(e).__name__}"
         if pre_pass_flags:
-            v = {"verdict": "FAIL", "severity": "low",
+            v = {"verdict": "FAIL", "severity": pre_pass_severity,
                  "flags": pre_pass_flags + [api_note]}
-            _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note])
+            _write_enriched(v, repetition_flags, repetition_flags, [api_note],
+                            milestone_flags=milestone_flags)
             print(json.dumps(v))
             sys.exit(1)
         v = {"verdict": "PASS", "severity": "low", "flags": [api_note]}
-        _write_enriched(v, pre_pass_flags, [], [api_note])
+        _write_enriched(v, repetition_flags, [], [api_note],
+                        milestone_flags=milestone_flags)
         print(json.dumps(v))
         sys.exit(0)
 
@@ -693,17 +866,21 @@ def main():
     # Capture LLM-only flags before merging pre-pass (used by enriched output below).
     llm_flags = list(verdict.get("flags", []))
 
-    # Merge pre-pass flags into the verdict. Pre-pass is low severity; if the
-    # LLM judge already returned high-severity FAIL, that severity wins.
+    # Merge pre-pass flags into the verdict. The pre-pass carries its own
+    # severity (LOW for repetition, MEDIUM for a missed milestone) and can only
+    # ever escalate — a HIGH from the LLM judge still wins.
     if pre_pass_flags:
         verdict.setdefault("flags", []).extend(pre_pass_flags)
         if verdict.get("verdict") == "PASS":
             verdict["verdict"] = "FAIL"
-            verdict["severity"] = "low"
+            verdict["severity"] = pre_pass_severity
+        elif SEVERITY_ORDER.get(pre_pass_severity, 0) > SEVERITY_ORDER.get(verdict.get("severity"), 0):
+            verdict["severity"] = pre_pass_severity
 
     # Persist enriched verdict for the evals dashboard if JUDGE_RESULT_PATH is set.
     # This does NOT affect stdout or exit code — publish.py's existing parsing is unaffected.
-    _write_enriched(verdict, pre_pass_flags, llm_flags)
+    _write_enriched(verdict, repetition_flags, llm_flags,
+                    milestone_flags=milestone_flags)
 
     print(json.dumps(verdict, indent=2))
 
