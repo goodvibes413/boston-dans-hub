@@ -5,6 +5,87 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-10 — The Phantom Game: The Evals Didn't Fail, They Never Covered This
+
+**Reported:** today's brew closed with "The Sox have to stop the bleeding at the Fens
+tonight." There was no game. The Angels series ended Wednesday night, Thursday was an off
+day, and the next first pitch was Friday.
+
+**The evals did not miss it — no eval existed.** `2026-09-10.evals.json` shows the run
+working exactly as designed: attempt 1 FAILed on a structural-repetition pre-pass flag,
+attempt 2 came back PASS with an empty flag list, outcome `retry`. Nothing malfunctioned.
+Three independent gaps had to line up, and all three did:
+
+1. **The judge never saw the schedule.** `generate_rant.py` has injected
+   `UPCOMING_SCHEDULE` into the generation prompt since the beginning, but
+   `safety_judge.py` built `source_data` from its own seven paths and
+   `upcoming_schedule.json` was not one of them. Whatever the rubric said, the judge had no
+   way to tell "the Sox play tonight" from an off day — the fact needed to check the claim
+   was not in front of it.
+2. **No rule covered forward-looking claims.** Rules 7 (fabricated stats), 8 (fabricated
+   history) and 12 (game coverage gap) are all backward-looking: they audit what Dan said
+   about games that already happened. A claim about a game that *hasn't* happened was
+   outside all fourteen rules, so even a judge holding the schedule had nothing to cite.
+3. **No fixture could reproduce it.** `eval_voice.py` wrote a hardcoded
+   `{"games": []}` to `SCHEDULE_PATH` for every fixture, and no fixture declared a schedule
+   at all. All 34 fixtures ran against an empty schedule, which is the one state that
+   *disables* a schedule check. `voice_no_games.json` is about a slow day — no games
+   **yesterday** — which is the opposite end of the timeline.
+
+**The prompt was pushing him into it, too.** The Coverage Window section closes with
+"Today's game is something to look FORWARD to, in the closing paragraph" and models the
+phrasing — "we're back at it this afternoon", "first pitch is at 1:35". That instruction
+assumes a game exists today and never says to check. On a normal day it is right; on an off
+day it is a trap, and the third paragraph is exactly where Dan fell into it.
+
+**The fix, at all four layers:**
+
+- **`safety_judge.py` loads the schedule** via `SCHEDULE_PATH` and passes it as
+  `source_data.upcoming_schedule`. This is the part that matters most: rule 15 without the
+  data would just be a rule nobody could apply.
+- **Rule 15, "Phantom scheduled game"** (MEDIUM) — asserting or assuming a Boston team
+  plays today when the schedule lists no game for that team on that date, plus the inverse
+  (naming an opponent, venue, or start time that contradicts today's entry). Writing *about*
+  an off day is explicitly correct and must not be flagged.
+- **`detect_phantom_game()` deterministic pre-pass**, in the shape of the existing
+  repetition pre-passes. It fires on a sentence that pairs a today-marker with a game cue
+  and resolves to a single Boston team, and it is guarded hard against false positives: a
+  standings scrub so "two games back today" isn't a game claim, a White Sox lookbehind, a
+  skip when the schedule is empty (a missing schedule is a fetch failure, not proof nobody
+  plays), and a skip when the team has no games anywhere in the window (indistinguishable
+  from that team's fetcher having been dropped). Replayed against all five archived posts
+  it flags the published sentence and nothing else; with the slate blanked it catches the
+  correct "tonight" claim in all five. MEDIUM, not LOW: a game that does not exist is a
+  factual error a reader can check in one tap, not a voice nit — so it regenerates like
+  rules 11–14 and publishes with a `_quality_warning` rather than falling back to stale.
+- **Off Days section** in `boston_dan_system.txt`, directly under the Coverage Window rules
+  that set the trap, and **`schedule_phantom_game.json`**, the fixture built from this
+  morning's exact data.
+
+**The change worth generalizing** is `eval_voice.py`'s stub. A fixture only exercises the
+data sources it declares, and anything it omits gets an empty stub — so a behavior that
+depends on an undeclared source is untestable *by construction*, and the eval suite reports
+green while saying nothing about it. Fixtures now pass through their own `upcoming_schedule`
+block. When the next bug reaches the site with the evals green, ask in this order: did the
+judge have the data, is there a rule for this shape of error, could a fixture reproduce it.
+Documented in `AGENTS.md` under The Eval Workflow.
+
+**Dashboard note:** the evals dashboard maps the pre-pass to rule 10 (voice repetition), so
+folding schedule flags into `pre_pass_flags` would have blamed repetition for a phantom
+game. The enriched verdict now splits `repetition_flags` from `phantom_game_flags` and the
+`pre_pass` block carries a separate `schedule_check`. While there, the rule-flag aggregate
+in `publish_evals_to_docs()` iterated `range(1, 12)` and had silently stopped counting at
+rule 11 — it now iterates `RULE_TITLES`, so rules 12–15 are counted too.
+
+**Not verified against a live model run** — this session had no `GEMINI_API_KEY` and no
+network egress, so rule 15's LLM half is unexercised. The deterministic half, the merge,
+the severity floor, and the judge's schedule wiring are covered by 18 new tests plus an
+end-to-end run of `safety_judge.py` against a stubbed client. Run
+`eval_voice.py --fixture evals/fixtures/schedule_phantom_game.json --n 3` with a key to
+confirm the prompt-side fix holds.
+
+---
+
 ## 2026-09-10 — Opening Night Broke The Pipeline: ESPN Scores Are Strings
 
 **Context:** Run #603 died in `generate_rant.py` before it reached Gemini, 26 seconds in,

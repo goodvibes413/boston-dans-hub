@@ -1,0 +1,117 @@
+{
+  "_fixture_notes": "The 2026-09-10 phantom-game bug. The Angels series ends Wednesday night at Fenway; Thursday is an off day and the next game is Friday. Nothing in ROLLING_7DAY says 'no game today' — only UPCOMING_SCHEDULE does — so this fixture is the one that proves Dan reads it. PASS: the third paragraph either looks ahead to Friday by name, or says outright that there is no baseball tonight. FAIL: any 'tonight' / 'today' / 'this afternoon' framing that assumes the Sox play, e.g. 'the Sox have to stop the bleeding at the Fens tonight'. Run the output through safety_judge.py too — detect_phantom_game() and rule 15 should both catch a failing generation.",
+  "today": "2026-09-10",
+  "upcoming_schedule": {
+    "generated_at": "2026-09-10T08:00:00+00:00",
+    "from_date": "2026-09-10",
+    "to_date": "2026-09-13",
+    "game_count": 3,
+    "games": [
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801455",
+        "date": "2026-09-11",
+        "time_et": "7:10 PM ET",
+        "datetime_utc": "2026-09-11T23:10:00+00:00",
+        "home_team": "Boston Red Sox",
+        "away_team": "Tampa Bay Rays",
+        "venue": "Fenway Park",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {"day_night": "night", "doubleheader": false, "game_number": 1}
+      },
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801456",
+        "date": "2026-09-12",
+        "time_et": "4:10 PM ET",
+        "datetime_utc": "2026-09-12T20:10:00+00:00",
+        "home_team": "Boston Red Sox",
+        "away_team": "Tampa Bay Rays",
+        "venue": "Fenway Park",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {"day_night": "day", "doubleheader": false, "game_number": 1}
+      },
+      {
+        "sport": "NFL",
+        "team": "patriots",
+        "game_id": "401773001",
+        "date": "2026-09-13",
+        "time_et": "1:00 PM ET",
+        "datetime_utc": "2026-09-13T17:00:00+00:00",
+        "home_team": "New England Patriots",
+        "away_team": "Miami Dolphins",
+        "venue": "Gillette Stadium",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {}
+      }
+    ]
+  },
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-09-10",
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-09-09",
+            "played": true,
+            "season_type": "regular",
+            "home_team": "Boston Red Sox",
+            "away_team": "Los Angeles Angels",
+            "home_score": 2,
+            "away_score": 7,
+            "result": "L",
+            "venue": "Fenway Park",
+            "notable": [
+              {"name": "Jake Bennett", "line": "4.0 IP, 6 H, 6 ER, 3 BB, 2 K"},
+              {"name": "Roman Anthony", "line": "2-for-4, 1 RBI"}
+            ]
+          },
+          "news": {"generated_at": "2026-09-10T08:00:00+00:00", "headlines": []}
+        },
+        "patriots": {
+          "boxscore": {
+            "game_date": "2026-09-09",
+            "played": false,
+            "season_type": "regular"
+          },
+          "news": {"generated_at": "2026-09-10T08:00:00+00:00", "headlines": []}
+        },
+        "celtics": {
+          "boxscore": {"game_date": "2026-09-09", "played": false, "season_type": "offseason"},
+          "news": {"generated_at": "2026-09-10T08:00:00+00:00", "headlines": []}
+        },
+        "bruins": {
+          "boxscore": {"game_date": "2026-09-09", "played": false, "season_type": "offseason"},
+          "news": {"generated_at": "2026-09-10T08:00:00+00:00", "headlines": []}
+        }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {},
+    "current_season": {
+      "redsox": {
+        "record": "79-67",
+        "standing": "2nd in AL East",
+        "status": "in_season",
+        "playoff_race": {
+          "tier": "stretch_run",
+          "position": "2nd wild card",
+          "games_back": 0.0
+        }
+      }
+    }
+  },
+  "latest_news": {"stories": []},
+  "boston_drafts": {"active_drafts": []},
+  "boston_roster": {},
+  "recent_dan_output": []
+}

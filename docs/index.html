@@ -1389,10 +1389,12 @@
       (rules || []).forEach(r => { status[r.number] = 'pass'; });
       if (!evalsData) return status;
       if (evalsData.pre_pass && evalsData.pre_pass.repetition_check === 'fail') status[10] = 'flag';
+      if (evalsData.pre_pass && evalsData.pre_pass.schedule_check === 'fail') status[15] = 'flag';
       (evalsData.attempts || []).forEach(a => {
         if (a.verdict === 'PASS') return;
         (a.flags || []).forEach(flagStr => {
           const f = String(flagStr).toLowerCase();
+          if (f.includes('phantom game') || (f.includes('schedule') && f.includes('no such game'))) status[15] = 'flag';
           if (f.includes('repetition') || f.includes('repeat')) status[10] = 'flag';
           if (f.includes('off-roster') || f.includes('off_roster') || f.includes('roster') && f.includes('squad')) status[11] = 'flag';
           if (f.includes('fabricat') && (f.includes('stat') || f.includes('score') || f.includes('record'))) status[7] = 'flag';
