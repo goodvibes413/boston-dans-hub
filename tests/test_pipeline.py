@@ -1209,6 +1209,45 @@ class TestPhantomGameDetection(unittest.TestCase):
         )
         self.assertEqual(flags, [])
 
+    def test_off_day_prose_that_also_carries_a_game_cue(self):
+        """Run #611's false positive. The earlier off-day test passed only because
+        its phrasing happened to contain no cue word — the check could not see the
+        "No" at all. These are the sentences the Off Days prompt rule asks for, so
+        flagging them punishes Dan for getting it right."""
+        for paragraph in (
+            "No baseball for us tonight, which is probably a mercy after that "
+            "performance, so I will spend the evening on errands before the next game.",
+            "We have a rare night off from the diamond tonight, and the team needs to "
+            "clear its head before the Royals come to town for the next game.",
+            "Nothing on tonight for the Sox, so I will watch someone else lose a game.",
+            "The Sox do not play tonight and after that game I am fine with it.",
+        ):
+            with self.subTest(paragraph=paragraph[:40]):
+                self.assertEqual(
+                    safety_judge.detect_phantom_game(
+                        self._post(paragraph),
+                        self._schedule(("redsox", "MLB", "2026-09-11")),
+                        self.TODAY),
+                    [],
+                )
+
+    def test_negation_veto_does_not_swallow_the_real_claims(self):
+        """The two sentences that actually shipped broken must still flag."""
+        for paragraph in (
+            "The Sox have to stop the bleeding at the Fens tonight, and I am "
+            "begging them to put this miserable stretch behind us.",
+            "We have no time to mope with a series against the Royals starting "
+            "tonight at the oldest yard in baseball.",
+        ):
+            with self.subTest(paragraph=paragraph[:40]):
+                self.assertEqual(
+                    len(safety_judge.detect_phantom_game(
+                        self._post(paragraph),
+                        self._schedule(("redsox", "MLB", "2026-09-11")),
+                        self.TODAY)),
+                    1,
+                )
+
     def test_venue_next_to_a_past_reference_is_ambiguous_not_a_claim(self):
         """A venue is the weakest cue. "Last night at Fenway ... today" contains
         one and asserts nothing about tonight."""

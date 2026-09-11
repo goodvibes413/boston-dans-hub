@@ -77,6 +77,31 @@ game. The enriched verdict now splits `repetition_flags` from `phantom_game_flag
 in `publish_evals_to_docs()` iterated `range(1, 12)` and had silently stopped counting at
 rule 11 — it now iterates `RULE_TITLES`, so rules 12–15 are counted too.
 
+**Run #611 — the fix works, and it found one more bug in itself.** Replaying 2026-09-10 on
+the corrected fetchers published a clean post whose third paragraph reads "We have a rare
+night off from the diamond... the team needs to clear its head before the Royals come to
+town." Off day acknowledged, next game named by team rather than by a bare "tonight" —
+exactly what the Off Days rule asks for, and the archive now correctly overwrites
+`2026-09-10.json`.
+
+The trace is worth reading, because the run took three attempts and the middle one was the
+deterministic check firing on Dan getting it *right*:
+
+> phantom game: output claims redsox has a game today (2026-09-10); upcoming_schedule lists
+> none. Sentence: **No baseball for us tonight**, which is probably a mercy after that
+> performance...
+
+The check had no notion of negation. A sentence that says there is no game today agrees
+with the schedule; it was being read as contradicting it. The existing off-day test passed
+only because its phrasing happened to carry no cue word — luck, not coverage, and precisely
+the sentence shape the new prompt rule asks Dan to produce. `PHANTOM_NO_GAME_MARKERS` now
+vetoes the whole sentence on "no baseball/game/action", "a rare night off", "nothing on
+tonight", "the Sox do not play tonight", and friends. Both sentences that actually shipped
+broken still flag, under test.
+
+Attempt 1 also flagged A.J. Brown as an off-roster Patriot (rule 11), which is a separate
+roster-freshness question and is left open.
+
 **Run #610 reproduced the bug instead of verifying the fix.** Replaying 2026-09-10 with
 `AS_OF_DATE` produced a brew whose third paragraph reads "a series against the Royals
 starting **tonight** at the oldest yard in baseball." The published `schedule` block shows

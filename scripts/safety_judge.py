@@ -185,6 +185,24 @@ PHANTOM_VENUE_CUES = [
     r"\bgillette\b", r"\bfoxborough\b",
 ]
 
+# Vetoes ANY match. A sentence that explicitly says there is no game today is
+# agreeing with the schedule, not contradicting it — and the Off Days section of
+# the persona prompt asks Dan for exactly these sentences, so the check has to
+# understand them. Run #611 flagged "No baseball for us tonight, which is
+# probably a mercy after that performance..." as a phantom game: the cue and the
+# today-marker were both there, and nothing in the check could see the "No".
+# The earlier off-day test passed only because its phrasing happened to carry no
+# cue word — luck, not coverage.
+PHANTOM_NO_GAME_MARKERS = [
+    r"\bno (?:baseball|basketball|hockey|football|game|games|action|ball)\b",
+    r"\bnothing (?:on|to watch|doing)\b",
+    r"\b(?:night|day|evening) off\b",
+    r"\boff (?:day|night)\b",
+    r"\bdark (?:tonight|today)\b",
+    r"\bnot? (?:playing|scheduled)\b",
+    r"\b(?:don't|dont|do not|doesn't|doesnt|does not|won't|wont|will not) play\b",
+]
+
 # Vetoes a venue-only match. Narrow on purpose: an explicit past-time phrase is
 # what makes a venue ambiguous about WHICH day it refers to. General past tense
 # ("was", "went") is not here — "it was ugly, and the Sox are at the Fens
@@ -725,6 +743,9 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
     - The sentence must pair a today-marker with a game cue, after scrubbing
       standings and past-tense phrasing that merely contains a cue word
       ("two games back today").
+    - The sentence must not explicitly deny a game ("no baseball for us
+      tonight", "a rare night off"). Such a sentence agrees with the schedule,
+      and the Off Days prompt rule asks Dan to write them.
     - Exactly one Boston team must be resolvable for the sentence — named in it,
       or, for a "we/our" sentence, the single team its paragraph is about. Two
       teams in play means we cannot say whose game is being claimed. When no
@@ -768,6 +789,7 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
     today_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_TODAY_MARKERS]
     cue_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_GAME_CUES]
     venue_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_VENUE_CUES]
+    no_game_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_NO_GAME_MARKERS]
     veto_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_PAST_VETO]
     exclusion_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_CUE_EXCLUSIONS]
 
@@ -778,6 +800,8 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
         for sentence in _split_sentences(paragraph):
             if not any(rx.search(sentence) for rx in today_rx):
                 continue
+            if any(rx.search(sentence) for rx in no_game_rx):
+                continue  # says there is no game today — that is the schedule agreeing
             scrubbed = sentence
             for rx in exclusion_rx:
                 scrubbed = rx.sub(" ", scrubbed)
