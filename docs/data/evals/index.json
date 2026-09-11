@@ -90,7 +90,7 @@
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 11,
+        "count": 14,
         "title": "Voice repetition"
       },
       {
@@ -106,7 +106,7 @@
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 0,
+      "llm": 1,
       "both": 0
     }
   }
