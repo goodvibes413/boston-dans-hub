@@ -119,7 +119,42 @@ fetch populated the rosters and turned a latent disagreement into a false-positi
 generator in the same run. `_roster_map()` now unwraps the file so both scripts see
 identical data, with tests asserting parity.
 
-19 new tests (156 total). Worth noting the shape of this one: the first fix did not cause
+### Run #613: rule 11 went quiet, and the next one surfaced
+
+Clean: two attempts, attempt 1 carrying only the deterministic rule 10 repetition flags
+(correctly labelled for the first time), attempt 2 PASS, published fresh with no quality
+warning. No rule 11. The roster fix held.
+
+The post itself, though, closed with this:
+
+> **With no game today**, I am planning on taking a breather… **We get back to the Fens on
+> Thursday night** against Kansas City.
+
+2026-09-10 was a **Thursday**. The Royals opened **Friday**. The post states the off day
+correctly — exactly what the Off Days rule asks for — and then, three sentences later, tells
+the reader the next game is tonight. It contradicts itself inside one paragraph.
+
+Neither half of the check could see it, because **both only ever asked whether the output
+said TONIGHT**. A weekday name that happens to be today's weekday is the same claim in
+different clothes.
+
+Fixed at both ends, data first:
+
+- **`fetch_schedule.py` now emits `day_of_week` per game**, `generate_rant.py` carries it
+  into the prompt and the published schedule, and the TODAY line reads
+  `TODAY: 2026-09-10 (Thursday)`. The model was being handed `"2026-09-11"` and asked,
+  implicitly, to do calendar arithmetic in its head. It is cheap to just say Friday.
+- **The persona prompt** now says to name the day from `day_of_week` and never derive it,
+  and spells out that today's own weekday reads as tonight.
+- **`detect_phantom_game()` treats today's weekday name as a today-marker.** Because a
+  weekday is weaker evidence than "tonight" — it can also point backwards — a match resting
+  on it alone takes the past-tense veto, so "that Thursday game last week" stays clean.
+- **Rule 15** extended to the same mismatch.
+
+Verified against run #613's paragraph verbatim: the pre-pass flags the Thursday sentence and
+leaves "With no game today" alone.
+
+25 new tests (162 total). Worth noting the shape of this one: the first fix did not cause
 the second bug, it *revealed* it — and a check that had been silently wrong in one
 direction became loudly wrong in the other. Both readings of "A.J. Brown is off-roster"
 were artifacts, eight hours apart, of two different data faults.

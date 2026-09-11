@@ -163,6 +163,11 @@ def normalize_game(game: dict, team_key: str, meta: dict) -> dict:
         "team":         team_key,
         "game_id":      str(game.get("game_id") or game.get("game_pk", "")),
         "date":         dt_utc.astimezone(ET).strftime("%Y-%m-%d"),
+        # Spelled out so nobody downstream has to derive it. Run #613 wrote "back
+        # to the Fens on Thursday night" for a Friday game, on a Thursday: the
+        # model was handed "2026-09-11" and asked, implicitly, to do calendar
+        # arithmetic in its head. It is cheap to just say Friday.
+        "day_of_week":  dt_utc.astimezone(ET).strftime("%A"),
         "time_et":      format_time_et(dt_utc),
         "datetime_utc": dt_utc.isoformat(),
         "home_team":    home_team,

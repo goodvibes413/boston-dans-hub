@@ -26,7 +26,7 @@ import os
 import re
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from pipeline_dates import as_of_iso
 from pathlib import Path
@@ -251,6 +251,15 @@ PHANTOM_SPORT_TO_TEAM = {
 
 # "This is happening today" markers. "this morning" is excluded on purpose —
 # the post itself is a morning brew, so it refers to the writing, not a game.
+#
+# TODAY'S WEEKDAY NAME is added to this list at runtime, because "Thursday night"
+# written on a Thursday is a today-claim in every way that matters to a reader.
+# Run #613 published "With no game today" -- correct, and exactly what the Off
+# Days rule asks for -- and then "We get back to the Fens on Thursday night
+# against Kansas City" three sentences later. 2026-09-10 was a Thursday; the
+# Royals opened on Friday. The post contradicted itself inside one paragraph and
+# nothing caught it, because rule 15 and this pre-pass both only ever asked
+# "does the output say TONIGHT".
 PHANTOM_TODAY_MARKERS = [
     r"\btonight\b",
     r"\btoday\b",
@@ -470,8 +479,11 @@ FAIL if ANY of these are present:
     - An off day is a real thing to write about: "no baseball tonight", "a rare Thursday
       off", or looking ahead to a game the schedule DOES list ("Friday at Fenway") is
       correct and must NOT be flagged.
-    - Also flag the inverse mismatch: naming a specific opponent, venue, or start time
-      for today's game that contradicts the UPCOMING_SCHEDULE entry for that date.
+    - Also flag the inverse mismatch: naming a specific opponent, venue, start time,
+      or DAY OF WEEK that contradicts the UPCOMING_SCHEDULE entry. Each entry carries
+      `day_of_week`; use it. Naming today's own weekday for a game that is not today
+      ("back at the Fens on Thursday night", written on a Thursday, about a Friday
+      game) reads to every reader as tonight and IS this rule's error.
     - Vague, non-game longing ("this city needs a win", "I need something to feel good
       about") with no today-marker attached to a game is fine.
     - If UPCOMING_SCHEDULE is missing, empty, or has no games at all, skip this check —
@@ -919,21 +931,34 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
             scheduled_today.add(team_key)
 
     today_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_TODAY_MARKERS]
+    # A weekday name is weaker evidence than "tonight" — it can also point at a
+    # game already played — so matches that rest on it alone are held to the
+    # past-tense veto below, the same way a bare venue is.
+    try:
+        weekday = date.fromisoformat(today_iso).strftime("%A")
+        weekday_rx = re.compile(rf"\b{weekday}\b", re.IGNORECASE)
+    except ValueError:
+        weekday_rx = None
     cue_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_GAME_CUES]
     venue_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_VENUE_CUES]
     no_game_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_NO_GAME_MARKERS]
-    veto_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_PAST_VETO]
     exclusion_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_CUE_EXCLUSIONS]
+    veto_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_PAST_VETO]
 
     flags: list[str] = []
     flagged_teams = set()
     for paragraph in _paragraph_segments(today):
         paragraph_teams = _teams_named(paragraph, include_venues=True)
         for sentence in _split_sentences(paragraph):
-            if not any(rx.search(sentence) for rx in today_rx):
+            explicit_today = any(rx.search(sentence) for rx in today_rx)
+            weekday_only = (not explicit_today and weekday_rx is not None
+                            and weekday_rx.search(sentence))
+            if not explicit_today and not weekday_only:
                 continue
             if any(rx.search(sentence) for rx in no_game_rx):
                 continue  # says there is no game today — that is the schedule agreeing
+            if weekday_only and any(rx.search(sentence) for rx in veto_rx):
+                continue  # "that Thursday loss" — the weekday points backwards
             scrubbed = sentence
             for rx in exclusion_rx:
                 scrubbed = rx.sub(" ", scrubbed)

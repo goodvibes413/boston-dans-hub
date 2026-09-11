@@ -1299,6 +1299,48 @@ class TestPhantomGameDetection(unittest.TestCase):
             len(safety_judge.detect_phantom_game(
                 self._post(self.PUBLISHED), schedule, self.TODAY)), 1)
 
+    def test_todays_weekday_name_is_a_today_claim(self):
+        """Run #613 wrote "With no game today" and then, three sentences later,
+        "We get back to the Fens on Thursday night against Kansas City". TODAY was
+        Thursday 2026-09-10; the Royals opened Friday. The post contradicted
+        itself inside one paragraph and nothing caught it, because rule 15 and
+        this pre-pass both only ever asked whether the output said TONIGHT."""
+        para = (
+            "With no game today, I am planning on taking a breather. "
+            "We get back to the Fens on Thursday night against Kansas City, "
+            "and I will be sitting in my usual spot."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(para),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,   # a Thursday
+        )
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("Thursday night", flags[0])
+
+    def test_naming_the_actual_game_day_is_correct(self):
+        para = ("With no game today, we get back to the Fens on Friday night "
+                "against Kansas City.")
+        self.assertEqual(
+            safety_judge.detect_phantom_game(
+                self._post(para),
+                self._schedule(("redsox", "MLB", "2026-09-11")),
+                self.TODAY),
+            [],
+        )
+
+    def test_a_backward_looking_weekday_is_not_a_claim(self):
+        """A weekday name is weaker evidence than "tonight" — it can point at a
+        game already played — so a weekday-only match takes the past-tense veto."""
+        para = "That Thursday game at Fenway last week was brutal and I am still sour."
+        self.assertEqual(
+            safety_judge.detect_phantom_game(
+                self._post(para),
+                self._schedule(("redsox", "MLB", "2026-09-11")),
+                self.TODAY),
+            [],
+        )
+
     def test_standings_talk_is_not_a_game_claim(self):
         """"games back" carries a cue word without asserting a game — the exact
         shape a naive keyword match would flag every stretch-run morning."""
@@ -1350,6 +1392,36 @@ class TestPhantomGameDetection(unittest.TestCase):
                 post = json.loads(path.read_text())
                 self.assertEqual(
                     safety_judge.detect_phantom_game(post, schedule, day), [])
+
+
+class TestScheduleCarriesTheWeekday(unittest.TestCase):
+    """Don't make the model do calendar arithmetic: fetch_schedule spells the day
+    out, generate_rant carries it into the prompt and the published schedule, and
+    the TODAY line names today's weekday."""
+
+    def test_normalize_game_spells_out_the_day(self):
+        import fetch_schedule
+        game = {"game_time_utc": "2026-09-11T23:10:00Z", "opponent": "Kansas City Royals",
+                "home": True, "venue": "Fenway Park"}
+        out = fetch_schedule.normalize_game(game, "redsox",
+                                            {"sport": "MLB", "name": "Boston Red Sox"})
+        self.assertEqual(out["date"], "2026-09-11")
+        self.assertEqual(out["day_of_week"], "Friday")
+
+    def test_today_line_names_the_weekday(self):
+        msg = generate_rant.build_user_message(
+            {}, {"games": []}, {}, {}, today_iso="2026-09-10")
+        self.assertIn("TODAY: 2026-09-10 (Thursday)", msg)
+
+    def test_published_schedule_carries_the_day_through(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "sched.json"
+            path.write_text(json.dumps({"games": [
+                {"date": "2026-09-11", "day_of_week": "Friday", "time_et": "7:10 PM ET",
+                 "home_team": "Boston Red Sox", "away_team": "Kansas City Royals"}]}))
+            built = generate_rant.build_schedule_from_fetcher(path)
+            self.assertEqual(built[0]["day_of_week"], "Friday")
 
 
 class TestScheduleWindowAnchoredToRunDay(unittest.TestCase):

@@ -1123,8 +1123,16 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
     if today_iso is None:
         today_iso = as_of_iso()
 
+    # The weekday is spelled out for the same reason UPCOMING_SCHEDULE carries
+    # day_of_week: "Thursday night" written on a Thursday is a today-claim, and
+    # the model should never have to work out which day an ISO date falls on.
+    try:
+        today_name = date.fromisoformat(today_iso).strftime("%A")
+        today_label = f"{today_iso} ({today_name})"
+    except ValueError:
+        today_label = today_iso
     message = (
-        f"TODAY: {today_iso}\n\n"
+        f"TODAY: {today_label}\n\n"
     )
     if slow_day:
         message += (
@@ -1456,7 +1464,7 @@ def build_schedule_from_fetcher(schedule_path: Path) -> list:
     Build the schedule list directly from upcoming_schedule.json instead of
     relying on Gemini, which selectively omits teams (e.g. Celtics in playoffs).
 
-    Returns a list of {date, matchup, time_et} dicts for the next 5 days,
+    Returns a list of {date, day_of_week, matchup, time_et} dicts for the next 5 days,
     sorted chronologically. Falls back to [] if the file is missing/broken.
     """
     try:
@@ -1475,6 +1483,9 @@ def build_schedule_from_fetcher(schedule_path: Path) -> list:
             result.append({
                 "date":     g.get("date", ""),
                 "matchup":  matchup,
+                # Carried through from fetch_schedule so Dan names the day from
+                # the data instead of deriving it from the ISO date.
+                "day_of_week": g.get("day_of_week", ""),
                 "time_et":  g.get("time_et", "TBD"),
             })
 
