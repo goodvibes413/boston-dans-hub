@@ -146,14 +146,16 @@ def archive_dan_output(published: dict, archive_dir: Path = ARCHIVE_DIR,
         return
 
     try:
+        # Key the archive on the RUN's day, the same as archive_evals() (which
+        # uses evals_doc["date"]) and publish_evals_to_docs() (which uses
+        # as_of_iso()). This used to derive the filename from generated_at — a
+        # wall-clock timestamp — so run #610, replaying 2026-09-10 just after
+        # midnight UTC, filed its post as 2026-09-11.json while its trace went
+        # to 2026-09-10.evals.json. One run, two dates, and the day it replaced
+        # was not the day it replayed. gen_at stays in the payload: it is a real
+        # timestamp and belongs there.
         gen_at = published.get("generated_at")
-        if gen_at:
-            dt = datetime.fromisoformat(gen_at)
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=timezone.utc)
-            date_str = dt.astimezone(timezone.utc).date().isoformat()
-        else:
-            date_str = as_of_iso()
+        date_str = as_of_iso()
 
         archive_dir.mkdir(parents=True, exist_ok=True)
         slim = {

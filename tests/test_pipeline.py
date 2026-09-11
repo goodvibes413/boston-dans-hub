@@ -1355,6 +1355,53 @@ class TestScheduleWindowAnchoredToRunDay(unittest.TestCase):
                          datetime.now(timezone.utc).date())
 
 
+class TestArchiveKeyedOnRunDay(unittest.TestCase):
+    """Run #610 replayed 2026-09-10 just after midnight UTC and filed its post as
+    2026-09-11.json while its trace went to 2026-09-10.evals.json — the post
+    archive derived its name from the wall-clock generated_at, the evals doc from
+    as_of_iso(). A replay that does not overwrite the day it replayed is not a
+    replay."""
+
+    def _run(self, tmpdir, as_of, generated_at):
+        os.environ[pipeline_dates.AS_OF_ENV] = as_of
+        try:
+            publish.archive_dan_output(
+                {"headline": "h", "morning_brew": ["p"], "news_digest": [],
+                 "generated_at": generated_at},
+                archive_dir=Path(tmpdir),
+            )
+        finally:
+            os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+        return sorted(p.name for p in Path(tmpdir).glob("*.json"))
+
+    def test_post_and_evals_agree_across_the_utc_boundary(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            names = self._run(tmp, "2026-09-10", "2026-09-11T00:15:57+00:00")
+            self.assertEqual(names, ["2026-09-10.json"])
+
+    def test_generated_at_is_still_recorded_in_the_payload(self):
+        """Only the filename changes — the timestamp itself stays truthful."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self._run(tmp, "2026-09-10", "2026-09-11T00:15:57+00:00")
+            written = json.loads((Path(tmp) / "2026-09-10.json").read_text())
+            self.assertEqual(written["generated_at"], "2026-09-11T00:15:57+00:00")
+
+    def test_missing_generated_at_still_archives_under_the_run_day(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            os.environ[pipeline_dates.AS_OF_ENV] = "2026-09-10"
+            try:
+                publish.archive_dan_output(
+                    {"headline": "h", "morning_brew": ["p"], "news_digest": []},
+                    archive_dir=Path(tmp),
+                )
+            finally:
+                os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+            self.assertTrue((Path(tmp) / "2026-09-10.json").exists())
+
+
 class TestPhantomGameSeverity(unittest.TestCase):
     def test_medium_floor_beats_low_but_never_downgrades_high(self):
         self.assertEqual(safety_judge._at_least("low", "medium"), "medium")
