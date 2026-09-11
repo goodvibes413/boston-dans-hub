@@ -29,12 +29,15 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 ├── evals/
 │   ├── fixtures/     # Hand-crafted rolling_7day-shaped test inputs
 │   └── runs/         # Generated outputs for manual review (gitignored)
-├── site/             # Static website files (deployed via GitHub Pages)
-│   └── data/         # daily_output.json served to the frontend
-├── docs/             # Internal documentation (e.g., SAFETY.md)
+├── docs/             # GitHub Pages root (deployed site) AND internal docs
+│   ├── data/         # daily_output.json + posts/ + evals/ served to the frontend
+│   ├── index.html    # the site itself (app.js, style.css alongside)
+│   └── *.md          # internal docs (QUALITY_ROADMAP.md, MONITORING.md)
+├── tests/            # stdlib unittest suite (test_pipeline.py)
+├── memory/           # Claude Code memory layer (see Memory Layer below)
 ├── .github/
-│   └── workflows/    # GitHub Actions (morning_brew.yml)
-├── CLAUDE.md         # This file
+│   └── workflows/    # GitHub Actions (morning_brew.yml, tests.yml, model_health.yml)
+├── AGENTS.md         # This file (CLAUDE.md points here)
 └── README.md
 ```
 
@@ -49,7 +52,7 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 | Safety judge | `gemini-3.1-flash-lite` via `google-genai` | Same model, separate call. Override via `JUDGE_MODEL` |
 | Frontend | Vanilla HTML/CSS/JS | No build tools — pure `fetch()` loads `daily_output.json`, renders dynamically |
 | CI/CD | GitHub Actions | Daily cron at 03:00 ET (08:00 UTC) — moved from 06:00 ET to avoid peak API demand. `tests.yml` runs unit tests (`tests/test_pipeline.py`, stdlib unittest) + DRY_RUN prompt-assembly smoke on every push/PR touching scripts or prompts |
-| Hosting | GitHub Pages | `/site` folder → https://goodvibes413.github.io/boston-dans-hub/ |
+| Hosting | GitHub Pages | `/docs` folder → https://goodvibes413.github.io/boston-dans-hub/ |
 | Sports data | Public ESPN + NHL + MLB APIs | No auth keys required |
 
 **SDK**: Use `google-genai` (`from google import genai; from google.genai import types`). The old `google-generativeai` package is fully deprecated — do not use it.
@@ -152,7 +155,10 @@ models in isolation against the existing fixtures — **production and CI stay o
 fetch_nba.py        → data/celtics_boxscore.json + data/celtics_schedule.json
 fetch_nhl.py        → data/bruins_boxscore.json  + data/bruins_schedule.json
 fetch_mlb.py        → data/redsox_boxscore.json  + data/redsox_schedule.json
-fetch_nfl.py        → data/patriots_news.json  (offseason: headlines only)
+fetch_nfl.py        → data/patriots_{news,boxscore,schedule}.json
+                      (offseason/preseason: headlines only — the boxscore short-circuits
+                       without calling ESPN. season_type comes from ESPN's own event tag
+                       when present, else the calendar in classify_nfl_season())
 fetch_draft.py      → data/boston_drafts.json  (all 4 teams' current draft picks)
     ↓
 update_store.py            → data/rolling_7day.json  (rolling 7-entry window)
@@ -166,7 +172,7 @@ generate_rant.py    → data/raw_dan_output.json  (gemini-3.1-flash-lite + groun
     ↓
 safety_judge.py     → PASS / FAIL + severity  (gemini-3.1-flash-lite)
     ↓
-publish.py          → site/data/daily_output.json  (severity ladder after 3 judge
+publish.py          → docs/data/daily_output.json  (severity ladder after 3 judge
                       attempts: LOW/MEDIUM publish fresh with _quality_warning;
                       only HIGH — fabrication/safety — falls back to stale)
     ↓
@@ -184,7 +190,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/fetch_nba.py` | ✅ Done | `celtics_boxscore.json`, `celtics_schedule.json`, `celtics_news.json` |
 | `scripts/fetch_nhl.py` | ✅ Done | `bruins_boxscore.json`, `bruins_schedule.json`, `bruins_news.json` |
 | `scripts/fetch_mlb.py` | ✅ Done | `redsox_boxscore.json`, `redsox_schedule.json`, `redsox_news.json` |
-| `scripts/fetch_nfl.py` | ✅ Done | `patriots_news.json`, `patriots_boxscore.json`, `patriots_schedule.json` |
+| `scripts/fetch_nfl.py` | ✅ Done | `patriots_news.json`, `patriots_boxscore.json`, `patriots_schedule.json` (box score queries the target day **and the next**, then filters by ET date — see Sports API Endpoints) |
 | `scripts/fetch_draft.py` | ✅ Done | `boston_drafts.json` (all 4 Boston teams' current draft picks) |
 | `scripts/update_store.py` | ✅ Done | `rolling_7day.json` (7-entry rolling window) |
 | `scripts/fetch_schedule.py` | ✅ Done | `upcoming_schedule.json` (merged, sorted) |
@@ -193,8 +199,8 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/generate_rant.py` | ✅ Done | `raw_dan_output.json` (loads persona from `prompts/boston_dan_system.txt`) |
 | `scripts/eval_voice.py` | ✅ Done | `evals/runs/{label}_{N}.json` (manual eyeball harness) |
 | `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (gemini-3.1-flash-lite) |
-| `scripts/publish.py` | ✅ Done | `site/data/daily_output.json` (or safe fallback on judge failure) |
-| `scripts/healthcheck.py` | ✅ Done | Validates `site/data/daily_output.json` is parseable + complete |
+| `scripts/publish.py` | ✅ Done | `docs/data/daily_output.json` (or safe fallback on judge failure) |
+| `scripts/healthcheck.py` | ✅ Done | Validates `docs/data/daily_output.json` is parseable + complete |
 
 ---
 
@@ -202,12 +208,12 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 
 | File | Purpose |
 |---|---|
-| `site/index.html` | Main page structure — sections for Morning Brew, Trends, News, Scores, Schedule |
-| `site/style.css` | Boston Dan aesthetic — dark theme, Celtics green (#00A651), Red Sox red (#BD3039), Anton font for headings |
-| `site/app.js` | Fetch `data/daily_output.json`, render sections, fallback detection, XSS protection |
-| `site/data/daily_output.json` | Published Dan output (generated daily by GitHub Actions cron) |
+| `docs/index.html` | Main page structure — sections for Morning Brew, Trends, News, Scores, Schedule |
+| `docs/style.css` | Boston Dan aesthetic — dark theme, Celtics green (#00A651), Red Sox red (#BD3039), Anton font for headings |
+| `docs/app.js` | Fetch `data/daily_output.json`, render sections, fallback detection, XSS protection |
+| `docs/data/daily_output.json` | Published Dan output (generated daily by GitHub Actions cron) |
 
-**Deployment**: GitHub Pages auto-deploys from `/site` folder on every `git push` to `main`.
+**Deployment**: GitHub Pages auto-deploys from the `/docs` folder on every `git push` to `main`.
 
 ---
 
@@ -433,7 +439,32 @@ before writing a new fixture — the 2026-09-10 phantom game failed all three:
 | Red Sox (MLB) | `https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=YYYY-MM-DD&teamId=111&hydrate=linescore,boxscore` |
 | Patriots (NFL) | `https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?team=ne` |
 
-**Celtics team ID**: `"2"` (string). Always use UTC for date parameters — ESPN is UTC-anchored.
+**Celtics team ID**: `"2"` (string). Date parameters are formatted from UTC dates.
+
+**ESPN's `dates=` bucketing is NOT documented, and this file used to assert it was
+"UTC-anchored" as though it were settled.** Nobody has verified it. The two candidate
+conventions disagree exactly where an evening game sits: a 7:30 PM ET tip-off is 00:30 UTC
+the *next* day, so under UTC bucketing it would land in the next day's scoreboard. Weak
+evidence says ESPN buckets by game day — Celtics and Bruins evening box scores have been
+publishing correctly for a season, which UTC bucketing would have broken — but that is
+inference, not a check.
+
+`fetch_nfl.py` no longer depends on the answer. It queries the target day **and the day
+after**, then keeps whichever events carry the target's ET date (`event_et_date()` /
+`select_patriots_event()`), which is correct under either convention. The follow-up call is
+best-effort, so a failure there degrades to the old single-day behaviour rather than losing
+the game.
+
+Only the NFL fetcher does this, deliberately. The other three sports play near-daily, so a
+misfiled game is a one-day blip the 7-day window absorbs, and they have a season of
+evidence that the current code works. The NFL plays **once a week**: a misfiled Sunday or
+Monday night game erases the only Patriots game of that week, and `check_coverage_window()`
+skips `played: false`, so nothing would flag it.
+
+`select_patriots_event()` prints a loud `NOTE:` if it ever recovers a game from the
+following day's bucket. **That line appearing in the logs is the experiment resolving**: it
+proves ESPN buckets by UTC, and that `fetch_nba.py` and `fetch_nhl.py` need the same
+day-pair fix. Until it appears, leave them alone.
 
 ---
 
@@ -558,6 +589,21 @@ Written by `build_playoff_race()` in `fetch_season_memory.py`, which returns `No
 **Field direction matters**: `wild_card_games_up` is a cushion, `wild_card_games_back` is a deficit. Only one is ever present, named for what the number means so it cannot be inverted.
 
 **Source**: MLB StatsAPI standings (`statsapi.mlb.com`, the same host `fetch_mlb.py` uses), which returns magic number, wild-card rank and elimination number directly. ESPN's team endpoint carries division games-behind only, which misleads for a wild-card team: 3rd in the AL East reads as "buried" while they comfortably hold a wild-card spot. Only MLB is wired to a standings source today; the other three sports share the same gate and block shape and need one fetcher each. On any fetch failure the block is omitted and Dan degrades to qualitative season talk.
+
+**Still MLB-only — the Patriots have no race block.** `build_team_entry()` calls
+`build_playoff_race()` under `if sport == "baseball"` only. The gate, the block
+shape and `STRETCH_RUN_WINDOW["football"] = 6` are all in place, so the missing
+piece is one NFL standings fetcher returning the same `raw` dict shape
+(`division_rank`, `wild_card_rank`, `wild_card_games_back`, `games_played`,
+`clinched`, …). Until that exists, Dan cannot discuss an AFC playoff picture at
+all — which is correct-by-default in September, and a real gap from roughly
+Week 12 onward, when the Patriots are inside a 6-game stretch run and Dan has
+nothing to reason from. Wire it before December, not during it.
+
+`games_played` counts wins + losses + **ties**. The NFL has ties and the NHL has
+OT losses; dropping the third outcome undercounts games played, inflates
+`games_remaining`, and can hold the window shut in the exact week it should
+open.
 
 **Runtime merge**: `generate_rant.py` loads both files via `build_season_memory()` and injects a `SEASON_MEMORY` block into the prompt:
 ```json
@@ -808,7 +854,7 @@ Written by `publish_evals_to_docs()` in `publish.py`. Consumed by the frontend d
 
 Slim post snapshots written by `publish_evals_to_docs()` — the same fields as `daily_output.json` but one file per day so the archive picker can swap post content without reloading. Covers the same 5-day window as evals. Today's snapshot is copied from the freshly-published `daily_output.json`; past days are copied from `data/dan_archive/`.
 
-### `site/data/daily_output.json` (Gemini output schema)
+### `docs/data/daily_output.json` (Gemini output schema)
 ```json
 {
   "morning_brew": ["paragraph1", "paragraph2", "paragraph3"],
@@ -1045,6 +1091,65 @@ The four data fetchers (`fetch_nba/nhl/mlb/nfl.py`) each fetch three independent
 
 This was the root cause of the **2026-06-17** all-runs-failed incident: `fetch_mlb.py`'s news section hit an ESPN 502 *after* boxscore + schedule had already succeeded, but the `sys.exit(1)` crashed the step. Fixed by replacing the per-section `sys.exit(1)` calls with `return` in all four fetchers. If you add a new fetcher or section, follow the same pattern: write the error sentinel, print the error, `return`.
 
+### Rule #10: A season starting is a deploy. Treat the changeover as one.
+
+Code on a sport's cold path does not run for months at a time, so it does not
+fail — it just sits there being wrong, and ships the moment that sport comes
+back. The 2026 NFL opener found three of these at once, all of them written
+during the offseason and none of them ever executed against a live football
+game:
+
+- **`fetch_schedule.normalize_dt` mangled every NFL date.** `fetch_nfl.py`
+  writes ESPN's full ISO timestamp into `date` (as `fetch_nba.py` does), but
+  the NFL branch appended `"T00:00:00Z"` to it the way the NHL and MLB branches
+  do for their *bare-date* fields. `"2026-09-13T17:00ZT00:00:00Z"` does not
+  parse, so it hit the year-9999 sort sentinel and the site published
+  **"9999-12-30 — New England Patriots at Seattle Seahawks — TBD"**. Silent all
+  offseason because no Patriots game ever landed in the 7-day window.
+- **`classify_nfl_season()` called all of January "regular"**, so every Wild
+  Card and Divisional game would have been written `season_type: "regular"` —
+  while `fetch_season_memory.classify_status()` called the same day
+  `in_playoffs`. Two hand-maintained copies of one calendar, drifted apart.
+  `classify_status` now imports the NFL calendar from `fetch_nfl` rather than
+  restating it, the same way `safety_judge.py` imports its retry constants
+  from `generate_rant`.
+- **The persona had gone all-baseball.** Trend Watch instructed "starters,
+  bullpen, and hitters" with no football equivalent, the `box_scores` output
+  template pinned the Patriots to `played: false, season_type: "offseason"`,
+  and the coverage rules read as if exactly one team is ever in season.
+
+**The checklist, a week before any sport's opener:**
+
+1. Run that sport's fetcher and **read the JSON it wrote**, not just its exit
+   code. Every fetcher degrades gracefully by design, so a broken cold path
+   prints a clean success and writes a sentinel.
+1b. Check a **night game** specifically, not just an afternoon one. Whether a
+   late kickoff lands in the target day's scoreboard bucket or the next one
+   depends on an ESPN convention nobody here has verified (see Sports API
+   Endpoints). For a sport that plays daily this is a blip; for the NFL it is
+   the whole week.
+2. Run `fetch_schedule.py` and confirm the sport's games appear with a real
+   date and a real ET time. A `9999-*` date or a wrong `TBD` means
+   `normalize_dt` disagrees with what that sport's fetcher writes.
+3. Grep the persona for the outgoing sport's vocabulary. `bullpen`,
+   `starting pitcher`, and `innings` in a rule that is supposed to be
+   sport-neutral is drift.
+4. Check the `box_scores` template in `prompts/boston_dan_system.txt` — an
+   `"offseason"` literal on the team that is about to start playing primes the
+   model to leave it empty.
+5. Confirm `season_current.json` gives the team `status: "regular_season"`, so
+   `build_coverage_allocation()` promotes it to PRIMARY. A team stuck at
+   SECONDARY gets one buried sentence a day.
+6. Clear any `season_overrides.json` entry for that team, and check the
+   `expires` date on the others.
+
+**Note on time formatting:** `format_time_et` used to infer "no time
+announced" from the clock reading exactly midnight UTC. That cannot tell a
+missing time from a real one — under EST a 7:00 PM ET tip-off *is* 00:00 UTC,
+so every Celtics and Bruins game at the most common start time in either sport
+printed `TBD` from November through March. `normalize_dt` now returns an
+explicit `time_known` flag instead of overloading the clock value.
+
 ---
 
 ## Week 3: Publish & Health Check Infrastructure
@@ -1059,21 +1164,21 @@ This was the root cause of the **2026-06-17** all-runs-failed incident: `fetch_m
 2. Run `safety_judge.py` and capture exit code
 3. If exit code 0 (PASS):
    - Validate JSON again
-   - Write to `site/data/daily_output.json`
+   - Write to `docs/data/daily_output.json`
    - Exit 0
 4. If exit code 1 (FAIL):
-   - Write SAFE_FALLBACK to `site/data/daily_output.json`
+   - Write SAFE_FALLBACK to `docs/data/daily_output.json`
    - Exit 1
 
 **Error handling**:
-- Creates `site/data/` directory if missing (using `Path.mkdir(parents=True)`)
+- Creates `docs/data/` directory if missing (using `Path.mkdir(parents=True)`)
 - Gracefully handles malformed JSON with clear error messages
 - All output goes to stdout (visible in GitHub Actions logs)
 - Always returns an exit code: 0 (success) or 1 (failure)
 
 ### `healthcheck.py` — Final Validation
 
-**Responsibility**: Last gate before the cron is considered successful. Validates that `site/data/daily_output.json` is well-formed and complete.
+**Responsibility**: Last gate before the cron is considered successful. Validates that `docs/data/daily_output.json` is well-formed and complete.
 
 **Checks**:
 1. File exists

@@ -506,9 +506,26 @@ BOXSCORE_FILES = {
 
 
 def _opponent_tokens(opponent: str) -> list[str]:
-    """Lowercased ways Dan might name an opponent: full name and bare nickname.
+    """Lowercased ways Dan might name an opponent: full name and bare nickname,
+    plus the city when the city alone actually identifies the team.
 
-    "Baltimore Orioles" -> ["baltimore orioles", "orioles", "baltimore"]
+    "Baltimore Orioles" -> ["baltimore", "baltimore orioles", "orioles"]
+    "New York Jets"     -> ["jets", "new york jets"]
+
+    The city used to be `parts[0]`, which for a two-word city is a fragment
+    rather than a name: "New York Jets" yielded the token "new", and "new"
+    appears in any brew that says "New England Patriots" — which is nearly all
+    of them once football starts. That made this check pass vacuously for the
+    Jets and the Giants, both of them Patriots opponents, on exactly the weeks
+    it was supposed to be watching.
+
+    The city is now kept whole ("new york") rather than truncated or dropped.
+    Whole is the right call in both directions now that a coverage flag is HIGH
+    severity and therefore falls back to stale content: "new york" cannot match
+    "New England", so the vacuous pass is gone, and it still matches a brew that
+    says "the Pats beat New York" without ever writing "Jets", so a real recap
+    is not failed over word choice. It stays ambiguous between the Jets and the
+    Yankees, which is a far narrower hole than "new" and errs toward publishing.
     """
     name = (opponent or "").strip().lower()
     if not name:
@@ -516,8 +533,8 @@ def _opponent_tokens(opponent: str) -> list[str]:
     parts = name.split()
     tokens = {name}
     if len(parts) > 1:
-        tokens.add(parts[-1])   # "orioles"
-        tokens.add(parts[0])    # "baltimore"
+        tokens.add(parts[-1])              # "orioles", "jets"
+        tokens.add(" ".join(parts[:-1]))   # "baltimore", "new york" — whole city
     return sorted(tokens)
 
 
