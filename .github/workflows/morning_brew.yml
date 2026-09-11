@@ -152,11 +152,20 @@ jobs:
         if: steps.freshness.outputs.skip != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python3 scripts/fetch_draft.py
+        # Same posture as the roster step below.
+        run: |
+          python3 scripts/fetch_draft.py \
+            || echo "::warning::draft fetch degraded — draft freshness unavailable (see log)"
 
       - name: Fetch current rosters (all 4 teams)
         if: steps.freshness.outputs.skip != 'true'
-        run: python3 scripts/fetch_roster.py
+        # A total roster outage must be visible but must not cost the day's post:
+        # the file is still empty-but-valid, and judge rule 11 now skips per-team
+        # rather than reading an unreachable roster as proof a player is off it.
+        # Silence is what let three 403'd ESPN rosters ride a green pipeline.
+        run: |
+          python3 scripts/fetch_roster.py \
+            || echo "::warning::roster fetch degraded — rule 11 skips affected teams (see log)"
 
       - name: Update scoreboard store
         if: steps.freshness.outputs.skip != 'true'

@@ -772,7 +772,11 @@ Written alongside each post archive file by `publish.py`. Captures the full pipe
       "attempt": 1,
       "verdict": "PASS",
       "severity": null,
-      "flags": [],              // merged flags from LLM judge + pre-pass
+      "flags": [],              // merged flags from LLM judge + pre-pass.
+                                // Each is {"rule": <1-15, 0 = unclassified>, "detail": "..."}.
+                                // Files written before 2026-09-11 hold plain strings;
+                                // every reader goes through safety_judge.flag_rule()/
+                                // flag_text(), which accept both shapes.
       "duration_seconds": 9.3
     }
   ]
@@ -867,6 +871,22 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 7. Fabricated statistics not present in the source data
 8. `news_digest` dans_take containing personal attacks, guilt speculation, or character judgments
 
+**Flags are structured.** The judge returns each flag as
+`{"rule": <number>, "detail": "<one sentence>"}`, enforced by `JUDGE_RESPONSE_SCHEMA`,
+and the deterministic pre-passes attach their own rule number at the source (repetition →
+10, coverage window → 12, phantom game → 15). Nothing downstream guesses the rule by
+substring-matching prose any more — that is what let a mislabelled flag corrupt the evals
+dashboard, the 5-day aggregate and the correction prompt at once. Read flags through
+`flag_rule()` / `flag_text()` / `flag_line()`; they also accept the plain-string flags in
+archived `*.evals.json`. Rule 0 is the "could not classify" bucket and is deliberately not
+a rubric row on the site.
+
+**Never read "no data" as "the data says no."** Three separate bugs in this codebase have
+had that exact shape: a schedule window that could not cover the replayed day, a roster
+whose endpoint 403'd, and a draft feed that did the same. A check whose source is missing
+or unreachable must skip, not conclude. `fetch_ok` (rosters, drafts), `from_date`
+(schedule) and per-team emptiness all exist to make that distinguishable — use them.
+
 That list is the safety floor, not the full rubric. **`RULE_TITLES` and `JUDGE_PROMPT` in
 `scripts/safety_judge.py` are the source of truth** — they also carry the accuracy rules
 (fabricated history, voice repetition, off-roster players, coverage gaps, cross-team
@@ -902,6 +922,7 @@ had checked that a forward-looking claim had no rule at all.
 | `CALLERS_PATH` | `generate_rant.py` | Default: `data/callers_and_voices.json`; override in evals |
 | `GRUDGE_BOOK_PATH` | `generate_rant.py` | Default: `data/grudge_book.json`; override in evals |
 | `ROSTER_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_roster.json`; override in evals to point at fixture-specific roster |
+| `ROSTER_PATH` (see also) | `fetch_roster.py` | Where the roster fetcher writes. Its output carries `fetch_ok` per team — `false` means the endpoint was unreachable, which judge rule 11 treats as "roster unknown", NOT "player is off the team" |
 | `SCHEDULE_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/upcoming_schedule.json`; the only source that says whether a team plays TODAY. Backs judge rule 15 and `detect_phantom_game()`; override in evals via a fixture's `upcoming_schedule` block |
 | `DAN_STORIES_PATH` | `generate_rant.py` | Default: `data/dan_stories.json`; recurring fictional characters and comparison templates |
 | `STORY_SEEDS_PATH` | `generate_rant.py` | Default: `data/story_seeds.json`; historical-anchor story seeds for slow news days |

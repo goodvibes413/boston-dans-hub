@@ -1384,6 +1384,36 @@
     }
 
     /* SURFACE 1 helpers */
+
+    /* A flag is {rule, detail} since 2026-09-11. Archived evals files predate
+       that and hold plain prose, and the dashboard reads five days back, so both
+       shapes have to resolve. Keyword-guessing the rule from prose is what this
+       replaces: it mislabelled every flag the judge worded unexpectedly, and it
+       also mapped *any* medium severity to rule 11 regardless of cause. */
+    var LEGACY_FLAG_RULES = [
+      ['phantom game', 15], ['off-roster', 11], ['coverage window', 12],
+      ['coverage gap', 12], ['repetition', 10]
+    ];
+
+    function flagRule(flag) {
+      if (flag && typeof flag === 'object') {
+        var n = parseInt(flag.rule, 10);
+        return Number.isFinite(n) && n > 0 ? n : null;
+      }
+      var text = String(flag == null ? '' : flag).toLowerCase();
+      var m = text.match(/\brule (\d{1,2})\b/);
+      if (m) return parseInt(m[1], 10);
+      for (var i = 0; i < LEGACY_FLAG_RULES.length; i++) {
+        if (text.indexOf(LEGACY_FLAG_RULES[i][0]) !== -1) return LEGACY_FLAG_RULES[i][1];
+      }
+      return null;
+    }
+
+    function flagText(flag) {
+      if (flag && typeof flag === 'object') return String(flag.detail == null ? '' : flag.detail);
+      return String(flag == null ? '' : flag);
+    }
+
     function deriveRuleStatus(evalsData, rules) {
       const status = {};
       (rules || []).forEach(r => { status[r.number] = 'pass'; });
@@ -1392,23 +1422,7 @@
       if (evalsData.pre_pass && evalsData.pre_pass.schedule_check === 'fail') status[15] = 'flag';
       (evalsData.attempts || []).forEach(a => {
         if (a.verdict === 'PASS') return;
-        (a.flags || []).forEach(flagStr => {
-          const f = String(flagStr).toLowerCase();
-          if (f.includes('phantom game') || (f.includes('schedule') && f.includes('no such game'))) status[15] = 'flag';
-          if (f.includes('repetition') || f.includes('repeat')) status[10] = 'flag';
-          if (f.includes('off-roster') || f.includes('off_roster') || f.includes('roster') && f.includes('squad')) status[11] = 'flag';
-          if (f.includes('fabricat') && (f.includes('stat') || f.includes('score') || f.includes('record'))) status[7] = 'flag';
-          if (f.includes('fabricat') && (f.includes('histor') || f.includes('trade') || f.includes('draft') || f.includes('champion'))) status[8] = 'flag';
-          if (f.includes('profan') || (f.includes('curse') && f.includes('word'))) status[1] = 'flag';
-          if (f.includes('discrimin') || f.includes('racist') || f.includes('sexist') || f.includes('lgbtq') || f.includes('antisemit')) status[2] = 'flag';
-          if (f.includes('violence') || f.includes('hate promot')) status[6] = 'flag';
-          if (f.includes('personal news') || f.includes('divorce') || f.includes('relationship')) status[5] = 'flag';
-          if (f.includes('personal attack') && (f.includes('coach') || f.includes('official') || f.includes('ref'))) status[4] = 'flag';
-          if (f.includes('personal attack') && f.includes('player')) status[3] = 'flag';
-          if (f.includes('news_digest') || f.includes('dans_take') || (f.includes('news') && f.includes('personal attack'))) status[9] = 'flag';
-        });
-        // Severity medium is rule 11 in our system
-        if (a.severity === 'medium') status[11] = 'flag';
+        (a.flags || []).forEach(flag => { const n = flagRule(flag); if (n) status[n] = 'flag'; });
       });
       return status;
     }
@@ -1445,8 +1459,12 @@
       const attemptItems = attempts.map((a, i) => {
         const vKind = a.verdict === 'PASS' ? 'pass' : (a.severity || 'high');
         const vLabel = a.verdict === 'PASS' ? 'PASS' : `FAIL · ${a.severity || '?'}`;
-        const firstFlag = (a.flags || [])[0] || '';
-        const flagSnippet = firstFlag ? String(firstFlag).slice(0, 90) + (firstFlag.length > 90 ? '…' : '') : '';
+        // flagText() unwraps a structured flag; String(obj) would render
+        // "[object Object]" into the attempt timeline.
+        const firstFlag = (a.flags || [])[0];
+        const firstFlagText = firstFlag ? flagText(firstFlag) : '';
+        const flagSnippet = firstFlagText
+          ? firstFlagText.slice(0, 90) + (firstFlagText.length > 90 ? '…' : '') : '';
         const arrowHtml = i < attempts.length - 1
           ? `<li class="attempt-arrow" aria-hidden="true"><span class="ms">arrow_forward</span></li>` : '';
         return `<li class="attempt ${a.verdict !== 'PASS' ? 'attempt--fail' : ''}">

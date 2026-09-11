@@ -5,6 +5,96 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-11 — The 403 Nobody Saw, and Flags That Name Their Own Rule
+
+Two loose ends from the phantom-game work. Chasing the first one down turned it into
+something considerably larger than the flag that surfaced it.
+
+### A.J. Brown was never a roster-freshness problem
+
+Run #611's attempt 1 flagged A.J. Brown as an off-roster Patriot. The roster step's log
+explains why:
+
+```
+warning: fetch failed for .../nfl/teams/17/roster:  HTTP Error 403: Forbidden
+warning: fetch failed for .../nba/teams/2/roster:   HTTP Error 403: Forbidden
+warning: no data for patriots
+warning: no data for celtics
+✅ total players: 42 across 4 teams          ← exit code 0
+```
+
+42 is the Bruins alone. **All three ESPN rosters had been failing, and the pipeline was
+green throughout.** `boston_roster.json` published as
+`{patriots: [], celtics: [], redsox: [], bruins: [...42]}`, and rule 11's guard — *"if
+source_data.rosters is empty, skip"* — tests the whole dict, which the Bruins made
+non-empty. So the judge applied rule 11 to a Patriot against an empty Patriots list. Brown
+was simply the player Dan happened to name; every Patriots, Sox and Celtics reference in
+the post was equally exposed. The same 403 hits all four `fetch_draft` endpoints, so the
+draft-freshness machinery has been inert too.
+
+**The cause is a User-Agent.** The correlation is exact: every fetcher sending an honest
+bot identifier (`patriots-fanbot/1.0 (+github url)` and siblings) gets 200s from
+`site.api.espn.com`; the only two sending `Mozilla/5.0 (Boston Dan Sports Hub)` — a browser
+string no browser has ever sent — get 403 on every request, on the same host, in the same
+run. Both now identify themselves properly. This is the one fix here that could not be
+verified locally (no network egress); the next scheduled run proves or disproves it in the
+roster step's player count.
+
+**Two structural fixes so the next outage degrades instead of fabricating findings.**
+`fetch_roster.py` and `fetch_draft.py` now record `fetch_ok` per source, distinguishing
+"unreachable" from "empty", and exit non-zero when *every* source fails; the workflow turns
+that into a visible `::warning::` without costing the day's post. And rule 11 now skips
+**per team** — a team whose list is empty or whose `rosters_fetch_ok` entry is false has an
+*unknown* roster, not an empty one.
+
+That is the third bug in three days with the identical shape — absent evidence read as
+evidence of absence — after the schedule window that could not cover the replayed day and
+the empty-schedule case the phantom check already guards. It is now written down in
+AGENTS.md as a rule of its own, because noticing it a fourth time by accident is not a plan.
+
+### Flags now carry their rule number instead of hinting at it
+
+Rule 15's other loose end: in #610 the judge cited rule 15 for something it described, in
+the same sentence, as a cross-team confusion — which is rule 13.
+
+The mechanism was that `flags` was free prose. The rule number was whatever the model chose
+to type, and **three** consumers independently substring-guessed it: the dashboard's
+`deriveRuleStatus`, `publish_evals_to_docs`'s 5-day aggregate, and the correction prompt
+fed back to Dan. One mislabel corrupted all three silently. The dashboard was worse than
+guessing — it mapped *any* medium-severity attempt to rule 11 regardless of cause.
+
+- **`JUDGE_RESPONSE_SCHEMA`** makes each flag `{"rule": int, "detail": str}`, enforced by
+  Gemini structured output. The prompt now says to put the number in the field, pick the
+  more specific rule when two fit, and use rule 0 rather than stretch an unrelated rule.
+- **The deterministic checks label themselves** — repetition → 10, coverage window → 12,
+  phantom game → 15 — so the half of the system that is always right about its own rule no
+  longer has its prose parsed.
+- **Every reader goes through `flag_rule()` / `flag_text()` / `flag_line()`**, which still
+  accept plain strings: the `*.evals.json` already in the archive predate this and the
+  dashboard reads five days back.
+- **Rule 15 got a SCOPE paragraph** naming the one question it asks and pointing at rules
+  13, 7 and 12 for the errors it kept being reached for.
+- The correction prompt now reads `rule 15 (Phantom scheduled game): ...` instead of
+  whatever prose came back.
+
+**A schema the SDK or model refuses must never reach the "judge unreachable → PASS"
+handler**, or a config typo silently disables the safety gate. The structured call is
+wrapped in its own retry that falls back to an unstructured call, whose prose
+`normalize_flags()` parses just as well. Verified against a stub that rejects
+`response_schema`: two calls, prose normalized to rule 13, FAIL honoured, exit 1.
+
+**Measurement, not enforcement.** `summary_5day.rule15_agreement` now counts how often the
+deterministic detector and an LLM rule-15 flag fire on the same day. The two disagreeing is
+expected — the detector is conservative by design — but the trend is the only real evidence
+for whether the LLM half earns its place. Deliberately *not* wired to suppress an LLM flag
+the detector cannot corroborate: that would discard exactly the nuanced catches it exists
+for.
+
+16 new tests (153 total). The A.J. Brown flag itself needs no further action — it was a
+true report of a false premise, and the premise is fixed.
+
+---
+
 ## 2026-09-10 — The Phantom Game: The Evals Didn't Fail, They Never Covered This
 
 **Reported:** today's brew closed with "The Sox have to stop the bleeding at the Fens

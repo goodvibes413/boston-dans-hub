@@ -1011,7 +1011,10 @@ class TestCoverageWindowCheck(unittest.TestCase):
         }
         flags = publish.check_coverage_window(output)
         self.assertEqual(len(flags), 1)
-        self.assertIn("Baltimore Orioles", flags[0])
+        self.assertIn("Baltimore Orioles", safety_judge.flag_text(flags[0]))
+        # The coverage check IS rule 12; it labels itself rather than leaving
+        # the dashboard to guess the rule from its prose.
+        self.assertEqual(safety_judge.flag_rule(flags[0]), 12)
 
     def test_silent_when_the_game_is_covered(self):
         output = {
@@ -1439,6 +1442,178 @@ class TestArchiveKeyedOnRunDay(unittest.TestCase):
             finally:
                 os.environ.pop(pipeline_dates.AS_OF_ENV, None)
             self.assertTrue((Path(tmp) / "2026-09-10.json").exists())
+
+
+class TestEspnUserAgent(unittest.TestCase):
+    """Run #611: every ESPN roster and draft endpoint returned HTTP 403, while
+    news/scoreboard/schedule on the same host in the same run returned 200. The
+    only difference was the User-Agent — the two 403'd scripts sent a fake
+    browser string, the working ones an honest bot identifier with a contact URL."""
+
+    def test_roster_and_draft_no_longer_spoof_a_browser(self):
+        """Assert the header actually sent, not the source text — the source
+        also explains the bug, and a comment is not a request header."""
+        import importlib
+        for name in ("fetch_roster", "fetch_draft"):
+            with self.subTest(script=name):
+                agent = importlib.import_module(name).USER_AGENT
+                self.assertFalse(agent.startswith("Mozilla"), agent)
+                self.assertIn("+https://", agent)
+
+    def test_every_espn_fetcher_identifies_itself_with_a_contact_url(self):
+        for name in ("fetch_roster", "fetch_draft", "fetch_nfl",
+                     "fetch_nba", "fetch_mlb", "fetch_nhl"):
+            with self.subTest(script=name):
+                src = (REPO / "scripts" / f"{name}.py").read_text()
+                self.assertIn("github.com/goodvibes413/boston-dans-hub", src)
+
+
+class TestRosterFetchFailureIsNotAnEmptyRoster(unittest.TestCase):
+    """An unreachable roster and a genuinely empty one used to write the same
+    thing — an empty list and exit 0. Rule 11 then read "not in the roster" off a
+    roster that had never loaded, which is how A.J. Brown became an off-roster
+    Patriot."""
+
+    def _run(self, fetch_results, tmp):
+        """Drive fetch_roster.main() with fetch_json stubbed per URL."""
+        import importlib
+        mod = importlib.import_module("fetch_roster")
+        real_fetch, real_out = mod.fetch_json, mod.OUTPUT_PATH
+        mod.fetch_json = lambda url: fetch_results.get(
+            next((k for k in fetch_results if k in url), None))
+        mod.OUTPUT_PATH = Path(tmp) / "boston_roster.json"
+        try:
+            rc = mod.main()
+            return rc, json.loads(mod.OUTPUT_PATH.read_text())
+        finally:
+            mod.fetch_json, mod.OUTPUT_PATH = real_fetch, real_out
+
+    NHL_OK = {"forwards": [{"firstName": {"default": "Test"},
+                            "lastName": {"default": "Player"},
+                            "positionCode": "C"}]}
+
+    def test_failed_team_is_recorded_as_not_fetched(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            rc, out = self._run({"nhle.com": self.NHL_OK}, tmp)   # all ESPN None
+            self.assertEqual(out["fetch_ok"]["patriots"], False)
+            self.assertEqual(out["fetch_ok"]["bruins"], True)
+            self.assertEqual(out["rosters"]["patriots"], [])
+            # Partial failure still publishes: the teams that did load are usable.
+            self.assertEqual(rc, 0)
+
+    def test_total_failure_exits_non_zero(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            rc, out = self._run({}, tmp)
+            self.assertEqual(rc, 1)
+            self.assertTrue(all(v is False for v in out["fetch_ok"].values()))
+
+    def test_success_records_fetch_ok_true(self):
+        import tempfile
+        espn = {"athletes": [{"items": [
+            {"fullName": "Real Player", "position": {"abbreviation": "WR"}}]}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            rc, out = self._run(
+                {"football": espn, "basketball": espn, "baseball": espn,
+                 "nhle.com": self.NHL_OK}, tmp)
+            self.assertEqual(rc, 0)
+            self.assertTrue(all(out["fetch_ok"].values()))
+            self.assertEqual(out["rosters"]["patriots"][0]["name"], "Real Player")
+
+
+class TestRule11GuardsPerTeam(unittest.TestCase):
+    def test_prompt_tells_the_judge_to_skip_a_team_with_no_roster(self):
+        prompt = safety_judge.JUDGE_PROMPT
+        self.assertIn("SKIP THIS CHECK PER TEAM", prompt)
+        self.assertIn("rosters_fetch_ok", prompt)
+
+    def test_rule_15_scope_points_elsewhere_for_other_errors(self):
+        """#610 cited rule 15 for what it called a cross-team confusion."""
+        prompt = safety_judge.JUDGE_PROMPT
+        self.assertIn("SCOPE", prompt)
+        self.assertIn("that is rule 13", prompt)
+
+
+class TestStructuredFlags(unittest.TestCase):
+    """Flags carried their rule number in free prose, and the dashboard,
+    the 5-day aggregate and the correction prompt each substring-guessed it."""
+
+    def test_rule_comes_from_the_field_not_the_prose(self):
+        flag = safety_judge.make_flag(13, "this text mentions rule 7 and rule 8")
+        self.assertEqual(safety_judge.flag_rule(flag), 13)
+
+    def test_legacy_string_flags_still_resolve(self):
+        """Archived evals files predate the schema and the dashboard reads back
+        five days, so both shapes must work."""
+        cases = [
+            ("rule 11: off-roster player - A.J. Brown", 11),
+            ("phantom game: output claims redsox has a game today", 15),
+            ("repetition: formulaic paragraph opener", 10),
+            ("coverage window: the redsox played Baltimore", 12),
+            ("something nobody anticipated", None),
+        ]
+        for text, expected in cases:
+            with self.subTest(text=text[:30]):
+                self.assertEqual(safety_judge.flag_rule(text), expected)
+                self.assertEqual(safety_judge.flag_text(text), text)
+
+    def test_unknown_rule_numbers_fall_into_the_unclassified_bucket(self):
+        for bad in (99, -1, "seven", None):
+            with self.subTest(rule=bad):
+                self.assertEqual(safety_judge.make_flag(bad, "d")["rule"],
+                                 safety_judge.UNCLASSIFIED_RULE)
+
+    def test_normalize_accepts_both_shapes_and_rejects_junk(self):
+        out = safety_judge.normalize_flags(
+            [{"rule": 7, "detail": "a"}, "rule 10: b", {"detail": "c"}])
+        self.assertEqual([f["rule"] for f in out], [7, 10, safety_judge.UNCLASSIFIED_RULE])
+        self.assertEqual(safety_judge.normalize_flags("not a list"), [])
+        self.assertEqual(safety_judge.normalize_flags(None), [])
+
+    def test_flag_line_names_the_rule_for_the_correction_prompt(self):
+        line = safety_judge.flag_line(safety_judge.make_flag(15, "claims a game today"))
+        self.assertEqual(line, "rule 15 (Phantom scheduled game): claims a game today")
+
+    def test_unclassified_flag_renders_as_bare_detail(self):
+        line = safety_judge.flag_line(
+            safety_judge.make_flag(safety_judge.UNCLASSIFIED_RULE, "judge skipped"))
+        self.assertEqual(line, "judge skipped")
+
+    def test_response_schema_constrains_the_shape_the_prompt_asks_for(self):
+        schema = safety_judge.JUDGE_RESPONSE_SCHEMA
+        item = schema["properties"]["flags"]["items"]
+        self.assertEqual(sorted(item["required"]), ["detail", "rule"])
+        self.assertEqual(item["properties"]["rule"]["type"], "integer")
+        self.assertIn("medium", schema["properties"]["severity"]["enum"])
+
+    def test_unclassified_is_not_published_as_a_rubric_row(self):
+        self.assertIn(safety_judge.UNCLASSIFIED_RULE, safety_judge.RULE_TITLES)
+        src = (REPO / "scripts" / "publish.py").read_text()
+        self.assertIn("if n != UNCLASSIFIED_RULE", src)
+
+
+class TestCorrectionPromptNamesTheRule(unittest.TestCase):
+    def test_notes_render_structured_flags_not_dict_reprs(self):
+        captured = {}
+
+        class _Result:
+            returncode = 0
+
+        def fake_run(cmd, env=None, **kw):
+            captured["notes"] = env["CORRECTION_NOTES"]
+            return _Result()
+
+        real = publish.subprocess.run
+        publish.subprocess.run = fake_run
+        try:
+            publish.regenerate_with_correction(
+                [safety_judge.make_flag(15, "claims a game today")])
+        finally:
+            publish.subprocess.run = real
+        self.assertIn("rule 15 (Phantom scheduled game): claims a game today",
+                      captured["notes"])
+        self.assertNotIn("{'rule'", captured["notes"])
 
 
 class TestPhantomGameSeverity(unittest.TestCase):
