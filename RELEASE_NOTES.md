@@ -154,7 +154,34 @@ Fixed at both ends, data first:
 Verified against run #613's paragraph verbatim: the pre-pass flags the Thursday sentence and
 leaves "With no game today" alone.
 
-25 new tests (162 total). Worth noting the shape of this one: the first fix did not cause
+### Run #614: the weekday marker over-fired, twice, on correct prose
+
+The published post was right — *"There is no baseball at the Fens tonight… before the Royals
+arrive for a series starting Friday night"* — and `day_of_week` flowed through to the
+schedule block. But attempts 1 and 2 were both flagged by the change made an hour earlier,
+on sentences that get the schedule exactly right:
+
+> We have a rare Thursday **off** to let the frustration soak in before the Royals come to
+> Fenway for a weekend series **starting Friday**.
+
+Thursday is the off day, Friday is the game, both named correctly. Two causes:
+
+1. `\b(?:night|day) off\b` cannot match "Thursday off" — the `\b` before "day" has no
+   boundary to sit on inside "Thursday". Added the weekday forms.
+2. More fundamentally: **a sentence that names the real game day has already answered the
+   question this check asks.** A weekday-only match is now skipped when the sentence names
+   any weekday on which a team actually plays.
+
+#613's real bug still flags — "back to the Fens on Thursday night against Kansas City"
+names no other day, so nothing settles it — while #614's two sentences go quiet. That
+separation is the whole point: the marker earns its place on the first and had no business
+firing on the second.
+
+Cost of the over-firing was two regenerations; nothing bad reached the site. Worth stating
+plainly anyway, because a MEDIUM false positive is not free — it burns a Gemini call and can
+push a good post down the severity ladder to a quality warning.
+
+27 new tests (164 total). Worth noting the shape of this one: the first fix did not cause
 the second bug, it *revealed* it — and a check that had been silently wrong in one
 direction became loudly wrong in the other. Both readings of "A.J. Brown is off-roster"
 were artifacts, eight hours apart, of two different data faults.

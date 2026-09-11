@@ -1329,6 +1329,38 @@ class TestPhantomGameDetection(unittest.TestCase):
             [],
         )
 
+    def test_a_sentence_naming_the_real_game_day_is_not_a_claim(self):
+        """Run #614's two false positives, verbatim. Adding today's weekday as a
+        marker made the check fire on sentences that get the schedule exactly
+        right: Thursday is the off day, Friday is the game, and both are named.
+        A sentence that says which day the game IS has already answered the
+        question this check asks."""
+        for para in (
+            "We have a rare Thursday to let the frustration soak in before the "
+            "Royals come to Fenway for a weekend series starting Friday.",
+            "We have a rare Thursday off to let the frustration soak in before the "
+            "Royals come to Fenway for a weekend series starting Friday.",
+        ):
+            with self.subTest(para=para[:40]):
+                self.assertEqual(
+                    safety_judge.detect_phantom_game(
+                        self._post(para),
+                        self._schedule(("redsox", "MLB", "2026-09-11")),
+                        self.TODAY),
+                    [],
+                )
+
+    def test_weekday_off_is_an_off_day_phrase(self):
+        """"day off" cannot match inside "Thursday off" — the \\b before "day"
+        has no boundary to sit on."""
+        self.assertEqual(
+            safety_judge.detect_phantom_game(
+                self._post("A rare Thursday off for the Sox after that one at Fenway."),
+                self._schedule(("redsox", "MLB", "2026-09-11")),
+                self.TODAY),
+            [],
+        )
+
     def test_a_backward_looking_weekday_is_not_a_claim(self):
         """A weekday name is weaker evidence than "tonight" — it can point at a
         game already played — so a weekday-only match takes the past-tense veto."""

@@ -300,6 +300,10 @@ PHANTOM_NO_GAME_MARKERS = [
     r"\bno (?:baseball|basketball|hockey|football|game|games|action|ball)\b",
     r"\bnothing (?:on|to watch|doing)\b",
     r"\b(?:night|day|evening) off\b",
+    # "Thursday off" is not matched by "day off": the \b before "day" cannot sit
+    # inside "Thursday". Run #614 flagged "We have a rare Thursday off to let the
+    # frustration soak in" -- textbook correct off-day prose -- for exactly that.
+    r"\b(?:mon|tues|wednes|thurs|fri|satur|sun)day off\b",
     r"\boff (?:day|night)\b",
     r"\bdark (?:tonight|today)\b",
     r"\bnot? (?:playing|scheduled)\b",
@@ -872,6 +876,20 @@ def _game_team_key(game: dict) -> str | None:
     return PHANTOM_SPORT_TO_TEAM.get(str(game.get("sport", "")).strip().upper())
 
 
+def _names_a_scheduled_day(sentence: str, scheduled_weekdays: dict) -> bool:
+    """True if the sentence names a weekday on which some team actually plays.
+
+    Only consulted for a match resting on today's weekday alone. A sentence that
+    says which day the game IS ("...starting Friday") has answered the question
+    this check asks, whatever else it mentions.
+    """
+    for days in scheduled_weekdays.values():
+        for day_name in days:
+            if re.search(rf"\b{day_name}\b", sentence, re.IGNORECASE):
+                return True
+    return False
+
+
 def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> list[str]:
     """
     Deterministic pre-pass: flag a sentence that says a Boston team plays TODAY
@@ -938,7 +956,23 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
         weekday = date.fromisoformat(today_iso).strftime("%A")
         weekday_rx = re.compile(rf"\b{weekday}\b", re.IGNORECASE)
     except ValueError:
-        weekday_rx = None
+        weekday, weekday_rx = None, None
+
+    # Weekday names of days this team actually plays, so a sentence that names
+    # the real game day can say so. Run #614 flagged "a rare Thursday off ...
+    # before the Royals come to Fenway for a weekend series starting Friday":
+    # Thursday is the off day, Friday is the game, and the sentence is right on
+    # both counts. When a sentence names a scheduled day, the mention of today's
+    # weekday is context, not the claim.
+    scheduled_weekdays: dict = {}
+    for game in games:
+        team_key = _game_team_key(game)
+        try:
+            day_name = date.fromisoformat(str(game.get("date", ""))[:10]).strftime("%A")
+        except ValueError:
+            continue
+        if day_name.lower() != (weekday or "").lower():
+            scheduled_weekdays.setdefault(team_key, set()).add(day_name.lower())
     cue_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_GAME_CUES]
     venue_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_VENUE_CUES]
     no_game_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_NO_GAME_MARKERS]
@@ -959,6 +993,8 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
                 continue  # says there is no game today — that is the schedule agreeing
             if weekday_only and any(rx.search(sentence) for rx in veto_rx):
                 continue  # "that Thursday loss" — the weekday points backwards
+            if weekday_only and _names_a_scheduled_day(sentence, scheduled_weekdays):
+                continue  # names the real game day; today's weekday is context
             scrubbed = sentence
             for rx in exclusion_rx:
                 scrubbed = rx.sub(" ", scrubbed)
