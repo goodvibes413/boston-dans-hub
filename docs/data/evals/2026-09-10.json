@@ -1,10 +1,10 @@
 {
   "date": "2026-09-10",
-  "generated_at": "2026-09-11T03:23:02.453600+00:00",
+  "generated_at": "2026-09-11T03:28:57.742734+00:00",
   "outcome": "retry",
-  "winning_attempt": 2,
-  "total_attempts": 2,
-  "generation_seconds": 19.1,
+  "winning_attempt": 3,
+  "total_attempts": 3,
+  "generation_seconds": 48.9,
   "pre_pass": {
     "repetition_check": "pass",
     "schedule_check": "pass",
@@ -14,25 +14,37 @@
     {
       "attempt": 1,
       "verdict": "FAIL",
-      "severity": "low",
+      "severity": "medium",
       "flags": [
         {
-          "rule": 10,
-          "detail": "repetition: number-masked sentence skeleton \"that # to # loss at fenway\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-        },
-        {
-          "rule": 10,
-          "detail": "repetition: formulaic paragraph opener \"we have to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+          "rule": 15,
+          "detail": "phantom game: output claims redsox has a game today (2026-09-10); upcoming_schedule lists none (next game 2026-09-11). Sentence: We have a rare Thursday to let the frustration soak in before the Royals come to Fenway for a weekend series starting Friday."
         }
       ],
-      "duration_seconds": 3.0
+      "duration_seconds": 2.4
     },
     {
       "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 15,
+          "detail": "phantom game: output claims redsox has a game today (2026-09-10); upcoming_schedule lists none (next game 2026-09-11). Sentence: We have a rare Thursday off to let the frustration soak in before the Royals come to Fenway for a weekend series starting Friday."
+        }
+      ],
+      "duration_seconds": 2.2
+    },
+    {
+      "attempt": 3,
       "verdict": "PASS",
       "severity": "low",
       "flags": [],
-      "duration_seconds": 2.6
+      "duration_seconds": 22.6
     }
   ]
 }

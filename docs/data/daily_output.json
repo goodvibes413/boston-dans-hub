@@ -1,34 +1,35 @@
 {
-  "headline": "Red Sox offense flatlines as Patriots break our hearts again",
+  "headline": "Red Sox stumble against Angels as Patriots look toward recovery",
   "morning_brew": [
-    "Another night at the oldest yard in baseball, another result that leaves me staring at the ceiling in the dark. That four to six loss to the Angels was a gut-punch, especially watching the bats struggle to find any daylight until it was far too late. We put eight hits on the board, but they arrived in useless little pieces rather than the kind of sustained pressure that puts a crooked number on the scoreboard. It feels like we are spinning our wheels in the stretch run, and at this point I am watching these games the way you watch a slow-motion car crash. You know exactly what is coming, but you cannot look away.",
-    "Switching gears to the gridiron, that season opener in Seattle was a absolute heartbreaker. Dropping a ten to thirteen decision after leading at halftime is the kind of stuff that makes you question why we put ourselves through this every autumn. Drake Maye had a rough go with those three interceptions, and frankly, we need more efficiency if we want to compete in a league this unforgiving. I have always been one to preach patience, but seeing the offense sputter in the fourth quarter when a drive was there for the taking just hurts, plain and simple.",
-    "With no game today, I am planning on taking a breather to let the frustration of both losses subside. My neighbor Rick has been pacing his driveway for an hour, convinced that the officiating crews are conspiring against Boston across all sports, but I think the issues are much closer to home. We get back to the Fens on Thursday night against Kansas City, and I will be sitting in my usual spot hoping for a clean, professional effort. We are still in the mix for the postseason, so let's hope the team finds their rhythm before the window slams shut."
+    "That defeat yesterday at Fenway was a real kick in the teeth, with the offense failing to string anything together against the Angels. Jake Bennett had a rough go on the hill, and watching that early deficit balloon while our bats stayed cold was pure agony. It felt like a night where the team just never found its footing on either side of the ball, leaving me to stare at the wall and wonder why we can't just have one relaxing Tuesday night at the park.",
+    "Across town, the Patriots are reeling after a tough loss to the Seahawks in their season opener. The news that A.J. Brown is sidelined is a massive blow that hurts our offensive depth right out of the gate. Watching the team struggle to find a rhythm on the road shows we have plenty of work ahead, and losing a key playmaker for the next few weeks puts the pressure on the rest of the roster to step up, though right now I'm feeling like my neighbor Rick, who thinks the whole thing is a targeted conspiracy by the refs.",
+    "There is no baseball at the Fens tonight, which is probably a mercy after that showing. It gives everyone a chance to regroup before the Royals arrive for a series starting Friday night. I will be spending the time between now and first pitch avoiding the headlines and hoping for a fresh start when we take the field again to maintain our position in the wild card race, because I'm not ready to pull the plug on the Duck Boat fund just yet."
   ],
   "trend_watch": [
     {
       "category": "Cold Snap",
       "player": "Jake Bennett",
-      "trend": "Surrendered six earned runs across five and one-third innings of work against the Angels.",
-      "dans_take": "He did not have his best stuff and the command just was not there when he needed it most."
+      "trend": "Surrendered six earned runs and nine hits over five and one-third innings of work.",
+      "dans_take": "He didn't have the command to keep the Angels off the board, and frankly, my blood pressure is still recovering."
     },
     {
       "category": "Heater",
       "player": "Wilyer Abreu",
-      "trend": "Collected a hit and drove in a run with his solo shot during the loss.",
-      "dans_take": "At least someone in the lineup showed a little life when the pressure was on."
+      "trend": "Collected one hit with a home run and one run batted in.",
+      "dans_take": "At least he provided a little bit of power on a night where the rest of the lineup couldn't buy a run."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Jovani Moran",
+      "trend": "Tossed one scoreless inning while striking out one batter.",
+      "dans_take": "The arson squad took a rare night off, three outs of actual peace and quiet."
     }
   ],
   "news_digest": [
     {
-      "headline": "Early MLB free agency intel: Skubal, Chisholm, Arraez, more",
-      "url": "https://www.espn.com/mlb/story/_/id/49881419/mlb-free-agency-offseason-early-intel-contracts-skubal-chisholm-arraez",
-      "dans_take": "It is way too early to look at the winter market, but I guess it is all we have left to dream on."
-    },
-    {
-      "headline": "Stephen A.: Pats' loss is totally on Drake Maye",
-      "url": "https://www.espn.com/video/clip/_/id/49892255/pats-loss-totally-drake-maye",
-      "dans_take": "I do not need a national talking head to tell me the quarterback play was subpar, I have eyes."
+      "headline": "Source: Patriots' A.J. Brown likely out at least 4 weeks",
+      "url": "https://www.espn.com/nfl/story/_/id/49897884/sources-patriots-aj-brown-likely-least-4-weeks",
+      "dans_take": "This is a gut punch to our offense that we absolutely cannot afford."
     }
   ],
   "box_scores": {
@@ -77,36 +78,43 @@
     {
       "date": "2026-09-11",
       "matchup": "Kansas City Royals at Boston Red Sox",
+      "day_of_week": "Friday",
       "time_et": "7:10 PM ET"
     },
     {
       "date": "2026-09-12",
       "matchup": "Kansas City Royals at Boston Red Sox",
+      "day_of_week": "Saturday",
       "time_et": "4:10 PM ET"
     },
     {
       "date": "2026-09-13",
       "matchup": "Kansas City Royals at Boston Red Sox",
+      "day_of_week": "Sunday",
       "time_et": "1:35 PM ET"
     },
     {
       "date": "2026-09-15",
       "matchup": "Boston Red Sox at Texas Rangers",
+      "day_of_week": "Tuesday",
       "time_et": "8:05 PM ET"
     },
     {
       "date": "2026-09-16",
       "matchup": "Boston Red Sox at Texas Rangers",
+      "day_of_week": "Wednesday",
       "time_et": "8:05 PM ET"
     },
     {
       "date": "2026-09-17",
       "matchup": "Boston Red Sox at Texas Rangers",
+      "day_of_week": "Thursday",
       "time_et": "8:05 PM ET"
     },
     {
       "date": "9999-12-30",
       "matchup": "New England Patriots at Seattle Seahawks",
+      "day_of_week": "Thursday",
       "time_et": "TBD"
     }
   ],
@@ -115,31 +123,31 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 6.68,
-      "prompt_tokens": 40275,
-      "output_tokens": 1344,
+      "seconds": 5.5,
+      "prompt_tokens": 40256,
+      "output_tokens": 1183,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 6.06,
-      "prompt_tokens": 15399,
-      "output_tokens": 1346,
+      "seconds": 3.93,
+      "prompt_tokens": 15368,
+      "output_tokens": 1246,
       "thinking_tokens": null
     }
   ],
-  "generated_at": "2026-09-11T03:23:21.516709+00:00",
+  "generated_at": "2026-09-11T03:29:46.605549+00:00",
   "_regenerated": true,
   "_regeneration_reason": [
     {
       "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"that # to # loss at fenway\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "detail": "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     },
     {
-      "rule": 10,
-      "detail": "repetition: formulaic paragraph opener \"we have to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "rule": 15,
+      "detail": "phantom game: output claims redsox has a game today (2026-09-10); upcoming_schedule lists none (next game 2026-09-11). Sentence: We have a rare Thursday off to let the frustration soak in before the Royals come to Fenway for a weekend series starting Friday."
     }
   ]
 }
