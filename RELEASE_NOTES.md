@@ -5,6 +5,55 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-11 — The Post With No Button
+
+Reported from a phone: *"I see no run button for today's post."* The archive rail showed
+four pills — Mon 7 through Thu 10 — none of them highlighted, under a date line reading
+FRIDAY, SEPTEMBER 11, 2026.
+
+### daily_output.json was the one artifact that did not carry its own day
+
+Every other thing a run writes is keyed on `as_of_iso()`: `data/dan_archive/<date>.json`,
+`<date>.evals.json`, `docs/data/posts/<date>.json`, `docs/data/evals/<date>.json`, and the
+`available_dates` the picker builds its pills from. `daily_output.json` carried no day at
+all, so the frontend inferred one — `new Date(data.generated_at)`, the wall clock stamped
+when the run *finished*.
+
+Those two agree right up until a replay, which is exactly what ran on the 11th. Run #614
+replayed 2026-09-10 at 03:34 UTC on the 11th. It filed everything under 2026-09-10
+correctly — b2ad47e had just fixed the last place that didn't — and then the site read
+`generated_at: 2026-09-11T03:34Z`, decided today was the 11th, and went looking for a
+2026-09-11 pill that no run had ever produced. Nothing matched, so nothing was marked
+active, the how-generated panel found no eval trace to open, and Thursday's brew got a
+Friday headline. The button the reader was looking for was the Thu 10 pill, sitting
+unhighlighted three inches above the complaint.
+
+Same shape as b2ad47e, one layer out: a day derived from the wall clock rather than
+carried. `publish.py` now stamps `date` on the payload, and every write of
+`daily_output.json` — fresh, retry, judge-unavailable, stale, safe-fallback — goes through
+one `publish_output()` so the stamp cannot be skipped on a path someone adds later. A test
+asserts that no other code path writes that file directly. `generated_at` is untouched:
+`publish_fallback()` ages content off it and it has to keep meaning wall clock, which is
+precisely why it could never double as the run day.
+
+The picker also stopped depending on two artifacts agreeing. The day on screen now gets a
+pill whether or not the evals index has caught up with it, its dot resolving to `unknown`
+— published, trace not in hand. A post without a button is never the right answer.
+
+### Nine days of retention were buying four and a half
+
+The archive strip said LAST 4 DAYS. It had said LAST 5 DAYS every day before the 11th.
+
+`archive_dan_output()` pruned with `glob("*.json")`, which also matches
+`<date>.evals.json`. So the post window counted every day twice and spent half its budget
+deleting eval traces that `archive_evals()` already prunes on its own window —
+`ARCHIVE_RETENTION_DAYS = 9` bought four and a half days of posts. Under the five
+`generate_rant.py` reads back for continuity memory, and one pill short in the picker,
+which is how it surfaced: as a missing day rather than as thinner voice memory. The prune
+now counts posts only.
+
+---
+
 ## 2026-09-11 — The 403 Nobody Saw, and Flags That Name Their Own Rule
 
 Two loose ends from the phantom-game work. Chasing the first one down turned it into

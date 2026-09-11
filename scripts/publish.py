@@ -74,6 +74,26 @@ def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def stamp_run_date(output: dict) -> dict:
+    """Stamp the run's day onto the payload the site reads, in place.
+
+    Everything else this run writes is keyed on as_of_iso(): the post archive,
+    the evals doc, docs/data/posts/<date>.json, docs/data/evals/<date>.json and
+    the available_dates in the evals index. daily_output.json was the one
+    artifact that carried no day at all, so the frontend inferred one from
+    generated_at -- a wall-clock stamp taken when the run finished, not the day
+    the run is about. On a replay the two differ: run #614 replayed 2026-09-10
+    at 03:34 UTC on the 11th, and the site asked for a 2026-09-11 pill that no
+    run had ever produced. No pill matched, so today's post had no archive
+    button and the date line above it read Friday the 11th over Thursday's brew.
+
+    generated_at stays exactly as it is -- it is a real timestamp and the
+    staleness check in publish_fallback() depends on it meaning wall clock.
+    """
+    output["date"] = as_of_iso()
+    return output
+
+
 def read_json(path: Path) -> dict | None:
     """Safely read and parse JSON file. Return None if missing or unparseable."""
     if not path.exists():
@@ -133,6 +153,17 @@ def write_json(path: Path, data: dict, label: str = "published") -> bool:
         return False
 
 
+def publish_output(output: dict, label: str = "published") -> bool:
+    """Write daily_output.json with the run day stamped on it.
+
+    Every publish path goes through here -- fresh, retry, judge-unavailable,
+    stale and safe-fallback alike -- so the stamp cannot be forgotten on one of
+    them. A path that writes the file directly is a path whose post the archive
+    picker cannot find.
+    """
+    return write_json(PUBLISHED_OUTPUT_PATH, stamp_run_date(output), label=label)
+
+
 def archive_dan_output(published: dict, archive_dir: Path = ARCHIVE_DIR,
                        retention_days: int = ARCHIVE_RETENTION_DAYS) -> None:
     """
@@ -178,7 +209,17 @@ def archive_dan_output(published: dict, archive_dir: Path = ARCHIVE_DIR,
 
         # Prune anything older than retention window. Sort by filename
         # (lexicographic == chronological for ISO dates), keep the last N.
-        all_files = sorted(archive_dir.glob("*.json"), key=lambda p: p.stem)
+        #
+        # Posts only. glob("*.json") also matches "<date>.evals.json", so this
+        # used to count every day twice and spend half its budget evicting eval
+        # traces that archive_evals() already prunes on its own window. Nine
+        # days of retention bought four and a half days of posts -- below the
+        # five generate_rant.py reads back, and one pill short in the archive
+        # picker, which is how a missing day first showed up on the site.
+        all_files = sorted(
+            (f for f in archive_dir.glob("*.json") if ".evals" not in f.name),
+            key=lambda p: p.stem,
+        )
         excess = len(all_files) - retention_days
         if excess > 0:
             for old in all_files[:excess]:
@@ -429,7 +470,7 @@ def publish_fallback(reason: str) -> int:
                 stale["_stale_age_hours"] = round(age_hours, 1)
             # Preserve original generated_at (if present) so the frontend/healthcheck see true age.
             label = f"stale ({age_hours:.1f}h old)" if age_hours is not None else "stale (legacy, age unknown)"
-            ok = write_json(PUBLISHED_OUTPUT_PATH, stale, label=label)
+            ok = publish_output(stale, label=label)
             return 0 if ok else 1
         print(f"  previous output too old to reuse (age={age_hours})")
 
@@ -437,7 +478,7 @@ def publish_fallback(reason: str) -> int:
     fallback["generated_at"] = now_iso()
     fallback["_fallback"] = True
     fallback["_fallback_reason"] = reason
-    ok = write_json(PUBLISHED_OUTPUT_PATH, fallback, label="safe fallback")
+    ok = publish_output(fallback, label="safe fallback")
     return 0 if ok else 1
 
 
@@ -739,7 +780,7 @@ def main():
                 output = dict(raw_output)
                 output["generated_at"] = now_iso()
                 output = patch_box_score_season_types(output)
-                write_json(PUBLISHED_OUTPUT_PATH, output, label="output (judge unavailable)")
+                publish_output(output, label="output (judge unavailable)")
                 archive_dan_output(output)
                 _finalize_evals("fresh", winning_attempt=attempt)
                 return 0
@@ -754,7 +795,7 @@ def main():
                     output["_regeneration_reason"] = last_flags
                     outcome = "retry"
                 output = patch_box_score_season_types(output)
-                success = write_json(PUBLISHED_OUTPUT_PATH, output)
+                success = publish_output(output)
                 if success:
                     archive_dan_output(output)
                     _finalize_evals(outcome, winning_attempt=attempt)
@@ -830,7 +871,7 @@ def main():
         output["_quality_warning"] = True
         output["_quality_flags"] = best_attempt["flags"]
         output = patch_box_score_season_types(output)
-        success = write_json(PUBLISHED_OUTPUT_PATH, output)
+        success = publish_output(output)
         if success:
             archive_dan_output(output)
             _finalize_evals("retry", winning_attempt=best_attempt["attempt"])
