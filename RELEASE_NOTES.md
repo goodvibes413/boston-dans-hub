@@ -5,6 +5,392 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-11 — The 403 Nobody Saw, and Flags That Name Their Own Rule
+
+Two loose ends from the phantom-game work. Chasing the first one down turned it into
+something considerably larger than the flag that surfaced it.
+
+### A.J. Brown was never a roster-freshness problem
+
+Run #611's attempt 1 flagged A.J. Brown as an off-roster Patriot. The roster step's log
+explains why:
+
+```
+warning: fetch failed for .../nfl/teams/17/roster:  HTTP Error 403: Forbidden
+warning: fetch failed for .../nba/teams/2/roster:   HTTP Error 403: Forbidden
+warning: no data for patriots
+warning: no data for celtics
+✅ total players: 42 across 4 teams          ← exit code 0
+```
+
+42 is the Bruins alone. **All three ESPN rosters had been failing, and the pipeline was
+green throughout.** `boston_roster.json` published as
+`{patriots: [], celtics: [], redsox: [], bruins: [...42]}`, and rule 11's guard — *"if
+source_data.rosters is empty, skip"* — tests the whole dict, which the Bruins made
+non-empty. So the judge applied rule 11 to a Patriot against an empty Patriots list. Brown
+was simply the player Dan happened to name; every Patriots, Sox and Celtics reference in
+the post was equally exposed. The same 403 hits all four `fetch_draft` endpoints, so the
+draft-freshness machinery has been inert too.
+
+**The cause is a User-Agent.** The correlation is exact: every fetcher sending an honest
+bot identifier (`patriots-fanbot/1.0 (+github url)` and siblings) gets 200s from
+`site.api.espn.com`; the only two sending `Mozilla/5.0 (Boston Dan Sports Hub)` — a browser
+string no browser has ever sent — get 403 on every request, on the same host, in the same
+run. Both now identify themselves properly. This is the one fix here that could not be
+verified locally (no network egress); the next scheduled run proves or disproves it in the
+roster step's player count.
+
+**Two structural fixes so the next outage degrades instead of fabricating findings.**
+`fetch_roster.py` and `fetch_draft.py` now record `fetch_ok` per source, distinguishing
+"unreachable" from "empty", and exit non-zero when *every* source fails; the workflow turns
+that into a visible `::warning::` without costing the day's post. And rule 11 now skips
+**per team** — a team whose list is empty or whose `rosters_fetch_ok` entry is false has an
+*unknown* roster, not an empty one.
+
+That is the third bug in three days with the identical shape — absent evidence read as
+evidence of absence — after the schedule window that could not cover the replayed day and
+the empty-schedule case the phantom check already guards. It is now written down in
+AGENTS.md as a rule of its own, because noticing it a fourth time by accident is not a plan.
+
+### Flags now carry their rule number instead of hinting at it
+
+Rule 15's other loose end: in #610 the judge cited rule 15 for something it described, in
+the same sentence, as a cross-team confusion — which is rule 13.
+
+The mechanism was that `flags` was free prose. The rule number was whatever the model chose
+to type, and **three** consumers independently substring-guessed it: the dashboard's
+`deriveRuleStatus`, `publish_evals_to_docs`'s 5-day aggregate, and the correction prompt
+fed back to Dan. One mislabel corrupted all three silently. The dashboard was worse than
+guessing — it mapped *any* medium-severity attempt to rule 11 regardless of cause.
+
+- **`JUDGE_RESPONSE_SCHEMA`** makes each flag `{"rule": int, "detail": str}`, enforced by
+  Gemini structured output. The prompt now says to put the number in the field, pick the
+  more specific rule when two fit, and use rule 0 rather than stretch an unrelated rule.
+- **The deterministic checks label themselves** — repetition → 10, coverage window → 12,
+  phantom game → 15 — so the half of the system that is always right about its own rule no
+  longer has its prose parsed.
+- **Every reader goes through `flag_rule()` / `flag_text()` / `flag_line()`**, which still
+  accept plain strings: the `*.evals.json` already in the archive predate this and the
+  dashboard reads five days back.
+- **Rule 15 got a SCOPE paragraph** naming the one question it asks and pointing at rules
+  13, 7 and 12 for the errors it kept being reached for.
+- The correction prompt now reads `rule 15 (Phantom scheduled game): ...` instead of
+  whatever prose came back.
+
+**A schema the SDK or model refuses must never reach the "judge unreachable → PASS"
+handler**, or a config typo silently disables the safety gate. The structured call is
+wrapped in its own retry that falls back to an unstructured call, whose prose
+`normalize_flags()` parses just as well. Verified against a stub that rejects
+`response_schema`: two calls, prose normalized to rule 13, FAIL honoured, exit 1.
+
+**Measurement, not enforcement.** `summary_5day.rule15_agreement` now counts how often the
+deterministic detector and an LLM rule-15 flag fire on the same day. The two disagreeing is
+expected — the detector is conservative by design — but the trend is the only real evidence
+for whether the LLM half earns its place. Deliberately *not* wired to suppress an LLM flag
+the detector cannot corroborate: that would discard exactly the nuanced catches it exists
+for.
+
+### Run #612: the fix worked, and immediately exposed the next bug
+
+The User-Agent was it. Rosters went from **42 players (Bruins only) to 164 across all four
+teams** — Patriots 78, Celtics 16, Red Sox 28, Bruins 42 — and all four draft endpoints
+returned picks for the first time in an unknown number of days. Structured flags worked in
+production on the first run: every flag came back `{"rule": N, "detail": "..."}`, and the
+judge's failure output now reads `rule 11 (Off-roster player): ...` instead of whatever
+prose the model chose.
+
+And rule 11 flagged A.J. Brown again — in the same run whose roster log reads:
+
+```
+[PATRIOTS] found 78 player(s)
+    Tanner Arkin (TE)
+    A.J. Brown (WR)     ← second name on the list
+```
+
+So this time the flag was a genuine false positive, and chasing it found a mismatch that
+had been sitting between the two scripts the whole time. `generate_rant.py` injects
+`roster["rosters"]` — the team → players map. `safety_judge.py` injected the whole *file*.
+So rule 11, whose text says "a player NOT in source_data.rosters", was looking at
+`{generated_at, rosters, fetch_ok}` and correctly finding no players under any team.
+
+**The 403 had been hiding it.** While every list was empty the two shapes were
+indistinguishable — both meant "no players" — so the bug could not manifest. Fixing the
+fetch populated the rosters and turned a latent disagreement into a false-positive
+generator in the same run. `_roster_map()` now unwraps the file so both scripts see
+identical data, with tests asserting parity.
+
+### Run #613: rule 11 went quiet, and the next one surfaced
+
+Clean: two attempts, attempt 1 carrying only the deterministic rule 10 repetition flags
+(correctly labelled for the first time), attempt 2 PASS, published fresh with no quality
+warning. No rule 11. The roster fix held.
+
+The post itself, though, closed with this:
+
+> **With no game today**, I am planning on taking a breather… **We get back to the Fens on
+> Thursday night** against Kansas City.
+
+2026-09-10 was a **Thursday**. The Royals opened **Friday**. The post states the off day
+correctly — exactly what the Off Days rule asks for — and then, three sentences later, tells
+the reader the next game is tonight. It contradicts itself inside one paragraph.
+
+Neither half of the check could see it, because **both only ever asked whether the output
+said TONIGHT**. A weekday name that happens to be today's weekday is the same claim in
+different clothes.
+
+Fixed at both ends, data first:
+
+- **`fetch_schedule.py` now emits `day_of_week` per game**, `generate_rant.py` carries it
+  into the prompt and the published schedule, and the TODAY line reads
+  `TODAY: 2026-09-10 (Thursday)`. The model was being handed `"2026-09-11"` and asked,
+  implicitly, to do calendar arithmetic in its head. It is cheap to just say Friday.
+- **The persona prompt** now says to name the day from `day_of_week` and never derive it,
+  and spells out that today's own weekday reads as tonight.
+- **`detect_phantom_game()` treats today's weekday name as a today-marker.** Because a
+  weekday is weaker evidence than "tonight" — it can also point backwards — a match resting
+  on it alone takes the past-tense veto, so "that Thursday game last week" stays clean.
+- **Rule 15** extended to the same mismatch.
+
+Verified against run #613's paragraph verbatim: the pre-pass flags the Thursday sentence and
+leaves "With no game today" alone.
+
+### Run #614: the weekday marker over-fired, twice, on correct prose
+
+The published post was right — *"There is no baseball at the Fens tonight… before the Royals
+arrive for a series starting Friday night"* — and `day_of_week` flowed through to the
+schedule block. But attempts 1 and 2 were both flagged by the change made an hour earlier,
+on sentences that get the schedule exactly right:
+
+> We have a rare Thursday **off** to let the frustration soak in before the Royals come to
+> Fenway for a weekend series **starting Friday**.
+
+Thursday is the off day, Friday is the game, both named correctly. Two causes:
+
+1. `\b(?:night|day) off\b` cannot match "Thursday off" — the `\b` before "day" has no
+   boundary to sit on inside "Thursday". Added the weekday forms.
+2. More fundamentally: **a sentence that names the real game day has already answered the
+   question this check asks.** A weekday-only match is now skipped when the sentence names
+   any weekday on which a team actually plays.
+
+#613's real bug still flags — "back to the Fens on Thursday night against Kansas City"
+names no other day, so nothing settles it — while #614's two sentences go quiet. That
+separation is the whole point: the marker earns its place on the first and had no business
+firing on the second.
+
+Cost of the over-firing was two regenerations; nothing bad reached the site. Worth stating
+plainly anyway, because a MEDIUM false positive is not free — it burns a Gemini call and can
+push a good post down the severity ladder to a quality warning.
+
+27 new tests (164 total). Worth noting the shape of this one: the first fix did not cause
+the second bug, it *revealed* it — and a check that had been silently wrong in one
+direction became loudly wrong in the other. Both readings of "A.J. Brown is off-roster"
+were artifacts, eight hours apart, of two different data faults.
+
+---
+
+## 2026-09-10 — The Phantom Game: The Evals Didn't Fail, They Never Covered This
+
+**Reported:** today's brew closed with "The Sox have to stop the bleeding at the Fens
+tonight." There was no game. The Angels series ended Wednesday night, Thursday was an off
+day, and the next first pitch was Friday.
+
+**The evals did not miss it — no eval existed.** `2026-09-10.evals.json` shows the run
+working exactly as designed: attempt 1 FAILed on a structural-repetition pre-pass flag,
+attempt 2 came back PASS with an empty flag list, outcome `retry`. Nothing malfunctioned.
+Three independent gaps had to line up, and all three did:
+
+1. **The judge never saw the schedule.** `generate_rant.py` has injected
+   `UPCOMING_SCHEDULE` into the generation prompt since the beginning, but
+   `safety_judge.py` built `source_data` from its own seven paths and
+   `upcoming_schedule.json` was not one of them. Whatever the rubric said, the judge had no
+   way to tell "the Sox play tonight" from an off day — the fact needed to check the claim
+   was not in front of it.
+2. **No rule covered forward-looking claims.** Rules 7 (fabricated stats), 8 (fabricated
+   history) and 12 (game coverage gap) are all backward-looking: they audit what Dan said
+   about games that already happened. A claim about a game that *hasn't* happened was
+   outside all fourteen rules, so even a judge holding the schedule had nothing to cite.
+3. **No fixture could reproduce it.** `eval_voice.py` wrote a hardcoded
+   `{"games": []}` to `SCHEDULE_PATH` for every fixture, and no fixture declared a schedule
+   at all. All 34 fixtures ran against an empty schedule, which is the one state that
+   *disables* a schedule check. `voice_no_games.json` is about a slow day — no games
+   **yesterday** — which is the opposite end of the timeline.
+
+**The prompt was pushing him into it, too.** The Coverage Window section closes with
+"Today's game is something to look FORWARD to, in the closing paragraph" and models the
+phrasing — "we're back at it this afternoon", "first pitch is at 1:35". That instruction
+assumes a game exists today and never says to check. On a normal day it is right; on an off
+day it is a trap, and the third paragraph is exactly where Dan fell into it.
+
+**The fix, at all four layers:**
+
+- **`safety_judge.py` loads the schedule** via `SCHEDULE_PATH` and passes it as
+  `source_data.upcoming_schedule`. This is the part that matters most: rule 15 without the
+  data would just be a rule nobody could apply.
+- **Rule 15, "Phantom scheduled game"** (MEDIUM) — asserting or assuming a Boston team
+  plays today when the schedule lists no game for that team on that date, plus the inverse
+  (naming an opponent, venue, or start time that contradicts today's entry). Writing *about*
+  an off day is explicitly correct and must not be flagged.
+- **`detect_phantom_game()` deterministic pre-pass**, in the shape of the existing
+  repetition pre-passes. It fires on a sentence that pairs a today-marker with a game cue
+  and resolves to a single Boston team, and it is guarded hard against false positives: a
+  standings scrub so "two games back today" isn't a game claim, a White Sox lookbehind, a
+  skip when the schedule is empty (a missing schedule is a fetch failure, not proof nobody
+  plays), and a skip when the team has no games anywhere in the window (indistinguishable
+  from that team's fetcher having been dropped). Replayed against all five archived posts
+  it flags the published sentence and nothing else; with the slate blanked it catches the
+  correct "tonight" claim in all five. MEDIUM, not LOW: a game that does not exist is a
+  factual error a reader can check in one tap, not a voice nit — so it regenerates like
+  rules 11–14 and publishes with a `_quality_warning` rather than falling back to stale.
+- **Off Days section** in `boston_dan_system.txt`, directly under the Coverage Window rules
+  that set the trap, and **`schedule_phantom_game.json`**, the fixture built from this
+  morning's exact data.
+
+**The change worth generalizing** is `eval_voice.py`'s stub. A fixture only exercises the
+data sources it declares, and anything it omits gets an empty stub — so a behavior that
+depends on an undeclared source is untestable *by construction*, and the eval suite reports
+green while saying nothing about it. Fixtures now pass through their own `upcoming_schedule`
+block. When the next bug reaches the site with the evals green, ask in this order: did the
+judge have the data, is there a rule for this shape of error, could a fixture reproduce it.
+Documented in `AGENTS.md` under The Eval Workflow.
+
+**Dashboard note:** the evals dashboard maps the pre-pass to rule 10 (voice repetition), so
+folding schedule flags into `pre_pass_flags` would have blamed repetition for a phantom
+game. The enriched verdict now splits `repetition_flags` from `phantom_game_flags` and the
+`pre_pass` block carries a separate `schedule_check`. While there, the rule-flag aggregate
+in `publish_evals_to_docs()` iterated `range(1, 12)` and had silently stopped counting at
+rule 11 — it now iterates `RULE_TITLES`, so rules 12–15 are counted too.
+
+**Run #611 — the fix works, and it found one more bug in itself.** Replaying 2026-09-10 on
+the corrected fetchers published a clean post whose third paragraph reads "We have a rare
+night off from the diamond... the team needs to clear its head before the Royals come to
+town." Off day acknowledged, next game named by team rather than by a bare "tonight" —
+exactly what the Off Days rule asks for, and the archive now correctly overwrites
+`2026-09-10.json`.
+
+The trace is worth reading, because the run took three attempts and the middle one was the
+deterministic check firing on Dan getting it *right*:
+
+> phantom game: output claims redsox has a game today (2026-09-10); upcoming_schedule lists
+> none. Sentence: **No baseball for us tonight**, which is probably a mercy after that
+> performance...
+
+The check had no notion of negation. A sentence that says there is no game today agrees
+with the schedule; it was being read as contradicting it. The existing off-day test passed
+only because its phrasing happened to carry no cue word — luck, not coverage, and precisely
+the sentence shape the new prompt rule asks Dan to produce. `PHANTOM_NO_GAME_MARKERS` now
+vetoes the whole sentence on "no baseball/game/action", "a rare night off", "nothing on
+tonight", "the Sox do not play tonight", and friends. Both sentences that actually shipped
+broken still flag, under test.
+
+Attempt 1 also flagged A.J. Brown as an off-roster Patriot (rule 11), which is a separate
+roster-freshness question and is left open.
+
+**Run #610 reproduced the bug instead of verifying the fix.** Replaying 2026-09-10 with
+`AS_OF_DATE` produced a brew whose third paragraph reads "a series against the Royals
+starting **tonight** at the oldest yard in baseball." The published `schedule` block shows
+the Royals opener at 2026-09-11, 7:10 PM ET. On a run whose TODAY is 2026-09-10 that is the
+same phantom game, and neither half of the new check caught it: the deterministic pre-pass
+had skipped itself (`schedule_check: "pass"`) because of the window guard below, and the LLM
+judge passed it on attempt 3. Rule 15 *did* fire on attempt 1, but misapplied — it flagged
+"No baseball for the Pats this week" and then described its own finding as a cross-team
+misattribution, which is rule 13. So the LLM half is now known to fire, and known to be
+imprecise about which rule it is citing.
+
+The cause is the wall-clock anchoring below, and it cuts deeper than the check: Dan was
+handed a schedule starting 2026-09-11 while the prompt told him TODAY was 2026-09-10. The
+new Off Days rule did what it could with that — he wrote off-day prose ("No baseball for the
+Pats this week") — but no prompt rule can survive being given tomorrow's schedule and
+yesterday's date. **Fixed at the root:** all four `fetch_schedule()` functions now anchor
+their window to `as_of_date()` instead of `datetime.now(timezone.utc)`. Production is
+unaffected (blank `AS_OF_DATE` means UTC today either way); a replay now gets the window it
+is actually replaying, which also un-blinds the pre-pass guard on replays.
+
+**Also surfaced:** `archive_dan_output()` names the post archive from
+`published["generated_at"]` — a wall-clock timestamp — while `archive_evals()` uses
+`evals_doc["date"]`, which is `as_of_iso()`. Run #610 therefore filed its post as
+`2026-09-11.json` and its trace as `2026-09-10.evals.json`. Still open.
+
+**Follow-up found while merging:** the four schedule fetchers anchor their range to
+`datetime.now(timezone.utc)`, not `AS_OF_DATE` — the same wall-clock-derivation problem
+`pipeline_dates.py` was written to solve, in the one place it never reached. So replaying a
+past day with `AS_OF_DATE` produces a schedule window that *starts tomorrow* and cannot say
+what was scheduled back then. Left alone, that would make the new check call every correct
+"tonight" on a replayed game day a phantom. `detect_phantom_game()` now skips when the
+audited day falls before the schedule's own `from_date`: absent evidence is not evidence of
+absence. Anchoring the fetchers themselves to `as_of_date()` is the real fix and is still
+open — the guard means a replay declines to judge rather than judging wrongly.
+
+**Not verified against a live model run** — this session had no `GEMINI_API_KEY` and no
+network egress, so rule 15's LLM half is unexercised. The deterministic half, the merge,
+the severity floor, and the judge's schedule wiring are covered by 18 new tests plus an
+end-to-end run of `safety_judge.py` against a stubbed client. Run
+`eval_voice.py --fixture evals/fixtures/schedule_phantom_game.json --n 3` with a key to
+confirm the prompt-side fix holds.
+
+---
+
+## 2026-09-10 — Opening Night Broke The Pipeline: ESPN Scores Are Strings
+
+**Context:** Run #603 died in `generate_rant.py` before it reached Gemini, 26 seconds in,
+and filed issue #43. Nothing to do with quota this time:
+
+```
+File "scripts/generate_rant.py", line 847, in _game_outcome
+    "margin": abs(our - their),
+TypeError: unsupported operand type(s) for -: 'str' and 'str'
+```
+
+**The Patriots opener is the trigger, and it is not a coincidence.** ESPN's scoreboard and
+summary APIs report a competitor's score as a **string** (`"20"`), while the NHL API and
+`fetch_mlb.safe_int` store **ints**. `fetch_nfl.py` and `fetch_nba.py` passed ESPN's value
+through untouched, so two of the four boxscore files disagreed with the other two about
+what type a score is.
+
+That mismatch sat latent because of the calendar. `_game_outcome` was written 2026-08-03,
+by which point the Celtics and Bruins were long into the offseason — so **every game it had
+ever read came from MLB**, the one in-season fetcher that coerces. The Patriots' 20-23 loss
+on 9/9 was the first non-MLB game with a score to reach it, and it crashed on the first
+piece of arithmetic. Left alone, the NBA opener in October would have done the same thing.
+
+**The quieter half of the same bug:** even where nothing crashed, `won` was a string
+comparison. `"9" > "10"` is `True`, so a 10-9 loss would have read as a win and Dan would
+have written the wrong emotional register off correct data. Worth naming because it is the
+half that fails silently — the judge might or might not catch it, and it never goes red.
+
+**Two layers of fix, on purpose.**
+
+1. **The fetchers own the type.** `fetch_nfl.py` and `fetch_nba.py` now coerce through a
+   local `safe_int` (same shape as `fetch_mlb.safe_int`) when writing `*_score` /
+   `opponent_score`. All four boxscore files now agree that a score is an int, so no
+   downstream reader has to guess. Note their quarter/period tables were *already*
+   int-coerced — it was only the final team scores that leaked strings.
+2. **`_game_outcome` coerces anyway.** `_score_int` normalizes both supported schemas
+   before any arithmetic. The rolling store also carries entries the model wrote and the
+   eval fixtures, so the reader cannot assume the fetchers are the only source. A bad score
+   should degrade to 0, never take down the whole day's run before generation.
+
+**Why the day was lost rather than degraded:** this crashed in the generation *step*, which
+fails the job outright — upstream of `publish.py`, which owns the stale/fallback ladder. The
+graceful-degradation path never got a chance to run, so there was no stale republish either.
+The later safety-net cron slots would have hit the identical deterministic crash.
+
+**One more instance of the same bug, in the frontend.** `docs/app.js` picked the
+winner with `game.home_score > game.away_score`, and JS compares strings
+lexicographically too — a 10-9 game would have put the `winner` class on the loser.
+Now coerced with `Number()`. The fetchers make this moot for their own output, but a
+model-authored box score still reaches that function when a fetcher has nothing usable.
+
+**Verified on run #604** (dispatched on the fix branch with `force=true`): generation
+succeeded in 36s and the healthcheck reported `fresh`, `real content (not fallback)`.
+The run still ended red at the very last step — `git push` is written for `main`
+(`git pull --rebase origin main` rewrites a feature branch's SHAs, so the push back to
+the branch is a non-fast-forward). That is a branch-run artifact, not a pipeline fault.
+
+**Coverage:** 6 new tests (107 total) pinning both halves — the TypeError and the
+lexicographic comparison — plus the fetcher coercion, against the real string-score shape.
+
+---
+
 ## 2026-09-07 — What The Corrective Run Taught Us: Keep The Best Draft, And Stop Feeding Dan Today's Game
 
 **Context:** The corrective run (#591) that was supposed to replace the bad 2026-09-07

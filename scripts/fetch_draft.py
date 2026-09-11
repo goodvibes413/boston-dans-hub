@@ -47,6 +47,16 @@ BOSTON_TEAMS = {
 # right draft year — no annual manual bump needed.
 CURRENT_YEAR = datetime.now(timezone.utc).year
 
+# ESPN 403s a fake browser User-Agent. Every fetcher that identifies itself
+# honestly (fetch_nfl's "patriots-fanbot/1.0", fetch_nba, fetch_mlb, fetch_nhl,
+# fetch_season_memory) gets 200s from the same host in the same run; the two
+# that sent "Mozilla/5.0 (Boston Dan Sports Hub)" -- this file and its sibling --
+# got HTTP 403 Forbidden on every request. Run #611's log has all four roster
+# endpoints and all four draft endpoints refused that way, which is how the
+# judge came to hold an empty Patriots roster and flag A.J. Brown as off-roster.
+# Match the working fetchers: a real bot identifier with a contact URL.
+USER_AGENT = "boston-draft-fanbot/1.0 (+https://github.com/goodvibes413/boston-dans-hub)"
+
 # ESPN draft endpoints
 ESPN_DRAFT_URLS = {
     "NFL": f"https://site.api.espn.com/apis/site/v2/sports/football/nfl/draft?year={CURRENT_YEAR}",
@@ -67,7 +77,7 @@ def fetch_json(url: str) -> dict | None:
     try:
         req = urllib.request.Request(
             url,
-            headers={"User-Agent": "Mozilla/5.0 (Boston Dan Sports Hub)"},
+            headers={"User-Agent": USER_AGENT},
         )
         with urllib.request.urlopen(req, timeout=10) as response:
             return json.loads(response.read().decode("utf-8"))
@@ -256,14 +266,22 @@ def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     active_drafts = []
+    # Same distinction fetch_roster.py draws: an unreachable endpoint is not an
+    # offseason. Run #611 had all four of these 403 and the file still published
+    # green with active_drafts: [], so the draft-freshness machinery went quietly
+    # inert instead of reporting that it had nothing to work with.
+    fetch_ok: dict[str, bool] = {}
 
     for sport, url in ESPN_DRAFT_URLS.items():
         print(f"\n[{sport}] Fetching draft from {url[:60]}...")
         try:
             draft_data = fetch_json(url)
             if not draft_data:
-                print(f"  warning: no data from {sport} draft endpoint")
+                print(f"  ❌ FETCH FAILED for {sport} — draft data unavailable, "
+                      f"not absent", file=sys.stderr)
+                fetch_ok[sport] = False
                 continue
+            fetch_ok[sport] = True
 
             picks = extract_draft_picks(sport, draft_data)
             if not picks:
@@ -365,13 +383,21 @@ def main():
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "last_active_date": last_active_date,
         "active_drafts": active_drafts,
+        "fetch_ok": fetch_ok,
     }
+
+    failed = sorted(sp for sp, ok in fetch_ok.items() if not ok)
+    for sport in failed:
+        print(f"  ⚠️  {sport}: FETCH FAILED (draft recorded as unavailable)")
 
     try:
         OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
         with open(OUTPUT_PATH, "w") as f:
             json.dump(output, f, indent=2)
         print(f"\n✅ published: {OUTPUT_PATH} (last_active_date={last_active_date})")
+        if failed and len(failed) == len(fetch_ok):
+            print("❌ every draft fetch failed — exiting non-zero", file=sys.stderr)
+            return 1
         return 0
     except IOError as e:
         print(f"  ❌ error: could not write {OUTPUT_PATH}: {e}", file=sys.stderr)
@@ -380,6 +406,7 @@ def main():
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "last_active_date": last_active_date,
             "active_drafts": [],
+            "fetch_ok": fetch_ok,
         }
         try:
             OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)

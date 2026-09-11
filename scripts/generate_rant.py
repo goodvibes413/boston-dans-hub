@@ -810,6 +810,28 @@ _BOSTON_SCORE_KEYS = {
 }
 
 
+def _score_int(value) -> int:
+    """
+    Coerce a score to int, defaulting to 0 for anything unreadable.
+
+    Scores arrive here in two types depending on which fetcher wrote them:
+    ESPN's scoreboard/summary reports them as strings ("20"), so fetch_nba.py
+    and fetch_nfl.py used to store strings, while the NHL API and fetch_mlb's
+    safe_int store ints. The fetchers now coerce at the source, but this stays
+    as the belt to that suspenders: the rolling store also carries entries the
+    model wrote and the eval fixtures, and a string score reaching the
+    arithmetic below crashes the whole run (2026-09-10, the Patriots opener —
+    the first non-MLB game to reach this function since it was written).
+
+    Comparing scores as strings is the quieter half of the same bug: "9" > "10"
+    is True, so a 10-9 loss would read as a win even where nothing crashed.
+    """
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
+
+
 def _game_outcome(game: dict, team_key: str) -> dict | None:
     """
     Resolve a single game dict to Boston's perspective:
@@ -825,12 +847,12 @@ def _game_outcome(game: dict, team_key: str) -> dict | None:
     """
     score_key = _BOSTON_SCORE_KEYS.get(team_key, "score")
     if score_key in game or "opponent_score" in game:
-        our = game.get(score_key) or 0
-        their = game.get("opponent_score") or 0
+        our = _score_int(game.get(score_key))
+        their = _score_int(game.get("opponent_score"))
         opponent = (game.get("opponent") or "").lower()
     elif "home_score" in game or "away_score" in game:
-        home = game.get("home_score", 0) or 0
-        away = game.get("away_score", 0) or 0
+        home = _score_int(game.get("home_score"))
+        away = _score_int(game.get("away_score"))
         home_team = (game.get("home_team") or "").lower()
         away_team = (game.get("away_team") or "").lower()
         is_home = any(name in home_team for name in _BOSTON_NAMES.get(team_key, []))
@@ -1101,8 +1123,16 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
     if today_iso is None:
         today_iso = as_of_iso()
 
+    # The weekday is spelled out for the same reason UPCOMING_SCHEDULE carries
+    # day_of_week: "Thursday night" written on a Thursday is a today-claim, and
+    # the model should never have to work out which day an ISO date falls on.
+    try:
+        today_name = date.fromisoformat(today_iso).strftime("%A")
+        today_label = f"{today_iso} ({today_name})"
+    except ValueError:
+        today_label = today_iso
     message = (
-        f"TODAY: {today_iso}\n\n"
+        f"TODAY: {today_label}\n\n"
     )
     if slow_day:
         message += (
@@ -1434,7 +1464,7 @@ def build_schedule_from_fetcher(schedule_path: Path) -> list:
     Build the schedule list directly from upcoming_schedule.json instead of
     relying on Gemini, which selectively omits teams (e.g. Celtics in playoffs).
 
-    Returns a list of {date, matchup, time_et} dicts for the next 5 days,
+    Returns a list of {date, day_of_week, matchup, time_et} dicts for the next 5 days,
     sorted chronologically. Falls back to [] if the file is missing/broken.
     """
     try:
@@ -1453,6 +1483,9 @@ def build_schedule_from_fetcher(schedule_path: Path) -> list:
             result.append({
                 "date":     g.get("date", ""),
                 "matchup":  matchup,
+                # Carried through from fetch_schedule so Dan names the day from
+                # the data instead of deriving it from the ISO date.
+                "day_of_week": g.get("day_of_week", ""),
                 "time_et":  g.get("time_et", "TBD"),
             })
 

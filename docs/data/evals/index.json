@@ -1,10 +1,9 @@
 {
   "available_dates": [
-    "2026-09-05",
-    "2026-09-06",
     "2026-09-07",
     "2026-09-08",
-    "2026-09-09"
+    "2026-09-09",
+    "2026-09-10"
   ],
   "rules": [
     {
@@ -76,29 +75,39 @@
       "number": 14,
       "title": "Milestone omission",
       "summary": "A must-cover milestone (trade, signing, firing) missing from the brew"
+    },
+    {
+      "number": 15,
+      "title": "Phantom scheduled game",
+      "summary": "Claims a game today that the upcoming schedule does not list"
     }
   ],
   "summary_5day": {
-    "fresh": 1,
+    "fresh": 0,
     "retry": 4,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 11,
+        "count": 14,
         "title": "Voice repetition"
       },
       {
-        "rule": 1,
-        "count": 5,
-        "title": "Profanity"
+        "rule": 12,
+        "count": 4,
+        "title": "Game coverage gap"
       },
       {
         "rule": 7,
         "count": 3,
         "title": "Fabricated statistics"
       }
-    ]
+    ],
+    "rule15_agreement": {
+      "deterministic": 0,
+      "llm": 1,
+      "both": 0
+    }
   }
 }

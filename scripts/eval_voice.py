@@ -54,12 +54,14 @@ def split_fixture(fixture_data: dict):
     """
     Detect fixture shape and return
     (rolling_7day, season_static, season_current, recent_dan_output,
-     boston_drafts, latest_news, today_iso, boston_roster).
+     boston_drafts, latest_news, today_iso, boston_roster, upcoming_schedule).
 
     New shape: has explicit "rolling_7day" key → split into sections. May also
     carry "boston_drafts" (DRAFT_PICKS source), "latest_news" (LATEST_NEWS
-    source), "today" (pins TODAY_OVERRIDE for freshness-sensitive tests), and
-    "boston_roster" (ROSTER_PATH source for off-roster player checks).
+    source), "today" (pins TODAY_OVERRIDE for freshness-sensitive tests),
+    "boston_roster" (ROSTER_PATH source for off-roster player checks), and
+    "upcoming_schedule" (SCHEDULE_PATH source for phantom-game checks — a
+    fixture that omits it gets the empty stub, which disables the check).
     Legacy shape: whole fixture IS the rolling_7day payload; everything else blank.
     """
     if isinstance(fixture_data, dict) and "rolling_7day" in fixture_data:
@@ -72,9 +74,10 @@ def split_fixture(fixture_data: dict):
         news = fixture_data.get("latest_news", {}) or {}
         today = fixture_data.get("today")
         roster = fixture_data.get("boston_roster", {}) or {}
-        return rolling, past, current, recent, drafts, news, today, roster
+        schedule = fixture_data.get("upcoming_schedule", {"games": []}) or {"games": []}
+        return rolling, past, current, recent, drafts, news, today, roster, schedule
     # Legacy: the fixture IS the rolling_7day payload
-    return fixture_data, {}, {}, [], {}, {}, None, {}
+    return fixture_data, {}, {}, [], {}, {}, None, {}, {"games": []}
 
 
 def main():
@@ -96,7 +99,7 @@ def main():
         fixture_data = json.loads(fixture.read_text())
     except json.JSONDecodeError as e:
         sys.exit(f"error: fixture not valid JSON: {e}")
-    rolling, season_past, season_current, recent_output, drafts, news, fixture_today, roster = split_fixture(fixture_data)
+    rolling, season_past, season_current, recent_output, drafts, news, fixture_today, roster, schedule = split_fixture(fixture_data)
 
     # Write split sections to tmp files so generate_rant.py can read them via env vars
     tmp_rolling = RUNS_DIR / f"{label}_tmp_rolling.json"
@@ -112,9 +115,12 @@ def main():
     tmp_news.write_text(json.dumps(news, indent=2))
     tmp_roster.write_text(json.dumps(roster, indent=2))
 
-    # Write empty stub for schedule — fixtures don't usually exercise it.
-    stub_schedule = RUNS_DIR / f"{label}_stub_schedule.json"
-    stub_schedule.write_text('{"games": []}')
+    # Schedule: the fixture's own "upcoming_schedule" block, or an empty stub for
+    # the fixtures that don't exercise it. This used to be hardcoded empty, which
+    # meant no fixture could reproduce a phantom-game claim — see the
+    # schedule_phantom_game fixture and safety_judge.detect_phantom_game().
+    tmp_schedule = RUNS_DIR / f"{label}_tmp_schedule.json"
+    tmp_schedule.write_text(json.dumps(schedule, indent=2))
 
     # Continuity memory: recent_dan_output is a list of {date, headline, ...}
     # entries. generate_rant.py reads these from a directory of <date>.json
@@ -137,7 +143,7 @@ def main():
         out_path = RUNS_DIR / f"{label}_{i}.json"
         env = os.environ.copy()
         env["ROLLING_STORE_PATH"] = str(tmp_rolling)
-        env["SCHEDULE_PATH"] = str(stub_schedule)
+        env["SCHEDULE_PATH"] = str(tmp_schedule)
         env["NEWS_PATH"] = str(tmp_news)
         env["SEASON_STATIC_PATH"] = str(tmp_static)
         env["SEASON_CURRENT_PATH"] = str(tmp_current)

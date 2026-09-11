@@ -46,6 +46,16 @@ try:
 except ImportError:
     _SSL_CONTEXT = ssl.create_default_context()
 
+# ESPN 403s a fake browser User-Agent. Every fetcher that identifies itself
+# honestly (fetch_nfl's "patriots-fanbot/1.0", fetch_nba, fetch_mlb, fetch_nhl,
+# fetch_season_memory) gets 200s from the same host in the same run; the two
+# that sent "Mozilla/5.0 (Boston Dan Sports Hub)" -- this file and its sibling --
+# got HTTP 403 Forbidden on every request. Run #611's log has all four roster
+# endpoints and all four draft endpoints refused that way, which is how the
+# judge came to hold an empty Patriots roster and flag A.J. Brown as off-roster.
+# Match the working fetchers: a real bot identifier with a contact URL.
+USER_AGENT = "boston-roster-fanbot/1.0 (+https://github.com/goodvibes413/boston-dans-hub)"
+
 ESPN_ROSTER_URLS = {
     "patriots": "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/17/roster",
     "celtics":  "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/2/roster",
@@ -73,7 +83,7 @@ def fetch_json(url: str) -> dict | None:
     try:
         req = urllib.request.Request(
             url,
-            headers={"User-Agent": "Mozilla/5.0 (Boston Dan Sports Hub)"},
+            headers={"User-Agent": USER_AGENT},
         )
         with urllib.request.urlopen(req, timeout=15, context=_SSL_CONTEXT) as response:
             return json.loads(response.read().decode("utf-8"))
@@ -179,6 +189,10 @@ def main() -> int:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     rosters: dict[str, list[dict]] = {}
+    # "No players" and "could not reach the endpoint" are different facts, and
+    # collapsing them is what let rule 11 read an unreachable roster as proof a
+    # player was off the team. Downstream reads fetch_ok to tell them apart.
+    fetch_ok: dict[str, bool] = {}
 
     # --- ESPN teams (NFL, NBA, MLB) ---
     espn_parsers = {
@@ -192,12 +206,15 @@ def main() -> int:
         try:
             data = fetch_json(url)
             if not data:
-                print(f"  warning: no data for {team}", file=sys.stderr)
+                print(f"  ❌ FETCH FAILED for {team} — roster unavailable, not empty",
+                      file=sys.stderr)
                 rosters[team] = []
+                fetch_ok[team] = False
                 continue
             parser = espn_parsers[team]
             players = parser(data)
             rosters[team] = players
+            fetch_ok[team] = True
             print(f"  found {len(players)} player(s)")
             for p in players[:3]:
                 print(f"    {p['name']} ({p['position']})")
@@ -207,17 +224,21 @@ def main() -> int:
             print(f"  ❌ unexpected error for {team}: {type(e).__name__}: {e}",
                   file=sys.stderr)
             rosters[team] = []
+            fetch_ok[team] = False
 
     # --- Bruins (NHL official API) ---
     print(f"\n[BRUINS] Fetching from {NHL_BRUINS_URL[:70]}...")
     try:
         data = fetch_json(NHL_BRUINS_URL)
         if not data:
-            print("  warning: no data for bruins", file=sys.stderr)
+            print("  ❌ FETCH FAILED for bruins — roster unavailable, not empty",
+                  file=sys.stderr)
             rosters["bruins"] = []
+            fetch_ok["bruins"] = False
         else:
             players = parse_nhl_roster(data)
             rosters["bruins"] = players
+            fetch_ok["bruins"] = True
             print(f"  found {len(players)} player(s)")
             for p in players[:3]:
                 print(f"    {p['name']} ({p['position']})")
@@ -227,25 +248,38 @@ def main() -> int:
         print(f"  ❌ unexpected error for bruins: {type(e).__name__}: {e}",
               file=sys.stderr)
         rosters["bruins"] = []
+        fetch_ok["bruins"] = False
 
     # --- Write output ---
     output = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "rosters": rosters,
+        "fetch_ok": fetch_ok,
     }
 
     total = sum(len(v) for v in rosters.values())
-    print(f"\n✅ total players: {total} across {len(rosters)} teams")
+    failed = sorted(t for t, ok in fetch_ok.items() if not ok)
+    print(f"\n{'⚠️ ' if failed else '✅'} total players: {total} across {len(rosters)} teams")
+    for team in failed:
+        print(f"  ⚠️  {team}: FETCH FAILED (roster recorded as unavailable)")
 
     try:
         OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
         OUTPUT_PATH.write_text(json.dumps(output, indent=2))
         print(f"✅ published: {OUTPUT_PATH}")
+        # Every source down means the file carries no roster information at all.
+        # Exiting 0 there is how three empty ESPN rosters rode a green pipeline
+        # into the judge. A partial failure still publishes (the teams that did
+        # fetch are usable, and rule 11 now skips per-team) but says so loudly.
+        if failed and len(failed) == len(fetch_ok):
+            print("❌ every roster fetch failed — exiting non-zero", file=sys.stderr)
+            return 1
         return 0
     except IOError as e:
         print(f"❌ error writing {OUTPUT_PATH}: {e}", file=sys.stderr)
         # Write empty-but-valid fallback so downstream scripts don't crash
-        fallback = {"generated_at": datetime.now(timezone.utc).isoformat(), "rosters": {}}
+        fallback = {"generated_at": datetime.now(timezone.utc).isoformat(),
+                    "rosters": {}, "fetch_ok": {}}
         try:
             OUTPUT_PATH.write_text(json.dumps(fallback, indent=2))
         except Exception:

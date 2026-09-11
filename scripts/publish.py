@@ -50,7 +50,14 @@ DAN_MEMORY_DAYS = int(os.environ.get("DAN_MEMORY_DAYS", 5))  # match generate_ra
 # drift out of sync again (the old hand-mirrored dict silently missed rules 12-14).
 # Importing the module only defines constants/functions; execution is main-guarded.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from safety_judge import RULE_TITLES  # noqa: E402
+from safety_judge import (  # noqa: E402
+    RULE_TITLES,
+    UNCLASSIFIED_RULE,
+    flag_line,
+    flag_rule,
+    flag_text,
+    make_flag,
+)
 
 SAFE_FALLBACK = {
     "morning_brew": [
@@ -146,14 +153,16 @@ def archive_dan_output(published: dict, archive_dir: Path = ARCHIVE_DIR,
         return
 
     try:
+        # Key the archive on the RUN's day, the same as archive_evals() (which
+        # uses evals_doc["date"]) and publish_evals_to_docs() (which uses
+        # as_of_iso()). This used to derive the filename from generated_at — a
+        # wall-clock timestamp — so run #610, replaying 2026-09-10 just after
+        # midnight UTC, filed its post as 2026-09-11.json while its trace went
+        # to 2026-09-10.evals.json. One run, two dates, and the day it replaced
+        # was not the day it replayed. gen_at stays in the payload: it is a real
+        # timestamp and belongs there.
         gen_at = published.get("generated_at")
-        if gen_at:
-            dt = datetime.fromisoformat(gen_at)
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=timezone.utc)
-            date_str = dt.astimezone(timezone.utc).date().isoformat()
-        else:
-            date_str = as_of_iso()
+        date_str = as_of_iso()
 
         archive_dir.mkdir(parents=True, exist_ok=True)
         slim = {
@@ -259,16 +268,39 @@ def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
 
             for attempt in evals_data.get("attempts", []):
                 for flag in attempt.get("flags", []):
-                    flag_lower = str(flag).lower()
-                    # Detect which rule fired by looking for "rule N" in the flag text,
-                    # or by checking for "repetition" (rule 10) / "off-roster" (rule 11).
-                    for rule_num in range(1, 12):
-                        if (f"rule {rule_num}" in flag_lower or
-                                (rule_num == 10 and "repetition" in flag_lower) or
-                                (rule_num == 11 and "off-roster" in flag_lower)):
-                            rule_flag_counts[rule_num] = rule_flag_counts.get(rule_num, 0) + 1
+                    # flag_rule() reads the "rule" field on a structured flag and
+                    # falls back to parsing prose for the archived string flags
+                    # written before the schema existed. This used to be a
+                    # substring scan over range(1, 12), which both miscounted a
+                    # mislabelled flag and silently stopped at rule 11.
+                    rule_num = flag_rule(flag)
+                    if rule_num is None or rule_num == UNCLASSIFIED_RULE:
+                        continue
+                    rule_flag_counts[rule_num] = rule_flag_counts.get(rule_num, 0) + 1
 
         available_dates.sort()
+
+        # Rule 15 agreement: does the LLM half of the phantom-game check earn its
+        # place? The deterministic detector is conservative by design, so the two
+        # disagreeing is expected — what matters is the trend. Reported, not acted
+        # on: auto-suppressing an LLM flag the detector cannot corroborate would
+        # discard exactly the nuanced catches the LLM exists for.
+        rule15 = {"deterministic": 0, "llm": 0, "both": 0}
+        for ef in evals_files:
+            try:
+                evals_data = json.loads(ef.read_text())
+            except Exception:
+                continue
+            det = (evals_data.get("pre_pass", {}) or {}).get("schedule_check") == "fail"
+            llm = any(
+                flag_rule(flag) == 15
+                for attempt in evals_data.get("attempts", [])
+                for flag in attempt.get("flags", [])
+                if not str(flag_text(flag)).startswith("phantom game:")
+            )
+            rule15["deterministic"] += int(det)
+            rule15["llm"] += int(llm)
+            rule15["both"] += int(det and llm)
 
         # Most-flagged rules summary (top 3)
         most_flagged = sorted(rule_flag_counts.items(), key=lambda x: -x[1])[:3]
@@ -291,10 +323,12 @@ def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
             12: "A team played yesterday but the brew never mentions the game",
             13: "A story blended into another team's paragraph without naming the team",
             14: "A must-cover milestone (trade, signing, firing) missing from the brew",
+            15: "Claims a game today that the upcoming schedule does not list",
         }
         rules = [
             {"number": n, "title": RULE_TITLES[n], "summary": rule_summaries.get(n, "")}
             for n in sorted(RULE_TITLES.keys())
+            if n != UNCLASSIFIED_RULE  # a bucket for unmappable flags, not a rule
         ]
 
         index = {
@@ -303,6 +337,7 @@ def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
             "summary_5day": {
                 **outcome_counts,
                 "most_flagged_rules": most_flagged_rules,
+                "rule15_agreement": rule15,
             },
         }
         (DOCS_EVALS_DIR / "index.json").write_text(json.dumps(index, indent=2))
@@ -548,22 +583,27 @@ def check_coverage_window(output: dict) -> list[str]:
 
         if not any(t in text for t in tokens):
             game_date = game.get("game_date") or raw.get("game_date", "")
-            flags.append(
+            flags.append(make_flag(12, (
                 f"coverage window: the {team_key} played {opponent} on {game_date} "
                 f"and the morning_brew never mentions that game. Recap THAT game. "
                 f"Do not write up a game played today, even if you know the result."
-            )
+            )))
 
     return flags
 
 
-def regenerate_with_correction(flags: list[str]) -> int:
+def regenerate_with_correction(flags: list) -> int:
     """
     Re-run generate_rant.py with CORRECTION_NOTES set so Dan sees the
     judge's flags and fixes them. Returns the subprocess exit code
     (0 on success, non-zero on failure).
+
+    flag_line() renders each flag as "rule N (Title): detail", so the correction
+    prompt now names the rule rather than whatever prose the model happened to
+    produce. Accepts legacy plain-string flags unchanged.
     """
-    notes = "\n".join(f"  - {f}" for f in flags) if flags else "  (no specific flags provided)"
+    notes = ("\n".join(f"  - {flag_line(f)}" for f in flags)
+             if flags else "  (no specific flags provided)")
     env = dict(os.environ)
     env["CORRECTION_NOTES"] = notes
     try:
@@ -598,7 +638,8 @@ def main():
         "winning_attempt": None,
         "total_attempts": 0,
         "generation_seconds": None,
-        "pre_pass": {"repetition_check": "unknown", "flagged_phrases": []},
+        "pre_pass": {"repetition_check": "unknown", "schedule_check": "unknown",
+                     "flagged_phrases": []},
         "attempts": [],
     }
 
@@ -632,7 +673,7 @@ def main():
     judge_save_path = Path(judge_save_str)
 
     # Step 2: Judge, regenerate on FAIL, re-judge (up to MAX_JUDGE_ATTEMPTS times)
-    last_flags: list[str] = []
+    last_flags: list = []   # structured flags: {"rule": int, "detail": str}
     best_attempt: dict | None = None  # least-bad draft seen across all attempts
     original_raw_output = dict(raw_output)  # save before any retry overwrites it
     try:
@@ -666,8 +707,18 @@ def main():
             # reflects the original generation; subsequent attempts have their own pre-pass).
             if enriched:
                 pre_pass_flags = enriched.get("pre_pass_flags", [])
+                phantom_flags = enriched.get("phantom_game_flags", [])
+                # Reported separately: the dashboard maps repetition_check to rule
+                # 10, so a schedule flag folded in there would blame voice repetition
+                # for a phantom game. Fall back to the whole pre-pass list for an
+                # enriched verdict written before the split existed.
+                repetition_flags = enriched.get(
+                    "repetition_flags",
+                    [f for f in pre_pass_flags if f not in phantom_flags],
+                )
                 evals_doc["pre_pass"] = {
-                    "repetition_check": "fail" if pre_pass_flags else "pass",
+                    "repetition_check": "fail" if repetition_flags else "pass",
+                    "schedule_check": "fail" if phantom_flags else "pass",
                     "flagged_phrases": pre_pass_flags,
                 }
 
@@ -711,7 +762,9 @@ def main():
 
             # FAIL
             last_flags = list(verdict.get("flags", [])) if verdict else []
-            print(f"  ❌ safety judge FAILED: {last_flags}")
+            print("  ❌ safety judge FAILED:")
+            for f in last_flags:
+                print(f"       {flag_line(f)}")
 
             # Remember the least-bad draft seen so far. On 2026-09-07 attempt 2
             # recapped the right game and failed only on repetition nits, then
@@ -783,7 +836,9 @@ def main():
             _finalize_evals("retry", winning_attempt=best_attempt["attempt"])
         return 0 if success else 1
 
-    reason = f"safety judge FAILed after {MAX_JUDGE_ATTEMPTS} attempts: {'; '.join(last_flags)[:200]}"
+    # flag_line() renders structured flags; a bare join would stringify the dicts.
+    reason = (f"safety judge FAILed after {MAX_JUDGE_ATTEMPTS} attempts: "
+              f"{'; '.join(flag_line(f) for f in last_flags)[:200]}")
     _finalize_evals("fallback")
     return publish_fallback(reason)
 

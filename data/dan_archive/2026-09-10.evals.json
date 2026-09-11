@@ -1,0 +1,64 @@
+{
+  "date": "2026-09-10",
+  "generated_at": "2026-09-11T03:34:02.894872+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 52.9,
+  "pre_pass": {
+    "repetition_check": "fail",
+    "schedule_check": "pass",
+    "flagged_phrases": [
+      {
+        "rule": 10,
+        "detail": "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"rick but i will be tuned in\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"we have to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 3.0
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The output claims 'Let's hope for a better result once the first pitch flies at the Fens' today (2026-09-10), but the upcoming schedule lists no game for the Red Sox until Friday, 2026-09-11."
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"we have to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 3.4
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 2.0
+    }
+  ]
+}

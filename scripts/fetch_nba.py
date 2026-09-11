@@ -17,7 +17,7 @@ import urllib.error
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-from pipeline_dates import target_game_date
+from pipeline_dates import as_of_date, target_game_date
 
 # ---------------------------------------------------------------------------
 # Constants & paths
@@ -110,6 +110,22 @@ def parse_fg_pct(fg_str: str):
     if attempted == 0:
         return 0.0
     return round((made / attempted) * 100, 1)
+
+
+def safe_int(val, default=0) -> int:
+    """
+    Convert val to int, returning default on failure.
+
+    ESPN reports competitor scores as strings ("120"), while the NHL API and
+    fetch_mlb.py store ints. Downstream readers do arithmetic and comparisons
+    on these fields, so the four boxscore files must agree on the type: a
+    string score crashed generate_rant.compute_emotional_context on the
+    2026-09-10 run (Patriots opener). Coerce here, at the source.
+    """
+    try:
+        return int(val)
+    except (TypeError, ValueError):
+        return default
 
 
 # ---------------------------------------------------------------------------
@@ -266,10 +282,10 @@ def fetch_boxscore() -> None:
             team_name = comp.get("team", {}).get("displayName", "Unknown")
 
             if team_id == CELTICS_TEAM_ID:
-                celtics_score = score
+                celtics_score = safe_int(score)
                 home = (home_away == "home")
             else:
-                opponent_score = score
+                opponent_score = safe_int(score)
                 opponent_name  = team_name
 
         # --- 5. Parse player boxscore ---
@@ -379,7 +395,16 @@ def fetch_schedule() -> None:
     in Python since the endpoint offers no date-range parameter.
     """
     now_utc      = datetime.now(timezone.utc)
-    from_dt      = now_utc.replace(hour=0, minute=0, second=0, microsecond=0)
+    # Window anchor is the RUN's day, not the wall clock. These four fetchers
+    # already take their boxscore date from pipeline_dates; fetch_schedule was
+    # the copy that kept deriving its own, so an AS_OF_DATE replay produced a
+    # schedule window starting *after* the day being replayed. Dan then read a
+    # tomorrow-anchored schedule while being told today was yesterday, and
+    # called the next day's opener "tonight" — the 2026-09-10 phantom game,
+    # reproduced by the very re-run meant to verify its fix. now_utc stays for
+    # generated_at, which is a real timestamp and should track the clock.
+    _as_of      = as_of_date()
+    from_dt      = datetime(_as_of.year, _as_of.month, _as_of.day, tzinfo=timezone.utc)
     to_dt        = from_dt + timedelta(days=7)
     from_date_str = from_dt.strftime("%Y-%m-%d")
     to_date_str   = to_dt.strftime("%Y-%m-%d")

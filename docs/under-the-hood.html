@@ -1296,6 +1296,7 @@
 '  <span class="str">"generation_seconds"</span>: <span class="num">14.3</span>,\n' +
 '  <span class="str">"pre_pass"</span>: {\n' +
 '    <span class="str">"repetition_check"</span>: <span class="str">"pass"</span>,  <span class="cm">/* deterministic regex result */</span>\n' +
+'    <span class="str">"schedule_check"</span>:   <span class="str">"pass"</span>,  <span class="cm">/* claimed a game the schedule doesn\'t list? */</span>\n' +
 '    <span class="str">"flagged_phrases"</span>:  []       <span class="cm">/* specific phrases that fired */</span>\n' +
 '  },\n' +
 '  <span class="str">"attempts"</span>: [\n' +
@@ -1303,7 +1304,7 @@
 '      <span class="str">"attempt"</span>:          <span class="num">1</span>,\n' +
 '      <span class="str">"verdict"</span>:          <span class="str">"PASS"</span>,      <span class="cm">/* "PASS" | "FAIL" */</span>\n' +
 '      <span class="str">"severity"</span>:         <span class="kw">null</span>,        <span class="cm">/* null | "low" | "medium" | "high" */</span>\n' +
-'      <span class="str">"flags"</span>:            [],          <span class="cm">/* rule violation descriptions */</span>\n' +
+'      <span class="str">"flags"</span>:            [],          <span class="cm">/* [{rule: 1-15, detail: "..."}] */</span>\n' +
 '      <span class="str">"duration_seconds"</span>: <span class="num">9.3</span>\n' +
 '    }\n' +
 '  ]\n' +

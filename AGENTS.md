@@ -400,13 +400,31 @@ python3 scripts/eval_voice.py --fixture evals/fixtures/voice_no_games.json --n 3
 - Real player names only for stats/performance fixtures (accuracy, memory, voice)
 - Synthetic dates and scores are fine — fixtures test behavior, not real game data
 - Document pass/fail criteria in a `_fixture_notes` key
+- A fixture only sees the data sources it declares. `eval_voice.py` writes an empty
+  stub for anything the fixture omits, so a behavior that depends on a source the
+  fixture leaves out is untestable by construction — that is how the 2026-09-10
+  phantom game shipped with 34 fixtures green (every one of them ran against a
+  hardcoded empty `UPCOMING_SCHEDULE`). Declare `upcoming_schedule` in any fixture
+  about what happens next; see `schedule_phantom_game.json`.
 
 **Taking action on eval results** — all persona changes go in `prompts/boston_dan_system.txt`:
 - Dan cites wrong stats → tighten Stats Discipline section
 - Dan mentions off-field personal news → add specific pattern to Safety section
 - Dan sounds generic → add specific Boston-isms or phrasings
 - Dan repeats catchphrases → add "vary your expressions" rule
+- Dan asserts a game that isn't scheduled → check the Off Days section, and confirm the fixture actually declares `upcoming_schedule`
 - Safety judge FAILs → read flags, trace to output line, tighten persona AND judge rubric
+
+**When a bug reaches the site and no eval caught it**, work the question in this order
+before writing a new fixture — the 2026-09-10 phantom game failed all three:
+1. **Did the judge have the data?** `safety_judge.py` builds `source_data` from its own
+   set of paths. A source `generate_rant.py` reads is not automatically one the judge
+   reads; `upcoming_schedule.json` was in the generation prompt for months and had never
+   been in the judge's.
+2. **Is there a rule for this shape of error?** Rules 7, 8, and 12 are all backward-looking
+   — fabricated stats, fabricated history, a missed recap. Nothing covered a claim about
+   what happens *next*, so a phantom game was outside the rubric even in principle.
+3. **Can a fixture reproduce it?** See the empty-stub trap in Fixture design rules above.
 
 ---
 
@@ -791,15 +809,20 @@ Written alongside each post archive file by `publish.py`. Captures the full pipe
   "total_attempts": 1,
   "generation_seconds": 18.4,
   "pre_pass": {
-    "repetition_check": "pass", // "pass" | "fail"
-    "flagged_phrases": []       // phrases from the deterministic pre-pass
+    "repetition_check": "pass", // "pass" | "fail" — detect_repetition + detect_structural_repetition
+    "schedule_check": "pass",   // "pass" | "fail" — detect_phantom_game (rule 15)
+    "flagged_phrases": []       // every deterministic pre-pass flag, both checks merged
   },
   "attempts": [
     {
       "attempt": 1,
       "verdict": "PASS",
       "severity": null,
-      "flags": [],              // merged flags from LLM judge + pre-pass
+      "flags": [],              // merged flags from LLM judge + pre-pass.
+                                // Each is {"rule": <1-15, 0 = unclassified>, "detail": "..."}.
+                                // Files written before 2026-09-11 hold plain strings;
+                                // every reader goes through safety_judge.flag_rule()/
+                                // flag_text(), which accept both shapes.
       "duration_seconds": 9.3
     }
   ]
@@ -894,8 +917,32 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 7. Fabricated statistics not present in the source data
 8. `news_digest` dans_take containing personal attacks, guilt speculation, or character judgments
 
+**Flags are structured.** The judge returns each flag as
+`{"rule": <number>, "detail": "<one sentence>"}`, enforced by `JUDGE_RESPONSE_SCHEMA`,
+and the deterministic pre-passes attach their own rule number at the source (repetition →
+10, coverage window → 12, phantom game → 15). Nothing downstream guesses the rule by
+substring-matching prose any more — that is what let a mislabelled flag corrupt the evals
+dashboard, the 5-day aggregate and the correction prompt at once. Read flags through
+`flag_rule()` / `flag_text()` / `flag_line()`; they also accept the plain-string flags in
+archived `*.evals.json`. Rule 0 is the "could not classify" bucket and is deliberately not
+a rubric row on the site.
+
+**Never read "no data" as "the data says no."** Three separate bugs in this codebase have
+had that exact shape: a schedule window that could not cover the replayed day, a roster
+whose endpoint 403'd, and a draft feed that did the same. A check whose source is missing
+or unreachable must skip, not conclude. `fetch_ok` (rosters, drafts), `from_date`
+(schedule) and per-team emptiness all exist to make that distinguishable — use them.
+
+That list is the safety floor, not the full rubric. **`RULE_TITLES` and `JUDGE_PROMPT` in
+`scripts/safety_judge.py` are the source of truth** — they also carry the accuracy rules
+(fabricated history, voice repetition, off-roster players, coverage gaps, cross-team
+misattribution, missed milestones, and phantom scheduled games). Read them there before
+assuming a class of error is covered; the 2026-09-10 phantom game shipped because nobody
+had checked that a forward-looking claim had no rule at all.
+
 **Severity logic:**
 - `low` → borderline phrase; retry once with tighter prompt
+- `medium` → factual/coverage error (rules 11–15); regenerates, and publishes with a `_quality_warning` if no attempt clears
 - `high` → clear violation; immediate fallback, no retry
 
 ---
@@ -921,6 +968,8 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 | `CALLERS_PATH` | `generate_rant.py` | Default: `data/callers_and_voices.json`; override in evals |
 | `GRUDGE_BOOK_PATH` | `generate_rant.py` | Default: `data/grudge_book.json`; override in evals |
 | `ROSTER_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_roster.json`; override in evals to point at fixture-specific roster |
+| `ROSTER_PATH` (see also) | `fetch_roster.py` | Where the roster fetcher writes. Its output carries `fetch_ok` per team — `false` means the endpoint was unreachable, which judge rule 11 treats as "roster unknown", NOT "player is off the team" |
+| `SCHEDULE_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/upcoming_schedule.json`; the only source that says whether a team plays TODAY. Backs judge rule 15 and `detect_phantom_game()`; override in evals via a fixture's `upcoming_schedule` block |
 | `DAN_STORIES_PATH` | `generate_rant.py` | Default: `data/dan_stories.json`; recurring fictional characters and comparison templates |
 | `STORY_SEEDS_PATH` | `generate_rant.py` | Default: `data/story_seeds.json`; historical-anchor story seeds for slow news days |
 | `TODAY_OVERRIDE` | `generate_rant.py` | Pin "today" to a specific date (YYYY-MM-DD) for freshness-sensitive eval fixtures. Production leaves unset. |

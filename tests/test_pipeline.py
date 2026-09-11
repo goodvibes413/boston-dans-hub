@@ -19,17 +19,20 @@ import unittest
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO / "scripts"))
 
 import generate_rant  # noqa: E402
 import fetch_season_memory  # noqa: E402
 import fetch_mlb  # noqa: E402
 import fetch_nhl  # noqa: E402
+import fetch_nba  # noqa: E402
+import fetch_nfl  # noqa: E402
 import pipeline_dates  # noqa: E402
 import publish  # noqa: E402
 import fetch_news  # noqa: E402
-import fetch_nfl  # noqa: E402
 import fetch_schedule  # noqa: E402
+import safety_judge  # noqa: E402
 
 
 def make_rolling(date_str, team="redsox", played=True, games=None):
@@ -143,6 +146,70 @@ class TestEmotionalContext(unittest.TestCase):
         rolling = make_rolling("2026-06-10", played=True)  # no games, no scores
         ctx = generate_rant.compute_emotional_context(rolling, None)
         self.assertNotIn("redsox", ctx)
+
+
+def make_espn_game(team_key, our_score, their_score, opponent="Las Vegas Raiders"):
+    """A flat boxscore as fetch_nfl/fetch_nba wrote it before 2026-09-10:
+    ESPN reports competitor scores as STRINGS, so that is what landed in the
+    rolling store."""
+    return {"days": [{"date": "2026-09-09", team_key: {"boxscore": {
+        "game_date": "2026-09-09", "played": True, "home": True,
+        f"{team_key}_score": our_score, "opponent": opponent,
+        "opponent_score": their_score}}}]}
+
+
+class TestStringScoresFromESPN(unittest.TestCase):
+    """ESPN's scoreboard reports scores as strings; the NHL/MLB fetchers store
+    ints. _game_outcome had only ever been fed MLB games, so the mismatch stayed
+    latent from August until the Patriots opener on 2026-09-09 put a string
+    score in the rolling store — `abs(our - their)` raised TypeError and the
+    whole 2026-09-10 run died before generation (issue #43).
+
+    Both halves are pinned here: the crash, and the string comparison that would
+    have called a 10-9 loss a win even if the arithmetic had held."""
+
+    def test_string_scores_do_not_crash(self):
+        ctx = generate_rant.compute_emotional_context(
+            make_espn_game("patriots", "20", "23"), None)
+        self.assertEqual(ctx["patriots"]["last_result"], "loss")
+        self.assertEqual(ctx["patriots"]["margin"], 3)
+
+    def test_string_scores_compare_numerically_not_lexicographically(self):
+        # "9" > "10" is True as strings — a one-run loss must still be a loss.
+        ctx = generate_rant.compute_emotional_context(
+            make_espn_game("celtics", "9", "10"), None)
+        self.assertEqual(ctx["celtics"]["last_result"], "loss")
+        self.assertEqual(ctx["celtics"]["margin"], 1)
+
+    def test_fixture_schema_string_scores_also_coerced(self):
+        rolling = make_rolling("2026-06-10", games=[
+            {"home_team": "Tampa Bay Rays", "away_team": "Boston Red Sox",
+             "home_score": "4", "away_score": "3"}])
+        ctx = generate_rant.compute_emotional_context(rolling, None)
+        self.assertEqual(ctx["redsox"]["last_result"], "loss")
+        self.assertEqual(ctx["redsox"]["margin"], 1)
+
+    def test_unreadable_score_falls_back_to_zero(self):
+        self.assertEqual(generate_rant._score_int(None), 0)
+        self.assertEqual(generate_rant._score_int(""), 0)
+        self.assertEqual(generate_rant._score_int("--"), 0)
+        self.assertEqual(generate_rant._score_int("20"), 20)
+        self.assertEqual(generate_rant._score_int(20), 20)
+
+
+class TestFetchersStoreIntScores(unittest.TestCase):
+    """The real fix is at the source: all four boxscore files must agree that a
+    score is an int, so no downstream reader has to guess."""
+
+    def test_nfl_scoreboard_strings_become_ints(self):
+        self.assertEqual(fetch_nfl.safe_int("23"), 23)
+        self.assertEqual(fetch_nfl.safe_int(23), 23)
+        self.assertEqual(fetch_nfl.safe_int(None), 0)
+
+    def test_nba_scoreboard_strings_become_ints(self):
+        self.assertEqual(fetch_nba.safe_int("120"), 120)
+        self.assertEqual(fetch_nba.safe_int(120), 120)
+        self.assertEqual(fetch_nba.safe_int(None), 0)
 
 
 class TestNormalizeBoxScoresDoubleheader(unittest.TestCase):
@@ -945,7 +1012,10 @@ class TestCoverageWindowCheck(unittest.TestCase):
         }
         flags = publish.check_coverage_window(output)
         self.assertEqual(len(flags), 1)
-        self.assertIn("Baltimore Orioles", flags[0])
+        self.assertIn("Baltimore Orioles", safety_judge.flag_text(flags[0]))
+        # The coverage check IS rule 12; it labels itself rather than leaving
+        # the dashboard to guess the rule from its prose.
+        self.assertEqual(safety_judge.flag_rule(flags[0]), 12)
 
     def test_silent_when_the_game_is_covered(self):
         output = {
@@ -1489,6 +1559,703 @@ class TestNewsCoverageWindow(unittest.TestCase):
                     self._article("not a timestamp")]
         kept = fetch_news.drop_articles_after(articles, date(2026, 9, 6))
         self.assertEqual(len(kept), 3)
+
+
+class TestPhantomGameDetection(unittest.TestCase):
+    """The 2026-09-10 bug: the published brew closed with "The Sox have to stop
+    the bleeding at the Fens tonight" on an off day between two series, and the
+    judge passed it. It could not have done otherwise — upcoming_schedule.json
+    was in generate_rant.py's prompt but was never in the judge's source_data,
+    and every fixture ran against a hardcoded empty schedule."""
+
+    TODAY = "2026-09-10"
+
+    def _post(self, *paragraphs, headline="Sox drop another at Fenway"):
+        return {"headline": headline, "morning_brew": list(paragraphs)}
+
+    def _schedule(self, *entries):
+        return {"games": [
+            {"sport": sport, "team": team, "date": day}
+            for team, sport, day in entries
+        ]}
+
+    # The published sentence, verbatim, against the schedule of that morning.
+    PUBLISHED = (
+        "I am trying to look ahead, but damn, this city needs a win to clear the air. "
+        "The Sox have to stop the bleeding at the Fens tonight, and I am begging them "
+        "to put this miserable stretch behind us."
+    )
+
+    def test_published_2026_09_10_paragraph_is_flagged(self):
+        flags = safety_judge.detect_phantom_game(
+            self._post(self.PUBLISHED),
+            self._schedule(("redsox", "MLB", "2026-09-11"),
+                           ("patriots", "NFL", "2026-09-13")),
+            self.TODAY,
+        )
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("redsox", flags[0])
+        self.assertIn("2026-09-11", flags[0])
+
+    def test_same_paragraph_passes_when_the_game_is_real(self):
+        flags = safety_judge.detect_phantom_game(
+            self._post(self.PUBLISHED),
+            self._schedule(("redsox", "MLB", self.TODAY),
+                           ("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_empty_schedule_is_a_fetch_failure_not_an_off_day(self):
+        """fetch_schedule.py drops a team whose file is missing or has an error
+        sentinel. Absent data must never read as proof nobody plays."""
+        for schedule in ({}, {"games": []}, None, []):
+            with self.subTest(schedule=schedule):
+                self.assertEqual(
+                    safety_judge.detect_phantom_game(
+                        self._post(self.PUBLISHED), schedule, self.TODAY),
+                    [],
+                )
+
+    def test_team_absent_from_the_whole_window_is_not_flagged(self):
+        """A team with no games anywhere in the window is indistinguishable from
+        a team whose fetcher failed — that case belongs to judge rule 15."""
+        flags = safety_judge.detect_phantom_game(
+            self._post(self.PUBLISHED),
+            self._schedule(("patriots", "NFL", "2026-09-13")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_we_language_resolves_through_the_paragraph_venue(self):
+        paragraph = (
+            "My neighbor Rick has a new theory that the grass at Fenway was cut "
+            "unevenly last night. We have to shake off last night and get back to "
+            "work immediately with another game tonight."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-12")),
+            self.TODAY,
+        )
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("redsox", flags[0])
+
+    def test_unresolvable_team_flags_only_when_nobody_plays(self):
+        paragraph = "We are right back at it this afternoon and I will be watching."
+        nobody = self._schedule(("redsox", "MLB", "2026-09-11"))
+        somebody = self._schedule(("redsox", "MLB", "2026-09-11"),
+                                  ("celtics", "NBA", self.TODAY))
+        self.assertEqual(
+            len(safety_judge.detect_phantom_game(self._post(paragraph), nobody, self.TODAY)), 1)
+        self.assertEqual(
+            safety_judge.detect_phantom_game(self._post(paragraph), somebody, self.TODAY), [])
+
+    def test_off_day_prose_is_not_a_phantom_game(self):
+        paragraph = (
+            "No baseball tonight, which is probably merciful after that one. "
+            "We are back at Fenway on Friday and I will be there with a fresh Dunks."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_off_day_prose_that_also_carries_a_game_cue(self):
+        """Run #611's false positive. The earlier off-day test passed only because
+        its phrasing happened to contain no cue word — the check could not see the
+        "No" at all. These are the sentences the Off Days prompt rule asks for, so
+        flagging them punishes Dan for getting it right."""
+        for paragraph in (
+            "No baseball for us tonight, which is probably a mercy after that "
+            "performance, so I will spend the evening on errands before the next game.",
+            "We have a rare night off from the diamond tonight, and the team needs to "
+            "clear its head before the Royals come to town for the next game.",
+            "Nothing on tonight for the Sox, so I will watch someone else lose a game.",
+            "The Sox do not play tonight and after that game I am fine with it.",
+        ):
+            with self.subTest(paragraph=paragraph[:40]):
+                self.assertEqual(
+                    safety_judge.detect_phantom_game(
+                        self._post(paragraph),
+                        self._schedule(("redsox", "MLB", "2026-09-11")),
+                        self.TODAY),
+                    [],
+                )
+
+    def test_negation_veto_does_not_swallow_the_real_claims(self):
+        """The two sentences that actually shipped broken must still flag."""
+        for paragraph in (
+            "The Sox have to stop the bleeding at the Fens tonight, and I am "
+            "begging them to put this miserable stretch behind us.",
+            "We have no time to mope with a series against the Royals starting "
+            "tonight at the oldest yard in baseball.",
+        ):
+            with self.subTest(paragraph=paragraph[:40]):
+                self.assertEqual(
+                    len(safety_judge.detect_phantom_game(
+                        self._post(paragraph),
+                        self._schedule(("redsox", "MLB", "2026-09-11")),
+                        self.TODAY)),
+                    1,
+                )
+
+    def test_venue_next_to_a_past_reference_is_ambiguous_not_a_claim(self):
+        """A venue is the weakest cue. "Last night at Fenway ... today" contains
+        one and asserts nothing about tonight."""
+        flags = safety_judge.detect_phantom_game(
+            self._post("Last night at Fenway was brutal and I am still sour about it today."),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_past_clause_does_not_veto_a_real_claim_beside_it(self):
+        """The veto is narrow on purpose — a past clause in the same sentence
+        must not swallow an actual forward-looking claim."""
+        flags = safety_judge.detect_phantom_game(
+            self._post("It was ugly, but the Sox are at the Fens tonight and I need a bounce back."),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(len(flags), 1, flags)
+
+    def test_next_game_reported_is_the_earliest_not_the_first_listed(self):
+        flags = safety_judge.detect_phantom_game(
+            self._post(self.PUBLISHED),
+            self._schedule(("redsox", "MLB", "2026-09-14"),
+                           ("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertIn("next game 2026-09-11", flags[0])
+
+    def test_replay_of_a_day_before_the_schedule_window_is_skipped(self):
+        """The schedule fetchers anchor to datetime.now(), not AS_OF_DATE, so a
+        pinned replay of a past day gets a window starting tomorrow. That window
+        cannot say what was scheduled back then — flagging on it would call every
+        correct "tonight" on a replayed game day a phantom."""
+        schedule = self._schedule(("redsox", "MLB", "2026-09-11"))
+        schedule["from_date"] = "2026-09-11"
+        self.assertEqual(
+            safety_judge.detect_phantom_game(self._post(self.PUBLISHED), schedule, self.TODAY),
+            [],
+        )
+
+    def test_window_covering_today_still_checks(self):
+        schedule = self._schedule(("redsox", "MLB", "2026-09-11"))
+        schedule["from_date"] = self.TODAY
+        self.assertEqual(
+            len(safety_judge.detect_phantom_game(
+                self._post(self.PUBLISHED), schedule, self.TODAY)), 1)
+
+    def test_todays_weekday_name_is_a_today_claim(self):
+        """Run #613 wrote "With no game today" and then, three sentences later,
+        "We get back to the Fens on Thursday night against Kansas City". TODAY was
+        Thursday 2026-09-10; the Royals opened Friday. The post contradicted
+        itself inside one paragraph and nothing caught it, because rule 15 and
+        this pre-pass both only ever asked whether the output said TONIGHT."""
+        para = (
+            "With no game today, I am planning on taking a breather. "
+            "We get back to the Fens on Thursday night against Kansas City, "
+            "and I will be sitting in my usual spot."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(para),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,   # a Thursday
+        )
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("Thursday night", flags[0])
+
+    def test_naming_the_actual_game_day_is_correct(self):
+        para = ("With no game today, we get back to the Fens on Friday night "
+                "against Kansas City.")
+        self.assertEqual(
+            safety_judge.detect_phantom_game(
+                self._post(para),
+                self._schedule(("redsox", "MLB", "2026-09-11")),
+                self.TODAY),
+            [],
+        )
+
+    def test_a_sentence_naming_the_real_game_day_is_not_a_claim(self):
+        """Run #614's two false positives, verbatim. Adding today's weekday as a
+        marker made the check fire on sentences that get the schedule exactly
+        right: Thursday is the off day, Friday is the game, and both are named.
+        A sentence that says which day the game IS has already answered the
+        question this check asks."""
+        for para in (
+            "We have a rare Thursday to let the frustration soak in before the "
+            "Royals come to Fenway for a weekend series starting Friday.",
+            "We have a rare Thursday off to let the frustration soak in before the "
+            "Royals come to Fenway for a weekend series starting Friday.",
+        ):
+            with self.subTest(para=para[:40]):
+                self.assertEqual(
+                    safety_judge.detect_phantom_game(
+                        self._post(para),
+                        self._schedule(("redsox", "MLB", "2026-09-11")),
+                        self.TODAY),
+                    [],
+                )
+
+    def test_weekday_off_is_an_off_day_phrase(self):
+        """"day off" cannot match inside "Thursday off" — the \\b before "day"
+        has no boundary to sit on."""
+        self.assertEqual(
+            safety_judge.detect_phantom_game(
+                self._post("A rare Thursday off for the Sox after that one at Fenway."),
+                self._schedule(("redsox", "MLB", "2026-09-11")),
+                self.TODAY),
+            [],
+        )
+
+    def test_a_backward_looking_weekday_is_not_a_claim(self):
+        """A weekday name is weaker evidence than "tonight" — it can point at a
+        game already played — so a weekday-only match takes the past-tense veto."""
+        para = "That Thursday game at Fenway last week was brutal and I am still sour."
+        self.assertEqual(
+            safety_judge.detect_phantom_game(
+                self._post(para),
+                self._schedule(("redsox", "MLB", "2026-09-11")),
+                self.TODAY),
+            [],
+        )
+
+    def test_standings_talk_is_not_a_game_claim(self):
+        """"games back" carries a cue word without asserting a game — the exact
+        shape a naive keyword match would flag every stretch-run morning."""
+        paragraph = (
+            "The Sox are two games back today and the wild card is still there for "
+            "the taking if the bats wake up."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_white_sox_opponent_is_not_the_red_sox(self):
+        paragraph = "The White Sox play tonight and nobody in this city cares."
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-11"),
+                           ("celtics", "NBA", self.TODAY)),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_one_flag_per_team_not_one_per_sentence(self):
+        paragraph = (
+            "The Sox are back at Fenway tonight. The Sox need a win tonight. "
+            "The Sox take the field tonight."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(len(flags), 1, flags)
+
+    def test_archived_posts_from_days_with_games_stay_clean(self):
+        """Regression floor: replay every archived post against a schedule where
+        all four teams play. Anything that flags is a matcher bug, not Dan."""
+        archive = REPO / "data" / "dan_archive"
+        posts = [p for p in sorted(archive.glob("*.json")) if ".evals." not in p.name]
+        self.assertTrue(posts, "no archived posts to replay")
+        for path in posts:
+            day = path.stem
+            with self.subTest(day=day):
+                schedule = self._schedule(*[(t, s, day) for t, s in
+                                            [("redsox", "MLB"), ("celtics", "NBA"),
+                                             ("bruins", "NHL"), ("patriots", "NFL")]])
+                post = json.loads(path.read_text())
+                self.assertEqual(
+                    safety_judge.detect_phantom_game(post, schedule, day), [])
+
+
+class TestScheduleCarriesTheWeekday(unittest.TestCase):
+    """Don't make the model do calendar arithmetic: fetch_schedule spells the day
+    out, generate_rant carries it into the prompt and the published schedule, and
+    the TODAY line names today's weekday."""
+
+    def test_normalize_game_spells_out_the_day(self):
+        import fetch_schedule
+        game = {"game_time_utc": "2026-09-11T23:10:00Z", "opponent": "Kansas City Royals",
+                "home": True, "venue": "Fenway Park"}
+        out = fetch_schedule.normalize_game(game, "redsox",
+                                            {"sport": "MLB", "name": "Boston Red Sox"})
+        self.assertEqual(out["date"], "2026-09-11")
+        self.assertEqual(out["day_of_week"], "Friday")
+
+    def test_today_line_names_the_weekday(self):
+        msg = generate_rant.build_user_message(
+            {}, {"games": []}, {}, {}, today_iso="2026-09-10")
+        self.assertIn("TODAY: 2026-09-10 (Thursday)", msg)
+
+    def test_published_schedule_carries_the_day_through(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "sched.json"
+            path.write_text(json.dumps({"games": [
+                {"date": "2026-09-11", "day_of_week": "Friday", "time_et": "7:10 PM ET",
+                 "home_team": "Boston Red Sox", "away_team": "Kansas City Royals"}]}))
+            built = generate_rant.build_schedule_from_fetcher(path)
+            self.assertEqual(built[0]["day_of_week"], "Friday")
+
+
+class TestScheduleWindowAnchoredToRunDay(unittest.TestCase):
+    """All four fetchers took their boxscore date from pipeline_dates but their
+    fetch_schedule() kept its own wall-clock derivation. An AS_OF_DATE replay
+    therefore got a window starting after the replayed day, and Dan called the
+    next day's opener "tonight" — the phantom game, reproduced by run #610,
+    the re-run meant to verify its own fix."""
+
+    FETCHERS = ("fetch_mlb", "fetch_nba", "fetch_nhl", "fetch_nfl")
+
+    def _window_start(self, module_name, as_of):
+        """Re-derive the window anchor the way fetch_schedule() now does."""
+        import importlib
+        from datetime import datetime, timezone
+        os.environ[pipeline_dates.AS_OF_ENV] = as_of
+        try:
+            mod = importlib.import_module(module_name)
+            day = mod.as_of_date()
+            return datetime(day.year, day.month, day.day, tzinfo=timezone.utc).date().isoformat()
+        finally:
+            os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+
+    def test_every_fetcher_anchors_its_window_to_as_of_date(self):
+        for name in self.FETCHERS:
+            with self.subTest(fetcher=name):
+                self.assertEqual(self._window_start(name, "2026-09-10"), "2026-09-10")
+
+    def test_no_fetcher_still_anchors_its_window_to_the_wall_clock(self):
+        """Guards the specific line that regressed, so a future edit that
+        reintroduces now_utc.replace(...) as the window anchor fails here."""
+        repo_scripts = REPO / "scripts"
+        for name in self.FETCHERS:
+            with self.subTest(fetcher=name):
+                src = (repo_scripts / f"{name}.py").read_text()
+                self.assertNotIn("from_dt   = now_utc.replace", src)
+                self.assertNotIn("from_dt      = now_utc.replace", src)
+                self.assertIn("as_of_date()", src)
+
+    def test_blank_as_of_date_still_means_utc_today(self):
+        """Production leaves AS_OF_DATE unset; behaviour there must not change."""
+        from datetime import datetime, timezone
+        os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+        self.assertEqual(pipeline_dates.as_of_date(),
+                         datetime.now(timezone.utc).date())
+
+
+class TestArchiveKeyedOnRunDay(unittest.TestCase):
+    """Run #610 replayed 2026-09-10 just after midnight UTC and filed its post as
+    2026-09-11.json while its trace went to 2026-09-10.evals.json — the post
+    archive derived its name from the wall-clock generated_at, the evals doc from
+    as_of_iso(). A replay that does not overwrite the day it replayed is not a
+    replay."""
+
+    def _run(self, tmpdir, as_of, generated_at):
+        os.environ[pipeline_dates.AS_OF_ENV] = as_of
+        try:
+            publish.archive_dan_output(
+                {"headline": "h", "morning_brew": ["p"], "news_digest": [],
+                 "generated_at": generated_at},
+                archive_dir=Path(tmpdir),
+            )
+        finally:
+            os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+        return sorted(p.name for p in Path(tmpdir).glob("*.json"))
+
+    def test_post_and_evals_agree_across_the_utc_boundary(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            names = self._run(tmp, "2026-09-10", "2026-09-11T00:15:57+00:00")
+            self.assertEqual(names, ["2026-09-10.json"])
+
+    def test_generated_at_is_still_recorded_in_the_payload(self):
+        """Only the filename changes — the timestamp itself stays truthful."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            self._run(tmp, "2026-09-10", "2026-09-11T00:15:57+00:00")
+            written = json.loads((Path(tmp) / "2026-09-10.json").read_text())
+            self.assertEqual(written["generated_at"], "2026-09-11T00:15:57+00:00")
+
+    def test_missing_generated_at_still_archives_under_the_run_day(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            os.environ[pipeline_dates.AS_OF_ENV] = "2026-09-10"
+            try:
+                publish.archive_dan_output(
+                    {"headline": "h", "morning_brew": ["p"], "news_digest": []},
+                    archive_dir=Path(tmp),
+                )
+            finally:
+                os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+            self.assertTrue((Path(tmp) / "2026-09-10.json").exists())
+
+
+class TestEspnUserAgent(unittest.TestCase):
+    """Run #611: every ESPN roster and draft endpoint returned HTTP 403, while
+    news/scoreboard/schedule on the same host in the same run returned 200. The
+    only difference was the User-Agent — the two 403'd scripts sent a fake
+    browser string, the working ones an honest bot identifier with a contact URL."""
+
+    def test_roster_and_draft_no_longer_spoof_a_browser(self):
+        """Assert the header actually sent, not the source text — the source
+        also explains the bug, and a comment is not a request header."""
+        import importlib
+        for name in ("fetch_roster", "fetch_draft"):
+            with self.subTest(script=name):
+                agent = importlib.import_module(name).USER_AGENT
+                self.assertFalse(agent.startswith("Mozilla"), agent)
+                self.assertIn("+https://", agent)
+
+    def test_every_espn_fetcher_identifies_itself_with_a_contact_url(self):
+        for name in ("fetch_roster", "fetch_draft", "fetch_nfl",
+                     "fetch_nba", "fetch_mlb", "fetch_nhl"):
+            with self.subTest(script=name):
+                src = (REPO / "scripts" / f"{name}.py").read_text()
+                self.assertIn("github.com/goodvibes413/boston-dans-hub", src)
+
+
+class TestRosterFetchFailureIsNotAnEmptyRoster(unittest.TestCase):
+    """An unreachable roster and a genuinely empty one used to write the same
+    thing — an empty list and exit 0. Rule 11 then read "not in the roster" off a
+    roster that had never loaded, which is how A.J. Brown became an off-roster
+    Patriot."""
+
+    def _run(self, fetch_results, tmp):
+        """Drive fetch_roster.main() with fetch_json stubbed per URL."""
+        import importlib
+        mod = importlib.import_module("fetch_roster")
+        real_fetch, real_out = mod.fetch_json, mod.OUTPUT_PATH
+        mod.fetch_json = lambda url: fetch_results.get(
+            next((k for k in fetch_results if k in url), None))
+        mod.OUTPUT_PATH = Path(tmp) / "boston_roster.json"
+        try:
+            rc = mod.main()
+            return rc, json.loads(mod.OUTPUT_PATH.read_text())
+        finally:
+            mod.fetch_json, mod.OUTPUT_PATH = real_fetch, real_out
+
+    NHL_OK = {"forwards": [{"firstName": {"default": "Test"},
+                            "lastName": {"default": "Player"},
+                            "positionCode": "C"}]}
+
+    def test_failed_team_is_recorded_as_not_fetched(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            rc, out = self._run({"nhle.com": self.NHL_OK}, tmp)   # all ESPN None
+            self.assertEqual(out["fetch_ok"]["patriots"], False)
+            self.assertEqual(out["fetch_ok"]["bruins"], True)
+            self.assertEqual(out["rosters"]["patriots"], [])
+            # Partial failure still publishes: the teams that did load are usable.
+            self.assertEqual(rc, 0)
+
+    def test_total_failure_exits_non_zero(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            rc, out = self._run({}, tmp)
+            self.assertEqual(rc, 1)
+            self.assertTrue(all(v is False for v in out["fetch_ok"].values()))
+
+    def test_success_records_fetch_ok_true(self):
+        import tempfile
+        espn = {"athletes": [{"items": [
+            {"fullName": "Real Player", "position": {"abbreviation": "WR"}}]}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            rc, out = self._run(
+                {"football": espn, "basketball": espn, "baseball": espn,
+                 "nhle.com": self.NHL_OK}, tmp)
+            self.assertEqual(rc, 0)
+            self.assertTrue(all(out["fetch_ok"].values()))
+            self.assertEqual(out["rosters"]["patriots"][0]["name"], "Real Player")
+
+
+class TestJudgeAndGeneratorSeeTheSameRoster(unittest.TestCase):
+    """generate_rant.py injects roster["rosters"]; the judge injected the whole
+    file, so rule 11 -- "a player NOT in source_data.rosters" -- was reading
+    {generated_at, rosters, fetch_ok} and finding no players under any team. The
+    disagreement was invisible while the ESPN 403 kept every list empty (both
+    shapes read as "no players") and started producing false positives the moment
+    run #612 populated them: A.J. Brown was flagged off-roster by the same run
+    whose log lists "A.J. Brown (WR)" on the Patriots."""
+
+    FILE_SHAPE = {
+        "generated_at": "2026-09-11T03:17:18Z",
+        "rosters": {"patriots": [{"name": "A.J. Brown", "position": "WR"}],
+                    "celtics": []},
+        "fetch_ok": {"patriots": True, "celtics": False},
+    }
+
+    def test_the_inner_map_is_what_reaches_the_judge(self):
+        mapped = safety_judge._roster_map(self.FILE_SHAPE)
+        self.assertEqual(mapped["patriots"][0]["name"], "A.J. Brown")
+        self.assertNotIn("generated_at", mapped)
+        self.assertNotIn("fetch_ok", mapped)
+
+    def test_it_matches_what_generate_rant_injects(self):
+        self.assertEqual(safety_judge._roster_map(self.FILE_SHAPE),
+                         self.FILE_SHAPE["rosters"])
+
+    def test_already_flat_and_unreadable_files_survive(self):
+        flat = {"patriots": [{"name": "X"}]}
+        self.assertEqual(safety_judge._roster_map(flat), flat)
+        for junk in ({}, None, [], "nope"):
+            with self.subTest(junk=junk):
+                self.assertEqual(safety_judge._roster_map(junk), {})
+
+
+class TestRule11GuardsPerTeam(unittest.TestCase):
+    def test_prompt_tells_the_judge_to_skip_a_team_with_no_roster(self):
+        prompt = safety_judge.JUDGE_PROMPT
+        self.assertIn("SKIP THIS CHECK PER TEAM", prompt)
+        self.assertIn("rosters_fetch_ok", prompt)
+
+    def test_rule_15_scope_points_elsewhere_for_other_errors(self):
+        """#610 cited rule 15 for what it called a cross-team confusion."""
+        prompt = safety_judge.JUDGE_PROMPT
+        self.assertIn("SCOPE", prompt)
+        self.assertIn("that is rule 13", prompt)
+
+
+class TestStructuredFlags(unittest.TestCase):
+    """Flags carried their rule number in free prose, and the dashboard,
+    the 5-day aggregate and the correction prompt each substring-guessed it."""
+
+    def test_rule_comes_from_the_field_not_the_prose(self):
+        flag = safety_judge.make_flag(13, "this text mentions rule 7 and rule 8")
+        self.assertEqual(safety_judge.flag_rule(flag), 13)
+
+    def test_legacy_string_flags_still_resolve(self):
+        """Archived evals files predate the schema and the dashboard reads back
+        five days, so both shapes must work."""
+        cases = [
+            ("rule 11: off-roster player - A.J. Brown", 11),
+            ("phantom game: output claims redsox has a game today", 15),
+            ("repetition: formulaic paragraph opener", 10),
+            ("coverage window: the redsox played Baltimore", 12),
+            ("something nobody anticipated", None),
+        ]
+        for text, expected in cases:
+            with self.subTest(text=text[:30]):
+                self.assertEqual(safety_judge.flag_rule(text), expected)
+                self.assertEqual(safety_judge.flag_text(text), text)
+
+    def test_unknown_rule_numbers_fall_into_the_unclassified_bucket(self):
+        for bad in (99, -1, "seven", None):
+            with self.subTest(rule=bad):
+                self.assertEqual(safety_judge.make_flag(bad, "d")["rule"],
+                                 safety_judge.UNCLASSIFIED_RULE)
+
+    def test_normalize_accepts_both_shapes_and_rejects_junk(self):
+        out = safety_judge.normalize_flags(
+            [{"rule": 7, "detail": "a"}, "rule 10: b", {"detail": "c"}])
+        self.assertEqual([f["rule"] for f in out], [7, 10, safety_judge.UNCLASSIFIED_RULE])
+        self.assertEqual(safety_judge.normalize_flags("not a list"), [])
+        self.assertEqual(safety_judge.normalize_flags(None), [])
+
+    def test_flag_line_names_the_rule_for_the_correction_prompt(self):
+        line = safety_judge.flag_line(safety_judge.make_flag(15, "claims a game today"))
+        self.assertEqual(line, "rule 15 (Phantom scheduled game): claims a game today")
+
+    def test_unclassified_flag_renders_as_bare_detail(self):
+        line = safety_judge.flag_line(
+            safety_judge.make_flag(safety_judge.UNCLASSIFIED_RULE, "judge skipped"))
+        self.assertEqual(line, "judge skipped")
+
+    def test_response_schema_constrains_the_shape_the_prompt_asks_for(self):
+        schema = safety_judge.JUDGE_RESPONSE_SCHEMA
+        item = schema["properties"]["flags"]["items"]
+        self.assertEqual(sorted(item["required"]), ["detail", "rule"])
+        self.assertEqual(item["properties"]["rule"]["type"], "integer")
+        self.assertIn("medium", schema["properties"]["severity"]["enum"])
+
+    def test_unclassified_is_not_published_as_a_rubric_row(self):
+        self.assertIn(safety_judge.UNCLASSIFIED_RULE, safety_judge.RULE_TITLES)
+        src = (REPO / "scripts" / "publish.py").read_text()
+        self.assertIn("if n != UNCLASSIFIED_RULE", src)
+
+
+class TestCorrectionPromptNamesTheRule(unittest.TestCase):
+    def test_notes_render_structured_flags_not_dict_reprs(self):
+        captured = {}
+
+        class _Result:
+            returncode = 0
+
+        def fake_run(cmd, env=None, **kw):
+            captured["notes"] = env["CORRECTION_NOTES"]
+            return _Result()
+
+        real = publish.subprocess.run
+        publish.subprocess.run = fake_run
+        try:
+            publish.regenerate_with_correction(
+                [safety_judge.make_flag(15, "claims a game today")])
+        finally:
+            publish.subprocess.run = real
+        self.assertIn("rule 15 (Phantom scheduled game): claims a game today",
+                      captured["notes"])
+        self.assertNotIn("{'rule'", captured["notes"])
+
+
+class TestPhantomGameSeverity(unittest.TestCase):
+    def test_medium_floor_beats_low_but_never_downgrades_high(self):
+        self.assertEqual(safety_judge._at_least("low", "medium"), "medium")
+        self.assertEqual(safety_judge._at_least("medium", "medium"), "medium")
+        self.assertEqual(safety_judge._at_least("high", "medium"), "high")
+        self.assertEqual(safety_judge._at_least(None, "medium"), "medium")
+        self.assertEqual(safety_judge._at_least("nonsense", "medium"), "medium")
+
+
+class TestJudgeReadsTheSchedule(unittest.TestCase):
+    """The gap that let the bug through was structural: the schedule generate_rant
+    already had simply never reached the judge. Assert the wiring, not the prose."""
+
+    def test_schedule_path_env_var_is_honoured(self):
+        self.assertTrue(hasattr(safety_judge, "DEFAULT_SCHEDULE"))
+        self.assertEqual(safety_judge.DEFAULT_SCHEDULE.name, "upcoming_schedule.json")
+
+    def test_rule_15_exists_and_is_titled(self):
+        self.assertIn(15, safety_judge.RULE_TITLES)
+        self.assertIn("15.", safety_judge.JUDGE_PROMPT)
+        self.assertIn("UPCOMING_SCHEDULE", safety_judge.JUDGE_PROMPT)
+
+
+class TestFixtureSchedulesReachTheGenerator(unittest.TestCase):
+    """eval_voice.py used to write '{"games": []}' for every fixture, so no
+    fixture could reproduce a phantom-game claim even in principle."""
+
+    def test_split_fixture_returns_the_fixtures_schedule(self):
+        from eval_voice import split_fixture
+        fixture = {
+            "rolling_7day": {"days": []},
+            "upcoming_schedule": {"games": [{"sport": "MLB", "team": "redsox",
+                                             "date": "2026-09-11"}]},
+        }
+        schedule = split_fixture(fixture)[8]
+        self.assertEqual(schedule["games"][0]["date"], "2026-09-11")
+
+    def test_fixture_without_a_schedule_still_gets_an_empty_stub(self):
+        from eval_voice import split_fixture
+        self.assertEqual(split_fixture({"rolling_7day": {}})[8], {"games": []})
+        self.assertEqual(split_fixture({"days": []})[8], {"games": []})
+
+    def test_phantom_game_fixture_has_no_game_on_its_pinned_today(self):
+        fixture = json.loads(
+            (REPO / "evals" / "fixtures" / "schedule_phantom_game.json").read_text())
+        today = fixture["today"]
+        games = fixture["upcoming_schedule"]["games"]
+        self.assertTrue(games, "fixture needs games or the check disables itself")
+        self.assertEqual([g for g in games if g["date"] == today], [])
+        self.assertTrue([g for g in games if g["team"] == "redsox"],
+                        "fixture needs a later Red Sox game so the off day is provable")
 
 
 if __name__ == "__main__":
