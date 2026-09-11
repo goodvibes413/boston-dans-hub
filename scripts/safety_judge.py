@@ -620,6 +620,21 @@ def call_with_retry(fn, max_retries=MAX_RETRIES):
             time.sleep(wait_sec)
 
 
+def _roster_map(roster_file) -> dict:
+    """The team -> [players] map, whichever shape the roster file arrives in.
+
+    fetch_roster.py writes {generated_at, rosters: {...}, fetch_ok: {...}}, and
+    the judge needs the inner map so rule 11 reads what its own text describes.
+    A file that is already flat (or unreadable) passes through unchanged.
+    """
+    if not isinstance(roster_file, dict):
+        return {}
+    inner = roster_file.get("rosters")
+    if isinstance(inner, dict):
+        return inner
+    return {k: v for k, v in roster_file.items() if isinstance(v, list)}
+
+
 def _safe_load(path: Path) -> dict:
     """Load JSON; return {} on any failure."""
     try:
@@ -1062,10 +1077,19 @@ def main():
         },
         "draft_picks": _safe_load(draft_picks_path),
         "historical_facts": _safe_load(historical_facts_path),
-        "rosters": roster_file,
-        # Hoisted out of the roster file so rule 11's per-team skip has an
-        # unambiguous signal. An empty list means "not fetched" at least as often
-        # as it means "nobody on the team" — see fetch_roster.py's fetch_ok.
+        # The team -> players map itself, NOT the file wrapping it. The judge used
+        # to get the whole file, so rule 11 -- which says "a player NOT in
+        # source_data.rosters" -- was reading {generated_at, rosters, fetch_ok}
+        # and finding no players under any team. generate_rant.py has always
+        # injected roster["rosters"]; the two disagreed, invisibly, for as long as
+        # the ESPN 403 kept every list empty. The moment the User-Agent fix
+        # populated them (run #612: 164 players) the mismatch started generating
+        # false positives -- A.J. Brown was flagged as off-roster in the same run
+        # whose log shows "A.J. Brown (WR)" second in the Patriots list.
+        "rosters": _roster_map(roster_file),
+        # Hoisted out so rule 11's per-team skip has an unambiguous signal. An
+        # empty list means "not fetched" at least as often as it means "nobody on
+        # the team" — see fetch_roster.py's fetch_ok.
         "rosters_fetch_ok": roster_file.get("fetch_ok", {}) if isinstance(roster_file, dict) else {},
         "season_overrides": _safe_load(season_overrides_path),
         "recent_dan_output": recent_archives,

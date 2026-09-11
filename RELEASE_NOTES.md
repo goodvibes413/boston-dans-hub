@@ -90,8 +90,39 @@ for whether the LLM half earns its place. Deliberately *not* wired to suppress a
 the detector cannot corroborate: that would discard exactly the nuanced catches it exists
 for.
 
-16 new tests (153 total). The A.J. Brown flag itself needs no further action — it was a
-true report of a false premise, and the premise is fixed.
+### Run #612: the fix worked, and immediately exposed the next bug
+
+The User-Agent was it. Rosters went from **42 players (Bruins only) to 164 across all four
+teams** — Patriots 78, Celtics 16, Red Sox 28, Bruins 42 — and all four draft endpoints
+returned picks for the first time in an unknown number of days. Structured flags worked in
+production on the first run: every flag came back `{"rule": N, "detail": "..."}`, and the
+judge's failure output now reads `rule 11 (Off-roster player): ...` instead of whatever
+prose the model chose.
+
+And rule 11 flagged A.J. Brown again — in the same run whose roster log reads:
+
+```
+[PATRIOTS] found 78 player(s)
+    Tanner Arkin (TE)
+    A.J. Brown (WR)     ← second name on the list
+```
+
+So this time the flag was a genuine false positive, and chasing it found a mismatch that
+had been sitting between the two scripts the whole time. `generate_rant.py` injects
+`roster["rosters"]` — the team → players map. `safety_judge.py` injected the whole *file*.
+So rule 11, whose text says "a player NOT in source_data.rosters", was looking at
+`{generated_at, rosters, fetch_ok}` and correctly finding no players under any team.
+
+**The 403 had been hiding it.** While every list was empty the two shapes were
+indistinguishable — both meant "no players" — so the bug could not manifest. Fixing the
+fetch populated the rosters and turned a latent disagreement into a false-positive
+generator in the same run. `_roster_map()` now unwraps the file so both scripts see
+identical data, with tests asserting parity.
+
+19 new tests (156 total). Worth noting the shape of this one: the first fix did not cause
+the second bug, it *revealed* it — and a check that had been silently wrong in one
+direction became loudly wrong in the other. Both readings of "A.J. Brown is off-roster"
+were artifacts, eight hours apart, of two different data faults.
 
 ---
 

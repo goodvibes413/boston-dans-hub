@@ -1522,6 +1522,40 @@ class TestRosterFetchFailureIsNotAnEmptyRoster(unittest.TestCase):
             self.assertEqual(out["rosters"]["patriots"][0]["name"], "Real Player")
 
 
+class TestJudgeAndGeneratorSeeTheSameRoster(unittest.TestCase):
+    """generate_rant.py injects roster["rosters"]; the judge injected the whole
+    file, so rule 11 -- "a player NOT in source_data.rosters" -- was reading
+    {generated_at, rosters, fetch_ok} and finding no players under any team. The
+    disagreement was invisible while the ESPN 403 kept every list empty (both
+    shapes read as "no players") and started producing false positives the moment
+    run #612 populated them: A.J. Brown was flagged off-roster by the same run
+    whose log lists "A.J. Brown (WR)" on the Patriots."""
+
+    FILE_SHAPE = {
+        "generated_at": "2026-09-11T03:17:18Z",
+        "rosters": {"patriots": [{"name": "A.J. Brown", "position": "WR"}],
+                    "celtics": []},
+        "fetch_ok": {"patriots": True, "celtics": False},
+    }
+
+    def test_the_inner_map_is_what_reaches_the_judge(self):
+        mapped = safety_judge._roster_map(self.FILE_SHAPE)
+        self.assertEqual(mapped["patriots"][0]["name"], "A.J. Brown")
+        self.assertNotIn("generated_at", mapped)
+        self.assertNotIn("fetch_ok", mapped)
+
+    def test_it_matches_what_generate_rant_injects(self):
+        self.assertEqual(safety_judge._roster_map(self.FILE_SHAPE),
+                         self.FILE_SHAPE["rosters"])
+
+    def test_already_flat_and_unreadable_files_survive(self):
+        flat = {"patriots": [{"name": "X"}]}
+        self.assertEqual(safety_judge._roster_map(flat), flat)
+        for junk in ({}, None, [], "nope"):
+            with self.subTest(junk=junk):
+                self.assertEqual(safety_judge._roster_map(junk), {})
+
+
 class TestRule11GuardsPerTeam(unittest.TestCase):
     def test_prompt_tells_the_judge_to_skip_a_team_with_no_roster(self):
         prompt = safety_judge.JUDGE_PROMPT
