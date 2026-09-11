@@ -1310,6 +1310,51 @@ class TestPhantomGameDetection(unittest.TestCase):
                     safety_judge.detect_phantom_game(post, schedule, day), [])
 
 
+class TestScheduleWindowAnchoredToRunDay(unittest.TestCase):
+    """All four fetchers took their boxscore date from pipeline_dates but their
+    fetch_schedule() kept its own wall-clock derivation. An AS_OF_DATE replay
+    therefore got a window starting after the replayed day, and Dan called the
+    next day's opener "tonight" — the phantom game, reproduced by run #610,
+    the re-run meant to verify its own fix."""
+
+    FETCHERS = ("fetch_mlb", "fetch_nba", "fetch_nhl", "fetch_nfl")
+
+    def _window_start(self, module_name, as_of):
+        """Re-derive the window anchor the way fetch_schedule() now does."""
+        import importlib
+        from datetime import datetime, timezone
+        os.environ[pipeline_dates.AS_OF_ENV] = as_of
+        try:
+            mod = importlib.import_module(module_name)
+            day = mod.as_of_date()
+            return datetime(day.year, day.month, day.day, tzinfo=timezone.utc).date().isoformat()
+        finally:
+            os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+
+    def test_every_fetcher_anchors_its_window_to_as_of_date(self):
+        for name in self.FETCHERS:
+            with self.subTest(fetcher=name):
+                self.assertEqual(self._window_start(name, "2026-09-10"), "2026-09-10")
+
+    def test_no_fetcher_still_anchors_its_window_to_the_wall_clock(self):
+        """Guards the specific line that regressed, so a future edit that
+        reintroduces now_utc.replace(...) as the window anchor fails here."""
+        repo_scripts = REPO / "scripts"
+        for name in self.FETCHERS:
+            with self.subTest(fetcher=name):
+                src = (repo_scripts / f"{name}.py").read_text()
+                self.assertNotIn("from_dt   = now_utc.replace", src)
+                self.assertNotIn("from_dt      = now_utc.replace", src)
+                self.assertIn("as_of_date()", src)
+
+    def test_blank_as_of_date_still_means_utc_today(self):
+        """Production leaves AS_OF_DATE unset; behaviour there must not change."""
+        from datetime import datetime, timezone
+        os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+        self.assertEqual(pipeline_dates.as_of_date(),
+                         datetime.now(timezone.utc).date())
+
+
 class TestPhantomGameSeverity(unittest.TestCase):
     def test_medium_floor_beats_low_but_never_downgrades_high(self):
         self.assertEqual(safety_judge._at_least("low", "medium"), "medium")

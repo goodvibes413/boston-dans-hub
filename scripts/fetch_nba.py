@@ -17,7 +17,7 @@ import urllib.error
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-from pipeline_dates import target_game_date
+from pipeline_dates import as_of_date, target_game_date
 
 # ---------------------------------------------------------------------------
 # Constants & paths
@@ -395,7 +395,16 @@ def fetch_schedule() -> None:
     in Python since the endpoint offers no date-range parameter.
     """
     now_utc      = datetime.now(timezone.utc)
-    from_dt      = now_utc.replace(hour=0, minute=0, second=0, microsecond=0)
+    # Window anchor is the RUN's day, not the wall clock. These four fetchers
+    # already take their boxscore date from pipeline_dates; fetch_schedule was
+    # the copy that kept deriving its own, so an AS_OF_DATE replay produced a
+    # schedule window starting *after* the day being replayed. Dan then read a
+    # tomorrow-anchored schedule while being told today was yesterday, and
+    # called the next day's opener "tonight" — the 2026-09-10 phantom game,
+    # reproduced by the very re-run meant to verify its fix. now_utc stays for
+    # generated_at, which is a real timestamp and should track the clock.
+    _as_of      = as_of_date()
+    from_dt      = datetime(_as_of.year, _as_of.month, _as_of.day, tzinfo=timezone.utc)
     to_dt        = from_dt + timedelta(days=7)
     from_date_str = from_dt.strftime("%Y-%m-%d")
     to_date_str   = to_dt.strftime("%Y-%m-%d")

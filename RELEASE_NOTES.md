@@ -77,6 +77,31 @@ game. The enriched verdict now splits `repetition_flags` from `phantom_game_flag
 in `publish_evals_to_docs()` iterated `range(1, 12)` and had silently stopped counting at
 rule 11 — it now iterates `RULE_TITLES`, so rules 12–15 are counted too.
 
+**Run #610 reproduced the bug instead of verifying the fix.** Replaying 2026-09-10 with
+`AS_OF_DATE` produced a brew whose third paragraph reads "a series against the Royals
+starting **tonight** at the oldest yard in baseball." The published `schedule` block shows
+the Royals opener at 2026-09-11, 7:10 PM ET. On a run whose TODAY is 2026-09-10 that is the
+same phantom game, and neither half of the new check caught it: the deterministic pre-pass
+had skipped itself (`schedule_check: "pass"`) because of the window guard below, and the LLM
+judge passed it on attempt 3. Rule 15 *did* fire on attempt 1, but misapplied — it flagged
+"No baseball for the Pats this week" and then described its own finding as a cross-team
+misattribution, which is rule 13. So the LLM half is now known to fire, and known to be
+imprecise about which rule it is citing.
+
+The cause is the wall-clock anchoring below, and it cuts deeper than the check: Dan was
+handed a schedule starting 2026-09-11 while the prompt told him TODAY was 2026-09-10. The
+new Off Days rule did what it could with that — he wrote off-day prose ("No baseball for the
+Pats this week") — but no prompt rule can survive being given tomorrow's schedule and
+yesterday's date. **Fixed at the root:** all four `fetch_schedule()` functions now anchor
+their window to `as_of_date()` instead of `datetime.now(timezone.utc)`. Production is
+unaffected (blank `AS_OF_DATE` means UTC today either way); a replay now gets the window it
+is actually replaying, which also un-blinds the pre-pass guard on replays.
+
+**Also surfaced:** `archive_dan_output()` names the post archive from
+`published["generated_at"]` — a wall-clock timestamp — while `archive_evals()` uses
+`evals_doc["date"]`, which is `as_of_iso()`. Run #610 therefore filed its post as
+`2026-09-11.json` and its trace as `2026-09-10.evals.json`. Still open.
+
 **Follow-up found while merging:** the four schedule fetchers anchor their range to
 `datetime.now(timezone.utc)`, not `AS_OF_DATE` — the same wall-clock-derivation problem
 `pipeline_dates.py` was written to solve, in the one place it never reached. So replaying a
