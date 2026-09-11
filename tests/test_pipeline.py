@@ -1238,6 +1238,25 @@ class TestPhantomGameDetection(unittest.TestCase):
         )
         self.assertIn("next game 2026-09-11", flags[0])
 
+    def test_replay_of_a_day_before_the_schedule_window_is_skipped(self):
+        """The schedule fetchers anchor to datetime.now(), not AS_OF_DATE, so a
+        pinned replay of a past day gets a window starting tomorrow. That window
+        cannot say what was scheduled back then — flagging on it would call every
+        correct "tonight" on a replayed game day a phantom."""
+        schedule = self._schedule(("redsox", "MLB", "2026-09-11"))
+        schedule["from_date"] = "2026-09-11"
+        self.assertEqual(
+            safety_judge.detect_phantom_game(self._post(self.PUBLISHED), schedule, self.TODAY),
+            [],
+        )
+
+    def test_window_covering_today_still_checks(self):
+        schedule = self._schedule(("redsox", "MLB", "2026-09-11"))
+        schedule["from_date"] = self.TODAY
+        self.assertEqual(
+            len(safety_judge.detect_phantom_game(
+                self._post(self.PUBLISHED), schedule, self.TODAY)), 1)
+
     def test_standings_talk_is_not_a_game_claim(self):
         """"games back" carries a cue word without asserting a game — the exact
         shape a naive keyword match would flag every stretch-run morning."""

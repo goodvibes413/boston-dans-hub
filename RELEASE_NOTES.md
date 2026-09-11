@@ -77,6 +77,16 @@ game. The enriched verdict now splits `repetition_flags` from `phantom_game_flag
 in `publish_evals_to_docs()` iterated `range(1, 12)` and had silently stopped counting at
 rule 11 — it now iterates `RULE_TITLES`, so rules 12–15 are counted too.
 
+**Follow-up found while merging:** the four schedule fetchers anchor their range to
+`datetime.now(timezone.utc)`, not `AS_OF_DATE` — the same wall-clock-derivation problem
+`pipeline_dates.py` was written to solve, in the one place it never reached. So replaying a
+past day with `AS_OF_DATE` produces a schedule window that *starts tomorrow* and cannot say
+what was scheduled back then. Left alone, that would make the new check call every correct
+"tonight" on a replayed game day a phantom. `detect_phantom_game()` now skips when the
+audited day falls before the schedule's own `from_date`: absent evidence is not evidence of
+absence. Anchoring the fetchers themselves to `as_of_date()` is the real fix and is still
+open — the guard means a replay declines to judge rather than judging wrongly.
+
 **Not verified against a live model run** — this session had no `GEMINI_API_KEY` and no
 network egress, so rule 15's LLM half is unexercised. The deterministic half, the merge,
 the severity floor, and the judge's schedule wiring are covered by 18 new tests plus an

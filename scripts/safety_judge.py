@@ -733,6 +733,11 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
     - The team must have at least one game somewhere in the schedule window. A
       team with no games at all is indistinguishable from a team whose fetcher
       failed, and fetch_schedule.py drops a failed team silently.
+    - The day being audited must fall inside the schedule's own window. The
+      schedule fetchers anchor their range to datetime.now(), NOT to AS_OF_DATE
+      (fetch_mlb.fetch_schedule and its three siblings), so replaying a past day
+      with AS_OF_DATE gets a window that starts tomorrow and cannot say what was
+      scheduled back then. Absent evidence is not evidence of absence.
 
     Anything subtler is rule 15's job. Returns MEDIUM-severity flag strings.
     """
@@ -741,6 +746,14 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
         return []
     if today_iso is None:
         today_iso = as_of_iso()
+
+    # The window is wall-clock anchored; a pinned replay of a past day sits
+    # before it and the schedule has nothing to say about that day either way.
+    window_start = str((schedule or {}).get("from_date", "")) if isinstance(schedule, dict) else ""
+    if window_start and today_iso < window_start:
+        print(f"  phantom-game check skipped: schedule window starts {window_start}, "
+              f"after the audited day {today_iso}", file=sys.stderr)
+        return []
 
     scheduled_today = set()
     scheduled_any = set()
