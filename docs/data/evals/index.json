@@ -90,19 +90,24 @@
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 12,
+        "count": 14,
         "title": "Voice repetition"
       },
       {
-        "rule": 1,
+        "rule": 12,
         "count": 5,
-        "title": "Profanity"
+        "title": "Game coverage gap"
       },
       {
         "rule": 7,
         "count": 3,
         "title": "Fabricated statistics"
       }
-    ]
+    ],
+    "rule15_agreement": {
+      "deterministic": 0,
+      "llm": 0,
+      "both": 0
+    }
   }
 }

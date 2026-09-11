@@ -1,46 +1,72 @@
 {
   "date": "2026-09-10",
-  "generated_at": "2026-09-11T00:55:42.520535+00:00",
+  "generated_at": "2026-09-11T03:17:58.000939+00:00",
   "outcome": "retry",
   "winning_attempt": 3,
   "total_attempts": 3,
-  "generation_seconds": 104.0,
+  "generation_seconds": 38.1,
   "pre_pass": {
     "repetition_check": "fail",
     "schedule_check": "pass",
     "flagged_phrases": [
-      "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      {
+        "rule": 10,
+        "detail": "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      }
     ]
   },
   "attempts": [
     {
       "attempt": 1,
       "verdict": "FAIL",
-      "severity": "medium",
+      "severity": "high",
       "flags": [
-        "rule 11: off-roster player - the content refers to A.J. Brown as a Patriots player ('our receiving corps', 'our best receiver'), but he is not listed in the provided rosters.",
-        "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        {
+          "rule": 11,
+          "detail": "The content refers to A.J. Brown as a Patriots player ('our receiving corps', 'our best receiver'), but he is not listed in the provided rosters."
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"that # to # loss at fenway was a\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"we have to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 12,
+          "detail": "coverage window: the patriots played Seattle Seahawks on 2026-09-09 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        }
       ],
-      "duration_seconds": 3.5
+      "duration_seconds": 3.7
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "medium",
       "flags": [
-        "phantom game: output claims redsox has a game today (2026-09-10); upcoming_schedule lists none (next game 2026-09-11). Sentence: No baseball for us tonight, which is probably a mercy after that performance, so I'll be spending the evening catching up on errands and trying to scrub the las",
-        "coverage window: the patriots played Seattle Seahawks on 2026-09-09 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        {
+          "rule": 11,
+          "detail": "The content refers to A.J. Brown as a Patriots player ('hearing that A.J. Brown is potentially lookin' at four weeks on the sideline'), but he is not listed in the provided Patriots roster."
+        }
       ],
-      "duration_seconds": 9.1
+      "duration_seconds": 3.6
     },
     {
       "attempt": 3,
       "verdict": "FAIL",
       "severity": "low",
       "flags": [
-        "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
       ],
-      "duration_seconds": 23.1
+      "duration_seconds": 7.3
     }
   ]
 }
