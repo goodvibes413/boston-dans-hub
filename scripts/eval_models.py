@@ -65,7 +65,7 @@ def preview_lines(path: str) -> tuple[str, str]:
 def write_fixture_sections(label: str, sections) -> dict:
     """Split sections to shared tmp files and return base_env (real-data env vars
     pointed at the tmp fixture). Mirrors eval_voice.py's tmp-file layout."""
-    rolling, season_past, season_current, recent_output, drafts, news, today, roster = sections
+    rolling, season_past, season_current, recent_output, drafts, news, today, roster, schedule = sections
     tmp = RUNS_DIR / f"{label}_tmp"
     tmp.mkdir(parents=True, exist_ok=True)
     (tmp / "rolling.json").write_text(json.dumps(rolling, indent=2))
@@ -74,7 +74,7 @@ def write_fixture_sections(label: str, sections) -> dict:
     (tmp / "drafts.json").write_text(json.dumps(drafts, indent=2))
     (tmp / "news.json").write_text(json.dumps(news, indent=2))
     (tmp / "roster.json").write_text(json.dumps(roster, indent=2))
-    (tmp / "schedule.json").write_text('{"games": []}')
+    (tmp / "schedule.json").write_text(json.dumps(schedule, indent=2))
 
     archive_dir = tmp / "archive"
     archive_dir.mkdir(parents=True, exist_ok=True)

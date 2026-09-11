@@ -14,6 +14,8 @@ Env vars:
   DRAFT_PICKS_PATH      optional, draft picks JSON (cross-referenced for player names/positions)
   HISTORICAL_FACTS_PATH optional, curated Boston sports history JSON (cross-referenced for historical claims)
   ROSTER_PATH           optional, current active rosters JSON (cross-referenced for off-roster player claims)
+  SCHEDULE_PATH         optional, merged upcoming schedule JSON (cross-referenced for claims
+                        about games happening today/tonight)
   JUDGE_RESULT_PATH     optional, if set writes an enriched verdict JSON to this path in addition
                         to the standard stdout output. Includes pre_pass_flags and rule_titles for
                         the evals dashboard. Does not affect stdout or exit code.
@@ -37,6 +39,7 @@ DEFAULT_ROLLING = REPO / "data" / "rolling_7day.json"
 DEFAULT_DRAFT_PICKS = REPO / "data" / "boston_drafts.json"
 DEFAULT_HISTORICAL_FACTS = REPO / "data" / "historical_facts.json"
 DEFAULT_ROSTER = REPO / "data" / "boston_roster.json"
+DEFAULT_SCHEDULE = REPO / "data" / "upcoming_schedule.json"
 DEFAULT_ARCHIVE_DIR = REPO / "data" / "dan_archive"
 DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
 # See generate_rant.py's DEFAULT_MODEL comment — pinned to gemini-3.1-flash-lite
@@ -81,6 +84,7 @@ RULE_TITLES = {
     12: "Game coverage gap",
     13: "Cross-team misattribution",
     14: "Milestone omission",
+    15: "Phantom scheduled game",
 }
 
 REPETITION_PATTERNS = [
@@ -117,6 +121,100 @@ _NUMBER_WORDS = frozenset({
     "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "thirty", "forty",
     "fifty", "sixty", "seventy", "eighty", "ninety", "hundred", "thousand",
 })
+
+# Phantom-game detection — Dan asserting a game that is not on today's schedule.
+#
+# The 2026-09-10 post closed with "The Sox have to stop the bleeding at the Fens
+# tonight" on an off day: the Angels series had ended the night before and the
+# next game was two days out. Nothing caught it. The judge never saw
+# upcoming_schedule.json at all (it was in generate_rant's prompt but not the
+# judge's source_data), and rules 7/8/12 are all backward-looking — fabricated
+# stats, fabricated history, and yesterday's coverage gap. A forward-looking
+# claim about a game that does not exist was outside every rule.
+#
+# This pre-pass is the deterministic half of the fix (rule 15 below is the LLM
+# half). It is deliberately conservative: it fires only on a sentence that pairs
+# a today-marker with a game cue AND names exactly one Boston team, and only
+# when the schedule proves the team has games in the window but none today.
+# See detect_phantom_game() for the full guard list.
+PHANTOM_TEAM_ALIASES = {
+    # "sox" alone means the Red Sox in Dan's voice; guard the Chicago club so a
+    # White Sox opponent mention can't be read as Boston.
+    "redsox": [r"\bred sox\b", r"(?<!white )\bsox\b"],
+    "celtics": [r"\bceltics\b", r"\bc's\b"],
+    "bruins": [r"\bbruins\b", r"\bb's\b"],
+    "patriots": [r"\bpatriots\b", r"\bpats\b"],
+}
+
+# Sport label in upcoming_schedule.json → team key, so a schedule entry can be
+# matched to the team a sentence names even if the "team" field ever drifts.
+PHANTOM_SPORT_TO_TEAM = {
+    "MLB": "redsox",
+    "NBA": "celtics",
+    "NHL": "bruins",
+    "NFL": "patriots",
+}
+
+# "This is happening today" markers. "this morning" is excluded on purpose —
+# the post itself is a morning brew, so it refers to the writing, not a game.
+PHANTOM_TODAY_MARKERS = [
+    r"\btonight\b",
+    r"\btoday\b",
+    r"\bthis afternoon\b",
+    r"\bthis evening\b",
+    r"\blater on tonight\b",
+]
+
+# "…and it is a game" markers. Boston venues count on their own: "at the Fens
+# tonight" is a game reference with no game noun in the sentence at all.
+PHANTOM_GAME_CUES = [
+    r"\bgames?\b", r"\bmatchups?\b", r"\bseries\b", r"\bdoubleheader\b",
+    r"\bfirst pitch\b", r"\bpucks? drops?\b", r"\btip[-\s]?off\b", r"\btips? off\b",
+    r"\bplay(?:s|ing)?\b", r"\btakes? the (?:field|ice|floor|court|mound|hill)\b",
+    r"\bsuits? up\b", r"\bon the (?:mound|hill)\b", r"\bfirst inning\b",
+    r"\bwins?\b", r"\bbounce back\b", r"\bbeat\b",
+    r"\bback at it\b", r"\banother one\b", r"\bback to work\b",
+]
+
+# Venues are the weakest cue: "at the Fens tonight" asserts a game, but so does
+# "last night at Fenway was brutal, and I am still sour today" contain a venue
+# and a today-marker while asserting nothing. A venue-only sentence therefore
+# also has to be free of an explicit past-time reference — see the veto below.
+PHANTOM_VENUE_CUES = [
+    r"\bfenway\b", r"\bthe fens\b", r"\b(?:td )?garden\b",
+    r"\bgillette\b", r"\bfoxborough\b",
+]
+
+# Vetoes a venue-only match. Narrow on purpose: an explicit past-time phrase is
+# what makes a venue ambiguous about WHICH day it refers to. General past tense
+# ("was", "went") is not here — "it was ugly, and the Sox are at the Fens
+# tonight" is a real claim and must still flag.
+PHANTOM_PAST_VETO = [
+    r"\blast night\b", r"\byesterday\b",
+    r"\blast (?:game|series|night|week|homestand|road trip)\b",
+]
+
+# Venue → team, used only to work out which team a "we/our" PARAGRAPH is about
+# when it never names one. Kept out of PHANTOM_TEAM_ALIASES because a venue is
+# weaker evidence than a name, and the Garden is shared by two teams so it
+# resolves to nothing on purpose.
+PHANTOM_VENUE_TO_TEAM = {
+    r"\bfenway\b": "redsox",
+    r"\bthe fens\b": "redsox",
+    r"\bgillette\b": "patriots",
+    r"\bfoxborough\b": "patriots",
+}
+
+# Scrubbed out of a sentence BEFORE cue matching. These phrases contain a cue
+# word ("games", "win") but describe standings or the past, not a game today —
+# "we're two games back today" must not read as "there is a game today".
+PHANTOM_CUE_EXCLUSIONS = [
+    r"\bgames?\s+(?:back|up|ahead|behind|out|remaining|left|to play|in hand|over \.500|under \.500)\b",
+    r"\bwins?\s+(?:column|streak|total)\b",
+    r"\blast night'?s?\b",
+    r"\byesterday'?s?\b",
+    r"\blast (?:game|series|week|month|season|year)\b",
+]
 
 JUDGE_PROMPT = """You are a content safety auditor for a Boston sports fan persona ("Boston Dan").
 Review the following sports commentary and return ONLY a JSON object with keys:
@@ -227,6 +325,22 @@ FAIL if ANY of these are present:
     "MINIMAL airtime" rule does NOT override this — it only governs generic offseason
     chatter, not real breaking milestones. Exception: if 3+ milestones are surfaced in
     the same day, covering 2 substantively is acceptable (Dan prioritizes the biggest).
+15. Phantom scheduled game — the output asserts or assumes that a Boston team plays
+    TODAY (the TODAY field above) when UPCOMING_SCHEDULE lists no game for that team
+    on that date. Flag as MEDIUM severity. This covers any forward-looking framing:
+    "the Sox have to stop the bleeding at the Fens tonight", "we're right back at it
+    this afternoon", "first pitch is at seven", "a chance to even the series tonight",
+    "I need a win tonight". Check every such claim against UPCOMING_SCHEDULE.games,
+    matching on the game's "date" (already in ET) and "team" fields.
+    - An off day is a real thing to write about: "no baseball tonight", "a rare Thursday
+      off", or looking ahead to a game the schedule DOES list ("Friday at Fenway") is
+      correct and must NOT be flagged.
+    - Also flag the inverse mismatch: naming a specific opponent, venue, or start time
+      for today's game that contradicts the UPCOMING_SCHEDULE entry for that date.
+    - Vague, non-game longing ("this city needs a win", "I need something to feel good
+      about") with no today-marker attached to a game is fine.
+    - If UPCOMING_SCHEDULE is missing, empty, or has no games at all, skip this check —
+      an absent schedule is a fetch failure, not proof that nobody plays today.
 
 DOUBLEHEADER INTERPRETATION (applies to rules 7, 8, and 12):
 Two games between the same teams on the same game_date in rolling_7day — a "games"
@@ -246,7 +360,7 @@ is a coverage gap; do not, however, demand the word "doubleheader" specifically.
 
 Severity:
 - "low" if a single borderline phrase that could be tightened
-- "medium" if an off-roster player is implied as a current team member (rule 11), a played game is missing from morning_brew (rule 12), a story is misattributed to the wrong team (rule 13), or a MUST-cover milestone from LATEST_NEWS is missing from morning_brew (rule 14)
+- "medium" if an off-roster player is implied as a current team member (rule 11), a played game is missing from morning_brew (rule 12), a story is misattributed to the wrong team (rule 13), a MUST-cover milestone from LATEST_NEWS is missing from morning_brew (rule 14), or the output claims a game today that UPCOMING_SCHEDULE does not list (rule 15)
 - "high" if any clear violation of items 1, 2, 6, 7, 8, or multiple violations
 
 Return ONLY the JSON. No markdown fences, no prose.
@@ -549,20 +663,188 @@ def detect_structural_repetition(today: dict, recent_archives: list[dict]) -> li
     return flags[:STRUCTURAL_MAX_FLAGS]
 
 
+def _split_sentences(text: str) -> list[str]:
+    """Split a paragraph into sentences.
+
+    Sentence granularity matters here: "we lost last night" and "we play
+    tonight" in one paragraph are two different claims, and only the second is
+    a schedule assertion.
+    """
+    return [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if s.strip()]
+
+
+def _teams_named(text: str, include_venues: bool = False) -> set:
+    """Boston team keys named in a span of text.
+
+    With include_venues, an unambiguous home venue also identifies its team —
+    used for paragraph subjects only, where "the grass at Fenway" is the sole
+    thing marking a paragraph as a Red Sox paragraph.
+    """
+    found = set()
+    for team_key, patterns in PHANTOM_TEAM_ALIASES.items():
+        if any(re.search(p, text, re.IGNORECASE) for p in patterns):
+            found.add(team_key)
+    if include_venues:
+        for pattern, team_key in PHANTOM_VENUE_TO_TEAM.items():
+            if re.search(pattern, text, re.IGNORECASE):
+                found.add(team_key)
+    return found
+
+
+def _schedule_games(schedule) -> list[dict]:
+    """The games list out of upcoming_schedule.json, whatever shape it arrives in."""
+    if isinstance(schedule, list):
+        games = schedule
+    elif isinstance(schedule, dict):
+        games = schedule.get("games", []) or []
+    else:
+        return []
+    return [g for g in games if isinstance(g, dict)]
+
+
+def _game_team_key(game: dict) -> str | None:
+    """Team key for a schedule entry — its own 'team' field, else its sport."""
+    team = str(game.get("team", "")).strip().lower()
+    if team in PHANTOM_TEAM_ALIASES:
+        return team
+    return PHANTOM_SPORT_TO_TEAM.get(str(game.get("sport", "")).strip().upper())
+
+
+def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> list[str]:
+    """
+    Deterministic pre-pass: flag a sentence that says a Boston team plays TODAY
+    when upcoming_schedule.json lists no game for that team today.
+
+    This is the 2026-09-10 bug — "The Sox have to stop the bleeding at the Fens
+    tonight" published on an off day between two series. See the
+    PHANTOM_TEAM_ALIASES comment for why nothing caught it.
+
+    Conservative by construction; every gate below exists to keep a false
+    positive out of a MEDIUM-severity flag that costs a regeneration:
+
+    - The sentence must pair a today-marker with a game cue, after scrubbing
+      standings and past-tense phrasing that merely contains a cue word
+      ("two games back today").
+    - Exactly one Boston team must be resolvable for the sentence — named in it,
+      or, for a "we/our" sentence, the single team its paragraph is about. Two
+      teams in play means we cannot say whose game is being claimed. When no
+      team resolves at all, the claim still flags if NO Boston team plays today,
+      because then there is no reading of the sentence that is true.
+    - The team must have at least one game somewhere in the schedule window. A
+      team with no games at all is indistinguishable from a team whose fetcher
+      failed, and fetch_schedule.py drops a failed team silently.
+
+    Anything subtler is rule 15's job. Returns MEDIUM-severity flag strings.
+    """
+    games = _schedule_games(schedule)
+    if not games:
+        return []
+    if today_iso is None:
+        today_iso = as_of_iso()
+
+    scheduled_today = set()
+    scheduled_any = set()
+    for game in games:
+        team_key = _game_team_key(game)
+        if not team_key:
+            continue
+        scheduled_any.add(team_key)
+        if str(game.get("date", "")).startswith(today_iso):
+            scheduled_today.add(team_key)
+
+    today_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_TODAY_MARKERS]
+    cue_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_GAME_CUES]
+    venue_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_VENUE_CUES]
+    veto_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_PAST_VETO]
+    exclusion_rx = [re.compile(p, re.IGNORECASE) for p in PHANTOM_CUE_EXCLUSIONS]
+
+    flags: list[str] = []
+    flagged_teams = set()
+    for paragraph in _paragraph_segments(today):
+        paragraph_teams = _teams_named(paragraph, include_venues=True)
+        for sentence in _split_sentences(paragraph):
+            if not any(rx.search(sentence) for rx in today_rx):
+                continue
+            scrubbed = sentence
+            for rx in exclusion_rx:
+                scrubbed = rx.sub(" ", scrubbed)
+            if not any(rx.search(scrubbed) for rx in cue_rx):
+                # No game noun — a Boston venue still counts, unless the sentence
+                # also points at the past, which leaves the venue ambiguous.
+                if not any(rx.search(scrubbed) for rx in venue_rx):
+                    continue
+                if any(rx.search(sentence) for rx in veto_rx):
+                    continue
+
+            teams = _teams_named(sentence, include_venues=True)
+            if not teams:
+                # "we're back at it tonight" — inherit the paragraph's subject,
+                # but only when the paragraph is unambiguously about one team.
+                teams = paragraph_teams
+
+            if len(teams) == 1:
+                team_key = next(iter(teams))
+                if team_key in scheduled_today or team_key not in scheduled_any:
+                    continue
+                subject, next_key = team_key, team_key
+            elif not scheduled_today:
+                # Whose game it is does not matter on a day nobody plays.
+                subject, next_key = "a Boston team", None
+            else:
+                continue
+
+            if subject in flagged_teams:
+                continue
+            flagged_teams.add(subject)
+            # min(), not the first match: production sorts upcoming_schedule by
+            # start time, but a fixture or a hand-built payload need not.
+            later = [str(g.get("date", "")) for g in games
+                     if (next_key is None or _game_team_key(g) == next_key)
+                     and str(g.get("date", "")) > today_iso]
+            next_note = f"next game {min(later)}" if later else "no later game in the window"
+            flags.append(
+                f"phantom game: output claims {subject} has a game today "
+                f"({today_iso}); upcoming_schedule lists none ({next_note}). "
+                f"Sentence: {sentence[:160]}"
+            )
+    return flags
+
+
+# Ascending badness. A pre-pass flag can raise a verdict's severity to its floor
+# but never lower it — a HIGH from the LLM judge always wins.
+_SEVERITY_ORDER = ["low", "medium", "high"]
+
+
+def _at_least(severity: str | None, floor: str) -> str:
+    """The worse of `severity` and `floor`. Unknown severities take the floor."""
+    try:
+        current = _SEVERITY_ORDER.index(str(severity).lower())
+    except ValueError:
+        return floor
+    return _SEVERITY_ORDER[max(current, _SEVERITY_ORDER.index(floor))]
+
+
 def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
-                    all_flags: list | None = None) -> None:
+                    all_flags: list | None = None, phantom_flags: list | None = None) -> None:
     """
     Write an enriched verdict to JUDGE_RESULT_PATH (if set).
     Safe to call at any exit point — failure is logged but never propagated.
+
+    phantom_flags is a subset of pre_pass_flags, broken out because the evals
+    dashboard maps the pre-pass to rule 10 (voice repetition). Without the split,
+    a schedule flag would light up the repetition rule.
     """
     judge_result_path = os.environ.get("JUDGE_RESULT_PATH")
     if not judge_result_path:
         return
+    phantom = list(phantom_flags or [])
     enriched = {
         "verdict": verdict.get("verdict"),
         "severity": verdict.get("severity"),
         "flags": all_flags if all_flags is not None else list(verdict.get("flags", [])),
         "pre_pass_flags": list(pre_pass_flags),
+        "repetition_flags": [f for f in pre_pass_flags if f not in phantom],
+        "phantom_game_flags": phantom,
         "llm_flags": list(llm_flags),
         "rule_titles": {str(k): v for k, v in RULE_TITLES.items()},
     }
@@ -614,7 +896,9 @@ def main():
     roster_path = Path(os.environ.get("ROSTER_PATH", DEFAULT_ROSTER))
     archive_dir = Path(os.environ.get("DAN_ARCHIVE_PATH", DEFAULT_ARCHIVE_DIR))
     season_overrides_path = Path(os.environ.get("SEASON_OVERRIDES_PATH", DEFAULT_SEASON_OVERRIDES))
+    schedule_path = Path(os.environ.get("SCHEDULE_PATH", DEFAULT_SCHEDULE))
     recent_archives = _load_recent_archives(archive_dir, REPETITION_LOOKBACK_DAYS)
+    schedule = _safe_load(schedule_path)
     source_data = {
         "rolling_7day": _safe_load(rolling_path),
         "season_memory": {
@@ -626,6 +910,10 @@ def main():
         "rosters": _safe_load(roster_path),
         "season_overrides": _safe_load(season_overrides_path),
         "recent_dan_output": recent_archives,
+        # Rule 15 needs the schedule generate_rant.py already had. Without it the
+        # judge could not tell "the Sox play tonight" from an off day, which is
+        # exactly how the 2026-09-10 phantom game published clean.
+        "upcoming_schedule": schedule,
     }
 
     # Deterministic repetition pre-pass — runs before the LLM judge so its
@@ -641,6 +929,15 @@ def main():
         print(f"  pre-pass: {len(pre_pass_flags)} repetition flag(s) detected", file=sys.stderr)
 
     today_iso = as_of_iso()
+
+    # Schedule pre-pass. Unlike the repetition flags above this one is MEDIUM —
+    # a game that does not exist is a factual error a reader can check, not a
+    # voice nit — so it is tracked separately and raises the merged severity.
+    phantom_flags = detect_phantom_game(today_obj, schedule, today_iso)
+    if phantom_flags:
+        print(f"  pre-pass: {len(phantom_flags)} phantom-game flag(s) detected", file=sys.stderr)
+    pre_pass_flags += phantom_flags
+
     full_prompt = (
         f"TODAY: {today_iso}\n\n"
         + JUDGE_PROMPT
@@ -674,13 +971,13 @@ def main():
         print(f"warning: safety judge API error ({type(e).__name__}), treating as PASS", file=sys.stderr)
         api_note = f"judge skipped — API error: {type(e).__name__}"
         if pre_pass_flags:
-            v = {"verdict": "FAIL", "severity": "low",
+            v = {"verdict": "FAIL", "severity": "medium" if phantom_flags else "low",
                  "flags": pre_pass_flags + [api_note]}
-            _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note])
+            _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note], phantom_flags)
             print(json.dumps(v))
             sys.exit(1)
         v = {"verdict": "PASS", "severity": "low", "flags": [api_note]}
-        _write_enriched(v, pre_pass_flags, [], [api_note])
+        _write_enriched(v, pre_pass_flags, [], [api_note], phantom_flags)
         print(json.dumps(v))
         sys.exit(0)
 
@@ -700,10 +997,12 @@ def main():
         if verdict.get("verdict") == "PASS":
             verdict["verdict"] = "FAIL"
             verdict["severity"] = "low"
+        if phantom_flags:
+            verdict["severity"] = _at_least(verdict.get("severity"), "medium")
 
     # Persist enriched verdict for the evals dashboard if JUDGE_RESULT_PATH is set.
     # This does NOT affect stdout or exit code — publish.py's existing parsing is unaffected.
-    _write_enriched(verdict, pre_pass_flags, llm_flags)
+    _write_enriched(verdict, pre_pass_flags, llm_flags, phantom_flags=phantom_flags)
 
     print(json.dumps(verdict, indent=2))
 

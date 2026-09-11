@@ -261,11 +261,15 @@ def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
                 for flag in attempt.get("flags", []):
                     flag_lower = str(flag).lower()
                     # Detect which rule fired by looking for "rule N" in the flag text,
-                    # or by checking for "repetition" (rule 10) / "off-roster" (rule 11).
-                    for rule_num in range(1, 12):
+                    # or by the wording the deterministic pre-passes use, which never
+                    # names a rule number. Iterating RULE_TITLES rather than a literal
+                    # range keeps a newly added rule from being invisible here — the
+                    # old range(1, 12) silently stopped counting at rule 11.
+                    for rule_num in sorted(RULE_TITLES):
                         if (f"rule {rule_num}" in flag_lower or
                                 (rule_num == 10 and "repetition" in flag_lower) or
-                                (rule_num == 11 and "off-roster" in flag_lower)):
+                                (rule_num == 11 and "off-roster" in flag_lower) or
+                                (rule_num == 15 and "phantom game" in flag_lower)):
                             rule_flag_counts[rule_num] = rule_flag_counts.get(rule_num, 0) + 1
 
         available_dates.sort()
@@ -291,6 +295,7 @@ def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
             12: "A team played yesterday but the brew never mentions the game",
             13: "A story blended into another team's paragraph without naming the team",
             14: "A must-cover milestone (trade, signing, firing) missing from the brew",
+            15: "Claims a game today that the upcoming schedule does not list",
         }
         rules = [
             {"number": n, "title": RULE_TITLES[n], "summary": rule_summaries.get(n, "")}
@@ -581,7 +586,8 @@ def main():
         "winning_attempt": None,
         "total_attempts": 0,
         "generation_seconds": None,
-        "pre_pass": {"repetition_check": "unknown", "flagged_phrases": []},
+        "pre_pass": {"repetition_check": "unknown", "schedule_check": "unknown",
+                     "flagged_phrases": []},
         "attempts": [],
     }
 
@@ -649,8 +655,18 @@ def main():
             # reflects the original generation; subsequent attempts have their own pre-pass).
             if enriched:
                 pre_pass_flags = enriched.get("pre_pass_flags", [])
+                phantom_flags = enriched.get("phantom_game_flags", [])
+                # Reported separately: the dashboard maps repetition_check to rule
+                # 10, so a schedule flag folded in there would blame voice repetition
+                # for a phantom game. Fall back to the whole pre-pass list for an
+                # enriched verdict written before the split existed.
+                repetition_flags = enriched.get(
+                    "repetition_flags",
+                    [f for f in pre_pass_flags if f not in phantom_flags],
+                )
                 evals_doc["pre_pass"] = {
-                    "repetition_check": "fail" if pre_pass_flags else "pass",
+                    "repetition_check": "fail" if repetition_flags else "pass",
+                    "schedule_check": "fail" if phantom_flags else "pass",
                     "flagged_phrases": pre_pass_flags,
                 }
 

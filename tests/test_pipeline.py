@@ -19,7 +19,8 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+REPO = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO / "scripts"))
 
 import generate_rant  # noqa: E402
 import fetch_season_memory  # noqa: E402
@@ -30,6 +31,7 @@ import fetch_nfl  # noqa: E402
 import pipeline_dates  # noqa: E402
 import publish  # noqa: E402
 import fetch_news  # noqa: E402
+import safety_judge  # noqa: E402
 
 
 def make_rolling(date_str, team="redsox", played=True, games=None):
@@ -1103,6 +1105,243 @@ class TestNewsCoverageWindow(unittest.TestCase):
                     self._article("not a timestamp")]
         kept = fetch_news.drop_articles_after(articles, date(2026, 9, 6))
         self.assertEqual(len(kept), 3)
+
+
+class TestPhantomGameDetection(unittest.TestCase):
+    """The 2026-09-10 bug: the published brew closed with "The Sox have to stop
+    the bleeding at the Fens tonight" on an off day between two series, and the
+    judge passed it. It could not have done otherwise — upcoming_schedule.json
+    was in generate_rant.py's prompt but was never in the judge's source_data,
+    and every fixture ran against a hardcoded empty schedule."""
+
+    TODAY = "2026-09-10"
+
+    def _post(self, *paragraphs, headline="Sox drop another at Fenway"):
+        return {"headline": headline, "morning_brew": list(paragraphs)}
+
+    def _schedule(self, *entries):
+        return {"games": [
+            {"sport": sport, "team": team, "date": day}
+            for team, sport, day in entries
+        ]}
+
+    # The published sentence, verbatim, against the schedule of that morning.
+    PUBLISHED = (
+        "I am trying to look ahead, but damn, this city needs a win to clear the air. "
+        "The Sox have to stop the bleeding at the Fens tonight, and I am begging them "
+        "to put this miserable stretch behind us."
+    )
+
+    def test_published_2026_09_10_paragraph_is_flagged(self):
+        flags = safety_judge.detect_phantom_game(
+            self._post(self.PUBLISHED),
+            self._schedule(("redsox", "MLB", "2026-09-11"),
+                           ("patriots", "NFL", "2026-09-13")),
+            self.TODAY,
+        )
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("redsox", flags[0])
+        self.assertIn("2026-09-11", flags[0])
+
+    def test_same_paragraph_passes_when_the_game_is_real(self):
+        flags = safety_judge.detect_phantom_game(
+            self._post(self.PUBLISHED),
+            self._schedule(("redsox", "MLB", self.TODAY),
+                           ("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_empty_schedule_is_a_fetch_failure_not_an_off_day(self):
+        """fetch_schedule.py drops a team whose file is missing or has an error
+        sentinel. Absent data must never read as proof nobody plays."""
+        for schedule in ({}, {"games": []}, None, []):
+            with self.subTest(schedule=schedule):
+                self.assertEqual(
+                    safety_judge.detect_phantom_game(
+                        self._post(self.PUBLISHED), schedule, self.TODAY),
+                    [],
+                )
+
+    def test_team_absent_from_the_whole_window_is_not_flagged(self):
+        """A team with no games anywhere in the window is indistinguishable from
+        a team whose fetcher failed — that case belongs to judge rule 15."""
+        flags = safety_judge.detect_phantom_game(
+            self._post(self.PUBLISHED),
+            self._schedule(("patriots", "NFL", "2026-09-13")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_we_language_resolves_through_the_paragraph_venue(self):
+        paragraph = (
+            "My neighbor Rick has a new theory that the grass at Fenway was cut "
+            "unevenly last night. We have to shake off last night and get back to "
+            "work immediately with another game tonight."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-12")),
+            self.TODAY,
+        )
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("redsox", flags[0])
+
+    def test_unresolvable_team_flags_only_when_nobody_plays(self):
+        paragraph = "We are right back at it this afternoon and I will be watching."
+        nobody = self._schedule(("redsox", "MLB", "2026-09-11"))
+        somebody = self._schedule(("redsox", "MLB", "2026-09-11"),
+                                  ("celtics", "NBA", self.TODAY))
+        self.assertEqual(
+            len(safety_judge.detect_phantom_game(self._post(paragraph), nobody, self.TODAY)), 1)
+        self.assertEqual(
+            safety_judge.detect_phantom_game(self._post(paragraph), somebody, self.TODAY), [])
+
+    def test_off_day_prose_is_not_a_phantom_game(self):
+        paragraph = (
+            "No baseball tonight, which is probably merciful after that one. "
+            "We are back at Fenway on Friday and I will be there with a fresh Dunks."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_venue_next_to_a_past_reference_is_ambiguous_not_a_claim(self):
+        """A venue is the weakest cue. "Last night at Fenway ... today" contains
+        one and asserts nothing about tonight."""
+        flags = safety_judge.detect_phantom_game(
+            self._post("Last night at Fenway was brutal and I am still sour about it today."),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_past_clause_does_not_veto_a_real_claim_beside_it(self):
+        """The veto is narrow on purpose — a past clause in the same sentence
+        must not swallow an actual forward-looking claim."""
+        flags = safety_judge.detect_phantom_game(
+            self._post("It was ugly, but the Sox are at the Fens tonight and I need a bounce back."),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(len(flags), 1, flags)
+
+    def test_next_game_reported_is_the_earliest_not_the_first_listed(self):
+        flags = safety_judge.detect_phantom_game(
+            self._post(self.PUBLISHED),
+            self._schedule(("redsox", "MLB", "2026-09-14"),
+                           ("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertIn("next game 2026-09-11", flags[0])
+
+    def test_standings_talk_is_not_a_game_claim(self):
+        """"games back" carries a cue word without asserting a game — the exact
+        shape a naive keyword match would flag every stretch-run morning."""
+        paragraph = (
+            "The Sox are two games back today and the wild card is still there for "
+            "the taking if the bats wake up."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_white_sox_opponent_is_not_the_red_sox(self):
+        paragraph = "The White Sox play tonight and nobody in this city cares."
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-11"),
+                           ("celtics", "NBA", self.TODAY)),
+            self.TODAY,
+        )
+        self.assertEqual(flags, [])
+
+    def test_one_flag_per_team_not_one_per_sentence(self):
+        paragraph = (
+            "The Sox are back at Fenway tonight. The Sox need a win tonight. "
+            "The Sox take the field tonight."
+        )
+        flags = safety_judge.detect_phantom_game(
+            self._post(paragraph),
+            self._schedule(("redsox", "MLB", "2026-09-11")),
+            self.TODAY,
+        )
+        self.assertEqual(len(flags), 1, flags)
+
+    def test_archived_posts_from_days_with_games_stay_clean(self):
+        """Regression floor: replay every archived post against a schedule where
+        all four teams play. Anything that flags is a matcher bug, not Dan."""
+        archive = REPO / "data" / "dan_archive"
+        posts = [p for p in sorted(archive.glob("*.json")) if ".evals." not in p.name]
+        self.assertTrue(posts, "no archived posts to replay")
+        for path in posts:
+            day = path.stem
+            with self.subTest(day=day):
+                schedule = self._schedule(*[(t, s, day) for t, s in
+                                            [("redsox", "MLB"), ("celtics", "NBA"),
+                                             ("bruins", "NHL"), ("patriots", "NFL")]])
+                post = json.loads(path.read_text())
+                self.assertEqual(
+                    safety_judge.detect_phantom_game(post, schedule, day), [])
+
+
+class TestPhantomGameSeverity(unittest.TestCase):
+    def test_medium_floor_beats_low_but_never_downgrades_high(self):
+        self.assertEqual(safety_judge._at_least("low", "medium"), "medium")
+        self.assertEqual(safety_judge._at_least("medium", "medium"), "medium")
+        self.assertEqual(safety_judge._at_least("high", "medium"), "high")
+        self.assertEqual(safety_judge._at_least(None, "medium"), "medium")
+        self.assertEqual(safety_judge._at_least("nonsense", "medium"), "medium")
+
+
+class TestJudgeReadsTheSchedule(unittest.TestCase):
+    """The gap that let the bug through was structural: the schedule generate_rant
+    already had simply never reached the judge. Assert the wiring, not the prose."""
+
+    def test_schedule_path_env_var_is_honoured(self):
+        self.assertTrue(hasattr(safety_judge, "DEFAULT_SCHEDULE"))
+        self.assertEqual(safety_judge.DEFAULT_SCHEDULE.name, "upcoming_schedule.json")
+
+    def test_rule_15_exists_and_is_titled(self):
+        self.assertIn(15, safety_judge.RULE_TITLES)
+        self.assertIn("15.", safety_judge.JUDGE_PROMPT)
+        self.assertIn("UPCOMING_SCHEDULE", safety_judge.JUDGE_PROMPT)
+
+
+class TestFixtureSchedulesReachTheGenerator(unittest.TestCase):
+    """eval_voice.py used to write '{"games": []}' for every fixture, so no
+    fixture could reproduce a phantom-game claim even in principle."""
+
+    def test_split_fixture_returns_the_fixtures_schedule(self):
+        from eval_voice import split_fixture
+        fixture = {
+            "rolling_7day": {"days": []},
+            "upcoming_schedule": {"games": [{"sport": "MLB", "team": "redsox",
+                                             "date": "2026-09-11"}]},
+        }
+        schedule = split_fixture(fixture)[8]
+        self.assertEqual(schedule["games"][0]["date"], "2026-09-11")
+
+    def test_fixture_without_a_schedule_still_gets_an_empty_stub(self):
+        from eval_voice import split_fixture
+        self.assertEqual(split_fixture({"rolling_7day": {}})[8], {"games": []})
+        self.assertEqual(split_fixture({"days": []})[8], {"games": []})
+
+    def test_phantom_game_fixture_has_no_game_on_its_pinned_today(self):
+        fixture = json.loads(
+            (REPO / "evals" / "fixtures" / "schedule_phantom_game.json").read_text())
+        today = fixture["today"]
+        games = fixture["upcoming_schedule"]["games"]
+        self.assertTrue(games, "fixture needs games or the check disables itself")
+        self.assertEqual([g for g in games if g["date"] == today], [])
+        self.assertTrue([g for g in games if g["team"] == "redsox"],
+                        "fixture needs a later Red Sox game so the off day is provable")
 
 
 if __name__ == "__main__":
