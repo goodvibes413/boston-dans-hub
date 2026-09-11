@@ -1,30 +1,41 @@
 {
   "date": "2026-09-10",
-  "generated_at": "2026-09-10T14:40:45.115463+00:00",
+  "generated_at": "2026-09-11T00:14:51.795334+00:00",
   "outcome": "retry",
-  "winning_attempt": 2,
-  "total_attempts": 2,
-  "generation_seconds": 20.0,
+  "winning_attempt": 3,
+  "total_attempts": 3,
+  "generation_seconds": 65.6,
   "pre_pass": {
     "repetition_check": "pass",
+    "schedule_check": "pass",
     "flagged_phrases": []
   },
   "attempts": [
     {
       "attempt": 1,
       "verdict": "FAIL",
-      "severity": "low",
+      "severity": "medium",
       "flags": [
-        "repetition: formulaic paragraph opener \"that # to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        "rule 15: phantom scheduled game - the output asserts 'No baseball for the Pats this week' which is a nonsensical statement, but more importantly, it implies a confusion between sports schedules by referencing 'baseball' in the context of the Patriots' schedule, and the phrasing 'No baseball for the Pats' is a cross-team misattribution/confusion error.",
+        "repetition: formulaic paragraph opener \"we have to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
       ],
-      "duration_seconds": 3.4
+      "duration_seconds": 39.8
     },
     {
       "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        "repetition: number-masked sentence skeleton \"that # to # loss at fenway\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      ],
+      "duration_seconds": 2.1
+    },
+    {
+      "attempt": 3,
       "verdict": "PASS",
       "severity": "low",
       "flags": [],
-      "duration_seconds": 4.7
+      "duration_seconds": 1.2
     }
   ]
 }

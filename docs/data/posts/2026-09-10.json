@@ -1,31 +1,37 @@
 {
   "date": "2026-09-10",
-  "generated_at": "2026-09-10T14:41:05.154947+00:00",
-  "headline": "Red Sox collapse at Fenway while Patriots suffer ugly Seattle defeat",
+  "generated_at": "2026-09-11T00:15:57.434808+00:00",
+  "headline": "Red Sox look to bounce back against Royals after Seattle heartbreaker",
   "morning_brew": [
-    "Wednesday night was a total disastah for Boston sports, and I am still trying to scrub the memory of it from my brain. The Red Sox choked away a win at Fenway Park, letting the Angels put up a crooked number in the third inning that we simply could not climb out of. Watching Jake Bennett struggle through his outing was physically painful, and even though the bullpen finally gave us a few zeros, the offense just ran out of gas. We are in the thick of a playoff push, and throwing away games like this is exactly how you end up staring at the final standings with nothing but regret in October.",
-    "Across the country, the Patriots opened the year with a brutal, punch-to-the-gut loss in Seattle. Drake Maye looked miserable and even admitted he lost his patience, which is a hell of a way to kick off a season opener. Adding insult to the injury, losing A.J. Brown to an ankle issue is a massive blow that has me staring at the ceiling at three in the morning. It feels like we are playing catch-up before the coffee even hits the mug, and watching that offense try to find a rhythm against the Seahawks was like watching a guy try to parallel park a bus on the Pike.",
-    "I am trying to look ahead, but damn, this city needs a win to clear the air. The Sox have to stop the bleeding at the Fens tonight, and I am begging them to put this miserable stretch behind us. My neighbor Rick is already deep into some insane theory about why the Patriots lost based on the turf at Lumen Field, and while he is usually out to lunch, I am currently too salty to even argue with him. I need a massive win tonight or I might just stop answering the phone."
+    "I watched that final drive in Seattle through my fingers like a horror movie and the result was just as painful. Drake Maye had a long night at the office, and the team just couldn't find the necessary spark in those final quarters to swing it our way. Losing by a slim margin of 13-10 when every possession feels like a turning point takes about three years off my life, but that is the brutal nature of the beast in this league.",
+    "Back at Fenway, the Red Sox are looking to shake off a frustrating 6-4 loss to the Angels where the starting pitching just didn't have the command we needed in the early frames. Watching the bullpen come in and hold the line was a silver lining, but when you put yourself in a hole that deep against an opponent, the comeback attempt always feels like an uphill climb. We are currently sitting in position for a wild card spot, so every single night at the park is massive for keeping the Duck Boat fund from being frozen pending investigation.",
+    "We have no time to mope around with a series against the Royals starting tonight at the oldest yard in baseball. I am looking for the bats to wake up and for the rotation to settle in early because we need to stack some wins before we hit the road again. I will be glued to the screen and hoping for a cleaner game, because my neighbor Rick has already started a new investigation into why we struggle against teams below us in the standings, and I really do not need to hear his theories on the bullpen while I am trying to eat my dinner."
   ],
   "news_digest": [
     {
-      "headline": "A.J. Brown believed to have high ankle sprain",
-      "url": "https://www.espn.com/nfl/story/_/id/49891924/sources-aj-brown-believed-high-ankle-sprain-set-mri",
-      "dans_take": "A high ankle sprain for our best playmaker is a nightmare scenario I really did not need today."
+      "headline": "MLB playoff tracker 2026: Clinching scenarios, bracket, schedule",
+      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
+      "dans_take": "I am trying to avoid looking at the bracket because I am superstitious, but we need to keep winning to stay safe."
     }
   ],
   "trend_watch": [
     {
-      "category": "Cold Snap",
-      "player": "Jake Bennett",
-      "trend": "Allowed six earned runs over five and a third innings in his latest start.",
-      "dans_take": "He was throwing batting practice out there, and that third inning essentially salted the earth on our chances."
+      "category": "Heater",
+      "player": "Wilyer Abreu",
+      "trend": "Crushed a home run and collected one of the few hits for the lineup during the loss to Los Angeles.",
+      "dans_take": "He is the only guy out there providing any real thump while the rest of the lineup takes a nap."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Jovani Mor\u00e1n",
+      "trend": "Tossed a clean inning of work against the Angels with a punchout and zero baserunners allowed.",
+      "dans_take": "He looked sharp and confident, which is exactly the kind of stuff we need to bridge the gap without the arson squad showing up."
     },
     {
       "category": "Cold Snap",
-      "player": "Drake Maye",
-      "trend": "Finished his season debut by throwing three interceptions against the Seahawks defense.",
-      "dans_take": "I appreciate the accountability, but watching him heave those balls into traffic made me want to throw my remote through the wall."
+      "player": "Jake Bennett",
+      "trend": "Allowed six earned runs over five and one third innings while taking the loss against the Angels.",
+      "dans_take": "He just did not have his best stuff, and leaving us in a hole that early is a recipe for a bad night at the Fens."
     }
   ],
   "box_scores": {
@@ -102,9 +108,9 @@
       "time_et": "8:05 PM ET"
     },
     {
-      "date": "9999-12-30",
-      "matchup": "New England Patriots at Seattle Seahawks",
-      "time_et": "TBD"
+      "date": "2026-09-18",
+      "matchup": "Boston Red Sox at Tampa Bay Rays",
+      "time_et": "7:10 PM ET"
     }
   ],
   "_stale": null,
