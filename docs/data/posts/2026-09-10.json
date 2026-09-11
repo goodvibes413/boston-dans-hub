@@ -1,37 +1,31 @@
 {
   "date": "2026-09-10",
-  "generated_at": "2026-09-11T00:15:57.434808+00:00",
-  "headline": "Red Sox look to bounce back against Royals after Seattle heartbreaker",
+  "generated_at": "2026-09-11T00:57:26.561727+00:00",
+  "headline": "Red Sox bats go cold and Patriots drop painful Seattle opener",
   "morning_brew": [
-    "I watched that final drive in Seattle through my fingers like a horror movie and the result was just as painful. Drake Maye had a long night at the office, and the team just couldn't find the necessary spark in those final quarters to swing it our way. Losing by a slim margin of 13-10 when every possession feels like a turning point takes about three years off my life, but that is the brutal nature of the beast in this league.",
-    "Back at Fenway, the Red Sox are looking to shake off a frustrating 6-4 loss to the Angels where the starting pitching just didn't have the command we needed in the early frames. Watching the bullpen come in and hold the line was a silver lining, but when you put yourself in a hole that deep against an opponent, the comeback attempt always feels like an uphill climb. We are currently sitting in position for a wild card spot, so every single night at the park is massive for keeping the Duck Boat fund from being frozen pending investigation.",
-    "We have no time to mope around with a series against the Royals starting tonight at the oldest yard in baseball. I am looking for the bats to wake up and for the rotation to settle in early because we need to stack some wins before we hit the road again. I will be glued to the screen and hoping for a cleaner game, because my neighbor Rick has already started a new investigation into why we struggle against teams below us in the standings, and I really do not need to hear his theories on the bullpen while I am trying to eat my dinner."
+    "That four to six loss to the Angels at Fenway was a flat-out disaster, and watching the bats sleepwalk for eight innings took about three years off my life. Jake Bennett had a hell of a time finding the zone early, and while the bullpen finally decided to show up and stabilize the middle frames, the hole we dug was way too deep to climb out of. It is the kind of game that makes you wanna throw your Dunks at the wall, especially with the wild card spot on the line. Stringing together hits when the pressure is actually building shouldn't be this hard, but somehow we made it look like rocket science.",
+    "The football season kicked off with a kick to the gut as the Patriots stumbled ten to thirteen in a defensive slog against Seattle. Drake Maye looked like he was playing against ghosts out there, and walking away from the opener with a loss is a brutal way to start the year. Then you hear A.J. Brown is dealing with a sprained ankle and the misery just piles up. We need some major adjustments on offense before this thing gets out of hand, because searching for answers in week one is exactly the kind of frustration I thought we left in the past.",
+    "We have a rare night off from the diamond, and honestly, it is probably for the best so we can all stop pacing around the living room. The team needs to clear its head before the Royals come to town, and I am praying a little time away from the Fens helps the lineup find its pulse again. My neighbor Rick is already four hours into an investigation regarding why we didn't trade for a bat in July, and while he is losing his mind, I am just gonna enjoy a quiet night and hope the luck changes when the action returns."
   ],
   "news_digest": [
     {
-      "headline": "MLB playoff tracker 2026: Clinching scenarios, bracket, schedule",
-      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
-      "dans_take": "I am trying to avoid looking at the bracket because I am superstitious, but we need to keep winning to stay safe."
+      "headline": "Source: Patriots' A.J. Brown likely out at least 4 weeks",
+      "url": "https://www.espn.com/nfl/story/_/id/49897884/sources-patriots-aj-brown-likely-least-4-weeks",
+      "dans_take": "Four weeks without our top target is a nightmare scenario for this offense."
     }
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "Wilyer Abreu",
-      "trend": "Crushed a home run and collected one of the few hits for the lineup during the loss to Los Angeles.",
-      "dans_take": "He is the only guy out there providing any real thump while the rest of the lineup takes a nap."
+      "trend": "Crushed a home run and finished with one hit in three at-bats during the loss to Los Angeles.",
+      "dans_take": "He was the only guy who realized a baseball game was actually happening last night."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Jovani Mor\u00e1n",
-      "trend": "Tossed a clean inning of work against the Angels with a punchout and zero baserunners allowed.",
-      "dans_take": "He looked sharp and confident, which is exactly the kind of stuff we need to bridge the gap without the arson squad showing up."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Jake Bennett",
-      "trend": "Allowed six earned runs over five and one third innings while taking the loss against the Angels.",
-      "dans_take": "He just did not have his best stuff, and leaving us in a hole that early is a recipe for a bad night at the Fens."
+      "player": "Wyatt Olds",
+      "trend": "Provided one and two-thirds scoreless innings with one strikeout to help stabilize the middle frames.",
+      "dans_take": "He actually threw strikes, which makes him the most impressive person in the building by default."
     }
   ],
   "box_scores": {
@@ -108,9 +102,9 @@
       "time_et": "8:05 PM ET"
     },
     {
-      "date": "2026-09-18",
-      "matchup": "Boston Red Sox at Tampa Bay Rays",
-      "time_et": "7:10 PM ET"
+      "date": "9999-12-30",
+      "matchup": "New England Patriots at Seattle Seahawks",
+      "time_et": "TBD"
     }
   ],
   "_stale": null,
