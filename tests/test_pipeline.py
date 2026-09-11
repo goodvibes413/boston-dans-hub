@@ -2258,5 +2258,146 @@ class TestFixtureSchedulesReachTheGenerator(unittest.TestCase):
                         "fixture needs a later Red Sox game so the off day is provable")
 
 
+class TestPublishedPostCarriesItsDay(unittest.TestCase):
+    """Run #614 replayed 2026-09-10 at 03:34 UTC on the 11th. Everything the run
+    wrote was keyed 2026-09-10 -- the post archive, the evals trace, the picker's
+    available_dates -- except daily_output.json, which carried no day at all. The
+    frontend inferred one from generated_at, got 2026-09-11, and asked the
+    archive picker for a pill no run had ever produced: no active pill, no button
+    for the post on screen, and a Friday date line over Thursday's brew."""
+
+    def _publish(self, as_of, payload):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "daily_output.json"
+            real = publish.PUBLISHED_OUTPUT_PATH
+            publish.PUBLISHED_OUTPUT_PATH = out
+            os.environ[pipeline_dates.AS_OF_ENV] = as_of
+            try:
+                self.assertTrue(publish.publish_output(dict(payload)))
+                return json.loads(out.read_text())
+            finally:
+                publish.PUBLISHED_OUTPUT_PATH = real
+                os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+
+    def test_the_day_stamped_is_the_run_day_not_the_wall_clock(self):
+        written = self._publish(
+            "2026-09-10",
+            {"headline": "h", "generated_at": "2026-09-11T03:34:55+00:00"},
+        )
+        self.assertEqual(written["date"], "2026-09-10")
+
+    def test_generated_at_is_left_alone(self):
+        """publish_fallback() ages content off generated_at — it has to stay
+        wall clock, which is exactly why it cannot double as the run day."""
+        written = self._publish(
+            "2026-09-10",
+            {"headline": "h", "generated_at": "2026-09-11T03:34:55+00:00"},
+        )
+        self.assertEqual(written["generated_at"], "2026-09-11T03:34:55+00:00")
+
+    def test_the_stamp_matches_the_key_the_archive_picker_uses(self):
+        """archive_dan_output() and the docs export both key on as_of_iso(); a
+        post filed under one day and served under another is the whole bug."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            os.environ[pipeline_dates.AS_OF_ENV] = "2026-09-10"
+            try:
+                payload = {"headline": "h", "morning_brew": ["p"], "news_digest": [],
+                           "generated_at": "2026-09-11T03:34:55+00:00"}
+                publish.stamp_run_date(payload)
+                publish.archive_dan_output(payload, archive_dir=Path(tmp))
+            finally:
+                os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+            self.assertEqual([p.stem for p in Path(tmp).glob("*.json")], [payload["date"]])
+
+    def test_a_stale_republish_is_stamped_with_the_day_it_is_served_as(self):
+        """Stale content is filed under today by publish_evals_to_docs(), so the
+        payload has to agree — _stale is what tells the reader it is recycled."""
+        written = self._publish(
+            "2026-09-11",
+            {"headline": "h", "date": "2026-09-10", "_stale": True,
+             "generated_at": "2026-09-10T08:00:00+00:00"},
+        )
+        self.assertEqual(written["date"], "2026-09-11")
+
+    def test_every_publish_path_goes_through_the_stamp(self):
+        """A path that calls write_json(PUBLISHED_OUTPUT_PATH, ...) directly is a
+        path whose post the archive picker cannot find."""
+        src = (REPO / "scripts" / "publish.py").read_text()
+        stray = [ln.strip() for ln in src.splitlines()
+                 if "write_json(PUBLISHED_OUTPUT_PATH" in ln]
+        self.assertEqual(
+            stray, ["return write_json(PUBLISHED_OUTPUT_PATH, stamp_run_date(output), label=label)"])
+
+
+class TestPostRetentionCountsPostsOnly(unittest.TestCase):
+    """ARCHIVE_RETENTION_DAYS is 9 so generate_rant.py's 5-day readback has room
+    to spare. The prune globbed "*.json", which also matches "<date>.evals.json",
+    so it counted every day twice and spent half its budget evicting eval traces
+    archive_evals() already prunes on its own window. Nine days of retention
+    bought four and a half days of posts — under the five that are read back, and
+    one pill short in the archive picker."""
+
+    def _archive_dir(self, tmp, days):
+        for i in range(days):
+            day = f"2026-09-{i + 1:02d}"
+            (Path(tmp) / f"{day}.json").write_text("{}")
+            (Path(tmp) / f"{day}.evals.json").write_text("{}")
+        return Path(tmp)
+
+    def test_a_full_window_of_posts_survives_its_own_eval_traces(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            d = self._archive_dir(tmp, publish.ARCHIVE_RETENTION_DAYS)
+            os.environ[pipeline_dates.AS_OF_ENV] = "2026-09-20"
+            try:
+                publish.archive_dan_output(
+                    {"headline": "h", "morning_brew": ["p"], "news_digest": []},
+                    archive_dir=d,
+                )
+            finally:
+                os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+            posts = sorted(p.stem for p in d.glob("*.json") if ".evals" not in p.name)
+            self.assertEqual(len(posts), publish.ARCHIVE_RETENTION_DAYS)
+            self.assertEqual(posts[0], "2026-09-02", "oldest post, not an eval trace")
+
+    def test_the_readback_window_still_fits_after_a_prune(self):
+        self.assertGreaterEqual(publish.ARCHIVE_RETENTION_DAYS, publish.DAN_MEMORY_DAYS)
+
+    def test_eval_traces_are_left_to_their_own_prune(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            d = self._archive_dir(tmp, publish.ARCHIVE_RETENTION_DAYS)
+            os.environ[pipeline_dates.AS_OF_ENV] = "2026-09-20"
+            try:
+                publish.archive_dan_output(
+                    {"headline": "h", "morning_brew": ["p"], "news_digest": []},
+                    archive_dir=d,
+                )
+            finally:
+                os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+            self.assertEqual(len(list(d.glob("*.evals.json"))),
+                             publish.ARCHIVE_RETENTION_DAYS)
+
+
+class TestArchivePickerAlwaysHasTodaysPill(unittest.TestCase):
+    """The picker is built from the evals index, so a day that publishes a post
+    but files no trace (stale, fallback, an index write that lost a race) left
+    the reader with no button for the post in front of them."""
+
+    def test_the_active_date_is_folded_into_the_pill_list(self):
+        src = (REPO / "docs" / "index.html").read_text()
+        self.assertIn(
+            "[...new Set([...evalsIndex.available_dates, ...(activeDate ? [activeDate] : [])])]",
+            src)
+
+    def test_the_frontend_reads_the_stamped_day_before_generated_at(self):
+        src = (REPO / "docs" / "index.html").read_text()
+        fn = src[src.index("function getTodayISO("):]
+        fn = fn[:fn.index("\n")]
+        self.assertLess(fn.index("data.date"), fn.index("data.generated_at"))
+
+
 if __name__ == "__main__":
     unittest.main()

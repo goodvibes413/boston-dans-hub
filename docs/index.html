@@ -1231,7 +1231,16 @@
     function safeUrl(u) { const s = String(u || '').trim(); return /^https?:\/\//i.test(s) ? s : '#'; }
     function oppCode(name) { if (!name) return 'OPP'; const key = String(name).toLowerCase(); if (OPP_CODE[key]) return OPP_CODE[key]; const words = String(name).trim().split(/\s+/); const last = words[words.length - 1] || 'OPP'; return last.slice(0, 3).toUpperCase(); }
     function shortDate(dateStr) { if (!dateStr) return ''; const parts = dateStr.split('-'); if (parts.length < 3) return dateStr; const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; return `${days[d.getDay()]} ${d.getDate()}`; }
-    function getTodayISO(data) { if (data && data.generated_at) { try { return new Date(data.generated_at).toISOString().slice(0, 10); } catch(e) {} } return new Date().toISOString().slice(0, 10); }
+    /* Which day is the published post about? publish.py stamps `date` on
+       daily_output.json from the run's as_of_date, the same key the archive
+       pills, posts/ and evals/ files all use, so prefer it. generated_at is
+       the wall clock when the run finished and drifts off the run day on any
+       replay: run #614 replayed 2026-09-10 at 03:34 UTC on the 11th, this
+       function answered 2026-09-11, and the archive picker went looking for a
+       pill no run had produced -- no active pill, no button for the post on
+       screen, and a Friday date line over Thursday's brew. Kept only as the
+       fallback for payloads published before the stamp existed. */
+    function getTodayISO(data) { if (data && data.date) return data.date; if (data && data.generated_at) { try { return new Date(data.generated_at).toISOString().slice(0, 10); } catch(e) {} } return new Date().toISOString().slice(0, 10); }
 
     /* ================================================================
        EXISTING CONTENT BUILDERS (unchanged)
@@ -1360,7 +1369,15 @@
     /* SURFACE 2 — Archive picker rail widget */
     function buildArchiveWidget(evalsIndex, activeDate) {
       if (!evalsIndex || !(evalsIndex.available_dates || []).length) return '';
-      const dates = [...evalsIndex.available_dates].sort().slice(-5);
+      // The day on screen always gets a pill, even when the evals index has not
+      // caught up with it. available_dates is built from the eval traces in the
+      // post archive, so any run that publishes a post but files no trace --
+      // a stale or fallback day, an index write that lost a race with the
+      // publish -- leaves the picker with no button for the post the reader is
+      // looking at. Its dot resolves to `unknown` on its own, which is the
+      // honest reading: published, trace not in hand.
+      const dates = [...new Set([...evalsIndex.available_dates, ...(activeDate ? [activeDate] : [])])]
+        .sort().slice(-5);
       if (!dates.length) return '';
       const summary = evalsIndex.summary_5day || {};
       const DAY_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
