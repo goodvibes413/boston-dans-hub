@@ -40,6 +40,25 @@ The picker also stopped depending on two artifacts agreeing. The day on screen n
 pill whether or not the evals index has caught up with it, its dot resolving to `unknown`
 — published, trace not in hand. A post without a button is never the right answer.
 
+### The same conflation had already eaten the day's scheduled runs
+
+Chasing the missing pill turned up why there was no 9/11 post to begin with. The
+workflow's "skip if today's content is already published" gate read `generated_at`
+too. Run #615 replayed 2026-09-10 at 03:34 UTC on the 11th and stamped the payload
+with the 11th, so runs #616 through #620 — every safety-net cron slot, all day —
+each read that as *the 11th is already published* and exited in nine seconds. The
+day never ran, and the site served Thursday's brew under a Friday date line until
+someone looked at the archive rail and noticed the button missing.
+
+The gate now compares the payload's stamped `date` against the day the run is for,
+falling back to `generated_at` only for payloads published before the stamp existed.
+It also honours `AS_OF_DATE`, so a pinned replay is judged against the day it
+replays rather than against the wall clock — the same conflation, one level up.
+
+That fix mattered immediately: tonight's forced 9/11 run finishes after midnight
+UTC, and under the old gate its own `generated_at` would have gone on to eat the
+9/12 scheduled run too.
+
 ### Nine days of retention were buying four and a half
 
 The archive strip said LAST 4 DAYS. It had said LAST 5 DAYS every day before the 11th.
