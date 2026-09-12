@@ -3,7 +3,8 @@
     "2026-09-07",
     "2026-09-08",
     "2026-09-09",
-    "2026-09-10"
+    "2026-09-10",
+    "2026-09-11"
   ],
   "rules": [
     {
@@ -84,13 +85,13 @@
   ],
   "summary_5day": {
     "fresh": 0,
-    "retry": 4,
+    "retry": 5,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 14,
+        "count": 19,
         "title": "Voice repetition"
       },
       {
@@ -106,7 +107,7 @@
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 1,
+      "llm": 2,
       "both": 0
     }
   }

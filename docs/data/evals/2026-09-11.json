@@ -1,0 +1,62 @@
+{
+  "date": "2026-09-11",
+  "generated_at": "2026-09-12T00:20:19.011355+00:00",
+  "outcome": "retry",
+  "winning_attempt": 3,
+  "total_attempts": 3,
+  "generation_seconds": 36.9,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The output claims 'I am just hoping to see some life on the field tonight' and 'betting on a cleaner performance tonight' for a game on 2026-09-11, but the upcoming schedule lists the game as starting at 7:10 PM ET, which is consistent with tonight, however, the trend_watch section claims Patrick Sandoval has to be sharper 'tonight' for a start that is not listed as occurring today."
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"it is a long season but this is not the start\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"the duck boat fund is feeling a\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"in this wild card race and\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"which is classic rick but i\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 9.3
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"it is a long season but this\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 2.8
+    },
+    {
+      "attempt": 3,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 1.9
+    }
+  ]
+}
