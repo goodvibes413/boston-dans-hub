@@ -80,20 +80,35 @@ jobs:
               print(f"existing output unparseable ({e}) — proceeding")
               sys.exit(0)
 
-          gen_at = data.get("generated_at")
-          if not gen_at:
-              print("no generated_at on existing output — proceeding")
-              sys.exit(0)
-          try:
-              dt = datetime.fromisoformat(gen_at)
-              if dt.tzinfo is None:
-                  dt = dt.replace(tzinfo=timezone.utc)
-          except Exception as e:
-              print(f"bad generated_at ({e}) — proceeding")
-              sys.exit(0)
+          # Which day is the published post ABOUT? publish.py stamps `date` from
+          # as_of_iso(). generated_at is the wall clock when the run FINISHED, and
+          # the two part company on any replay or any run that crosses midnight
+          # UTC. Reading generated_at cost the whole of 2026-09-11: run #615
+          # replayed 09-10 at 03:34 UTC on the 11th, this gate read that timestamp
+          # as "the 11th is already published", and runs #616-#620 each skipped in
+          # nine seconds. The day never ran, and the site served Thursday's brew
+          # under a Friday date line until someone noticed the archive pill missing.
+          published_day = data.get("date")
+          if not published_day:
+              gen_at = data.get("generated_at")
+              if not gen_at:
+                  print("no date or generated_at on existing output — proceeding")
+                  sys.exit(0)
+              try:
+                  dt = datetime.fromisoformat(gen_at)
+                  if dt.tzinfo is None:
+                      dt = dt.replace(tzinfo=timezone.utc)
+              except Exception as e:
+                  print(f"bad generated_at ({e}) — proceeding")
+                  sys.exit(0)
+              published_day = dt.date().isoformat()
+              print(f"no date stamp (payload predates it) — falling back to generated_at: {published_day}")
 
-          today_utc = datetime.now(timezone.utc).date()
-          if dt.date() == today_utc and not data.get("_stale") and not data.get("_fallback"):
+          # The day this run is FOR, so a pinned replay is judged against the day it
+          # replays rather than against the wall clock.
+          as_of = os.environ.get("AS_OF_DATE", "").strip()
+          today_utc = as_of or datetime.now(timezone.utc).date().isoformat()
+          if published_day == today_utc and not data.get("_stale") and not data.get("_fallback"):
               # Already have a real publish for today. Signal downstream steps to skip.
               # Must be an explicit close/flush: the previous `.open("a").write(...)`
               # left the handle to interpreter-shutdown GC, so a dropped write made
@@ -103,9 +118,9 @@ jobs:
                   fh.write("skip=true\n")
                   fh.flush()
                   os.fsync(fh.fileno())
-              print(f"today's content already published at {gen_at} — skipping")
+              print(f"{today_utc} already published — skipping")
           else:
-              print(f"existing output is from {dt.date()} (today={today_utc}) — proceeding")
+              print(f"existing output is for {published_day} (this run is for {today_utc}) — proceeding")
           PY
 
       - name: Set up Python 3.14

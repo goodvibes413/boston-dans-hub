@@ -2399,5 +2399,38 @@ class TestArchivePickerAlwaysHasTodaysPill(unittest.TestCase):
         self.assertLess(fn.index("data.date"), fn.index("data.generated_at"))
 
 
+class TestFreshnessGateReadsTheRunDay(unittest.TestCase):
+    """The gate that decides whether a scheduled run does any work keyed on
+    generated_at, and that cost the whole of 2026-09-11: run #615 replayed 09-10
+    at 03:34 UTC on the 11th, the gate read that timestamp as "the 11th is
+    already published", and runs #616-#620 each skipped in nine seconds. The day
+    never ran. Checked as text because the gate is a heredoc inside the workflow
+    and PyYAML is not a project dependency."""
+
+    def setUp(self):
+        self.gate = (REPO / ".github" / "workflows" / "morning_brew.yml").read_text()
+        self.gate = self.gate.split("Skip if today's content already published")[1]
+        self.gate = self.gate.split("Set up Python")[0]
+
+    def test_the_stamped_day_is_read_before_the_wall_clock(self):
+        self.assertLess(self.gate.index('data.get("date")'),
+                        self.gate.index('data.get("generated_at")'))
+
+    def test_generated_at_survives_as_the_fallback_for_older_payloads(self):
+        self.assertIn("published_day = dt.date().isoformat()", self.gate)
+
+    def test_a_pinned_replay_is_judged_against_the_day_it_replays(self):
+        """Without this an AS_OF_DATE replay is compared to the wall clock, which
+        is the same conflation one level up."""
+        self.assertIn('as_of = os.environ.get("AS_OF_DATE", "").strip()', self.gate)
+        self.assertIn("today_utc = as_of or datetime.now(timezone.utc).date().isoformat()",
+                      self.gate)
+
+    def test_the_day_the_gate_compares_is_the_day_publish_stamps(self):
+        """One key across the gate, the payload and the archive picker."""
+        self.assertIn('output["date"] = as_of_iso()',
+                      (REPO / "scripts" / "publish.py").read_text())
+
+
 if __name__ == "__main__":
     unittest.main()
