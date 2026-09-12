@@ -1,9 +1,23 @@
 {
+  "date": "2026-09-12",
+  "generated_at": "2026-09-12T12:02:07.953016+00:00",
   "headline": "Red Sox drop another heartbreaker as wild card lead shrinks",
   "morning_brew": [
     "Another night, another kick to the gut at Fenway as the Royals walked away with a 3-2 win. Sonny Gray gave us six solid innings, but the bats were once again sound asleep at the wheel, managing only eight hits. We're fighting to stay in position for a wild card spot, but watching this team struggle to execute when the lights are brightest is turning me into a total nervous wreck.",
     "The bullpen had a rough go of it, and while Jovani Mor\u00e1n managed to escape a jam, the lack of timely hitting is the real tragedy of this slide. We have fourteen games remaining in the regular season, and if we don't start stringing together some quality at-bats, that five-game cushion in the wild card race is going to evaporate faster than my motivation on a Monday morning at the Dunks drive-thru.",
     "My neighbor Rick is already drafting a fifty-page manifesto to the league about last night's strike zone, which is peak Rick, but even he knows that blaming the umps doesn't put runs on the board. We are back at it this afternoon with a chance to get one back against Kansas City. I'll be in my seat, praying for a spark, but I'm not gonna lie, I'll be watching through my fingers like I'm seeing a ghost."
+  ],
+  "news_digest": [
+    {
+      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
+      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
+      "dans_take": "I don't care how the robot works as long as it stops the bad calls against us."
+    },
+    {
+      "headline": "MLB playoff tracker 2026: Clinching scenarios, bracket, schedule",
+      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
+      "dans_take": "I keep checking this just to remind myself of the long road ahead."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Nick Sogard",
       "trend": "Sogard finished the night without a hit in four plate appearances, continuing a quiet stretch for the offense.",
       "dans_take": "We need the top of the lineup to be an engine, not a roadblock."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "2026 MLB ABS challenge system tracker: Team, player rankings",
-      "url": "https://www.espn.com/mlb/story/_/id/48305211/2026-mlb-abs-challenge-system-tracker-team-player-rankings",
-      "dans_take": "I don't care how the robot works as long as it stops the bad calls against us."
-    },
-    {
-      "headline": "MLB playoff tracker 2026: Clinching scenarios, bracket, schedule",
-      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
-      "dans_take": "I keep checking this just to remind myself of the long road ahead."
     }
   ],
   "box_scores": {
@@ -123,33 +125,6 @@
       "time_et": "4:10 PM ET"
     }
   ],
-  "_timings": [
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 4.34,
-      "prompt_tokens": 40638,
-      "output_tokens": 1330,
-      "thinking_tokens": null
-    },
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 3.48,
-      "prompt_tokens": 16170,
-      "output_tokens": 1344,
-      "thinking_tokens": null
-    }
-  ],
-  "generated_at": "2026-09-12T12:02:07.953016+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    {
-      "rule": 10,
-      "detail": "repetition: formulaic paragraph opener \"my neighbor rick ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    }
-  ],
-  "date": "2026-09-12"
+  "_stale": null,
+  "_fallback": null
 }

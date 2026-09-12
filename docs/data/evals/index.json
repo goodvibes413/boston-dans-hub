@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-09-07",
     "2026-09-08",
     "2026-09-09",
     "2026-09-10",
-    "2026-09-11"
+    "2026-09-11",
+    "2026-09-12"
   ],
   "rules": [
     {
@@ -91,18 +91,18 @@
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 19,
+        "count": 17,
         "title": "Voice repetition"
       },
       {
-        "rule": 12,
-        "count": 4,
-        "title": "Game coverage gap"
+        "rule": 15,
+        "count": 2,
+        "title": "Phantom scheduled game"
       },
       {
-        "rule": 7,
-        "count": 3,
-        "title": "Fabricated statistics"
+        "rule": 14,
+        "count": 2,
+        "title": "Milestone omission"
       }
     ],
     "rule15_agreement": {

@@ -1,0 +1,56 @@
+{
+  "date": "2026-09-12",
+  "generated_at": "2026-09-12T12:01:14.146185+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 53.8,
+  "pre_pass": {
+    "repetition_check": "fail",
+    "schedule_check": "pass",
+    "flagged_phrases": [
+      {
+        "rule": 10,
+        "detail": "repetition: formulaic paragraph opener \"my neighbor rick ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"my neighbor rick ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 4.1
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"see if we can get back\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 1.8
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"my neighbor rick ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 27.2
+    }
+  ]
+}
