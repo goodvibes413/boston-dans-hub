@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-09-08",
     "2026-09-09",
     "2026-09-10",
     "2026-09-11",
-    "2026-09-12"
+    "2026-09-12",
+    "2026-09-13"
   ],
   "rules": [
     {
@@ -95,14 +95,14 @@
         "title": "Voice repetition"
       },
       {
+        "rule": 14,
+        "count": 3,
+        "title": "Milestone omission"
+      },
+      {
         "rule": 15,
         "count": 2,
         "title": "Phantom scheduled game"
-      },
-      {
-        "rule": 14,
-        "count": 2,
-        "title": "Milestone omission"
       }
     ],
     "rule15_agreement": {
