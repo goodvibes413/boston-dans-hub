@@ -1,9 +1,18 @@
 {
+  "date": "2026-09-14",
+  "generated_at": "2026-09-14T14:50:05.288931+00:00",
   "headline": "Payton Tolle deals an immaculate inning as Boston shuts down Kansas City",
   "morning_brew": [
     "Payton Tolle was absolutely locked in on the mound yesterday, delivering an immaculate inning right out of the gate and silencing the Royals for six full innings. It is rare to see that kind of dominance, and it set the tone for a clean win that keeps us moving in the right direction. After the frustration we saw earlier in the week, watching the starters find a rhythm again is a damn relief for a team trying to secure its place in the standings.",
     "The offense did enough to get the job done, with Roman Anthony coming through in a high-leverage spot to put us ahead. Aroldis Chapman handled the final frame with some serious fire, racking up three strikeouts and locking down the victory while keeping the Kansas City hitters guessing. It is the type of team effort where every man in the dugout understands the stakes, especially with the final stretch of the season staring us in the face.",
     "We head to Texas for a set against the Rangers, and after closing out this homestand with a victory, the mood feels significantly lighter. My neighbor Rick has moved on from his umpire dossier to tracking the league's playoff favorites, but for now, I am just happy we are playing ball that actually looks like it belongs in October. Let's see if we can carry this focus on the road."
+  ],
+  "news_digest": [
+    {
+      "headline": "MLB execs, insiders on 2026 playoff favorites, biggest threats",
+      "url": "https://www.espn.com/mlb/story/_/id/49931681/mlb-2026-playoffs-execs-insiders-favorite-team-beat-predictions-biggest-threats",
+      "dans_take": "It is nice to see the experts finally realizing we are the team nobody wants to draw in October."
+    }
   ],
   "trend_watch": [
     {
@@ -23,13 +32,6 @@
       "player": "Roman Anthony",
       "trend": "Provided the go-ahead hit that helped spark the offense to four total runs.",
       "dans_take": "Big hit when the game was hanging in the balance, absolute clutch stuff."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "MLB execs, insiders on 2026 playoff favorites, biggest threats",
-      "url": "https://www.espn.com/mlb/story/_/id/49931681/mlb-2026-playoffs-execs-insiders-favorite-team-beat-predictions-biggest-threats",
-      "dans_take": "It is nice to see the experts finally realizing we are the team nobody wants to draw in October."
     }
   ],
   "box_scores": {
@@ -118,41 +120,6 @@
       "time_et": "1:40 PM ET"
     }
   ],
-  "_timings": [
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 5.38,
-      "prompt_tokens": 41177,
-      "output_tokens": 1197,
-      "thinking_tokens": null
-    },
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 4.21,
-      "prompt_tokens": 16019,
-      "output_tokens": 1211,
-      "thinking_tokens": null
-    }
-  ],
-  "generated_at": "2026-09-14T14:50:05.288931+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"i am not saying we are out of the woods but\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    },
-    {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"i am still waiting for a challenge\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    },
-    {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"at the fens and if we\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    }
-  ],
-  "date": "2026-09-14"
+  "_stale": null,
+  "_fallback": null
 }
