@@ -1,35 +1,35 @@
 {
-  "headline": "Payton Tolle deals an immaculate inning as Boston shuts down Kansas City",
+  "headline": "Red Sox hitting the road with momentum in the tank",
   "morning_brew": [
-    "Payton Tolle was absolutely locked in on the mound yesterday, delivering an immaculate inning right out of the gate and silencing the Royals for six full innings. It is rare to see that kind of dominance, and it set the tone for a clean win that keeps us moving in the right direction. After the frustration we saw earlier in the week, watching the starters find a rhythm again is a damn relief for a team trying to secure its place in the standings.",
-    "The offense did enough to get the job done, with Roman Anthony coming through in a high-leverage spot to put us ahead. Aroldis Chapman handled the final frame with some serious fire, racking up three strikeouts and locking down the victory while keeping the Kansas City hitters guessing. It is the type of team effort where every man in the dugout understands the stakes, especially with the final stretch of the season staring us in the face.",
-    "We head to Texas for a set against the Rangers, and after closing out this homestand with a victory, the mood feels significantly lighter. My neighbor Rick has moved on from his umpire dossier to tracking the league's playoff favorites, but for now, I am just happy we are playing ball that actually looks like it belongs in October. Let's see if we can carry this focus on the road."
+    "We finally get back on the field tonight after a breather, and it feels like we are right where we need to be. The boys have been playing with a sense of purpose that we haven't seen in a while, and keeping that focus on the road is the biggest test we have left. Sitting in that second wild card spot with a bit of a cushion is nice, but I've been a Boston sports fan long enough to know better than to get comfortable until the job is actually done.",
+    "The way the starters have been chewing through innings lately has been a total game-changer for the staff. It takes the pressure off the guys who have been forced to do more than their fair share of heavy lifting, and it lets us play a much cleaner brand of baseball from first pitch to the final out. If we can keep getting that kind of production on the mound, the rest of the puzzle should fall into place right when we need it most.",
+    "My neighbor Rick is currently convinced that the league schedule makers have a vendetta against us, but I told him to save the complaints for another time. We have a set with Texas starting tonight, and it is all about handling our business one series at a time. I am not making any bold predictions because this game likes to humble you just when you think you've got it figured out, so let's just go out there and play hard."
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "Payton Tolle",
-      "trend": "Fanned seven batters over six scoreless innings of work against Kansas City.",
-      "dans_take": "That opening immaculate inning was something I will remember for a long time, pure artistry."
+      "trend": "Pitched six full innings of dominant baseball against Kansas City while adding an immaculate inning to his resume.",
+      "dans_take": "That level of control is pure art, and exactly what we need to anchor this rotation."
     },
     {
       "category": "Bullpen Watch",
       "player": "Aroldis Chapman",
-      "trend": "Retired the side in the ninth and struck out three to earn the save.",
-      "dans_take": "He did not give them a chance to breathe, which is exactly the kind of arson control we need."
+      "trend": "Struck out three hitters in the final frame to slam the door on the Royals yesterday.",
+      "dans_take": "Seeing that kind of fire from the bullpen makes the end of the game a lot less stressful for my blood pressure."
     },
     {
       "category": "Streak",
       "player": "Roman Anthony",
-      "trend": "Provided the go-ahead hit that helped spark the offense to four total runs.",
-      "dans_take": "Big hit when the game was hanging in the balance, absolute clutch stuff."
+      "trend": "Delivered a clutch base hit in a high-leverage spot to provide the winning margin.",
+      "dans_take": "Coming through when the game is on the line is exactly what we need from our young bats."
     }
   ],
   "news_digest": [
     {
-      "headline": "MLB execs, insiders on 2026 playoff favorites, biggest threats",
-      "url": "https://www.espn.com/mlb/story/_/id/49931681/mlb-2026-playoffs-execs-insiders-favorite-team-beat-predictions-biggest-threats",
-      "dans_take": "It is nice to see the experts finally realizing we are the team nobody wants to draw in October."
+      "headline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule",
+      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
+      "dans_take": "The math is getting interesting and I am finally finding myself obsessively checking the scoreboard for other teams."
     }
   ],
   "box_scores": {
@@ -39,7 +39,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-09-13",
+      "game_date": "2026-09-14",
       "played": false,
       "season_type": "offseason"
     },
@@ -49,18 +49,18 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-09-13",
+      "game_date": "2026-09-14",
       "played": false,
       "season_type": "offseason"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": "Boston Red Sox",
-      "away_team": "Kansas City Royals",
-      "home_score": 4,
-      "away_score": 1,
-      "game_date": "2026-09-13",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-09-14",
+      "played": false,
       "season_type": "regular"
     },
     "patriots": {
@@ -69,7 +69,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-09-13",
+      "game_date": "2026-09-14",
       "played": false,
       "season_type": "regular"
     }
@@ -116,6 +116,12 @@
       "matchup": "Boston Red Sox at Tampa Bay Rays",
       "day_of_week": "Sunday",
       "time_et": "1:40 PM ET"
+    },
+    {
+      "date": "2026-09-22",
+      "matchup": "Cleveland Guardians at Boston Red Sox",
+      "day_of_week": "Tuesday",
+      "time_et": "6:45 PM ET"
     }
   ],
   "_timings": [
@@ -123,39 +129,32 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 5.38,
-      "prompt_tokens": 41177,
-      "output_tokens": 1197,
+      "seconds": 30.37,
+      "prompt_tokens": 40013,
+      "output_tokens": 1242,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.21,
-      "prompt_tokens": 16019,
-      "output_tokens": 1211,
+      "seconds": 6.14,
+      "prompt_tokens": 16064,
+      "output_tokens": 1243,
       "thinking_tokens": null
     }
   ],
-  "generated_at": "2026-09-14T14:50:05.288931+00:00",
+  "generated_at": "2026-09-15T18:34:39.873609+00:00",
   "_regenerated": true,
   "_regeneration_reason": [
     {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"i am not saying we are out of the woods but\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "rule": 15,
+      "detail": "The output claims a game is happening 'tomorrow' at 8:05 PM, but the schedule lists the Red Sox vs Rangers game for today, 2026-09-15, not tomorrow."
     },
     {
       "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"i am still waiting for a challenge\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    },
-    {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"at the fens and if we\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "detail": "repetition: number-masked sentence skeleton \"it is nice to see the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     }
   ],
-  "date": "2026-09-15",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 26.5
+  "date": "2026-09-15"
 }

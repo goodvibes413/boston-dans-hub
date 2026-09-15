@@ -85,29 +85,29 @@
   ],
   "summary_5day": {
     "fresh": 0,
-    "retry": 4,
-    "fallback": 1,
+    "retry": 5,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 15,
+        "count": 16,
         "title": "Voice repetition"
+      },
+      {
+        "rule": 15,
+        "count": 2,
+        "title": "Phantom scheduled game"
       },
       {
         "rule": 14,
         "count": 2,
         "title": "Milestone omission"
-      },
-      {
-        "rule": 7,
-        "count": 1,
-        "title": "Fabricated statistics"
       }
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 1,
+      "llm": 2,
       "both": 0
     }
   }
