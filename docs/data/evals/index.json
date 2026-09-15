@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-09-10",
     "2026-09-11",
     "2026-09-12",
     "2026-09-13",
-    "2026-09-14"
+    "2026-09-14",
+    "2026-09-15"
   ],
   "rules": [
     {
@@ -85,13 +85,13 @@
   ],
   "summary_5day": {
     "fresh": 0,
-    "retry": 5,
-    "fallback": 0,
+    "retry": 4,
+    "fallback": 1,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 19,
+        "count": 15,
         "title": "Voice repetition"
       },
       {
@@ -100,14 +100,14 @@
         "title": "Milestone omission"
       },
       {
-        "rule": 15,
-        "count": 2,
-        "title": "Phantom scheduled game"
+        "rule": 7,
+        "count": 1,
+        "title": "Fabricated statistics"
       }
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 2,
+      "llm": 1,
       "both": 0
     }
   }
