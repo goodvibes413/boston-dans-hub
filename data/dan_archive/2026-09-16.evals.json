@@ -1,0 +1,34 @@
+{
+  "date": "2026-09-16",
+  "generated_at": "2026-09-16T13:14:31.618518+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 65.2,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The output claims 'Last night was a real kick in the teeth, and not just because I had to stay up past my bedtime on a Tuesday' for a game that occurred on Monday, 2026-09-15."
+        }
+      ],
+      "duration_seconds": 34.2
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 3.9
+    }
+  ]
+}
