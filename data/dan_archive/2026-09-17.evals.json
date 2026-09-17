@@ -1,0 +1,60 @@
+{
+  "date": "2026-09-17",
+  "generated_at": "2026-09-17T13:09:05.662478+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 31.3,
+  "pre_pass": {
+    "repetition_check": "fail",
+    "schedule_check": "pass",
+    "flagged_phrases": [
+      {
+        "rule": 10,
+        "detail": "repetition: formulaic paragraph opener \"red sox look ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"red sox look ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 1.7
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"that last result ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 1.6
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The output claims 'I expect a much more focused effort when we step back onto the field Wednesday night', but the upcoming schedule lists the next game for Thursday, 2026-09-17."
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"red sox look ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 6.9
+    }
+  ]
+}
