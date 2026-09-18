@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-18",
+  "generated_at": "2026-09-18T12:47:32.773494+00:00",
+  "outcome": "retry",
+  "winning_attempt": 3,
+  "total_attempts": 3,
+  "generation_seconds": 28.2,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The output claims 'We're back at it in Tampa tonight', but the upcoming schedule lists the next game for Friday, 2026-09-18."
+        }
+      ],
+      "duration_seconds": 3.0
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 12,
+          "detail": "coverage window: the redsox played Texas Rangers on 2026-09-17 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        }
+      ],
+      "duration_seconds": 2.1
+    },
+    {
+      "attempt": 3,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 3.4
+    }
+  ]
+}
