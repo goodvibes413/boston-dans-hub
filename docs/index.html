@@ -436,6 +436,75 @@
       justify-self: end;
     }
 
+    /* PLAYOFF PUSH — shown only while a team is in contention.
+       --chip-color is set per row from RACE_COLORS so the hero figure and the
+       status chip take their colour from one source. */
+    .push-row {
+      background: var(--surface-highest);
+      border-radius: 6px;
+      padding: 14px;
+    }
+    .push-row + .push-row { margin-top: 8px; }
+
+    .push-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .push-team {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--on-surface);
+      min-width: 0;
+    }
+
+    .push-record {
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: 0.6875rem;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--on-surface-muted);
+      font-variant-numeric: tabular-nums;
+      margin-left: 6px;
+    }
+
+    .push-figure {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 2.75rem;
+      line-height: 1;
+      color: var(--chip-color, var(--primary));
+      font-variant-numeric: tabular-nums;
+    }
+
+    .push-figure-label {
+      font-family: var(--font-body);
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--on-surface-muted);
+      margin: 4px 0 12px;
+    }
+
+    .push-row .pipe-strip {
+      margin-bottom: 0;
+      background: var(--surface);
+    }
+
+    .push-chaser {
+      margin-top: 8px;
+      font-size: 0.6875rem;
+      color: var(--on-surface-muted);
+    }
+
     /* Next up rows */
     .nextup-rows { display: flex; flex-direction: column; gap: 6px; }
 
@@ -737,14 +806,17 @@
       .main-col { display: contents; }
       .rail-col  { display: contents; }
 
-      /* Mobile order: archive → date → rant → feedback → eval → scores → trends → schedule → news */
-      .hero-date         { order: 1; }
-      .morning-brew      { order: 1; } /* same as hero-date; DOM order puts date first */
-      .feedback-button   { order: 2; }
-      .widget.scoreboard { order: 3; }
-      .widget.pulse      { order: 4; }
-      .schedule-section  { order: 5; margin-top: 0; }
-      .widget#news       { order: 6; }
+      /* Mobile order: archive → date → rant → feedback → playoff → scores → trends → schedule → news
+         Every card needs an explicit order here. Anything without one defaults
+         to 0 and jumps above the hero date. */
+      .hero-date           { order: 1; }
+      .morning-brew        { order: 1; } /* same as hero-date; DOM order puts date first */
+      .feedback-button     { order: 2; }
+      .widget.playoff-push { order: 3; }
+      .widget.scoreboard   { order: 4; }
+      .widget.pulse        { order: 5; }
+      .schedule-section    { order: 6; margin-top: 0; }
+      .widget#news         { order: 7; }
 
       /* Hide mobile strip — scoreboard widget handles scores */
       .mobile-strip { display: none; }
@@ -1223,12 +1295,38 @@
     };
 
     /* ================================================================
+       PLAYOFF PUSH — race tier colours + labels
+       Two colours only. Design principle #1 keeps primary green as the page's
+       only bright accent, so green reads "holding a spot or better" and gold
+       reads "not in yet". A tier absent from these maps is a tier the widget
+       refuses to draw — publish.py already filters to the contending four,
+       and RACE_LABELS is the second gate behind it.
+    ================================================================ */
+    const RACE_COLORS = {
+      clinched:     'var(--primary)',
+      clinch_watch: 'var(--primary)',
+      in_position:  'var(--primary)',
+      chasing:      'var(--warn)',
+    };
+    const RACE_LABELS = {
+      clinched:     'Clinched',
+      clinch_watch: 'Clinch Watch',
+      in_position:  'In Position',
+      chasing:      'Chasing',
+    };
+
+    /* ================================================================
        UTIL HELPERS (unchanged)
     ================================================================ */
     function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
     // News URLs flow from the live web through the LLM into hrefs — escapeHtml alone
     // doesn't stop a javascript: scheme, so only http(s) links are rendered clickable.
     function safeUrl(u) { const s = String(u || '').trim(); return /^https?:\/\//i.test(s) ? s : '#'; }
+    // Games-back figures arrive as floats: 5.0 should read "5", 5.5 stays "5.5".
+    function raceNum(n) { return String(n).replace(/\.0$/, ''); }
+    function ordinal(n) { const v = Number(n); if (!Number.isFinite(v)) return ''; const s = ['th','st','nd','rd'], m = v % 100; return v + (s[(m - 20) % 10] || s[m] || s[0]); }
+    // "American League East" -> "AL East"; "Atlantic Division" -> "Atlantic".
+    function shortDivision(d) { return String(d || '').replace(/American League/i, 'AL').replace(/National League/i, 'NL').replace(/\s*(Conference|Division)\s*/i, ' ').trim(); }
     function oppCode(name) { if (!name) return 'OPP'; const key = String(name).toLowerCase(); if (OPP_CODE[key]) return OPP_CODE[key]; const words = String(name).trim().split(/\s+/); const last = words[words.length - 1] || 'OPP'; return last.slice(0, 3).toUpperCase(); }
     function shortDate(dateStr) { if (!dateStr) return ''; const parts = dateStr.split('-'); if (parts.length < 3) return dateStr; const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])); const days = ['SUN','MON','TUE','WED','THU','FRI','SAT']; return `${days[d.getDay()]} ${d.getDate()}`; }
     /* Which day is the published post about? publish.py stamps `date` on
@@ -1304,6 +1402,61 @@
         return `<div class="score-row dim"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code">${bostonName}</span>${connector ? `<span class="vs">${connector}</span>` : ''}${g.opponent ? `<span class="team-code">${escapeHtml(oppStr)}</span>` : ''}</div><span class="score-status">—</span></div>`;
       }).join('');
       return `<section class="widget scoreboard"><header class="widget-header"><span class="ms">trophy</span><span>Last Night</span></header><div class="score-rows">${rows}</div></section>`;
+    }
+
+    /* Playoff Push — the team's playoff section, shown only while they are on
+       a run. Two gates stand upstream of this function and neither is a rule
+       the page can forget: fetch_season_memory writes no playoff_race block
+       outside the sport's stretch run, and publish.py publishes only the
+       contending tiers. This returns '' for anything else, so the widget
+       omits itself the rest of the year. */
+    function buildPlayoffPushWidget(race) {
+      if (!race) return '';
+      const rows = Object.keys(race).map(key => {
+        const r = race[key]; if (!r) return '';
+        const label = RACE_LABELS[r.race_status]; if (!label) return '';
+        const color = RACE_COLORS[r.race_status] || 'var(--primary)';
+
+        // Hero figure ladder: first available wins, so a block missing its
+        // magic number still leads with something true.
+        //
+        // wild_card_games_up is a CUSHION and wild_card_games_back a DEFICIT.
+        // Exactly one is ever present and they point opposite ways, so they
+        // are read by name and never collapsed into one variable — the field
+        // name is the only thing carrying the sign.
+        let figure = '', figureLabel = '', usedField = '';
+        if (r.magic_number != null) {
+          figure = raceNum(r.magic_number); figureLabel = 'Magic Number'; usedField = 'magic_number';
+        } else if (r.wild_card_games_up != null) {
+          figure = '+' + raceNum(r.wild_card_games_up); figureLabel = 'Games Up \u00B7 Wild Card'; usedField = 'wild_card_games_up';
+        } else if (r.wild_card_games_back != null) {
+          figure = raceNum(r.wild_card_games_back); figureLabel = 'Games Back \u00B7 Wild Card'; usedField = 'wild_card_games_back';
+        } else if (r.games_remaining != null) {
+          figure = raceNum(r.games_remaining); figureLabel = 'Games Left'; usedField = 'games_remaining';
+        } else {
+          return '';
+        }
+
+        // Supporting strip — whatever the hero figure already said is left out
+        // of it rather than repeated two lines below itself.
+        const stats = [];
+        if (r.wild_card_rank != null) stats.push('WC' + raceNum(r.wild_card_rank));
+        if (usedField !== 'wild_card_games_up' && r.wild_card_games_up != null) stats.push('+' + raceNum(r.wild_card_games_up) + ' up');
+        else if (usedField !== 'wild_card_games_back' && r.wild_card_games_back != null) stats.push(raceNum(r.wild_card_games_back) + ' back');
+        if (r.division_rank != null) stats.push(ordinal(r.division_rank) + (r.division ? ' ' + shortDivision(r.division) : ''));
+        if (usedField !== 'games_remaining' && r.games_remaining != null) stats.push(raceNum(r.games_remaining) + ' left');
+        const statHtml = stats.map((s, i) => (i ? '<span class="pipe-sep">\u00B7</span>' : '') + `<span class="pipe-stat">${escapeHtml(s)}</span>`).join('');
+
+        return `<div class="push-row" style="--chip-color:${color}">
+          <div class="push-top"><span class="push-team">${escapeHtml(r.team || key)}${r.record ? `<span class="push-record">${escapeHtml(r.record)}</span>` : ''}</span><span class="vchip"><span class="vchip-dot"></span>${escapeHtml(label)}</span></div>
+          <div class="push-figure">${escapeHtml(figure)}</div>
+          <div class="push-figure-label">${figureLabel}</div>
+          ${statHtml ? `<div class="pipe-strip">${statHtml}</div>` : ''}
+          ${r.closest_chaser ? `<div class="push-chaser">Closest chaser \u2014 ${escapeHtml(r.closest_chaser)}</div>` : ''}
+        </div>`;
+      }).join('');
+      if (!rows) return '';
+      return `<section class="widget playoff-push" id="playoff"><header class="widget-header"><span class="ms">military_tech</span><span>Playoff Push</span></header>${rows}</section>`;
     }
 
     function buildMobileStrip(boxScores) {
@@ -1542,8 +1695,10 @@
       const feedbackBtn = `<a href="https://forms.gle/mtXe54Kwa2HqCtpc6" target="_blank" rel="noopener noreferrer" class="feedback-button">Send Feedback</a>`;
       const scheduleHtml = buildScheduleSection(data.schedule);
 
-      // Rail: archive widget first, then scoreboard, trends, news
+      // Rail: archive widget first, then the playoff push (when a team is on a
+      // run — it outranks last night's box score), then scoreboard, trends, news
       const archiveWidgetHtml = buildArchiveWidget(evalsIndex, activeDate || getTodayISO(data));
+      const playoffHtml = buildPlayoffPushWidget(data.playoff_race);
       const scoreboardHtml = buildScoreboardWidget(data.box_scores);
       const pulseHtml = buildTrendPulseWidget(data.trend_watch);
       const newsPulseHtml = buildNewsPulseWidget(data.news_digest);
@@ -1569,6 +1724,7 @@
           </div>
           <aside class="rail-col" aria-label="Dashboard widgets">
             ${archiveWidgetHtml}
+            ${playoffHtml}
             ${scoreboardHtml}
             ${pulseHtml}
             ${newsPulseHtml}

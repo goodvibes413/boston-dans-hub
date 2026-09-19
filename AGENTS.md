@@ -208,12 +208,17 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 
 | File | Purpose |
 |---|---|
-| `docs/index.html` | Main page structure — sections for Morning Brew, Trends, News, Scores, Schedule |
-| `docs/style.css` | Boston Dan aesthetic — dark theme, Celtics green (#00A651), Red Sox red (#BD3039), Anton font for headings |
-| `docs/app.js` | Fetch `data/daily_output.json`, render sections, fallback detection, XSS protection |
+| `docs/index.html` | **The entire live frontend** — design tokens, all CSS, and all render logic, inline. Fetches `data/daily_output.json`, builds every section, handles fallback detection and XSS escaping |
+| `docs/design-system.html` | The Garden Slate reference page (palette, type, components) |
 | `docs/data/daily_output.json` | Published Dan output (generated daily by GitHub Actions cron) |
+| ~~`docs/style.css`~~, ~~`docs/app.js`~~ | **Dead.** The old "Varsity Press" build. `index.html` links neither — no `<link rel="stylesheet">`, no `<script src>` — and their tokens have since drifted (`style.css` still has `--primary: #43ED9E`). Do not edit them expecting the site to change |
 
 **Deployment**: GitHub Pages auto-deploys from the `/docs` folder on every `git push` to `main`.
+
+**Where frontend work goes**: `docs/index.html`, always. There is no build step,
+no npm config, and no JS test runner — the only automated frontend coverage is
+plain-text assertions against this file in `tests/test_pipeline.py`, so a
+refactor that changes an asserted string breaks the Python suite.
 
 ---
 
@@ -239,15 +244,19 @@ The UI uses a cohesive design system with a Boston sports color palette, clean t
 
 | Role | Font | Weight | Size (desktop) | Size (mobile) | Usage |
 |---|---|---|---|---|---|
-| **Headline** | Anton | 400 (regular, bold by design) | 3.25rem | 2.5rem | Page titles, headlines, major beats — all-caps or title-case |
+| **Headline** | Space Grotesk | 700 | 3.25rem | `clamp(1.875rem, 7vw, 2.5rem)` | Page titles, headlines, widget headers, team codes, stat figures |
 | **Body** | Inter | 400 (regular) | 1rem (16px) | 0.875rem (14px) | Paragraphs, descriptions, news text |
 | **Label** | Inter | 500 (medium) | 0.75rem (12px) | 0.6875rem (11px) | Widget headers, category tags, metadata |
 
 **Line Height**: 1.6 for body text (readability); 1.05–1.2 for headlines (compact, bold presence).
 
 **Font Notes**:
-- **Anton** is a bold sans-serif with strong geometric letterforms — requires minimal weight to feel impactful
-- **Inter** is a clean, readable sans-serif optimized for body and UI text
+- **Space Grotesk** (`--font-display`) is the display face. It replaced Anton —
+  `docs/design-system.html` and older notes still say Anton; the live page has
+  not used it for some time
+- **Inter** (`--font-body`) is a clean, readable sans-serif for body and UI text
+- **JetBrains Mono** (`--font-mono`) carries numbers and stat strips, always
+  with `font-variant-numeric: tabular-nums` so figures don't jitter
 
 ### Component Patterns
 
@@ -274,6 +283,30 @@ The UI uses a cohesive design system with a Boston sports color palette, clean t
   - News headlines (`.pulse-news-headline`): Desktop 0.9375rem; mobile uses `clamp(0.8125rem, 2.8vw, 0.9375rem)` for smooth proportional scaling
 - **Hover state**: Slight brightening of background or primary accent on interactive elements
 
+#### Status chips (`.vchip`)
+The one reusable status pill. Its colour is a single local variable, so a chip
+never hardcodes a hex: set `--chip-color` on the chip (or on an ancestor, as
+`.push-row` does) and the fill, border and dot all derive from it via
+`color-mix`. Colour maps live in JS beside the builder that uses them —
+`VERDICT_COLORS` for the evals surfaces, `RACE_COLORS` for the playoff race.
+
+#### Playoff Push (`.widget.playoff-push`)
+A conditional rail card: present only while a Boston team is in contention,
+absent the rest of the year. Structure is one `.push-row` per team — team name
++ record, a `.vchip`, one large `.push-figure` with a `.push-figure-label`
+under it, a `.pipe-strip` of supporting stats, and an optional `.push-chaser`
+line.
+
+Two conventions worth copying for any future stat card:
+- **One figure leads.** The figure is picked by a ladder (magic number → wild
+  card cushion → wild card deficit → games remaining), so a block missing its
+  best field still leads with something true rather than rendering blank.
+  Whatever the figure used is then *left out* of the strip below it.
+- **Two colours only.** Green (`--primary`) means holding a spot or better;
+  gold (`--warn`) means not in yet. Design principle #1 keeps green as the only
+  bright accent, and a five-colour tier scale would spend that budget on a
+  single card.
+
 #### Text Hierarchy
 - **Primary text** (on-surface): High contrast, legible
 - **Muted text** (on-surface-muted): Secondary information, metadata, timestamps
@@ -284,19 +317,32 @@ Use these consistent intervals for padding, margins, and gaps:
 
 ### Implementation in docs/index.html
 
-The CSS variables are defined in the `<style>` block and consumed throughout:
+The tokens are defined in the first `<style>` block and consumed throughout.
+These are the live values:
 
 ```css
 :root {
-  --primary: #00D084;
-  --secondary: #008456;
-  --tertiary: #4A5568;
-  --neutral: #1E1E1E;
-  --surface-highest: /* dark gray, slightly lighter than bg */;
-  --surface-high: /* medium gray, used for dividers */;
-  --on-surface-muted: /* light gray, used for muted text */;
+  --primary: #00D084;  --primary-container: #008456;  --secondary: #008456;
+  --tertiary: #4A5568; --neutral: #1E1E1E;
+
+  --surface-lowest: #0E0E0E;  --surface-base: #131313;  --surface-low: #1B1B1C;
+  --surface: #202020;         --surface-high: #2A2A2A;  --surface-highest: #353535;
+
+  --on-primary: #003920;         --on-surface: #F5F5F5;
+  --on-surface-variant: #D5D5D5; --on-surface-muted: #999999;
+  --on-surface-dim: #666666;
+
+  --danger: #BD3039;  --warn: #E0B341;  --warn-med: #E07B2A;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 ```
+
+`--chip-color` is the one *locally scoped* token: set per instance (inline on
+`.vchip`, or on a `.push-row`) so a status colour flows from one source to
+every element in the card that should carry it.
 
 **Always use CSS variables, never hardcode hex colors.** This ensures consistency and makes theme changes (e.g., light mode) trivial.
 
@@ -566,6 +612,12 @@ Shape is status-conditional. `fetch_season_memory.py` writes one entry per team 
     "magic_number": 16, "closest_chaser": "Cleveland Guardians"
   } }
 ```
+
+**Second consumer (2026-09-19):** `publish.py` also copies contending blocks
+into `docs/data/daily_output.json` as `playoff_race`, which is what draws the
+Playoff Push widget. The gate below is still the outer one — no block here
+means no widget there — but the block now has a reader that is not the prompt,
+so a shape change breaks the site as well as Dan.
 
 **This block is the only thing that unlocks playoff talk in the persona.** No block, no race commentary — that is how Dan covers a pennant race in September without doing playoff math in April. The gate is structural rather than an instruction he could disobey, and it is enforced in two places at once: with no block there is nothing in `SEASON_MEMORY` to reason from, and any race figure he invents fails the judge's fabricated-stat rule.
 
@@ -873,6 +925,56 @@ Slim post snapshots written by `publish_evals_to_docs()` — the same fields as 
 - Only relevant Boston sports headlines — no pure personal news (divorce, relationships, family)
 - Conduct/legal headlines get a deferential dans_take; defer to league process
 - Empty list `[]` if no relevant headlines
+
+**The published file is a superset of that schema.** The block above is the
+*Gemini output* contract — what the model is asked to produce. `publish.py`
+adds fields the model never sees: `headline`, `date` (`stamp_run_date`),
+`generated_at`, `_timings`, `_regenerated`/`_regeneration_reason`,
+`_quality_warning`/`_quality_flags`, `_stale*`, `_fallback*`, and
+`playoff_race`.
+
+### `playoff_race` (publisher-added — powers the Playoff Push widget)
+
+```json
+"playoff_race": {
+  "redsox": {
+    "team": "Red Sox", "sport": "MLB",
+    "record": "79-62", "division": "American League East",
+    "phase": "stretch_run", "games_remaining": 21, "race_status": "in_position",
+    "division_rank": 3, "division_games_back": 8.0,
+    "wild_card_rank": 2, "wild_card_games_up": 5.5,
+    "magic_number": 16, "closest_chaser": "Cleveland Guardians"
+  }
+}
+```
+
+`attach_playoff_race()` in `publish.py` copies each team's `playoff_race` block
+out of `season_current.json` and adds `team`/`sport` labels plus `record` and
+`division` from the parent entry (the widget needs both; neither is on the race
+block). **The key is absent most of the year, by design** — see the gates
+below — so it is deliberately *not* in `healthcheck.py`'s `REQUIRED_KEYS`,
+which is a subset check. Adding it there would fail the nightly run on every
+day nobody is in a race.
+
+**Three gates, in series:**
+
+| Gate | Where | Rule |
+|---|---|---|
+| Stretch-run window + elimination | `build_playoff_race()` | No block at all outside the sport's window. The `season_current.json` section below has the detail. |
+| Contention | `publish.py` `CONTENDING_TIERS` | Only `clinched`, `clinch_watch`, `in_position`, `chasing` are published. `playing_out_the_string` is alive-on-paper only, which is not a run. |
+| Label lookup | `index.html` `RACE_LABELS` | A tier with no label draws nothing. Defence in depth behind the publisher's filter. |
+
+`attach_playoff_race()` **clears the key before it writes**, on every path
+including `publish_fallback()`. The stale-republish path reuses yesterday's
+payload verbatim, so an attach that only ever wrote would ship last week's
+magic number as today's — worse than showing nothing, because it reads as
+current.
+
+Two whitelists drop unknown keys and both had to learn this one:
+`slim_today` in `publish_evals_to_docs()` carries it into
+`docs/data/posts/<date>.json`; `archive_dan_output()`'s `slim` deliberately
+does **not** — that archive feeds Dan's continuity memory, which is voice and
+phrasing, not date-specific facts.
 
 ### Safe fallback content (used when safety judge fails)
 ```json

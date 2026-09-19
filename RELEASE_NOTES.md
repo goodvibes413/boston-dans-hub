@@ -5,6 +5,72 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-19 — Playoff Push: the race Dan was writing about, on the page
+
+Dan has been able to talk about a pennant race since the stretch-run work shipped.
+`fetch_season_memory.build_playoff_race()` computes the whole thing — wild-card rank,
+cushion or deficit, magic number, closest chaser, and a five-tier `race_status` — and
+writes it to `data/season_current.json`.
+
+**And that is where it stopped.** `generate_rant.py` injected it into the prompt and
+`safety_judge.py` loaded it as `source_data`; nothing from `season_current.json` ever
+reached `docs/data/daily_output.json`. So Dan could spend a paragraph on the Sox being
+five and a half up in the wild card while the dashboard beside him showed last night's
+box score and nothing else. The data was right, grounded and already paid for — the
+site just had no way to see it.
+
+### What shipped
+
+- **`publish.py` gained `attach_playoff_race()`**, a sibling of the existing
+  `patch_box_score_season_types()` — the same shape, the same
+  never-raises contract, the same `season_current.json` source. It copies each
+  contending team's block into the published document, adding `team`/`sport` labels and
+  the `record`/`division` the card needs from the parent entry.
+- **A Playoff Push rail card in `docs/index.html`**, first in the rail so it outranks
+  last night's scoreboard on a day the race is live.
+
+### The gate is the feature
+
+"Only show the team's playoff section when they're on a run" is not a new rule here —
+it is the rule `build_playoff_race()` already enforces, now with a second consumer.
+Three gates in series, and none of them is a switch anybody has to remember to flip:
+
+| Gate | Where | Effect |
+|---|---|---|
+| Stretch-run window + elimination | `build_playoff_race()` | No block exists at all in April |
+| `CONTENDING_TIERS` | `publish.py` | `playing_out_the_string` is not published — alive on paper is not a run |
+| `RACE_LABELS` | `index.html` | A tier with no label draws nothing |
+
+**Key design decision: clear before write.** `attach_playoff_race()` deletes the key
+unconditionally, then sets it only if a contending team is found — on every path,
+`publish_fallback()` included. The stale-republish path reuses yesterday's payload
+verbatim, so an attach that only ever wrote would have shipped last week's magic number
+as today's. A wrong number that reads as current is worse than no widget, and "absent"
+is the correct rendering of "we don't know."
+
+It is deliberately **not** in `healthcheck.py`'s `REQUIRED_KEYS`. That is a subset
+check, so an optional key is free; requiring it would have failed the nightly run on
+every day of the year nobody is in a race.
+
+### Still Red Sox-only
+
+Only MLB has a standings fetcher, so only `redsox` can carry a block (AGENTS.md:593 has
+had this gap flagged for a while). The widget iterates the published dict and is
+team-agnostic, so the Celtics, Bruins and Patriots light up with no frontend work the
+day someone writes their fetcher. The NFL one is still the urgent one — the Patriots
+enter their 6-game window around Week 12.
+
+### Documentation corrections found on the way
+
+`AGENTS.md` described a frontend that has not existed for some time: `docs/app.js` and
+`docs/style.css` are dead code (the old "Varsity Press" build — `index.html` links
+neither, and `style.css` still carries a different green at `--primary: #43ED9E`), and
+the display font has been Space Grotesk, not Anton, for a while. The Frontend Files
+table, the typography table and the token block now match the live page, and the token
+block lists real values instead of `/* dark gray */` comments.
+
+---
+
 ## 2026-09-11 — The Post With No Button
 
 Reported from a phone: *"I see no run button for today's post."* The archive rail showed

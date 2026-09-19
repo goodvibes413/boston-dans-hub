@@ -41,6 +41,23 @@ MAX_JUDGE_ATTEMPTS = 3  # original + 2 regenerations with correction notes
 # "best" attempt — the run falls back to stale content instead.
 SEVERITY_RANK = {"low": 1, "medium": 2}
 
+# Short display names for the Playoff Push widget. season_current.json carries
+# league and division strings but no short team name, and the rail card has
+# room for one word.
+TEAM_LABELS = {
+    "celtics":  ("Celtics", "NBA"),
+    "bruins":   ("Bruins", "NHL"),
+    "redsox":   ("Red Sox", "MLB"),
+    "patriots": ("Patriots", "NFL"),
+}
+
+# Race tiers that count as "in contention", and so put the team's playoff
+# section on the site. playing_out_the_string is deliberately absent: a team
+# there is alive on paper only, which is not a run, and the widget stays
+# hidden. The stretch-run window in fetch_season_memory.build_playoff_race is
+# the outer gate; this is the inner one.
+CONTENDING_TIERS = {"clinched", "clinch_watch", "in_position", "chasing"}
+
 # Evals dashboard constants
 DOCS_EVALS_DIR = Path("docs/data/evals")
 DOCS_POSTS_DIR = Path("docs/data/posts")
@@ -137,6 +154,55 @@ def patch_box_score_season_types(output: dict) -> dict:
                     box_scores[team]["season_type"] = "offseason"
     except Exception as e:
         print(f"  warning: patch_box_score_season_types failed: {e}", file=sys.stderr)
+    return output
+
+
+def attach_playoff_race(output: dict) -> dict:
+    """
+    Copy each contending team's playoff_race block out of season_current.json
+    and into the published document, so the frontend can render the Playoff
+    Push widget. Without this the block reaches Gemini's prompt and the safety
+    judge and stops there — the site has never been able to see it.
+
+    Clears the key first, unconditionally. The stale-republish path reuses
+    yesterday's payload verbatim, so an attach that only ever wrote would ship
+    last week's magic number as today's. Absent is the correct rendering of
+    "we don't know"; the widget then omits itself.
+
+    Never raises — a missing or malformed season_current.json means no widget,
+    which is the pre-existing behaviour, and must never block a publish.
+    """
+    output.pop("playoff_race", None)
+    try:
+        season_current = read_json(SEASON_CURRENT_PATH)
+        if not isinstance(season_current, dict):
+            return output
+        races = {}
+        for team, (label, sport) in TEAM_LABELS.items():
+            entry = season_current.get(team)
+            if not isinstance(entry, dict):
+                continue
+            race = entry.get("playoff_race")
+            if not isinstance(race, dict):
+                continue
+            if race.get("race_status") not in CONTENDING_TIERS:
+                continue
+            block = dict(race)
+            block["team"] = label
+            block["sport"] = sport
+            # Record and division live on the parent entry, not the race block.
+            if entry.get("summary"):
+                block["record"] = entry["summary"]
+            if entry.get("division"):
+                block["division"] = entry["division"]
+            races[team] = block
+        if races:
+            output["playoff_race"] = races
+            for team, block in sorted(races.items()):
+                print(f"  playoff_race: {team} — {block['race_status']}, "
+                      f"{block.get('games_remaining')} games left")
+    except Exception as e:
+        print(f"  warning: attach_playoff_race failed: {e}", file=sys.stderr)
     return output
 
 
@@ -408,6 +474,7 @@ def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
                     "trend_watch": today_data.get("trend_watch", []),
                     "box_scores": today_data.get("box_scores", {}),
                     "schedule": today_data.get("schedule", []),
+                    "playoff_race": today_data.get("playoff_race"),
                     "_stale": today_data.get("_stale"),
                     "_fallback": today_data.get("_fallback"),
                 }
@@ -466,6 +533,10 @@ def publish_fallback(reason: str) -> int:
             stale = dict(existing)
             stale["_stale"] = True
             stale["_stale_reason"] = reason
+            # The content is yesterday's, but the standings need not be: this
+            # re-reads today's season_current.json, and clears the key outright
+            # when no team is contending any more.
+            stale = attach_playoff_race(stale)
             if age_hours is not None:
                 stale["_stale_age_hours"] = round(age_hours, 1)
             # Preserve original generated_at (if present) so the frontend/healthcheck see true age.
@@ -780,6 +851,7 @@ def main():
                 output = dict(raw_output)
                 output["generated_at"] = now_iso()
                 output = patch_box_score_season_types(output)
+                output = attach_playoff_race(output)
                 publish_output(output, label="output (judge unavailable)")
                 archive_dan_output(output)
                 _finalize_evals("fresh", winning_attempt=attempt)
@@ -795,6 +867,7 @@ def main():
                     output["_regeneration_reason"] = last_flags
                     outcome = "retry"
                 output = patch_box_score_season_types(output)
+                output = attach_playoff_race(output)
                 success = publish_output(output)
                 if success:
                     archive_dan_output(output)
@@ -871,6 +944,7 @@ def main():
         output["_quality_warning"] = True
         output["_quality_flags"] = best_attempt["flags"]
         output = patch_box_score_season_types(output)
+        output = attach_playoff_race(output)
         success = publish_output(output)
         if success:
             archive_dan_output(output)
