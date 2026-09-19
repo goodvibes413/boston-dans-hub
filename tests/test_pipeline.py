@@ -2432,5 +2432,196 @@ class TestFreshnessGateReadsTheRunDay(unittest.TestCase):
                       (REPO / "scripts" / "publish.py").read_text())
 
 
+def season_current_redsox(**race_overrides):
+    """A season_current.json entry for a Red Sox side holding a wild card."""
+    race = {
+        "phase": "stretch_run", "games_remaining": 21, "race_status": "in_position",
+        "division_rank": 3, "division_games_back": 8.0,
+        "wild_card_rank": 2, "wild_card_games_up": 5.5,
+        "magic_number": 16, "closest_chaser": "Cleveland Guardians",
+    }
+    race.update(race_overrides)
+    return {"redsox": {"status": "regular_season", "summary": "79-62",
+                       "division": "American League East", "playoff_race": race}}
+
+
+class TestPlayoffRaceReachesTheSite(unittest.TestCase):
+    """build_playoff_race has computed a correct race block since the stretch-run
+    work shipped, but it went only to Gemini's prompt and the safety judge.
+    Nothing from season_current.json reached docs/data/daily_output.json, so the
+    site could not show the pennant race Dan was writing about."""
+
+    def attach(self, season_current, payload=None):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            sc = Path(tmp) / "season_current.json"
+            if season_current is not None:
+                sc.write_text(season_current if isinstance(season_current, str)
+                              else json.dumps(season_current))
+            real = publish.SEASON_CURRENT_PATH
+            publish.SEASON_CURRENT_PATH = sc
+            try:
+                return publish.attach_playoff_race(dict(payload or {"headline": "h"}))
+            finally:
+                publish.SEASON_CURRENT_PATH = real
+
+    def test_a_contending_block_is_published(self):
+        out = self.attach(season_current_redsox())
+        self.assertEqual(out["playoff_race"]["redsox"]["race_status"], "in_position")
+        self.assertEqual(out["playoff_race"]["redsox"]["magic_number"], 16)
+
+    def test_display_context_rides_along_from_the_parent_entry(self):
+        """Record and division live on the season_current entry, not the race
+        block, and the rail card needs both."""
+        block = self.attach(season_current_redsox())["playoff_race"]["redsox"]
+        self.assertEqual(block["record"], "79-62")
+        self.assertEqual(block["division"], "American League East")
+        self.assertEqual(block["team"], "Red Sox")
+
+    def test_cushion_and_deficit_keep_their_names_through_the_publisher(self):
+        """The widget reads the field name to know which way the number points.
+        A passthrough that renamed or merged them would invert the standings."""
+        holding = self.attach(season_current_redsox())["playoff_race"]["redsox"]
+        self.assertEqual(holding["wild_card_games_up"], 5.5)
+        self.assertNotIn("wild_card_games_back", holding)
+
+
+class TestOnlyContendersGetAPlayoffSection(unittest.TestCase):
+    """The whole point of the widget is that it is not on the page in April, or
+    in September for a team that is alive on paper only. playing_out_the_string
+    is not a run."""
+
+    attach = TestPlayoffRaceReachesTheSite.attach
+
+    def test_playing_out_the_string_is_not_published(self):
+        out = self.attach(season_current_redsox(race_status="playing_out_the_string"))
+        self.assertNotIn("playoff_race", out)
+
+    def test_every_contending_tier_is_published(self):
+        for tier in ("clinched", "clinch_watch", "in_position", "chasing"):
+            with self.subTest(tier=tier):
+                out = self.attach(season_current_redsox(race_status=tier))
+                self.assertIn("playoff_race", out, tier)
+
+    def test_no_race_block_at_all_publishes_nothing(self):
+        """Outside the stretch-run window fetch_season_memory omits the key."""
+        out = self.attach({"redsox": {"status": "regular_season", "summary": "22-18"}})
+        self.assertNotIn("playoff_race", out)
+
+    def test_the_publishers_tiers_match_the_fetchers(self):
+        """Two hand-maintained copies of one tier list is how contradictions
+        ship. Every tier publish.py accepts must be one build_playoff_race can
+        actually produce."""
+        produced = {"clinched", "clinch_watch", "in_position", "chasing",
+                    "playing_out_the_string"}
+        self.assertTrue(publish.CONTENDING_TIERS < produced)
+
+
+class TestStalePlayoffRaceIsNeverRepublished(unittest.TestCase):
+    """publish_fallback reuses yesterday's payload verbatim. An attach that only
+    ever wrote would leave last week's magic number on the page as today's --
+    worse than showing nothing, because it reads as current."""
+
+    attach = TestPlayoffRaceReachesTheSite.attach
+    STALE = {"headline": "h", "playoff_race": {"redsox": {"magic_number": 99,
+                                                          "race_status": "in_position"}}}
+
+    def test_the_key_is_dropped_when_the_team_stops_contending(self):
+        out = self.attach(season_current_redsox(race_status="playing_out_the_string"),
+                          payload=self.STALE)
+        self.assertNotIn("playoff_race", out)
+
+    def test_the_key_is_dropped_when_season_current_is_missing(self):
+        out = self.attach(None, payload=self.STALE)
+        self.assertNotIn("playoff_race", out)
+
+    def test_the_key_is_dropped_when_season_current_is_malformed(self):
+        """Never raises: no widget is the pre-existing behaviour, and a bad
+        standings file must never block a publish."""
+        out = self.attach("{ not json", payload=self.STALE)
+        self.assertNotIn("playoff_race", out)
+
+    def test_a_fresh_block_replaces_the_stale_one(self):
+        out = self.attach(season_current_redsox(), payload=self.STALE)
+        self.assertEqual(out["playoff_race"]["redsox"]["magic_number"], 16)
+
+
+class TestPlayoffRaceSurvivesThePublishPaths(unittest.TestCase):
+    """A publish path that skips the attach ships a page with no widget on a day
+    the team is in the race -- or, on the stale path, yesterday's standings."""
+
+    def setUp(self):
+        self.src = (REPO / "scripts" / "publish.py").read_text()
+
+    def test_every_season_type_patch_is_followed_by_the_race_attach(self):
+        """Both enrich the published doc from season_current.json, so they
+        belong on the same paths. Pairing them makes a missed path visible."""
+        lines = [ln.strip() for ln in self.src.split("\n")]
+        for i, ln in enumerate(lines):
+            if ln == "output = patch_box_score_season_types(output)":
+                self.assertEqual(lines[i + 1], "output = attach_playoff_race(output)",
+                                 f"publish path at line {i + 1} skips the race attach")
+        self.assertEqual(lines.count("output = patch_box_score_season_types(output)"), 3)
+
+    def test_the_stale_path_refreshes_the_race(self):
+        self.assertIn("stale = attach_playoff_race(stale)", self.src)
+
+    def test_todays_post_snapshot_carries_the_race(self):
+        """docs/data/posts/<date>.json whitelists its fields; a key left out of
+        slim_today vanishes from the archive picker."""
+        self.assertIn('"playoff_race": today_data.get("playoff_race")', self.src)
+
+    def test_healthcheck_does_not_require_the_key(self):
+        """It is absent most of the year by design. Requiring it would fail the
+        nightly run on every day nobody is in a race."""
+        self.assertNotIn("playoff_race",
+                         (REPO / "scripts" / "healthcheck.py").read_text())
+
+
+class TestPlayoffPushWidgetIsWiredIn(unittest.TestCase):
+    """docs/index.html holds the whole live frontend inline (app.js/style.css are
+    the dead Varsity Press build), and it has no JS test runner -- so these are
+    text assertions, in the style of the archive-picker tests above."""
+
+    def setUp(self):
+        self.src = (REPO / "docs" / "index.html").read_text()
+
+    def test_the_widget_is_built_from_the_published_key(self):
+        self.assertIn("buildPlayoffPushWidget(data.playoff_race)", self.src)
+
+    def test_the_widget_outranks_the_scoreboard_in_the_rail(self):
+        self.assertLess(self.src.index("${playoffHtml}"),
+                        self.src.index("${scoreboardHtml}"))
+
+    def test_the_card_has_a_mobile_order(self):
+        """Under 767px the columns become display:contents and children are
+        placed by explicit order. A card without one defaults to 0 and lands
+        above the hero date."""
+        mobile = self.src.split("@media (max-width: 767px)")[1]
+        self.assertIn(".widget.playoff-push { order: 3; }", mobile)
+
+    def test_the_cards_below_it_were_renumbered(self):
+        """Inserting at 3 without pushing the rest down puts the new card and
+        the scoreboard on the same order value, and the tie breaks on DOM
+        order -- which is the rail, not the mobile stack."""
+        mobile = self.src.split("@media (max-width: 767px)")[1]
+        for cls, n in ((r"\.widget\.playoff-push", 3), (r"\.widget\.scoreboard", 4),
+                       (r"\.widget\.pulse", 5), (r"\.schedule-section", 6),
+                       (r"\.widget\#news", 7)):
+            with self.subTest(selector=cls):
+                self.assertRegex(mobile, cls + r"\s*{ order: " + str(n) + ";")
+
+    def test_the_tiers_the_widget_draws_match_the_ones_published(self):
+        """The RACE_LABELS lookup is the widget's own gate. A tier publish.py
+        sends that the page has no label for would render a blank card."""
+        labels = self.src.split("const RACE_LABELS = {")[1].split("};")[0]
+        for tier in publish.CONTENDING_TIERS:
+            self.assertIn(tier + ":", labels)
+
+    def test_playing_out_the_string_has_no_label(self):
+        labels = self.src.split("const RACE_LABELS = {")[1].split("};")[0]
+        self.assertNotIn("playing_out_the_string", labels)
+
+
 if __name__ == "__main__":
     unittest.main()
