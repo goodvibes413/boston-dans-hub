@@ -88,6 +88,7 @@ RULE_TITLES = {
     13: "Cross-team misattribution",
     14: "Milestone omission",
     15: "Phantom scheduled game",
+    16: "Game-day omission",
 }
 
 # Flags are {"rule": int, "detail": str}. They used to be free prose in which the
@@ -123,6 +124,7 @@ JUDGE_RESPONSE_SCHEMA = {
 # Wordings the deterministic pre-passes and publish.py's coverage check use.
 # Only consulted for legacy string flags that carry no explicit "rule N".
 _LEGACY_FLAG_RULES = (
+    ("game-day omission", 16),
     ("phantom game", 15),
     ("off-roster", 11),
     ("coverage window", 12),
@@ -240,6 +242,12 @@ PHANTOM_TEAM_ALIASES = {
     "patriots": [r"\bpatriots\b", r"\bpats\b"],
 }
 
+# The Boston side of a schedule matchup, so _opponent_names() can drop it and
+# keep the other one. fetch_schedule.py writes these exact strings.
+BOSTON_TEAM_FULL_NAMES = {
+    "boston celtics", "boston bruins", "boston red sox", "new england patriots",
+}
+
 # Sport label in upcoming_schedule.json → team key, so a schedule entry can be
 # matched to the team a sentence names even if the "team" field ever drifts.
 PHANTOM_SPORT_TO_TEAM = {
@@ -346,7 +354,7 @@ Review the following sports commentary and return ONLY a JSON object with keys:
   verdict   ("PASS" or "FAIL")
   severity  ("low", "medium" or "high")
   flags     (list of objects — empty list if PASS. Each object is
-             {"rule": <the NUMBER of the rule below that this violates, 1-15>,
+             {"rule": <the NUMBER of the rule below that this violates, 1-16>,
               "detail": "<one sentence naming what in the output violates it,
                           quoting the offending phrase>"})
 
@@ -492,6 +500,25 @@ FAIL if ANY of these are present:
       about") with no today-marker attached to a game is fine.
     - If UPCOMING_SCHEDULE is missing, empty, or has no games at all, skip this check —
       an absent schedule is a fetch failure, not proof that nobody plays today.
+16. Game-day omission — the exact inverse of rule 15. UPCOMING_SCHEDULE lists a game
+    TODAY for a Boston team and the morning_brew gives that team no real coverage.
+    Flag as MEDIUM severity.
+    - A "real beat" is at least two sentences that name the opponent and say something
+      about the matchup. A passing clause inside another team's paragraph ("the Pats
+      play later too") does NOT satisfy this, the same way it does not satisfy rule 14.
+    - This matters most for the PATRIOTS, who play once a week and therefore appear in
+      rolling_7day on almost no weekday. Rule 12 asks about games already PLAYED and so
+      says nothing about a game that kicks off in three hours. On 2026-09-20 a 1:00 PM
+      Steelers-Patriots game went entirely unmentioned in a brew of three Red Sox
+      paragraphs, and every rule in this list passed it.
+    - The coverage must be FORWARD-LOOKING with no result — a brew that satisfies this
+      rule by recapping today's game violates rule 15's ceiling instead. Both can be
+      wrong at once; flag what you actually see.
+    - Do NOT flag a team listed as eliminated in source_data.season_overrides. The
+      Coverage Allocation rules deliberately bury an eliminated team, and an override
+      is authoritative.
+    - If 3+ Boston teams play today, covering 2 substantively is acceptable.
+    - If UPCOMING_SCHEDULE is missing, empty, or has no games at all, skip this check.
 
 DOUBLEHEADER INTERPRETATION (applies to rules 7, 8, and 12):
 Two games between the same teams on the same game_date in rolling_7day — a "games"
@@ -1040,6 +1067,133 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
     return flags
 
 
+def _opponent_names(game: dict) -> list[str]:
+    """Lowercased ways the post might name today's OPPONENT, from a schedule entry.
+
+    Both sides of the matchup are in the entry and neither is labelled, so the
+    Boston side is identified and dropped rather than guessed at. Returns the
+    full name and the bare nickname ("pittsburgh steelers", "steelers"); the
+    city alone is left out, because "new york" is two teams and "boston" is us.
+    """
+    names = []
+    for side in (game.get("home_team", ""), game.get("away_team", "")):
+        side = str(side or "").strip().lower()
+        if not side or side in BOSTON_TEAM_FULL_NAMES:
+            continue
+        names.append(side)
+        parts = side.split()
+        if len(parts) > 1:
+            names.append(parts[-1])
+    return names
+
+
+def detect_gameday_omission(today: dict, schedule, today_iso: str | None = None,
+                            season_overrides=None) -> list[str]:
+    """
+    Deterministic pre-pass: flag a Boston team that plays TODAY and is never
+    named anywhere in the post.
+
+    The mirror image of detect_phantom_game. That one catches a game Dan
+    invented; this one catches a game he slept through. 2026-09-20 is the case:
+    Steelers at Patriots at 1:00 PM ET, and the brew was three Red Sox
+    paragraphs that never said "Patriots", "Pats", "Foxborough" or "football".
+    Every check in the pipeline passed it, because every check was watching for
+    something that was WRITTEN rather than something that was missing, and
+    rule 12 only ever asks about games already PLAYED — which on a Sunday
+    morning the Patriots' game has not been.
+
+    Conservative by construction, same as its mirror:
+
+    - The schedule must actually list a game today for the team. No schedule,
+      no games, no flag.
+    - The audited day must fall inside the schedule's own window, for the reason
+      spelled out in detect_phantom_game: the fetchers anchor to wall-clock, so
+      a replayed past day gets a window that cannot speak to it.
+    - An eliminated team is skipped. SEASON_OVERRIDES is authoritative and the
+      Coverage Allocation rules deliberately bury an eliminated team; failing
+      the post for obeying them would be the pipeline arguing with itself.
+    - Mentioning the team ANYWHERE — headline or any paragraph, by name, by home
+      venue, or by naming today's OPPONENT — clears it. This asks "did football
+      exist in this post at all", not "was the coverage good enough". Depth is
+      the judge's call (rule 16) and the persona prompt's; absence is this
+      function's. The opponent counts because a paragraph can be unmistakably
+      about the game while calling the home side "we" throughout.
+    - Rule 12's crowding exception, mirrored: when 3+ Boston teams play on the
+      same day, covering 2 of them is acceptable and nothing flags.
+
+    Returns MEDIUM-severity flag strings.
+    """
+    games = _schedule_games(schedule)
+    if not games:
+        return []
+    if today_iso is None:
+        today_iso = as_of_iso()
+
+    window_start = str((schedule or {}).get("from_date", "")) if isinstance(schedule, dict) else ""
+    if window_start and today_iso < window_start:
+        print(f"  game-day check skipped: schedule window starts {window_start}, "
+              f"after the audited day {today_iso}", file=sys.stderr)
+        return []
+
+    # Expired notices do not exempt anybody. season_overrides.json is
+    # hand-maintained and generate_rant._build_overrides_block() already skips
+    # past-expiry entries with a warning; a stale one left over from last season
+    # must not go on buying a team out of coverage on a day it actually plays.
+    eliminations = set()
+    if isinstance(season_overrides, dict):
+        raw = season_overrides.get("eliminations")
+        if isinstance(raw, dict):
+            for team_key, info in raw.items():
+                expires = (info or {}).get("expires") if isinstance(info, dict) else None
+                if expires and str(expires) < today_iso:
+                    continue
+                eliminations.add(team_key)
+
+    # One entry per team, keeping the first game listed — a doubleheader is one
+    # team to cover, not two.
+    todays_games: dict = {}
+    for game in games:
+        team_key = _game_team_key(game)
+        if not team_key or team_key in todays_games:
+            continue
+        if str(game.get("date", "")).startswith(today_iso):
+            todays_games[team_key] = game
+    if not todays_games:
+        return []
+
+    text = " ".join([str(today.get("headline") or "")] + _paragraph_segments(today))
+    if not text.strip():
+        return []  # an empty draft is somebody else's failure to report
+    named = _teams_named(text, include_venues=True)
+    lowered = text.lower()
+
+    missing = []
+    for team_key, game in todays_games.items():
+        if team_key in named or team_key in eliminations:
+            continue
+        if any(t in lowered for t in _opponent_names(game)):
+            continue
+        missing.append(team_key)
+    covered = len(todays_games) - len(missing)
+    if len(todays_games) >= 3 and covered >= 2:
+        return []
+
+    flags: list[str] = []
+    for team_key in missing:
+        game = todays_games[team_key]
+        home = game.get("home_team", "")
+        away = game.get("away_team", "")
+        matchup = f"{away} at {home}" if away and home else (home or away or "a game")
+        time_et = game.get("time_et") or "TBD"
+        flags.append(
+            f"game-day omission: the {team_key} play today ({today_iso}) — "
+            f"{matchup}, {time_et} — and the post never mentions the team. "
+            f"Give it its own beat in morning_brew as a look forward, with NO "
+            f"result: the game has not been played yet."
+        )
+    return flags
+
+
 # Ascending badness. A pre-pass flag can raise a verdict's severity to its floor
 # but never lower it — a HIGH from the LLM judge always wins.
 _SEVERITY_ORDER = ["low", "medium", "high"]
@@ -1055,26 +1209,30 @@ def _at_least(severity: str | None, floor: str) -> str:
 
 
 def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
-                    all_flags: list | None = None, phantom_flags: list | None = None) -> None:
+                    all_flags: list | None = None, phantom_flags: list | None = None,
+                    gameday_flags: list | None = None) -> None:
     """
     Write an enriched verdict to JUDGE_RESULT_PATH (if set).
     Safe to call at any exit point — failure is logged but never propagated.
 
-    phantom_flags is a subset of pre_pass_flags, broken out because the evals
-    dashboard maps the pre-pass to rule 10 (voice repetition). Without the split,
-    a schedule flag would light up the repetition rule.
+    phantom_flags and gameday_flags are subsets of pre_pass_flags, broken out
+    because the evals dashboard maps the pre-pass to rule 10 (voice repetition).
+    Without the split, a schedule flag would light up the repetition rule.
     """
     judge_result_path = os.environ.get("JUDGE_RESULT_PATH")
     if not judge_result_path:
         return
     phantom = list(phantom_flags or [])
+    gameday = list(gameday_flags or [])
+    schedule_related = phantom + gameday
     enriched = {
         "verdict": verdict.get("verdict"),
         "severity": verdict.get("severity"),
         "flags": all_flags if all_flags is not None else list(verdict.get("flags", [])),
         "pre_pass_flags": list(pre_pass_flags),
-        "repetition_flags": [f for f in pre_pass_flags if f not in phantom],
+        "repetition_flags": [f for f in pre_pass_flags if f not in schedule_related],
         "phantom_game_flags": phantom,
+        "gameday_omission_flags": gameday,
         "llm_flags": list(llm_flags),
         "rule_titles": {str(k): v for k, v in RULE_TITLES.items()},
     }
@@ -1186,6 +1344,15 @@ def main():
         print(f"  pre-pass: {len(phantom_flags)} phantom-game flag(s) detected", file=sys.stderr)
     pre_pass_flags += phantom_flags
 
+    # Game-day pre-pass — the mirror of the one above, and MEDIUM for the same
+    # reason: a team playing in three hours that the post never mentions is a
+    # coverage hole a reader spots instantly, not a voice nit.
+    gameday_flags = [make_flag(16, f) for f in detect_gameday_omission(
+        today_obj, schedule, today_iso, source_data.get("season_overrides"))]
+    if gameday_flags:
+        print(f"  pre-pass: {len(gameday_flags)} game-day omission flag(s) detected", file=sys.stderr)
+    pre_pass_flags += gameday_flags
+
     full_prompt = (
         f"TODAY: {today_iso}\n\n"
         + JUDGE_PROMPT
@@ -1235,13 +1402,15 @@ def main():
         api_note = make_flag(UNCLASSIFIED_RULE,
                              f"judge skipped — API error: {type(e).__name__}")
         if pre_pass_flags:
-            v = {"verdict": "FAIL", "severity": "medium" if phantom_flags else "low",
+            v = {"verdict": "FAIL",
+                 "severity": "medium" if (phantom_flags or gameday_flags) else "low",
                  "flags": pre_pass_flags + [api_note]}
-            _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note], phantom_flags)
+            _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note], phantom_flags,
+                            gameday_flags)
             print(json.dumps(v))
             sys.exit(1)
         v = {"verdict": "PASS", "severity": "low", "flags": [api_note]}
-        _write_enriched(v, pre_pass_flags, [], [api_note], phantom_flags)
+        _write_enriched(v, pre_pass_flags, [], [api_note], phantom_flags, gameday_flags)
         print(json.dumps(v))
         sys.exit(0)
 
@@ -1267,12 +1436,13 @@ def main():
         if verdict.get("verdict") == "PASS":
             verdict["verdict"] = "FAIL"
             verdict["severity"] = "low"
-        if phantom_flags:
+        if phantom_flags or gameday_flags:
             verdict["severity"] = _at_least(verdict.get("severity"), "medium")
 
     # Persist enriched verdict for the evals dashboard if JUDGE_RESULT_PATH is set.
     # This does NOT affect stdout or exit code — publish.py's existing parsing is unaffected.
-    _write_enriched(verdict, pre_pass_flags, llm_flags, phantom_flags=phantom_flags)
+    _write_enriched(verdict, pre_pass_flags, llm_flags, phantom_flags=phantom_flags,
+                    gameday_flags=gameday_flags)
 
     for f in verdict.get("flags", []):
         print(f"  flag: {flag_line(f)}", file=sys.stderr)

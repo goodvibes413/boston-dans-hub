@@ -989,22 +989,80 @@ def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
     return context
 
 
+def compute_games_today(schedule, today_iso: str | None = None) -> list[dict]:
+    """
+    The games UPCOMING_SCHEDULE lists for TODAY, one entry per Boston team.
+
+    UPCOMING_SCHEDULE already carries them, but it carries the next several days
+    too, and "which of these is today" is a lookup the model has to perform
+    inside a ~30KB payload before it can even decide who leads the brew. On
+    2026-09-20 it did not: Steelers-Patriots kicked off at 1:00 and the brew was
+    three Red Sox paragraphs that never mentioned football. The data was there.
+    The prominence was not.
+
+    Returns [{team, sport, matchup, time_et, day_of_week, date}], schedule order.
+    """
+    if today_iso is None:
+        today_iso = as_of_iso()
+
+    if isinstance(schedule, list):
+        games = schedule
+    elif isinstance(schedule, dict):
+        games = schedule.get("games", []) or []
+    else:
+        return []
+
+    today_games = []
+    for game in games:
+        if not isinstance(game, dict):
+            continue
+        if not str(game.get("date", "")).startswith(today_iso):
+            continue
+        home = game.get("home_team", "")
+        away = game.get("away_team", "")
+        matchup = f"{away} at {home}" if away and home else (home or away)
+        today_games.append({
+            "team":        game.get("team", ""),
+            "sport":       game.get("sport", ""),
+            "matchup":     matchup,
+            "time_et":     game.get("time_et", "TBD"),
+            "day_of_week": game.get("day_of_week", ""),
+            "date":        str(game.get("date", ""))[:10],
+        })
+    return today_games
+
+
 def compute_coverage_allocation(
     season_overrides: dict | None,
     season_current: dict | None,
     rolling: dict | None,
+    games_today: list[dict] | None = None,
 ) -> dict:
     """
     Classify each Boston team as PRIMARY, SECONDARY, or MINIMAL based on
     season status, recent game activity, and news relevance.
 
-    Returns {"primary": [...], "secondary": [...], "minimal": [...]}.
+    A team playing TODAY is PRIMARY, whatever the rest of its signals say. An
+    NFL team plays once a week and will have nothing in rolling_7day on six of
+    those seven days, so "played recently" is the wrong question to ask about
+    the Patriots on a Sunday — the question is whether there is a game, and on
+    game day there is.
+
+    Elimination still wins: a team that has been eliminated is MINIMAL even on a
+    day it plays, because SEASON_OVERRIDES is authoritative by design.
+
+    Returns {"primary": [...], "secondary": [...], "minimal": [...],
+             "playing_today": [...]}.
     """
     primary = []
     secondary = []
     minimal = []
 
     eliminations = (season_overrides or {}).get("eliminations", {})
+    # dict.fromkeys, not a set: a doubleheader puts a team in GAMES_TODAY twice
+    # and it is still one team to cover, in schedule order.
+    playing_today = list(dict.fromkeys(
+        g.get("team") for g in (games_today or []) if g.get("team")))
 
     for team_key in TEAM_KEYS:
         is_eliminated = team_key in eliminations
@@ -1022,12 +1080,22 @@ def compute_coverage_allocation(
 
         if is_eliminated:
             minimal.append(team_key)
+        elif team_key in playing_today:
+            primary.append(team_key)
         elif status == "offseason" and not played_recently:
             secondary.append(team_key)
         else:
             primary.append(team_key)
 
-    return {"primary": primary, "secondary": secondary, "minimal": minimal}
+    return {
+        "primary": primary,
+        "secondary": secondary,
+        "minimal": minimal,
+        # Only the teams that are actually Dan's to cover today. An eliminated
+        # team playing out the string does not get promoted by its own schedule.
+        "playing_today": [t for t in playing_today
+                          if t in primary and t not in eliminations],
+    }
 
 
 def detect_slow_day(rolling: dict | None, news: dict | list | None, schedule: dict | list | None, today_iso: str | None = None) -> bool:
@@ -1119,7 +1187,7 @@ def _build_overrides_block(season_overrides: dict, today_iso: str | None = None)
     return "\n".join(lines).strip()
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None) -> str:
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None, games_today=None) -> str:
     if today_iso is None:
         today_iso = as_of_iso()
 
@@ -1156,6 +1224,22 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
     message += (
         "UPCOMING_SCHEDULE:\n"
         f"{json.dumps(schedule, indent=2)}\n\n"
+    )
+    # Hoisted out of UPCOMING_SCHEDULE rather than left for the model to find.
+    # See compute_games_today() for the Patriots game that got buried there.
+    if games_today:
+        message += (
+            "GAMES_TODAY (Boston teams playing TODAY — every one of these MUST get "
+            "real estate in morning_brew, as a LOOK FORWARD with NO result. The game "
+            "has not been played when this posts):\n"
+            f"{json.dumps(games_today, indent=2)}\n\n"
+        )
+    else:
+        message += (
+            "GAMES_TODAY: none. No Boston team plays today — do not write "
+            "\"tonight\", \"today\", or \"first pitch\" about any of them.\n\n"
+        )
+    message += (
         "LATEST_NEWS:\n"
         f"{json.dumps(news, indent=2)}\n\n"
     )
@@ -1222,11 +1306,14 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
         primary = ", ".join(coverage_allocation.get("primary", [])) or "none"
         secondary = ", ".join(coverage_allocation.get("secondary", [])) or "none"
         minimal = ", ".join(coverage_allocation.get("minimal", [])) or "none"
+        playing = ", ".join(coverage_allocation.get("playing_today", [])) or "none"
         message += (
             "COVERAGE_ALLOCATION (follow these priorities for morning_brew airtime):\n"
             f"- PRIMARY (bulk of morning_brew): {primary}\n"
             f"- SECONDARY (1-2 sentences if news warrants): {secondary}\n"
-            f"- MINIMAL (skip unless breaking news in LATEST_NEWS): {minimal}\n\n"
+            f"- MINIMAL (skip unless breaking news in LATEST_NEWS): {minimal}\n"
+            f"- PLAYING TODAY (each one needs its own beat in morning_brew — a "
+            f"forward look, never a result): {playing}\n\n"
         )
     message += (
         "SEASON_MEMORY:\n"
@@ -1560,11 +1647,15 @@ def main():
 
     # Pre-compute emotional context, coverage allocation, and slow-day detection
     emotional_context = compute_emotional_context(rolling, grudges)
-    coverage_allocation = compute_coverage_allocation(season_overrides, season_current, rolling)
+    games_today = compute_games_today(schedule, today_iso)
+    coverage_allocation = compute_coverage_allocation(
+        season_overrides, season_current, rolling, games_today=games_today
+    )
     slow_day = detect_slow_day(rolling, news, schedule, today_iso=today_iso)
     todays_seeds = select_daily_seeds(seeds_data, today_iso) if slow_day else []
     print(f"  emotional:      {len(emotional_context)} team(s) with context")
     print(f"  coverage:       primary={coverage_allocation['primary']}, minimal={coverage_allocation['minimal']}")
+    print(f"  games today:    {[g['team'] for g in games_today] or 'none'}")
     print(f"  slow_day:       {slow_day}")
 
     user_message = build_user_message(
@@ -1582,6 +1673,7 @@ def main():
         slow_day=slow_day,
         stories=todays_stories,
         story_seeds=todays_seeds,
+        games_today=games_today,
     )
 
     # DRY_RUN=1 prints the assembled prompt and exits before any LLM call.

@@ -5,6 +5,81 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-20 — Game day: the Patriots played at one o'clock and the brew never noticed
+
+Steelers at Patriots, 1:00 PM ET, Week 3, and the morning brew that went out that day was
+three Red Sox paragraphs. Bello's eight innings, Whitlock's ninth, the wild-card math, and
+then a close on salvaging the series in Tampa. You could read the whole thing and not know
+football season had started.
+
+Nothing was broken. `upcoming_schedule.json` had the game, `UPCOMING_SCHEDULE` carried it
+into the prompt, and `AGENTS.md` and the persona prompt had both said for months that the
+Patriots lead on a Patriots Sunday. The evals passed: `repetition_check` pass,
+`schedule_check` pass, judge PASS on the first attempt, severity low, zero flags.
+
+### Why every check missed it
+
+Because **every check was watching for something written, and this was something absent.**
+
+- **Rule 12 (game coverage gap)** reads `rolling_7day` for games with yesterday's date
+  where `played=true`. An NFL team plays once a week, so the Patriots are absent from that
+  store on six mornings out of seven — including, decisively, the morning of their own
+  game. The one check aimed at "a team went uncovered" is structurally blind to football
+  on the only day football matters.
+- **Rule 15 / `detect_phantom_game()`** is forward-looking, but it catches the opposite
+  error: a game Dan invented. A brew that says nothing at all about the Patriots asserts
+  nothing false about them, so it sails through.
+- **`check_coverage_window()`** in `publish.py` reads the fetcher box scores — which, same
+  as `rolling_7day`, have nothing for a game that has not kicked off.
+- **`COVERAGE_ALLOCATION`** did list `patriots` as PRIMARY. It just said so as a bare team
+  name in a line of four, in a ~30KB payload, with no indication that one of those teams
+  was taking the field in three hours.
+
+### What shipped
+
+**`GAMES_TODAY`, a new prompt block** (`compute_games_today()` in `generate_rant.py`).
+Today's games, lifted out of `UPCOMING_SCHEDULE` and stated on their own with matchup,
+start time and weekday. The data was always there; the prominence was not, and "find the
+entries whose date equals TODAY" is a lookup we were asking the model to perform inside a
+wall of JSON before it could even decide the shape of the post. On a quiet day the block
+says `none`, which is also worth saying out loud — it is the Off Days rule's premise.
+
+**A team playing today is PRIMARY**, whatever `rolling_7day` says about it. "Played
+recently" is the wrong question to ask about the Patriots on a Sunday; the right one is
+whether there is a game. Elimination still outranks it — `SEASON_OVERRIDES` is
+authoritative by design, and a team playing out the string does not get promoted by its
+own schedule.
+
+**Rule 16 (game-day omission), with a deterministic pre-pass.**
+`detect_gameday_omission()` is the exact mirror of `detect_phantom_game()`: that one
+catches a game Dan invented, this one catches a game he slept through. Same conservative
+gates, for the same reasons — no schedule means a fetch failure and not a quiet day, a
+`from_date` after the audited day means the window cannot speak to it, an eliminated team
+is skipped, and rule 12's crowding exception is mirrored so a four-team October Saturday
+covering two is fine. Naming the team, its home venue, *or* today's opponent clears it: a
+paragraph can be unmistakably about the game while calling the home side "we" throughout.
+
+Run against the published 2026-09-20 post, it flags the Patriots and passes the Red Sox.
+
+### Where the line between the two checks sits
+
+`detect_gameday_omission()` asks exactly one question: **did this team exist in the post
+at all?** Not whether the beat was good, or long enough, or led. That is deliberate. A
+regex cannot grade a paragraph, and these flags drive an automatic regeneration, so a
+false positive costs a Gemini call and usually a worse draft. Depth is rule 16's job in
+the LLM rubric ("at least two sentences that name the opponent") and the persona prompt's
+(Game Day Is Mandatory). Absence is the pre-pass's, and absence is what actually shipped.
+
+### The pattern worth remembering
+
+Two bugs, ten days apart, both about the same file. On 2026-09-10 Dan asserted a game the
+schedule did not list. On 2026-09-20 he ignored a game it did. `upcoming_schedule.json` is
+the only source in the pipeline that speaks about the future, and both times the failure
+was a check reading the past and concluding something about the present. When adding a
+check here, ask which direction it looks — and then ask what the mirror of it would catch.
+
+---
+
 ## 2026-09-19 — Playoff Push: the race Dan was writing about, on the page
 
 Dan has been able to talk about a pennant race since the stretch-run work shipped.

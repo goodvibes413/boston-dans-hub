@@ -36,6 +36,9 @@ jobs:
           # The assembled prompt must contain the core data blocks
           grep -q "ROLLING_7DAY" /tmp/prompt.txt
           grep -q "SEASON_MEMORY" /tmp/prompt.txt
+          # GAMES_TODAY is emitted either way — the "none" branch is what says
+          # nobody plays today, and a CI run has no fetched schedule at all.
+          grep -q "GAMES_TODAY" /tmp/prompt.txt
           echo "prompt assembled OK ($(wc -c < /tmp/prompt.txt) bytes)"
 
       - name: Compile all scripts

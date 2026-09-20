@@ -1590,6 +1590,7 @@
       if (!evalsData) return status;
       if (evalsData.pre_pass && evalsData.pre_pass.repetition_check === 'fail') status[10] = 'flag';
       if (evalsData.pre_pass && evalsData.pre_pass.schedule_check === 'fail') status[15] = 'flag';
+      if (evalsData.pre_pass && evalsData.pre_pass.gameday_check === 'fail') status[16] = 'flag';
       (evalsData.attempts || []).forEach(a => {
         if (a.verdict === 'PASS') return;
         (a.flags || []).forEach(flag => { const n = flagRule(flag); if (n) status[n] = 'flag'; });
