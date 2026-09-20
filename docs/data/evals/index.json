@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-09-15",
     "2026-09-16",
     "2026-09-17",
     "2026-09-18",
-    "2026-09-19"
+    "2026-09-19",
+    "2026-09-20"
   ],
   "rules": [
     {
@@ -84,19 +84,19 @@
     }
   ],
   "summary_5day": {
-    "fresh": 0,
-    "retry": 5,
+    "fresh": 1,
+    "retry": 4,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 7,
+        "count": 6,
         "title": "Voice repetition"
       },
       {
         "rule": 15,
-        "count": 4,
+        "count": 3,
         "title": "Phantom scheduled game"
       },
       {
@@ -107,7 +107,7 @@
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 4,
+      "llm": 3,
       "both": 0
     }
   }
