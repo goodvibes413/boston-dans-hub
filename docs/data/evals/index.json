@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-09-16",
     "2026-09-17",
     "2026-09-18",
     "2026-09-19",
-    "2026-09-20"
+    "2026-09-20",
+    "2026-09-21"
   ],
   "rules": [
     {
@@ -85,8 +85,8 @@
   ],
   "summary_5day": {
     "fresh": 1,
-    "retry": 4,
-    "fallback": 0,
+    "retry": 3,
+    "fallback": 1,
     "stale": 0,
     "most_flagged_rules": [
       {
@@ -96,7 +96,7 @@
       },
       {
         "rule": 15,
-        "count": 3,
+        "count": 2,
         "title": "Phantom scheduled game"
       },
       {
@@ -107,7 +107,7 @@
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 3,
+      "llm": 2,
       "both": 0
     }
   }
