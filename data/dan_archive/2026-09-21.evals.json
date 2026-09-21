@@ -1,14 +1,50 @@
 {
   "date": "2026-09-21",
-  "generated_at": "2026-09-21T14:56:35.198082+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
-  "total_attempts": 0,
-  "generation_seconds": 0.0,
+  "generated_at": "2026-09-21T15:58:00.357793+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 104.5,
   "pre_pass": {
-    "repetition_check": "unknown",
-    "schedule_check": "unknown",
+    "repetition_check": "pass",
+    "schedule_check": "pass",
     "flagged_phrases": []
   },
-  "attempts": []
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"i am still ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 0,
+          "detail": "judge skipped \u2014 API error: ServerError"
+        },
+        {
+          "rule": 12,
+          "detail": "coverage window: the bruins played Capitals on 2026-09-20 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        },
+        {
+          "rule": 12,
+          "detail": "coverage window: the redsox played Tampa Bay Rays on 2026-09-20 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        },
+        {
+          "rule": 12,
+          "detail": "coverage window: the patriots played Pittsburgh Steelers on 2026-09-20 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        }
+      ],
+      "duration_seconds": 77.1
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 2.0
+    }
+  ]
 }
