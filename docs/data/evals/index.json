@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-09-18",
     "2026-09-19",
     "2026-09-20",
     "2026-09-21",
-    "2026-09-22"
+    "2026-09-22",
+    "2026-09-23"
   ],
   "rules": [
     {
@@ -85,8 +85,8 @@
   ],
   "summary_5day": {
     "fresh": 2,
-    "retry": 3,
-    "fallback": 0,
+    "retry": 2,
+    "fallback": 1,
     "stale": 0,
     "most_flagged_rules": [
       {
@@ -96,18 +96,13 @@
       },
       {
         "rule": 12,
-        "count": 4,
+        "count": 3,
         "title": "Game coverage gap"
-      },
-      {
-        "rule": 15,
-        "count": 1,
-        "title": "Phantom scheduled game"
       }
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 1,
+      "llm": 0,
       "both": 0
     }
   }
