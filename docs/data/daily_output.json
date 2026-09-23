@@ -1,40 +1,40 @@
 {
-  "headline": "Postseason bound as Sox prepare for a massive Guardians showdown",
+  "headline": "Sox bats go cold against Cleveland as our postseason push begins",
   "morning_brew": [
-    "We are finally here, and I can finally let out the breath I have been holding since April because the Sox have officially punched their ticket to the postseason. It was a damn roller coaster, and there were plenty of nights I spent pacing my living room like a caged animal, but this group found a way to grind out enough wins to keep the dream alive. Clinching doesn't mean we just coast into October, though. We have six games left to sharpen the edges before the real madness begins, and proving we can hold our own against a team like Cleveland starting tomorrow is the perfect dress rehearsal.",
-    "The Guardians come into Fenway sitting pretty at the top of the AL Central, and this three-game set is exactly the kind of test we need to see where this rotation and bullpen really stack up. I am not saying I expect perfection, but seeing the guys play with focus and discipline would go a long way in calming my frayed nerves. My neighbor Rick has been in my ear all week with some half-baked theory that the league is rigging this series for the narrative, but I told him I am way too busy worrying about our own pitching staff to care about his latest umpire dossiers.",
-    "We have a busy stretch ahead at the Fens with the Cubs rolling in right after Cleveland wraps up, and then the Pats head down to Jacksonville for a Sunday showdown. Football season is finally starting to get its legs under it, and watching Drake Maye work this offense feels like the start of something legitimate. It is a great time to be a fan in the Hub, even if my blood pressure suggests I should probably have retired years ago."
+    "I was hoping for a cleaner start to this stretch run, but last night at Fenway was a flat-out disaster. We had eight hits but couldn't string a damn thing together when it mattered, and dropping a one-run decision to the Guardians is a brutal way to start building momentum for October. Payton Tolle gave us some decent innings, but at this point in the season, you need the lineup to wake up and pick up the slack when the margin for error is this razor-thin.",
+    "The bullpen got a little messy late, and letting that one slip away in the ninth felt like a punch to the gut. We have already clinched our spot, but I need to see more urgency from these guys before we start the real tournament. My neighbor Rick has been pacing his driveway all morning with some wild theory about how the Guardians are stealing signs, but honestly, I think we just stopped hitting the ball. We're back at it tonight, and if we cannot find a way to break through, this is gonna be a long couple of days.",
+    "On a much brighter note, the Bruins looked absolutely electric in their preseason opener, lighting up the Flyers for five goals. Jeremy Swayman was stellar in net, and watching Morgan Geekie and Elias Lindholm find the back of the net in the third had me thinking that this squad is ready to erase the bad taste of last year. It is just the preseason, but seeing that kind of energy on the ice was the exact mood booster I needed after watching the Sox stumble yesterday."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Brayan Bello",
-      "trend": "Punched out eleven batters across eight dominant innings in his last start while holding the Rays at bay.",
-      "dans_take": "That is the kind of ace-level stuff we need if we want to make any noise in the playoffs."
+      "player": "Michael Eyssimont",
+      "trend": "Scored two goals during the preseason victory over the Flyers while playing disciplined hockey.",
+      "dans_take": "The man was everywhere on the ice and made that Philly defense look like they were skating through a Dunkin' parking lot in the middle of a blizzard."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Garrett Whitlock",
-      "trend": "Surrendered the deciding lead in the ninth inning against Tampa to spoil an otherwise brilliant pitching performance.",
-      "dans_take": "The arson squad struck at the absolute worst possible time and I am still watching that replay through my fingers like a horror movie."
+      "player": "Jovani Moran",
+      "trend": "Struck out the side in a perfect inning of relief during Monday's loss to Cleveland.",
+      "dans_take": "When he is dealing like that, he needs to be the guy we trust in the high-leverage frames instead of letting the arson squad take over."
     },
     {
-      "category": "Streak",
-      "player": "Caleb Durbin",
-      "trend": "Collected multiple hits against the Rays to keep the offense moving during a tough weekend series.",
-      "dans_take": "Durbin has been a rare bright spot in the lineup when we needed someone to stop the bleeding."
+      "category": "Cold Snap",
+      "player": "Erik Miller",
+      "trend": "Took the loss after allowing two hits and an earned run in his one inning of work.",
+      "dans_take": "That ninth inning was a total train wreck and it cost us a game we had no business losing."
     }
   ],
   "news_digest": [
     {
-      "headline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule",
-      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
-      "dans_take": "The bracket is finally set, and now we find out if we can actually do some damage or if I am just gonna need more Dunks."
+      "headline": "Full final 2026 regular-season grades for all 30 MLB teams",
+      "url": "https://www.espn.com/mlb/story/_/id/50006945/mlb-2026-full-season-final-grades-all-30-teams-brewers-rays-braves-dodgers-yankees",
+      "dans_take": "Final grades are out and now it is time to see who is actually ready for the pressure of the big stage."
     },
     {
-      "headline": "2027 NFL draft order projections for Round 1, top pick, more",
-      "url": "https://www.espn.com/nfl/draft2027/story/_/id/49794361/2027-nfl-draft-order-projections-first-round-picks",
-      "dans_take": "Way too early for mock drafts, but at least we are not picking in the top five, thank heavens."
+      "headline": "Stanley Cup contender tiers: Where do all 32 NHL teams fit in?",
+      "url": "https://www.espn.com/nhl/story/_/id/50007145/nhl-2026-27-stanley-cup-playoffs-champions-contenders-rankings",
+      "dans_take": "Predictions are just noise until the puck actually drops for real, but I like where the B's are positioned to make a run."
     }
   ],
   "box_scores": {
@@ -44,28 +44,28 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-09-21",
+      "game_date": "2026-09-22",
       "played": false,
       "season_type": "offseason"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-09-21",
-      "played": false,
+      "home_team": "Boston Bruins",
+      "away_team": "Flyers",
+      "home_score": 5,
+      "away_score": 1,
+      "game_date": "2026-09-22",
+      "played": true,
       "season_type": "offseason"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-09-21",
-      "played": false,
+      "home_team": "Boston Red Sox",
+      "away_team": "Cleveland Guardians",
+      "home_score": 2,
+      "away_score": 3,
+      "game_date": "2026-09-22",
+      "played": true,
       "season_type": "regular"
     },
     "patriots": {
@@ -74,18 +74,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-09-21",
+      "game_date": "2026-09-22",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-09-22",
-      "matchup": "Cleveland Guardians at Boston Red Sox",
-      "day_of_week": "Tuesday",
-      "time_et": "6:45 PM ET"
-    },
     {
       "date": "2026-09-23",
       "matchup": "Cleveland Guardians at Boston Red Sox",
@@ -128,26 +122,29 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 11.79,
-      "prompt_tokens": 37975,
-      "output_tokens": 1391,
+      "seconds": 25.45,
+      "prompt_tokens": 40347,
+      "output_tokens": 1438,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 6.31,
-      "prompt_tokens": 16218,
-      "output_tokens": 1440,
+      "seconds": 10.65,
+      "prompt_tokens": 16275,
+      "output_tokens": 1453,
       "thinking_tokens": null
     }
   ],
-  "generated_at": "2026-09-22T13:14:25.224941+00:00",
-  "date": "2026-09-23",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 28.3,
+  "generated_at": "2026-09-23T18:45:00.009671+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
+    {
+      "rule": 15,
+      "detail": "The headline claims a 'Cleveland thriller' occurred, but the game was at Fenway Park, not Cleveland."
+    }
+  ],
   "playoff_race": {
     "redsox": {
       "phase": "stretch_run",
@@ -162,5 +159,6 @@
       "sport": "MLB",
       "record": "84-73"
     }
-  }
+  },
+  "date": "2026-09-23"
 }
