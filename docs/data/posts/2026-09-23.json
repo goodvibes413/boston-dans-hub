@@ -128,18 +128,18 @@
   "playoff_race": {
     "redsox": {
       "phase": "stretch_run",
-      "games_remaining": 6,
+      "games_remaining": 5,
       "race_status": "clinched",
       "division_rank": 3,
-      "division_games_back": 11.5,
+      "division_games_back": 12.0,
       "wild_card_rank": 2,
-      "wild_card_games_up": 4.0,
-      "closest_chaser": "Astros",
+      "wild_card_games_up": 3.0,
+      "closest_chaser": "Rangers",
       "team": "Red Sox",
       "sport": "MLB",
-      "record": "84-72"
+      "record": "84-73"
     }
   },
-  "_stale": null,
+  "_stale": true,
   "_fallback": null
 }

@@ -147,6 +147,7 @@
   "date": "2026-09-23",
   "_stale": true,
   "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+  "_stale_age_hours": 25.1,
   "playoff_race": {
     "redsox": {
       "phase": "stretch_run",
@@ -161,6 +162,5 @@
       "sport": "MLB",
       "record": "84-73"
     }
-  },
-  "_stale_age_hours": 24.2
+  }
 }
