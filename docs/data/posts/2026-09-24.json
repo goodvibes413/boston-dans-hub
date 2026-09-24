@@ -1,9 +1,28 @@
 {
+  "date": "2026-09-24",
+  "generated_at": "2026-09-24T13:21:58.289519+00:00",
   "headline": "Sonny Gray deals as Red Sox look to build momentum against Cleveland",
   "morning_brew": [
     "It wasn't always pretty, but we got the job done last night at Fenway Park. Sonny Gray was absolutely dialled in, tossing six scoreless innings to help us grind out a win that the bullpen finished off with authority. It wasn't the offensive explosion I was hoping for, but any night Aroldis Chapman and Tyron Guerrero lock it down like that gives me a little more hope for October. We've clinched our spot, but the way we've been struggling to string hits together lately has me sweating through my shirt every single night like I'm sitting in the bleachers during a heatwave.",
     "Tonight we're back at the Fens to wrap up this series, and frankly, I'm tired of watching us play down to our competition. My neighbor Rick spent the whole morning telling me the Guardians are looking at our scouting reports, which is just the kind of nonsense I don't have the patience for right now. I just want to see our bats wake up and put some pressure on their pitchers early so I don't have to spend the ninth inning pacing my living room floor like a caged animal.",
     "Elsewhere in the Hub, the Patriots are still trying to figure out their clock management issues ahead of Sunday's trek down to Jacksonville. I know it's early, but you can't be giving away possessions like that if we want to be a serious team when the weather turns. Mike Vrabel has his work cut out for him, but I'm trusting the process for now \u2014 at least until I see them kick away another game we should have had in the bag like a toddler dropping a scoop of ice cream on the sidewalk."
+  ],
+  "news_digest": [
+    {
+      "headline": "MLB Power Rankings Week 26: Where teams stand entering playoffs",
+      "url": "https://www.espn.com/mlb/story/_/id/50013859/mlb-2026-power-rankings-week-26-brewers-dodgers-rays-yankees-padres-guardians",
+      "dans_take": "Power rankings are nice for a bar debate, but I'll hold my applause until I see us actually do something in the postseason."
+    },
+    {
+      "headline": "Why Patriots must be better at managing the clock before halftime",
+      "url": "https://www.espn.com/nfl/story/_/id/50016408/new-england-patriots-clock-management-mike-vrabel",
+      "dans_take": "It is basic stuff, but I guess we're still stuck in kindergarten when it comes to finishing drives properly."
+    },
+    {
+      "headline": "Patriots get positive sign from rookie TE Eli Raridon",
+      "url": "https://www.espn.com/video/clip/_/id/50016860/patriots-get-positive-sign-rookie-te-eli-raridon",
+      "dans_take": "Any update that isn't a trip to the trainer's room is a total win in my book."
+    }
   ],
   "trend_watch": [
     {
@@ -23,23 +42,6 @@
       "player": "Wilyer Abreu",
       "trend": "Logged a productive night at the plate by picking up two hits in four at-bats.",
       "dans_take": "We need guys like Abreu to keep finding those gaps if we're gonna survive the Wild Card round without giving me a coronary."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "MLB Power Rankings Week 26: Where teams stand entering playoffs",
-      "url": "https://www.espn.com/mlb/story/_/id/50013859/mlb-2026-power-rankings-week-26-brewers-dodgers-rays-yankees-padres-guardians",
-      "dans_take": "Power rankings are nice for a bar debate, but I'll hold my applause until I see us actually do something in the postseason."
-    },
-    {
-      "headline": "Why Patriots must be better at managing the clock before halftime",
-      "url": "https://www.espn.com/nfl/story/_/id/50016408/new-england-patriots-clock-management-mike-vrabel",
-      "dans_take": "It is basic stuff, but I guess we're still stuck in kindergarten when it comes to finishing drives properly."
-    },
-    {
-      "headline": "Patriots get positive sign from rookie TE Eli Raridon",
-      "url": "https://www.espn.com/video/clip/_/id/50016860/patriots-get-positive-sign-rookie-te-eli-raridon",
-      "dans_take": "Any update that isn't a trip to the trainer's room is a total win in my book."
     }
   ],
   "box_scores": {
@@ -116,27 +118,6 @@
       "time_et": "1:00 PM ET"
     }
   ],
-  "_timings": [
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 5.41,
-      "prompt_tokens": 38931,
-      "output_tokens": 1498,
-      "thinking_tokens": null
-    },
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 4.5,
-      "prompt_tokens": 16324,
-      "output_tokens": 1549,
-      "thinking_tokens": null
-    }
-  ],
-  "generated_at": "2026-09-24T13:21:58.289519+00:00",
   "playoff_race": {
     "redsox": {
       "phase": "stretch_run",
@@ -152,5 +133,6 @@
       "record": "85-73"
     }
   },
-  "date": "2026-09-24"
+  "_stale": null,
+  "_fallback": null
 }
