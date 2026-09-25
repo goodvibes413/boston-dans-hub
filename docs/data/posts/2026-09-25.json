@@ -1,9 +1,23 @@
 {
+  "date": "2026-09-25",
+  "generated_at": "2026-09-25T13:24:33.548226+00:00",
   "headline": "Red Sox bats go cold while Bruins drop preseason dud",
   "morning_brew": [
     "I watched last night at the Fens and frankly, my stomach is in knots. We couldn't get a damn thing going against Cleveland, managing only two hits all night like we were swinging garden hoses. Ranger Suarez gave us five solid innings and deserved a hell of a lot better than that loss, but when the lineup puts up a goose egg, you aren't winning anything. We've already clinched, but watching us struggle to put runs on the board like this has me worried we're gonna look like a bunch of statues once the real pressure hits in October.",
     "The Bruins were also back at it, and dropping that one to the Flyers in the preseason was just another headache I didn't need. It is only the exhibition schedule, but seeing them get blanked two to zero is frustrating no matter what time of year it is. Michael DiPietro stood on his head with twenty-six saves, but when the rest of the squad can't find the net, you are just spinning your wheels. My neighbor Rick is already drafting a thirty-page dossier for the league about the officiating, which tells you exactly how much of a circus that game felt like.",
     "We have a doubleheader today at Fenway against the Cubs, so we have to shake off yesterday's funk immediately. I am hoping to see our hitters show some life and get those bats moving so we can actually build some positive momentum before the playoffs start. Sully keeps telling me we are saving our best baseball for when it counts, but I have heard that song and dance before, and it usually ends with me yelling at my television while the cat hides under the couch. Let us hope they actually show up this afternoon."
+  ],
+  "news_digest": [
+    {
+      "headline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule",
+      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
+      "dans_take": "The bracket is taking shape and it is about damn time we start acting like we want to win the whole thing."
+    },
+    {
+      "headline": "NFL Week 3 picks, predictions, schedule, odds, fantasy tips",
+      "url": "https://www.espn.com/nfl/story/_/id/50014420/week-3-picks-predictions-schedule-fantasy-odds-2026",
+      "dans_take": "Whatever the experts think about the Patriots, we just need a win on Sunday to stop me from losing my mind."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Raymond Burgos",
       "trend": "Tossed two scoreless frames with one strikeout against Cleveland.",
       "dans_take": "At least the relief arms are doing their job while the offense is busy playing hide and seek."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "MLB playoff picture 2026: Clinching scenarios, bracket, schedule",
-      "url": "https://www.espn.com/mlb/story/_/id/49752366/mlb-2026-playoff-tracker-clinch-scenarios-postseason-bracket-schedule",
-      "dans_take": "The bracket is taking shape and it is about damn time we start acting like we want to win the whole thing."
-    },
-    {
-      "headline": "NFL Week 3 picks, predictions, schedule, odds, fantasy tips",
-      "url": "https://www.espn.com/nfl/story/_/id/50014420/week-3-picks-predictions-schedule-fantasy-odds-2026",
-      "dans_take": "Whatever the experts think about the Patriots, we just need a win on Sunday to stop me from losing my mind."
     }
   ],
   "box_scores": {
@@ -105,38 +107,6 @@
       "time_et": "1:00 PM ET"
     }
   ],
-  "_timings": [
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 27.11,
-      "prompt_tokens": 39696,
-      "output_tokens": 1353,
-      "thinking_tokens": null
-    },
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 5.67,
-      "prompt_tokens": 16180,
-      "output_tokens": 1415,
-      "thinking_tokens": null
-    }
-  ],
-  "generated_at": "2026-09-25T13:24:33.548226+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    {
-      "rule": 12,
-      "detail": "The Bruins played yesterday (2026-09-24) and the morning_brew does not mention the game at all."
-    },
-    {
-      "rule": 12,
-      "detail": "coverage window: the bruins played Flyers on 2026-09-24 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
-    }
-  ],
   "playoff_race": {
     "redsox": {
       "phase": "stretch_run",
@@ -152,5 +122,6 @@
       "record": "85-74"
     }
   },
-  "date": "2026-09-25"
+  "_stale": null,
+  "_fallback": null
 }

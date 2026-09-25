@@ -1,0 +1,50 @@
+{
+  "date": "2026-09-25",
+  "generated_at": "2026-09-25T13:22:36.594437+00:00",
+  "outcome": "retry",
+  "winning_attempt": 3,
+  "total_attempts": 3,
+  "generation_seconds": 117.0,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"mike vrabel has his work cut out for him but\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 1.7
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 12,
+          "detail": "The Bruins played yesterday (2026-09-24) and the morning_brew does not mention the game at all."
+        },
+        {
+          "rule": 12,
+          "detail": "coverage window: the bruins played Flyers on 2026-09-24 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        }
+      ],
+      "duration_seconds": 1.7
+    },
+    {
+      "attempt": 3,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 1.5
+    }
+  ]
+}
