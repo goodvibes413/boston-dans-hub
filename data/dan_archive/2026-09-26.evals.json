@@ -1,17 +1,17 @@
 {
   "date": "2026-09-26",
-  "generated_at": "2026-09-26T12:45:53.181706+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
+  "generated_at": "2026-09-26T13:47:48.006049+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
   "total_attempts": 3,
-  "generation_seconds": 164.5,
+  "generation_seconds": 55.8,
   "pre_pass": {
-    "repetition_check": "fail",
-    "schedule_check": "pass",
+    "repetition_check": "pass",
+    "schedule_check": "fail",
     "flagged_phrases": [
       {
-        "rule": 10,
-        "detail": "repetition: number-masked sentence skeleton \"my neighbor rick is already drafting a\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        "rule": 15,
+        "detail": "phantom game: output claims a Boston team has a game today (2026-09-26); upcoming_schedule lists none (next game 2026-09-27). Sentence: We have some work left to do, but putting two wins in the column feels like a massive relief, and I am putting a real deposit in the Duck Boat fund today."
       }
     ]
   },
@@ -26,39 +26,31 @@
           "detail": "The Bruins played yesterday (2026-09-25) and the morning_brew does not mention the game at all."
         },
         {
-          "rule": 15,
-          "detail": "The output claims a game today (2026-09-26) at Fenway against the Cubs, but the UPCOMING_SCHEDULE lists no such game for today."
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"it is about damn time we\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
         },
         {
           "rule": 12,
           "detail": "coverage window: the bruins played Capitals on 2026-09-25 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
         }
       ],
-      "duration_seconds": 6.3
+      "duration_seconds": 4.0
     },
     {
       "attempt": 2,
       "verdict": "FAIL",
-      "severity": "high",
+      "severity": "low",
       "flags": [
         {
           "rule": 10,
-          "detail": "repetition: number-masked sentence skeleton \"a hell of a lot better\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+          "detail": "repetition: number-masked sentence skeleton \"we are saving our best baseball for\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
         },
         {
           "rule": 10,
-          "detail": "repetition: formulaic paragraph opener \"the bruins were ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-        },
-        {
-          "rule": 10,
-          "detail": "repetition: formulaic paragraph opener \"we have a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-        },
-        {
-          "rule": 12,
-          "detail": "coverage window: the bruins played Capitals on 2026-09-25 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+          "detail": "repetition: number-masked sentence skeleton \"my neighbor rick is already drafting\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
         }
       ],
-      "duration_seconds": 101.0
+      "duration_seconds": 5.2
     },
     {
       "attempt": 3,
@@ -66,15 +58,19 @@
       "severity": "high",
       "flags": [
         {
-          "rule": 10,
-          "detail": "repetition: number-masked sentence skeleton \"my neighbor rick is already drafting a\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+          "rule": 12,
+          "detail": "The Bruins played yesterday (2026-09-25) and the morning_brew does not mention the game at all."
+        },
+        {
+          "rule": 15,
+          "detail": "phantom game: output claims a Boston team has a game today (2026-09-26); upcoming_schedule lists none (next game 2026-09-27). Sentence: We have some work left to do, but putting two wins in the column feels like a massive relief, and I am putting a real deposit in the Duck Boat fund today."
         },
         {
           "rule": 12,
           "detail": "coverage window: the bruins played Capitals on 2026-09-25 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
         }
       ],
-      "duration_seconds": 20.8
+      "duration_seconds": 27.4
     }
   ]
 }

@@ -85,8 +85,8 @@
   ],
   "summary_5day": {
     "fresh": 2,
-    "retry": 2,
-    "fallback": 1,
+    "retry": 3,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
@@ -96,7 +96,7 @@
       },
       {
         "rule": 10,
-        "count": 5,
+        "count": 4,
         "title": "Voice repetition"
       },
       {
@@ -106,8 +106,8 @@
       }
     ],
     "rule15_agreement": {
-      "deterministic": 0,
-      "llm": 2,
+      "deterministic": 1,
+      "llm": 1,
       "both": 0
     }
   }
