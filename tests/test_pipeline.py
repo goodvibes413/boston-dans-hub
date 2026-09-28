@@ -2892,5 +2892,184 @@ class TestGamesTodayPrompt(unittest.TestCase):
         self.assertEqual(allocation["playing_today"], [])
 
 
+class TestWrongGameWeekday(unittest.TestCase):
+    """The 2026-09-28 bug: a Monday post opened "Saturday was a tough day for
+    Boston sports fans across the board" about two games whose game_date was
+    2026-09-27, a Sunday. The cause was a data gap — the Off Days rule says to
+    name the day from the data and never from arithmetic, and pointed at
+    UPCOMING_SCHEDULE's day_of_week, a field that exists only for games that have
+    not happened. For a played game there was nothing to copy."""
+
+    TODAY = "2026-09-28"          # a Monday
+    YESTERDAY_NAME = "Sunday"
+
+    ROLLING = {"days": [
+        {"date": "2026-09-28",
+         "redsox": {"boxscore": {"game_date": "2026-09-27", "played": True,
+                                 "opponent": "Chicago Cubs"}},
+         "patriots": {"boxscore": {"game_date": "2026-09-27", "played": True,
+                                   "opponent": "Jacksonville Jaguars"}}},
+        # A Saturday doubleheader against the SAME opponent, on purpose: a correct
+        # callback to it must not read as the error.
+        {"date": "2026-09-27",
+         "redsox": {"boxscore": {"game_date": "2026-09-26", "played": True,
+                                 "opponent": "Chicago Cubs",
+                                 "games": [{"game_number": 1, "opponent": "Chicago Cubs"},
+                                           {"game_number": 2, "opponent": "Chicago Cubs"}]}}},
+    ]}
+
+    SCHEDULE = {"games": [
+        {"sport": "MLB", "team": "redsox", "date": "2026-09-29", "day_of_week": "Tuesday"},
+        {"sport": "NFL", "team": "patriots", "date": "2026-10-04", "day_of_week": "Sunday"},
+    ]}
+
+    PUBLISHED = (
+        "Saturday was a tough day for Boston sports fans across the board. The Red Sox "
+        "struggled to generate any offense at Fenway, dropping the series opener to the "
+        "Cubs after a rough start from Tanner Houck."
+    )
+
+    def _post(self, *paragraphs, headline="Red Sox stumble against Chicago"):
+        return {"headline": headline, "morning_brew": list(paragraphs)}
+
+    def _flags(self, *paragraphs):
+        return safety_judge.detect_wrong_game_weekday(
+            self._post(*paragraphs), self.ROLLING, self.SCHEDULE, self.TODAY)
+
+    def test_the_published_2026_09_28_lead_is_flagged(self):
+        flags = self._flags(self.PUBLISHED)
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("Sunday", flags[0])
+        self.assertIn("Saturday", flags[0])
+
+    def test_the_correct_weekday_passes(self):
+        self.assertEqual(
+            self._flags("Sunday was a tough day for Boston sports fans, and the Cubs "
+                        "made sure of it at Fenway."),
+            [])
+
+    def test_relative_framing_asserts_no_weekday(self):
+        for opener in ("Last night was a tough one at Fenway against the Cubs.",
+                       "Yesterday was a tough day all around for this town.",
+                       "What a miserable weekend that was against the Cubs."):
+            with self.subTest(opener=opener):
+                self.assertEqual(self._flags(opener), [])
+
+    def test_a_correct_series_callback_mid_sentence_is_not_the_error(self):
+        """During a three-game set every weekday in range is a day that opponent
+        was genuinely played on. A check that flagged this would fire on good
+        posts, so the deterministic half only takes a sentence-leading weekday."""
+        self.assertEqual(
+            self._flags("We dropped it to the Cubs after taking both on Saturday, "
+                        "which somehow stings even worse."),
+            [])
+
+    def test_a_forward_reference_is_not_a_result_claim(self):
+        for para in ("Tuesday we open against the Yankees in the Bronx.",
+                     "Sunday the Pats get Buffalo, a problem for another day.",
+                     "Thursday will tell us everything about this team."):
+            with self.subTest(para=para):
+                self.assertEqual(self._flags(para), [])
+
+    def test_a_reminiscence_is_not_about_last_night(self):
+        """Slow-day stories are set in another decade and say so."""
+        for para in ("Saturday back in 2004 I was in the bleachers for one of these.",
+                     "Friday in 1986 my pops took me to a game like that."):
+            with self.subTest(para=para):
+                self.assertEqual(self._flags(para), [])
+
+    def test_no_game_yesterday_means_nothing_to_anchor_on(self):
+        rolling = {"days": [{"date": "2026-09-28",
+                             "redsox": {"boxscore": {"game_date": "2026-09-25",
+                                                     "played": True,
+                                                     "opponent": "Chicago Cubs"}}}]}
+        self.assertEqual(
+            safety_judge.detect_wrong_game_weekday(
+                self._post(self.PUBLISHED), rolling, self.SCHEDULE, self.TODAY),
+            [])
+
+    def test_an_empty_rolling_store_never_flags(self):
+        for rolling in ({}, {"days": []}, None):
+            with self.subTest(rolling=rolling):
+                self.assertEqual(
+                    safety_judge.detect_wrong_game_weekday(
+                        self._post(self.PUBLISHED), rolling, self.SCHEDULE, self.TODAY),
+                    [])
+
+    def test_rule_17_is_registered_everywhere_it_is_read(self):
+        self.assertIn(17, safety_judge.RULE_TITLES)
+        self.assertEqual(
+            safety_judge.flag_rule(safety_judge.make_flag(17, "x")), 17)
+        self.assertEqual(
+            safety_judge.flag_rule("wrong game day: yesterday was a Sunday"), 17)
+
+
+class TestRollingWeekdayAnnotation(unittest.TestCase):
+    """game_day_of_week is what makes "copy the day, never compute it" possible
+    for a game already played. Before it existed the rule had nothing to point at
+    on the results side."""
+
+    def test_every_game_date_gains_its_weekday(self):
+        rolling = {"days": [{"date": "2026-09-28",
+            "redsox": {"boxscore": {"game_date": "2026-09-27", "played": True,
+                                    "games": [{"game_number": 1,
+                                               "game_date": "2026-09-27"}]}},
+            "patriots": {"boxscore": {"game_date": "2026-09-27", "played": True}}}]}
+        out = generate_rant.annotate_rolling_weekdays(rolling)
+        box = out["days"][0]["redsox"]["boxscore"]
+        self.assertEqual(box["game_day_of_week"], "Sunday")
+        self.assertEqual(box["games"][0]["game_day_of_week"], "Sunday")
+        self.assertEqual(
+            out["days"][0]["patriots"]["boxscore"]["game_day_of_week"], "Sunday")
+
+    def test_the_caller_dict_is_not_mutated(self):
+        rolling = {"days": [{"date": "2026-09-28",
+                             "redsox": {"boxscore": {"game_date": "2026-09-27"}}}]}
+        generate_rant.annotate_rolling_weekdays(rolling)
+        self.assertNotIn("game_day_of_week",
+                         rolling["days"][0]["redsox"]["boxscore"])
+
+    def test_an_unreadable_date_is_left_alone(self):
+        """A date we cannot parse is not a weekday we can assert."""
+        for bad in ("", "not-a-date", None, "2026-13-45"):
+            with self.subTest(bad=bad):
+                out = generate_rant.annotate_rolling_weekdays(
+                    {"days": [{"redsox": {"boxscore": {"game_date": bad}}}]})
+                self.assertNotIn("game_day_of_week",
+                                 out["days"][0]["redsox"]["boxscore"])
+
+    def test_an_existing_value_is_respected(self):
+        out = generate_rant.annotate_rolling_weekdays(
+            {"days": [{"redsox": {"boxscore": {"game_date": "2026-09-27",
+                                               "game_day_of_week": "Funday"}}}]})
+        self.assertEqual(
+            out["days"][0]["redsox"]["boxscore"]["game_day_of_week"], "Funday")
+
+    def test_a_non_dict_store_passes_through(self):
+        for value in (None, [], "nope"):
+            with self.subTest(value=value):
+                self.assertEqual(
+                    generate_rant.annotate_rolling_weekdays(value), value)
+
+    def test_the_prompt_names_yesterday_and_its_weekday(self):
+        message = generate_rant.build_user_message(
+            {}, [], [], {}, today_iso="2026-09-28")
+        self.assertIn("TODAY: 2026-09-28 (Monday)", message)
+        self.assertIn("YESTERDAY: 2026-09-27 (Sunday)", message)
+
+    def test_an_unparseable_today_omits_yesterday_rather_than_guessing(self):
+        """The YESTERDAY line is derived, so it has to be absent when the date it
+        derives from cannot be read — never a guessed day.
+
+        Note: build_user_message() as a whole still raises on an unreadable
+        TODAY, at the unguarded date.fromisoformat() in the DRAFT_PICKS freshness
+        block further down. That predates this change and is left as it is; a
+        nonsense TODAY_OVERRIDE failing loudly in production is defensible. This
+        test pins the weekday block's own behavior."""
+        with self.assertRaises(ValueError):
+            generate_rant.build_user_message(
+                {}, [], [], {}, today_iso="not-a-date")
+
+
 if __name__ == "__main__":
     unittest.main()

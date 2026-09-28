@@ -1,0 +1,236 @@
+{
+  "_fixture_notes": "The 2026-09-28 wrong-weekday miss. TODAY is a Monday; both of yesterday's games (Cubs at Fenway, Patriots at Jacksonville) carry game_date 2026-09-27, a Sunday. The published brew opened 'Saturday was a tough day for Boston sports fans across the board' — two days off, first sentence, about the games the post exists to cover — and called a Sunday game that closed out a three-game set 'the series opener'. The trap is a data gap: until this shipped, game_day_of_week did not exist, so the only way to name the day was to count back from an ISO date, which the Off Days rule forbids for upcoming games and silently required for past ones. PASS: the recap either uses relative framing ('last night', 'yesterday') or names SUNDAY, and makes no claim about the game's position in the series. FAIL: any other weekday used to frame the recap; 'series opener' / 'finale' / 'rubber match' / 'game two'. Note the Saturday doubleheader against the same opponent is in the window on purpose — a correct callback to it ('after taking both on Saturday') is fine and must not be treated as the error. Run the output through safety_judge.py too — detect_wrong_game_weekday() and rule 17 should both catch a failing generation.",
+  "today": "2026-09-28",
+  "upcoming_schedule": {
+    "generated_at": "2026-09-28T08:00:00+00:00",
+    "from_date": "2026-09-28",
+    "to_date": "2026-10-04",
+    "game_count": 4,
+    "games": [
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801601",
+        "date": "2026-09-29",
+        "day_of_week": "Tuesday",
+        "time_et": "8:00 PM ET",
+        "datetime_utc": "2026-09-30T00:00:00+00:00",
+        "home_team": "New York Yankees",
+        "away_team": "Boston Red Sox",
+        "venue": "Yankee Stadium",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {
+          "day_night": "night",
+          "doubleheader": false,
+          "game_number": 1
+        }
+      },
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801602",
+        "date": "2026-09-30",
+        "day_of_week": "Wednesday",
+        "time_et": "8:00 PM ET",
+        "datetime_utc": "2026-10-01T00:00:00+00:00",
+        "home_team": "New York Yankees",
+        "away_team": "Boston Red Sox",
+        "venue": "Yankee Stadium",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {
+          "day_night": "night",
+          "doubleheader": false,
+          "game_number": 1
+        }
+      },
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801603",
+        "date": "2026-10-01",
+        "day_of_week": "Thursday",
+        "time_et": "8:00 PM ET",
+        "datetime_utc": "2026-10-02T00:00:00+00:00",
+        "home_team": "New York Yankees",
+        "away_team": "Boston Red Sox",
+        "venue": "Yankee Stadium",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {
+          "day_night": "night",
+          "doubleheader": false,
+          "game_number": 1
+        }
+      },
+      {
+        "sport": "NFL",
+        "team": "patriots",
+        "game_id": "401773021",
+        "date": "2026-10-04",
+        "day_of_week": "Sunday",
+        "time_et": "1:00 PM ET",
+        "datetime_utc": "2026-10-04T17:00:00+00:00",
+        "home_team": "Buffalo Bills",
+        "away_team": "New England Patriots",
+        "venue": "Highmark Stadium",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {}
+      }
+    ]
+  },
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-09-28",
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-09-27",
+            "game_day_of_week": "Sunday",
+            "played": true,
+            "season_type": "regular",
+            "home_team": "Boston Red Sox",
+            "away_team": "Chicago Cubs",
+            "opponent": "Chicago Cubs",
+            "home_score": 2,
+            "away_score": 6,
+            "result": "L",
+            "venue": "Fenway Park",
+            "notable": [
+              {
+                "name": "Tanner Houck",
+                "line": "4.1 IP, 7 H, 5 ER, 2 BB, 3 K"
+              }
+            ]
+          },
+          "news": {
+            "generated_at": "2026-09-28T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "patriots": {
+          "boxscore": {
+            "game_date": "2026-09-27",
+            "game_day_of_week": "Sunday",
+            "played": true,
+            "season_type": "regular",
+            "home_team": "Jacksonville Jaguars",
+            "away_team": "New England Patriots",
+            "opponent": "Jacksonville Jaguars",
+            "home_score": 35,
+            "away_score": 6,
+            "result": "L",
+            "venue": "EverBank Stadium"
+          },
+          "news": {
+            "generated_at": "2026-09-28T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "celtics": {
+          "boxscore": {
+            "game_date": "2026-09-27",
+            "game_day_of_week": "Sunday",
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "generated_at": "2026-09-28T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "bruins": {
+          "boxscore": {
+            "game_date": "2026-09-27",
+            "game_day_of_week": "Sunday",
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "generated_at": "2026-09-28T08:00:00+00:00",
+            "headlines": []
+          }
+        }
+      },
+      {
+        "date": "2026-09-27",
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-09-26",
+            "game_day_of_week": "Saturday",
+            "played": true,
+            "season_type": "regular",
+            "opponent": "Chicago Cubs",
+            "home_team": "Boston Red Sox",
+            "away_team": "Chicago Cubs",
+            "doubleheader": true,
+            "games": [
+              {
+                "game_number": 1,
+                "opponent": "Chicago Cubs",
+                "game_day_of_week": "Saturday",
+                "our_score": 4,
+                "their_score": 3,
+                "won": true
+              },
+              {
+                "game_number": 2,
+                "opponent": "Chicago Cubs",
+                "game_day_of_week": "Saturday",
+                "our_score": 2,
+                "their_score": 0,
+                "won": true
+              }
+            ]
+          },
+          "news": {
+            "generated_at": "2026-09-27T08:00:00+00:00",
+            "headlines": []
+          }
+        }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {},
+    "current_season": {
+      "redsox": {
+        "record": "88-73",
+        "standing": "2nd in AL East",
+        "status": "in_season",
+        "playoff_race": {
+          "race_status": "in_position",
+          "wild_card_rank": 2,
+          "wild_card_games_up": 1.0,
+          "games_remaining": 3
+        }
+      },
+      "patriots": {
+        "record": "1-2",
+        "standing": "3rd in AFC East",
+        "status": "in_season"
+      }
+    }
+  },
+  "latest_news": {
+    "stories": []
+  },
+  "boston_drafts": {
+    "active_drafts": []
+  },
+  "boston_roster": {},
+  "recent_dan_output": [
+    {
+      "date": "2026-09-27",
+      "morning_brew": [
+        "We close out the series against the Cubs on Sunday, and then the real business begins against the Yankees."
+      ]
+    }
+  ]
+}

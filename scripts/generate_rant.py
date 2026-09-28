@@ -989,6 +989,53 @@ def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
     return context
 
 
+def annotate_rolling_weekdays(rolling):
+    """
+    Add a "game_day_of_week" beside every "game_date" in the rolling store.
+
+    The Off Days rule already tells Dan to NAME THE DAY FROM THE DATA AND NEVER
+    FROM HIS OWN ARITHMETIC — and then points him at UPCOMING_SCHEDULE's
+    `day_of_week`, which only exists for games that have not happened yet. For a
+    game already played there was no field to copy, so the prompt silently
+    required the exact calendar arithmetic it forbids one paragraph earlier.
+
+    2026-09-28 is the bill for that: both Sunday games (Cubs at Fenway, Patriots
+    in Jacksonville) were written up as "Saturday was a tough day for Boston
+    sports fans". The box scores said 2026-09-27 and nothing said Sunday.
+
+    fetch_schedule.py fixed this on the schedule side by spelling the weekday out
+    (run #613, the "back to the Fens on Thursday night" miss). This is the same
+    fix on the results side, applied at prompt-assembly time rather than in the
+    store so it covers the six days already sitting in rolling_7day.json.
+
+    Returns a deep-ish copy; the caller's dict is never mutated. An unparseable
+    date is left exactly as it is — a date we cannot read is not a weekday we
+    can assert.
+    """
+    if not isinstance(rolling, dict):
+        return rolling
+
+    def _weekday(iso):
+        try:
+            return date.fromisoformat(str(iso)[:10]).strftime("%A")
+        except (ValueError, TypeError):
+            return None
+
+    def _walk(node):
+        if isinstance(node, list):
+            return [_walk(item) for item in node]
+        if not isinstance(node, dict):
+            return node
+        out = {k: _walk(v) for k, v in node.items()}
+        if "game_date" in out and "game_day_of_week" not in out:
+            day_name = _weekday(out["game_date"])
+            if day_name:
+                out["game_day_of_week"] = day_name
+        return out
+
+    return _walk(rolling)
+
+
 def compute_games_today(schedule, today_iso: str | None = None) -> list[dict]:
     """
     The games UPCOMING_SCHEDULE lists for TODAY, one entry per Boston team.
@@ -1195,13 +1242,27 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
     # day_of_week: "Thursday night" written on a Thursday is a today-claim, and
     # the model should never have to work out which day an ISO date falls on.
     try:
-        today_name = date.fromisoformat(today_iso).strftime("%A")
+        today_date_obj = date.fromisoformat(today_iso)
+        today_name = today_date_obj.strftime("%A")
         today_label = f"{today_iso} ({today_name})"
     except ValueError:
+        today_date_obj = None
         today_label = today_iso
     message = (
-        f"TODAY: {today_label}\n\n"
+        f"TODAY: {today_label}\n"
     )
+    # Yesterday is the coverage window's anchor — the game Dan is here to write
+    # up — so its weekday is spelled out rather than left to be counted back to.
+    # On 2026-09-28 both Sunday games were recapped as "Saturday was a tough
+    # day": the box scores said 2026-09-27 and no line said which day that was.
+    if today_date_obj is not None:
+        yesterday = today_date_obj - timedelta(days=1)
+        message += (
+            f"YESTERDAY: {yesterday.isoformat()} ({yesterday.strftime('%A')}) "
+            f"— the day whose games you are writing up. When you name the day a "
+            f"result happened, this is the day and this is its name.\n"
+        )
+    message += "\n"
     if slow_day:
         message += (
             "SLOW_DAY_MODE: TRUE\n"
@@ -1211,7 +1272,9 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
         )
     message += (
         "Here is the structured data for the last 7 days of Boston sports.\n"
-        "Use ONLY the numbers and facts in this data — never invent stats.\n\n"
+        "Use ONLY the numbers and facts in this data — never invent stats.\n"
+        "Every game carries `game_date` AND `game_day_of_week`. If you name the "
+        "day a result happened, copy that field. Never count back from a date.\n\n"
         "ROLLING_7DAY:\n"
         f"{json.dumps(rolling, indent=2)}\n\n"
     )
@@ -1647,6 +1710,9 @@ def main():
 
     # Pre-compute emotional context, coverage allocation, and slow-day detection
     emotional_context = compute_emotional_context(rolling, grudges)
+    # Weekday names attached to results BEFORE the store reaches the prompt, so
+    # Dan copies the day rather than deriving it. See annotate_rolling_weekdays().
+    rolling = annotate_rolling_weekdays(rolling)
     games_today = compute_games_today(schedule, today_iso)
     coverage_allocation = compute_coverage_allocation(
         season_overrides, season_current, rolling, games_today=games_today

@@ -452,7 +452,9 @@ python3 scripts/eval_voice.py --fixture evals/fixtures/voice_no_games.json --n 3
   phantom game shipped with 34 fixtures green (every one of them ran against a
   hardcoded empty `UPCOMING_SCHEDULE`). Declare `upcoming_schedule` in any fixture
   about what happens next; see `schedule_phantom_game.json` and
-  `gameday_patriots_sunday.json`.
+  `gameday_patriots_sunday.json`. The same applies to a fixture about WHEN something
+  happened — declare `rolling_7day` game dates whose weekdays are checkable; see
+  `weekday_result_attribution.json`.
 
 **Taking action on eval results** — all persona changes go in `prompts/boston_dan_system.txt`:
 - Dan cites wrong stats → tighten Stats Discipline section
@@ -461,6 +463,8 @@ python3 scripts/eval_voice.py --fixture evals/fixtures/voice_no_games.json --n 3
 - Dan repeats catchphrases → add "vary your expressions" rule
 - Dan asserts a game that isn't scheduled → check the Off Days section, and confirm the fixture actually declares `upcoming_schedule`
 - Dan ignores a team that plays today → check the Game Day Is Mandatory section, and confirm the fixture declares an `upcoming_schedule` with a game on its `today` date
+- Dan names the wrong day for a game that was played → check Naming The Day A Result Happened, and confirm `game_day_of_week` is reaching the prompt (`annotate_rolling_weekdays()`)
+- Dan asserts a series position ("the opener", "the finale") → check Series Position Is A Factual Claim; `rolling_7day` has no series index, so the only safe answer is qualitative
 - Safety judge FAILs → read flags, trace to output line, tighten persona AND judge rubric
 
 **When a bug reaches the site and no eval caught it**, work the question in this order
@@ -870,7 +874,8 @@ Written alongside each post archive file by `publish.py`. Captures the full pipe
     "repetition_check": "pass", // "pass" | "fail" — detect_repetition + detect_structural_repetition
     "schedule_check": "pass",   // "pass" | "fail" — detect_phantom_game (rule 15)
     "gameday_check": "pass",    // "pass" | "fail" — detect_gameday_omission (rule 16)
-    "flagged_phrases": []       // every deterministic pre-pass flag, all three checks merged
+    "weekday_check": "pass",    // "pass" | "fail" — detect_wrong_game_weekday (rule 17)
+    "flagged_phrases": []       // every deterministic pre-pass flag, all four checks merged
   },
   "attempts": [
     {
@@ -878,7 +883,7 @@ Written alongside each post archive file by `publish.py`. Captures the full pipe
       "verdict": "PASS",
       "severity": null,
       "flags": [],              // merged flags from LLM judge + pre-pass.
-                                // Each is {"rule": <1-16, 0 = unclassified>, "detail": "..."}.
+                                // Each is {"rule": <1-17, 0 = unclassified>, "detail": "..."}.
                                 // Files written before 2026-09-11 hold plain strings;
                                 // every reader goes through safety_judge.flag_rule()/
                                 // flag_text(), which accept both shapes.
@@ -1029,7 +1034,8 @@ The safety judge (`safety_judge.py`) audits both `morning_brew` and `news_digest
 **Flags are structured.** The judge returns each flag as
 `{"rule": <number>, "detail": "<one sentence>"}`, enforced by `JUDGE_RESPONSE_SCHEMA`,
 and the deterministic pre-passes attach their own rule number at the source (repetition →
-10, coverage window → 12, phantom game → 15, game-day omission → 16). Nothing downstream guesses the rule by
+10, coverage window → 12, phantom game → 15, game-day omission → 16, wrong game day
+→ 17). Nothing downstream guesses the rule by
 substring-matching prose any more — that is what let a mislabelled flag corrupt the evals
 dashboard, the 5-day aggregate and the correction prompt at once. Read flags through
 `flag_rule()` / `flag_text()` / `flag_line()`; they also accept the plain-string flags in
@@ -1058,6 +1064,23 @@ only ever asks about games already PLAYED — and on the morning of a Patriots g
 Patriots have not played. An NFL team is absent from `rolling_7day` six days out of
 seven, so every "did we cover this team" check that reads the rolling store is blind to
 football on exactly the day it matters most.
+
+**Rule 17 is rule 15 pointed backwards.** Rule 15 catches a wrong or invented day for a
+game still to come; rule 17 catches a wrong day for one already played (2026-09-28:
+both of Sunday's games opened the brew as "Saturday was a tough day"). It also covers an
+unsupported claim about a game's POSITION IN A SERIES — "the opener", "the finale", "the
+rubber match" — because `rolling_7day` carries no series index and the same post called a
+Sunday finale "the series opener".
+
+**Weekdays are DATA, in both directions, and they have to exist before they can be
+copied.** `fetch_schedule.py` writes `day_of_week` on every upcoming game;
+`generate_rant.annotate_rolling_weekdays()` writes `game_day_of_week` beside every
+`game_date` in the rolling store; `build_user_message()` prints a `TODAY` and a
+`YESTERDAY` line with both weekdays spelled out. The Off Days rule's "NAME THE DAY FROM
+THE DATA, NEVER FROM YOUR OWN ARITHMETIC" is only enforceable where such a field exists —
+for two weeks it existed only for future games, so the rule forbade arithmetic in one
+direction and silently required it in the other. If you add a date to any payload Dan
+reads, add its weekday next to it.
 
 **Severity logic:**
 - `low` → borderline phrase; retry once with tighter prompt
@@ -1088,7 +1111,7 @@ football on exactly the day it matters most.
 | `GRUDGE_BOOK_PATH` | `generate_rant.py` | Default: `data/grudge_book.json`; override in evals |
 | `ROSTER_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/boston_roster.json`; override in evals to point at fixture-specific roster |
 | `ROSTER_PATH` (see also) | `fetch_roster.py` | Where the roster fetcher writes. Its output carries `fetch_ok` per team — `false` means the endpoint was unreachable, which judge rule 11 treats as "roster unknown", NOT "player is off the team" |
-| `SCHEDULE_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/upcoming_schedule.json`; the only source that says whether a team plays TODAY. Backs judge rules 15 and 16, `detect_phantom_game()`, `detect_gameday_omission()` and the prompt's `GAMES_TODAY` block (`compute_games_today()`); override in evals via a fixture's `upcoming_schedule` block |
+| `SCHEDULE_PATH` | `generate_rant.py`, `safety_judge.py` | Default: `data/upcoming_schedule.json`; the only source that says whether a team plays TODAY. Backs judge rules 15, 16 and 17, `detect_phantom_game()`, `detect_gameday_omission()`, `detect_wrong_game_weekday()` and the prompt's `GAMES_TODAY` block (`compute_games_today()`); override in evals via a fixture's `upcoming_schedule` block |
 | `DAN_STORIES_PATH` | `generate_rant.py` | Default: `data/dan_stories.json`; recurring fictional characters and comparison templates |
 | `STORY_SEEDS_PATH` | `generate_rant.py` | Default: `data/story_seeds.json`; historical-anchor story seeds for slow news days |
 | `TODAY_OVERRIDE` | `generate_rant.py` | Pin "today" to a specific date (YYYY-MM-DD) for freshness-sensitive eval fixtures. Production leaves unset. |
