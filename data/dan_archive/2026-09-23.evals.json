@@ -1,10 +1,10 @@
 {
-  "date": "2026-09-16",
-  "generated_at": "2026-09-16T13:14:31.618518+00:00",
+  "date": "2026-09-23",
+  "generated_at": "2026-09-23T18:44:17.536438+00:00",
   "outcome": "retry",
   "winning_attempt": 2,
   "total_attempts": 2,
-  "generation_seconds": 65.2,
+  "generation_seconds": 42.5,
   "pre_pass": {
     "repetition_check": "pass",
     "schedule_check": "pass",
@@ -18,17 +18,17 @@
       "flags": [
         {
           "rule": 15,
-          "detail": "The output claims 'Last night was a real kick in the teeth, and not just because I had to stay up past my bedtime on a Tuesday' for a game that occurred on Monday, 2026-09-15."
+          "detail": "The headline claims a 'Cleveland thriller' occurred, but the game was at Fenway Park, not Cleveland."
         }
       ],
-      "duration_seconds": 34.2
+      "duration_seconds": 2.8
     },
     {
       "attempt": 2,
       "verdict": "PASS",
       "severity": "low",
       "flags": [],
-      "duration_seconds": 3.9
+      "duration_seconds": 3.1
     }
   ]
 }
