@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-09-24",
     "2026-09-25",
     "2026-09-26",
     "2026-09-27",
-    "2026-09-28"
+    "2026-09-28",
+    "2026-09-29"
   ],
   "rules": [
     {
@@ -81,12 +81,27 @@
       "number": 15,
       "title": "Phantom scheduled game",
       "summary": "Claims a game today that the upcoming schedule does not list"
+    },
+    {
+      "number": 16,
+      "title": "Game-day omission",
+      "summary": "A team plays today and the brew never covers the matchup"
+    },
+    {
+      "number": 17,
+      "title": "Wrong day named for a result",
+      "summary": "Names the wrong weekday for a game already played"
+    },
+    {
+      "number": 18,
+      "title": "Wrong place named for a game",
+      "summary": "Puts a game somewhere it was not played"
     }
   ],
   "summary_5day": {
-    "fresh": 2,
+    "fresh": 1,
     "retry": 3,
-    "fallback": 0,
+    "fallback": 1,
     "stale": 0,
     "most_flagged_rules": [
       {

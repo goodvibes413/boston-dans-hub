@@ -1,9 +1,23 @@
 {
+  "date": "2026-09-29",
+  "generated_at": "2026-09-28T19:56:36.670341+00:00",
   "headline": "Red Sox stumble against Chicago as Patriots suffer a brutal loss",
   "morning_brew": [
     "Saturday was a tough day for Boston sports fans across the board. The Red Sox struggled to generate any offense at Fenway, dropping the series opener to the Cubs after a rough start from Tanner Houck. We just couldn't find the gaps when we needed them, and watching those final innings felt like a slow walk through molasses. After the highs of our recent play, taking a loss like this is a frustrating reminder that we have work to do before the postseason fun begins.",
     "The news from the gridiron was even worse, as the Patriots were completely dismantled by the Jaguars in a result that I'm still trying to process. It was a long afternoon of missed assignments and failed drives, and watching that lead balloon in Jacksonville was honestly sickening. I'm not gonna sugarcoat it because we all saw what happened out there, and that kind of performance isn't just a bad day at the office, it's a major wake-up call for the entire roster.",
     "My neighbor Rick is already deep into his conspiracy theories about the officiating, and honestly, I don't have the heart to tell him that we just flat-out didn't play well enough. We've got a massive series against the Yankees starting Tuesday at Yankee Stadium, and we need to turn the page immediately. I'm hoping for a clean slate when we hit the road, because if we show up to the Bronx playing like we did this weekend, it's gonna be a long couple of nights."
+  ],
+  "news_digest": [
+    {
+      "headline": "Are the Patriots using Drake Maye the wrong way?",
+      "url": "https://www.espn.com/video/clip/_/id/50051609/are-patriots-using-drake-maye-wrong-way",
+      "dans_take": "Everyone is asking this after yesterday, and the tape doesn't exactly make me feel any better about the game plan."
+    },
+    {
+      "headline": "MLB Wild Card Round odds: The favorites for every series",
+      "url": "https://www.espn.com/espn/betting/story/_/id/50008164/2026-mlb-playoffs-wild-card-betting-odds-spreads",
+      "dans_take": "I am trying to ignore the math and just focus on us getting back to winning baseball before October arrives."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Drake Maye",
       "trend": "Completed fourteen of twenty-five passing attempts for one hundred ninety-nine yards and two interceptions.",
       "dans_take": "It was a rough afternoon for the offense, and he just couldn't get anything sustained against that Jaguars front."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Are the Patriots using Drake Maye the wrong way?",
-      "url": "https://www.espn.com/video/clip/_/id/50051609/are-patriots-using-drake-maye-wrong-way",
-      "dans_take": "Everyone is asking this after yesterday, and the tape doesn't exactly make me feel any better about the game plan."
-    },
-    {
-      "headline": "MLB Wild Card Round odds: The favorites for every series",
-      "url": "https://www.espn.com/espn/betting/story/_/id/50008164/2026-mlb-playoffs-wild-card-betting-odds-spreads",
-      "dans_take": "I am trying to ignore the math and just focus on us getting back to winning baseball before October arrives."
     }
   ],
   "box_scores": {
@@ -105,28 +107,6 @@
       "time_et": "1:00 PM ET"
     }
   ],
-  "_timings": [
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 7.22,
-      "prompt_tokens": 39214,
-      "output_tokens": 1379,
-      "thinking_tokens": null
-    }
-  ],
-  "generated_at": "2026-09-28T19:56:36.670341+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    {
-      "rule": 10,
-      "detail": "repetition: formulaic paragraph opener \"it is a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    }
-  ],
-  "date": "2026-09-29",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
   "playoff_race": {
     "redsox": {
       "phase": "stretch_run",
@@ -142,5 +122,6 @@
       "record": "87-75"
     }
   },
-  "_stale_age_hours": 18.8
+  "_stale": null,
+  "_fallback": null
 }
