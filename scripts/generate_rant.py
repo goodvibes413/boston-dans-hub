@@ -989,22 +989,219 @@ def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
     return context
 
 
+# Where each Boston team plays its home games. Used to turn the boxscores' bare
+# `"home": true` boolean into something Dan can copy instead of infer. There is
+# deliberately no entry for anybody else's park: a road game's venue is only
+# named when UPCOMING_SCHEDULE supplies it, never guessed from the opponent.
+# fetch_schedule.py writes these exact strings as home_team/away_team, so which
+# side is Boston is a lookup rather than a guess.
+BOSTON_FULL_NAMES = {
+    "redsox":   "Boston Red Sox",
+    "celtics":  "Boston Celtics",
+    "bruins":   "Boston Bruins",
+    "patriots": "New England Patriots",
+}
+
+HOME_VENUES = {
+    "redsox":   "Fenway Park (Boston)",
+    "celtics":  "TD Garden (Boston)",
+    "bruins":   "TD Garden (Boston)",
+    "patriots": "Gillette Stadium (Foxborough)",
+}
+
+
+def annotate_rolling_venues(rolling):
+    """
+    Turn each boxscore's `"home"` boolean into a plain-English `venue_note`.
+
+    Every fetcher writes `"home": true/false` on its boxscore and NONE of them
+    writes a venue. So "we were at Fenway" was a two-step inference — read the
+    boolean, remember which park this team plays in — and "we were on the road"
+    named no place at all.
+
+    2026-09-26 is the bill: the brew opened "What a hell of a day at Fenway. We
+    took both ends of the doubleheader from the Cubs" and closed, three
+    paragraphs later, with "We close out the series against the Cubs on Sunday in
+    Florida... Let us hope the flight down to St. Petersburg is smooth." Both
+    about the same home series. The Rays series that really was in St. Petersburg
+    had ended a week earlier and was still sitting in the rolling window.
+
+    A home game gets its actual park. A road game says "on the road at <opponent>"
+    and NOTHING about the venue, because the boxscore does not carry one and the
+    opponent's park is not ours to invent — that is the mistake this exists to
+    stop, not a gap to paper over.
+    """
+    if not isinstance(rolling, dict):
+        return rolling
+
+    def _note(team_key, box):
+        if "home" not in box:
+            return None
+        opponent = str(box.get("opponent") or "").strip()
+        if box.get("home"):
+            venue = HOME_VENUES.get(team_key)
+            where = f"HOME game at {venue}" if venue else "HOME game"
+            return f"{where}{f' vs the {opponent}' if opponent else ''}"
+        at_whom = f" at the {opponent}" if opponent else ""
+        return (f"ROAD game{at_whom} — the data does not name the venue, "
+                f"so do not name one")
+
+    days = rolling.get("days")
+    if not isinstance(days, list):
+        return rolling
+    out = dict(rolling)
+    new_days = []
+    for day_entry in days:
+        if not isinstance(day_entry, dict):
+            new_days.append(day_entry)
+            continue
+        day_out = dict(day_entry)
+        for team_key in TEAM_KEYS:
+            team_data = day_out.get(team_key)
+            if not isinstance(team_data, dict):
+                continue
+            box = team_data.get("boxscore")
+            if not isinstance(box, dict) or "venue_note" in box:
+                continue
+            note = _note(team_key, box)
+            if note:
+                team_out = dict(team_data)
+                team_out["boxscore"] = {**box, "venue_note": note}
+                day_out[team_key] = team_out
+        new_days.append(day_out)
+    out["days"] = new_days
+    return out
+
+
+def annotate_rolling_weekdays(rolling):
+    """
+    Add a "game_day_of_week" beside every "game_date" in the rolling store.
+
+    The Off Days rule already tells Dan to NAME THE DAY FROM THE DATA AND NEVER
+    FROM HIS OWN ARITHMETIC — and then points him at UPCOMING_SCHEDULE's
+    `day_of_week`, which only exists for games that have not happened yet. For a
+    game already played there was no field to copy, so the prompt silently
+    required the exact calendar arithmetic it forbids one paragraph earlier.
+
+    2026-09-28 is the bill for that: both Sunday games (Cubs at Fenway, Patriots
+    in Jacksonville) were written up as "Saturday was a tough day for Boston
+    sports fans". The box scores said 2026-09-27 and nothing said Sunday.
+
+    fetch_schedule.py fixed this on the schedule side by spelling the weekday out
+    (run #613, the "back to the Fens on Thursday night" miss). This is the same
+    fix on the results side, applied at prompt-assembly time rather than in the
+    store so it covers the six days already sitting in rolling_7day.json.
+
+    Returns a deep-ish copy; the caller's dict is never mutated. An unparseable
+    date is left exactly as it is — a date we cannot read is not a weekday we
+    can assert.
+    """
+    if not isinstance(rolling, dict):
+        return rolling
+
+    def _weekday(iso):
+        try:
+            return date.fromisoformat(str(iso)[:10]).strftime("%A")
+        except (ValueError, TypeError):
+            return None
+
+    def _walk(node):
+        if isinstance(node, list):
+            return [_walk(item) for item in node]
+        if not isinstance(node, dict):
+            return node
+        out = {k: _walk(v) for k, v in node.items()}
+        if "game_date" in out and "game_day_of_week" not in out:
+            day_name = _weekday(out["game_date"])
+            if day_name:
+                out["game_day_of_week"] = day_name
+        return out
+
+    return _walk(rolling)
+
+
+def compute_games_today(schedule, today_iso: str | None = None) -> list[dict]:
+    """
+    The games UPCOMING_SCHEDULE lists for TODAY, one entry per Boston team.
+
+    UPCOMING_SCHEDULE already carries them, but it carries the next several days
+    too, and "which of these is today" is a lookup the model has to perform
+    inside a ~30KB payload before it can even decide who leads the brew. On
+    2026-09-20 it did not: Steelers-Patriots kicked off at 1:00 and the brew was
+    three Red Sox paragraphs that never mentioned football. The data was there.
+    The prominence was not.
+
+    Returns [{team, sport, matchup, time_et, day_of_week, date}], schedule order.
+    """
+    if today_iso is None:
+        today_iso = as_of_iso()
+
+    if isinstance(schedule, list):
+        games = schedule
+    elif isinstance(schedule, dict):
+        games = schedule.get("games", []) or []
+    else:
+        return []
+
+    today_games = []
+    for game in games:
+        if not isinstance(game, dict):
+            continue
+        if not str(game.get("date", "")).startswith(today_iso):
+            continue
+        home = game.get("home_team", "")
+        away = game.get("away_team", "")
+        matchup = f"{away} at {home}" if away and home else (home or away)
+        team_key = game.get("team", "")
+        boston = BOSTON_FULL_NAMES.get(team_key)
+        is_home = bool(boston) and str(home).strip() == boston
+        today_games.append({
+            "team":        team_key,
+            "sport":       game.get("sport", ""),
+            "matchup":     matchup,
+            "time_et":     game.get("time_et", "TBD"),
+            "day_of_week": game.get("day_of_week", ""),
+            "date":        str(game.get("date", ""))[:10],
+            # Spelled out for the same reason day_of_week is: home_team/away_team
+            # are both here and which one is us is an inference. On 2026-09-26 a
+            # home series against the Cubs was written up as a trip to Florida.
+            "home_or_away": "home" if is_home else "away",
+            "venue":        game.get("venue", "") or "not in the data",
+        })
+    return today_games
+
+
 def compute_coverage_allocation(
     season_overrides: dict | None,
     season_current: dict | None,
     rolling: dict | None,
+    games_today: list[dict] | None = None,
 ) -> dict:
     """
     Classify each Boston team as PRIMARY, SECONDARY, or MINIMAL based on
     season status, recent game activity, and news relevance.
 
-    Returns {"primary": [...], "secondary": [...], "minimal": [...]}.
+    A team playing TODAY is PRIMARY, whatever the rest of its signals say. An
+    NFL team plays once a week and will have nothing in rolling_7day on six of
+    those seven days, so "played recently" is the wrong question to ask about
+    the Patriots on a Sunday — the question is whether there is a game, and on
+    game day there is.
+
+    Elimination still wins: a team that has been eliminated is MINIMAL even on a
+    day it plays, because SEASON_OVERRIDES is authoritative by design.
+
+    Returns {"primary": [...], "secondary": [...], "minimal": [...],
+             "playing_today": [...]}.
     """
     primary = []
     secondary = []
     minimal = []
 
     eliminations = (season_overrides or {}).get("eliminations", {})
+    # dict.fromkeys, not a set: a doubleheader puts a team in GAMES_TODAY twice
+    # and it is still one team to cover, in schedule order.
+    playing_today = list(dict.fromkeys(
+        g.get("team") for g in (games_today or []) if g.get("team")))
 
     for team_key in TEAM_KEYS:
         is_eliminated = team_key in eliminations
@@ -1022,12 +1219,22 @@ def compute_coverage_allocation(
 
         if is_eliminated:
             minimal.append(team_key)
+        elif team_key in playing_today:
+            primary.append(team_key)
         elif status == "offseason" and not played_recently:
             secondary.append(team_key)
         else:
             primary.append(team_key)
 
-    return {"primary": primary, "secondary": secondary, "minimal": minimal}
+    return {
+        "primary": primary,
+        "secondary": secondary,
+        "minimal": minimal,
+        # Only the teams that are actually Dan's to cover today. An eliminated
+        # team playing out the string does not get promoted by its own schedule.
+        "playing_today": [t for t in playing_today
+                          if t in primary and t not in eliminations],
+    }
 
 
 def detect_slow_day(rolling: dict | None, news: dict | list | None, schedule: dict | list | None, today_iso: str | None = None) -> bool:
@@ -1119,7 +1326,7 @@ def _build_overrides_block(season_overrides: dict, today_iso: str | None = None)
     return "\n".join(lines).strip()
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None) -> str:
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None, games_today=None) -> str:
     if today_iso is None:
         today_iso = as_of_iso()
 
@@ -1127,13 +1334,27 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
     # day_of_week: "Thursday night" written on a Thursday is a today-claim, and
     # the model should never have to work out which day an ISO date falls on.
     try:
-        today_name = date.fromisoformat(today_iso).strftime("%A")
+        today_date_obj = date.fromisoformat(today_iso)
+        today_name = today_date_obj.strftime("%A")
         today_label = f"{today_iso} ({today_name})"
     except ValueError:
+        today_date_obj = None
         today_label = today_iso
     message = (
-        f"TODAY: {today_label}\n\n"
+        f"TODAY: {today_label}\n"
     )
+    # Yesterday is the coverage window's anchor — the game Dan is here to write
+    # up — so its weekday is spelled out rather than left to be counted back to.
+    # On 2026-09-28 both Sunday games were recapped as "Saturday was a tough
+    # day": the box scores said 2026-09-27 and no line said which day that was.
+    if today_date_obj is not None:
+        yesterday = today_date_obj - timedelta(days=1)
+        message += (
+            f"YESTERDAY: {yesterday.isoformat()} ({yesterday.strftime('%A')}) "
+            f"— the day whose games you are writing up. When you name the day a "
+            f"result happened, this is the day and this is its name.\n"
+        )
+    message += "\n"
     if slow_day:
         message += (
             "SLOW_DAY_MODE: TRUE\n"
@@ -1143,7 +1364,9 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
         )
     message += (
         "Here is the structured data for the last 7 days of Boston sports.\n"
-        "Use ONLY the numbers and facts in this data — never invent stats.\n\n"
+        "Use ONLY the numbers and facts in this data — never invent stats.\n"
+        "Every game carries `game_date` AND `game_day_of_week`. If you name the "
+        "day a result happened, copy that field. Never count back from a date.\n\n"
         "ROLLING_7DAY:\n"
         f"{json.dumps(rolling, indent=2)}\n\n"
     )
@@ -1156,6 +1379,23 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
     message += (
         "UPCOMING_SCHEDULE:\n"
         f"{json.dumps(schedule, indent=2)}\n\n"
+    )
+    # Hoisted out of UPCOMING_SCHEDULE rather than left for the model to find.
+    # See compute_games_today() for the Patriots game that got buried there.
+    if games_today:
+        message += (
+            "GAMES_TODAY (Boston teams playing TODAY — every one of these MUST get "
+            "real estate in morning_brew, as a LOOK FORWARD with NO result. The game "
+            "has not been played when this posts. `home_or_away` and `venue` say "
+            "WHERE: copy them, never infer the city from the matchup):\n"
+            f"{json.dumps(games_today, indent=2)}\n\n"
+        )
+    else:
+        message += (
+            "GAMES_TODAY: none. No Boston team plays today — do not write "
+            "\"tonight\", \"today\", or \"first pitch\" about any of them.\n\n"
+        )
+    message += (
         "LATEST_NEWS:\n"
         f"{json.dumps(news, indent=2)}\n\n"
     )
@@ -1222,11 +1462,14 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
         primary = ", ".join(coverage_allocation.get("primary", [])) or "none"
         secondary = ", ".join(coverage_allocation.get("secondary", [])) or "none"
         minimal = ", ".join(coverage_allocation.get("minimal", [])) or "none"
+        playing = ", ".join(coverage_allocation.get("playing_today", [])) or "none"
         message += (
             "COVERAGE_ALLOCATION (follow these priorities for morning_brew airtime):\n"
             f"- PRIMARY (bulk of morning_brew): {primary}\n"
             f"- SECONDARY (1-2 sentences if news warrants): {secondary}\n"
-            f"- MINIMAL (skip unless breaking news in LATEST_NEWS): {minimal}\n\n"
+            f"- MINIMAL (skip unless breaking news in LATEST_NEWS): {minimal}\n"
+            f"- PLAYING TODAY (each one needs its own beat in morning_brew — a "
+            f"forward look, never a result): {playing}\n\n"
         )
     message += (
         "SEASON_MEMORY:\n"
@@ -1560,11 +1803,18 @@ def main():
 
     # Pre-compute emotional context, coverage allocation, and slow-day detection
     emotional_context = compute_emotional_context(rolling, grudges)
-    coverage_allocation = compute_coverage_allocation(season_overrides, season_current, rolling)
+    # Weekday names attached to results BEFORE the store reaches the prompt, so
+    # Dan copies the day rather than deriving it. See annotate_rolling_weekdays().
+    rolling = annotate_rolling_venues(annotate_rolling_weekdays(rolling))
+    games_today = compute_games_today(schedule, today_iso)
+    coverage_allocation = compute_coverage_allocation(
+        season_overrides, season_current, rolling, games_today=games_today
+    )
     slow_day = detect_slow_day(rolling, news, schedule, today_iso=today_iso)
     todays_seeds = select_daily_seeds(seeds_data, today_iso) if slow_day else []
     print(f"  emotional:      {len(emotional_context)} team(s) with context")
     print(f"  coverage:       primary={coverage_allocation['primary']}, minimal={coverage_allocation['minimal']}")
+    print(f"  games today:    {[g['team'] for g in games_today] or 'none'}")
     print(f"  slow_day:       {slow_day}")
 
     user_message = build_user_message(
@@ -1582,6 +1832,7 @@ def main():
         slow_day=slow_day,
         stories=todays_stories,
         story_seeds=todays_seeds,
+        games_today=games_today,
     )
 
     # DRY_RUN=1 prints the assembled prompt and exits before any LLM call.

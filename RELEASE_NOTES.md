@@ -5,6 +5,234 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-29 — One home series, two states: where the game was played is data too
+
+Spotted while fixing the weekday bug, in the 2026-09-26 brew. Paragraph 1: *"What a hell
+of a day at Fenway. We took both ends of the doubleheader from the Cubs."* Paragraph 3,
+same post: *"We close out the series against the Cubs on Sunday in Florida… Let us hope
+the flight down to St. Petersburg is smooth."*
+
+One home series against Chicago, placed in two different states inside one post. The
+schedule said `home_team: "Boston Red Sox"` for all three games. St. Petersburg came from
+the **Rays** series, which had ended a week earlier and was still sitting in the rolling
+7-day window.
+
+### Third instance of one root cause
+
+Every fetcher writes `"home": true/false` on its boxscore. **None of them writes a venue.**
+So "we were at Fenway" was a two-step inference — read the boolean, remember which park
+this team plays in — and "we were on the road" named no place at all, leaving the nearest
+plausible city in the context window to fill the gap. The persona prompt had no venue rule
+whatsoever; the only mention of a ballpark was the Yawkey Way aside.
+
+That is the same shape as the two bugs before it, and the pattern is now worth naming
+outright, which `AGENTS.md` does:
+
+| Date | What Dan was left to derive | What should have been stated |
+|---|---|---|
+| 2026-09-10 | is there a game today? | the schedule, actually read |
+| 2026-09-20 | which of these games is today? | `GAMES_TODAY` |
+| 2026-09-28 | what weekday is `2026-09-27`? | `game_day_of_week`, `YESTERDAY:` |
+| 2026-09-26 | where does `"home": true` put us? | `venue_note`, `home_or_away` |
+
+**If a fact needs a second step to be useful, take the second step in Python.** A
+derivation the model performs correctly nine days out of ten is a bug with a ten-day fuse,
+and prompt text does not fix it: 2026-09-20 was already covered explicitly by the prompt
+and shipped anyway.
+
+### What shipped
+
+- **`annotate_rolling_venues()`** turns the boolean into prose: `"HOME game at Fenway Park
+  (Boston) vs the Chicago Cubs"`, or `"ROAD game at the Jacksonville Jaguars — the data
+  does not name the venue, so do not name one"`.
+- **`GAMES_TODAY` gained `home_or_away` and `venue`**, and says `"not in the data"` rather
+  than leaving the field blank for something to fill.
+- **Rule 18 (wrong place named for a game)** and `detect_venue_contradiction()`.
+- **A persona section, Where The Game Was Played Is Data**, which names the actual failure
+  mode: a venue from an older series in the window bleeding onto the current opponent.
+
+### A road game's venue is not ours to invent
+
+The deliberate choice here: on a road game the note refuses to name a park, and the prompt
+says so twice. `HOME_VENUES` has no entry for anybody else's stadium. Guessing
+"EverBank Stadium" for a Patriots game in Jacksonville would usually be right, and that is
+exactly the habit that produced St. Petersburg. `UPCOMING_SCHEDULE`'s `venue` field is the
+only license for a specific park.
+
+### Verification
+
+`detect_venue_contradiction()` is anchored on a game's `home` boolean, requires the
+paragraph to name that game's opponent, reads only explicit travel phrases ("the flight
+down to", "on the road") rather than bare prepositions, and takes the forward-marker veto.
+Bare prepositions were never an option: "the Chicago Cubs" and "Tampa Bay lost again"
+would otherwise light up every paragraph in the archive.
+
+Adversarial probe — all ten archived brews from 2026-09-19 onward, **forced to `home:
+true`**, the worst case for travel-phrase misfires: **one flag, on 2026-09-26.** Nine
+clean. The detector also passes the 2026-09-28 post both ways (home loss to the Cubs
+written at Fenway, road loss in Jacksonville with no Boston park named).
+
+### Also fixed here
+
+Two `AGENTS.md` edits in the rule-17 commit used `str.replace` without an assert and
+silently no-op'd, so the rubric sentence never learned about rules 17 and 18. Every doc
+edit in this change asserts its target first. A silent no-op in a docs update is how a
+source-of-truth file drifts.
+
+---
+
+## 2026-09-28 — "Saturday was a tough day" on a Monday, about Sunday's games
+
+Both of yesterday's games — Cubs at Fenway, Patriots in Jacksonville, `game_date`
+2026-09-27, a Sunday — opened the brew as **"Saturday was a tough day for Boston sports
+fans across the board."** Two days off, first sentence, about the games the post exists
+to cover. The same paragraph called that Sunday game "the series opener" when it closed
+out a three-game set — which the *previous day's own brew* had said correctly ("we close
+out the series against the Cubs on Sunday").
+
+### The prompt forbade the arithmetic and then required it
+
+The Off Days section has said this for weeks:
+
+> NAME THE DAY FROM THE DATA, NEVER FROM YOUR OWN ARITHMETIC. Every UPCOMING_SCHEDULE
+> entry carries a `day_of_week` field… Do not work out which day an ISO date falls on.
+
+`day_of_week` existed in exactly one place in the codebase: `fetch_schedule.py`, on games
+that **have not happened yet**. Nothing on the results side carried it. A boxscore's
+`game_date` is a bare `2026-09-27` and the rolling store copies it verbatim.
+
+So for a game already played there was no field to copy, and the only way to name the day
+was the arithmetic the rule forbids one paragraph earlier. The rule was unenforceable in
+the direction that matters most, because the brew's whole job is yesterday.
+
+This is the second bill for the same gap. Run #613 wrote "back to the Fens on Thursday
+night" on a Thursday about a Friday game; that was fixed by spelling `day_of_week` into
+`fetch_schedule.py` — the schedule side only.
+
+### What shipped
+
+- **`annotate_rolling_weekdays()`** puts `game_day_of_week` beside every `game_date` in
+  the rolling store, at prompt-assembly time rather than in `update_store.py`, so it
+  covers the six days already sitting in `rolling_7day.json` instead of waiting a week
+  for new data to age in. Never mutates the caller's dict; an unparseable date is left
+  alone, because a date we cannot read is not a weekday we can assert.
+- **A `YESTERDAY:` line** beside `TODAY:`, naming yesterday's date and weekday outright.
+  Yesterday is the coverage window's anchor; it should not be something to count back to.
+- **Rule 17 (wrong day named for a result)** and `detect_wrong_game_weekday()`.
+- **Two persona sections**: Naming The Day A Result Happened, and Series Position Is A
+  Factual Claim. The Off Days arithmetic rule now says "in either direction" and names
+  both fields.
+
+### Why the deterministic check only reads a sentence-leading weekday
+
+The first attempt anchored on "a paragraph that names yesterday's opponent and a weekday
+that isn't yesterday's." It found nothing — because the Cubs **did** play Saturday, in a
+doubleheader, so "Saturday" is a day that opponent was genuinely played on. During any
+three-game series every weekday in range is legitimately available, and "we dropped it
+after taking both on Saturday" inside a Sunday recap is *correct*. A check that flagged
+that would fire on good posts.
+
+So the deterministic half takes only the shape it can be certain about: a weekday that
+**opens a sentence** — "Saturday was a tough day", "On Friday the bats went quiet" —
+which is the construction that frames a whole recap on a day. Mid-sentence weekdays go to
+rule 17 in the LLM rubric, which can weigh the sentence. Gates: yesterday's weekday is
+correct, today's belongs to rule 15, an upcoming game's weekday is a forward reference, a
+forward marker vetoes, and a year or "back in" means it is a slow-day story about another
+decade.
+
+Backtested against nine days of archived posts (2026-09-20 … 2026-09-28): **one flag, on
+the one post that is wrong.**
+
+### The pattern, now three for three
+
+| Date | Miss | Direction |
+|---|---|---|
+| 2026-09-10 | asserted a game the schedule didn't list | forward |
+| 2026-09-20 | ignored a game the schedule did list | forward |
+| 2026-09-28 | named the wrong day for a game that was played | backward |
+
+Every one is `upcoming_schedule.json` or the rolling store being *present and correct*
+while the model was left to derive something from it. The lesson is narrow and repeatable:
+**if you put a date in front of Dan, put its weekday next to it.** Derivation is where
+these bugs live.
+
+---
+
+## 2026-09-20 — Game day: the Patriots played at one o'clock and the brew never noticed
+
+Steelers at Patriots, 1:00 PM ET, Week 3, and the morning brew that went out that day was
+three Red Sox paragraphs. Bello's eight innings, Whitlock's ninth, the wild-card math, and
+then a close on salvaging the series in Tampa. You could read the whole thing and not know
+football season had started.
+
+Nothing was broken. `upcoming_schedule.json` had the game, `UPCOMING_SCHEDULE` carried it
+into the prompt, and `AGENTS.md` and the persona prompt had both said for months that the
+Patriots lead on a Patriots Sunday. The evals passed: `repetition_check` pass,
+`schedule_check` pass, judge PASS on the first attempt, severity low, zero flags.
+
+### Why every check missed it
+
+Because **every check was watching for something written, and this was something absent.**
+
+- **Rule 12 (game coverage gap)** reads `rolling_7day` for games with yesterday's date
+  where `played=true`. An NFL team plays once a week, so the Patriots are absent from that
+  store on six mornings out of seven — including, decisively, the morning of their own
+  game. The one check aimed at "a team went uncovered" is structurally blind to football
+  on the only day football matters.
+- **Rule 15 / `detect_phantom_game()`** is forward-looking, but it catches the opposite
+  error: a game Dan invented. A brew that says nothing at all about the Patriots asserts
+  nothing false about them, so it sails through.
+- **`check_coverage_window()`** in `publish.py` reads the fetcher box scores — which, same
+  as `rolling_7day`, have nothing for a game that has not kicked off.
+- **`COVERAGE_ALLOCATION`** did list `patriots` as PRIMARY. It just said so as a bare team
+  name in a line of four, in a ~30KB payload, with no indication that one of those teams
+  was taking the field in three hours.
+
+### What shipped
+
+**`GAMES_TODAY`, a new prompt block** (`compute_games_today()` in `generate_rant.py`).
+Today's games, lifted out of `UPCOMING_SCHEDULE` and stated on their own with matchup,
+start time and weekday. The data was always there; the prominence was not, and "find the
+entries whose date equals TODAY" is a lookup we were asking the model to perform inside a
+wall of JSON before it could even decide the shape of the post. On a quiet day the block
+says `none`, which is also worth saying out loud — it is the Off Days rule's premise.
+
+**A team playing today is PRIMARY**, whatever `rolling_7day` says about it. "Played
+recently" is the wrong question to ask about the Patriots on a Sunday; the right one is
+whether there is a game. Elimination still outranks it — `SEASON_OVERRIDES` is
+authoritative by design, and a team playing out the string does not get promoted by its
+own schedule.
+
+**Rule 16 (game-day omission), with a deterministic pre-pass.**
+`detect_gameday_omission()` is the exact mirror of `detect_phantom_game()`: that one
+catches a game Dan invented, this one catches a game he slept through. Same conservative
+gates, for the same reasons — no schedule means a fetch failure and not a quiet day, a
+`from_date` after the audited day means the window cannot speak to it, an eliminated team
+is skipped, and rule 12's crowding exception is mirrored so a four-team October Saturday
+covering two is fine. Naming the team, its home venue, *or* today's opponent clears it: a
+paragraph can be unmistakably about the game while calling the home side "we" throughout.
+
+Run against the published 2026-09-20 post, it flags the Patriots and passes the Red Sox.
+
+### Where the line between the two checks sits
+
+`detect_gameday_omission()` asks exactly one question: **did this team exist in the post
+at all?** Not whether the beat was good, or long enough, or led. That is deliberate. A
+regex cannot grade a paragraph, and these flags drive an automatic regeneration, so a
+false positive costs a Gemini call and usually a worse draft. Depth is rule 16's job in
+the LLM rubric ("at least two sentences that name the opponent") and the persona prompt's
+(Game Day Is Mandatory). Absence is the pre-pass's, and absence is what actually shipped.
+
+### The pattern worth remembering
+
+Two bugs, ten days apart, both about the same file. On 2026-09-10 Dan asserted a game the
+schedule did not list. On 2026-09-20 he ignored a game it did. `upcoming_schedule.json` is
+the only source in the pipeline that speaks about the future, and both times the failure
+was a check reading the past and concluding something about the present. When adding a
+check here, ask which direction it looks — and then ask what the mirror of it would catch.
+
+---
+
 ## 2026-09-19 — Playoff Push: the race Dan was writing about, on the page
 
 Dan has been able to talk about a pennant race since the stretch-run work shipped.

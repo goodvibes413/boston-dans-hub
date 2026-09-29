@@ -2623,5 +2623,628 @@ class TestPlayoffPushWidgetIsWiredIn(unittest.TestCase):
         self.assertNotIn("playing_out_the_string", labels)
 
 
+class TestGameDayCoverage(unittest.TestCase):
+    """The 2026-09-20 bug: Steelers at Patriots kicked off at 1:00 PM ET and the
+    published brew was three Red Sox paragraphs that never mentioned football.
+    upcoming_schedule.json had the game. Nothing in the pipeline asked whether
+    the post used it — rule 12 only looks at games already PLAYED, and an NFL
+    team has not played on the morning of its own game."""
+
+    TODAY = "2026-09-20"
+
+    SOX_ONLY = [
+        "I am still trying to wrap my head around last night, because blowing a "
+        "game like that when Bello is dealing is pure torture.",
+        "Watching the bullpen surrender the lead in the ninth felt like a punch "
+        "to the gut, and the wild card math is getting tighter by the day.",
+        "We have to shake it off and get back on the field this afternoon in "
+        "Tampa to salvage something from this weekend.",
+    ]
+
+    def _post(self, paragraphs, headline="Red Sox heartbreaker in Tampa"):
+        return {"headline": headline, "morning_brew": list(paragraphs)}
+
+    def _schedule(self, *entries, from_date=None):
+        """entries: (team, sport, date, home_team, away_team)"""
+        sched = {"games": [
+            {"sport": sport, "team": team, "date": day,
+             "home_team": home, "away_team": away, "time_et": "1:00 PM ET"}
+            for team, sport, day, home, away in entries
+        ]}
+        if from_date:
+            sched["from_date"] = from_date
+        return sched
+
+    PATS_TODAY = ("patriots", "NFL", TODAY,
+                  "New England Patriots", "Pittsburgh Steelers")
+    SOX_TODAY = ("redsox", "MLB", TODAY,
+                 "Tampa Bay Rays", "Boston Red Sox")
+
+    def test_the_published_2026_09_20_brew_is_flagged(self):
+        flags = safety_judge.detect_gameday_omission(
+            self._post(self.SOX_ONLY),
+            self._schedule(self.PATS_TODAY, self.SOX_TODAY),
+            self.TODAY,
+        )
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("patriots", flags[0])
+        self.assertIn("Pittsburgh Steelers", flags[0])
+
+    def test_a_patriots_beat_clears_it(self):
+        brew = self.SOX_ONLY + [
+            "Kickoff is at one and I have not slept. The Pats have not stopped the "
+            "run since Week 1 and this is a bad week to start figuring it out."
+        ]
+        self.assertEqual(
+            safety_judge.detect_gameday_omission(
+                self._post(brew),
+                self._schedule(self.PATS_TODAY, self.SOX_TODAY),
+                self.TODAY),
+            [],
+        )
+
+    def test_the_venue_counts_as_naming_the_team(self):
+        """"Foxborough" identifies the Patriots as surely as "Pats" does — this
+        check asks whether the game exists in the post at all, not how it is
+        phrased."""
+        brew = self.SOX_ONLY + [
+            "Everything else in this town stops at one o'clock, because there is "
+            "football in Foxborough and Pittsburgh is in town."
+        ]
+        self.assertEqual(
+            safety_judge.detect_gameday_omission(
+                self._post(brew),
+                self._schedule(self.PATS_TODAY, self.SOX_TODAY),
+                self.TODAY),
+            [],
+        )
+
+    def test_no_game_today_never_flags(self):
+        """The Patriots play next Sunday. A Tuesday brew owes them nothing."""
+        self.assertEqual(
+            safety_judge.detect_gameday_omission(
+                self._post(self.SOX_ONLY),
+                self._schedule(("patriots", "NFL", "2026-09-27",
+                                "Jacksonville Jaguars", "New England Patriots"),
+                               self.SOX_TODAY),
+                self.TODAY),
+            [],
+        )
+
+    def test_empty_schedule_is_a_fetch_failure_not_a_quiet_day(self):
+        """Same reasoning as the phantom-game check: fetch_schedule.py drops a
+        team whose file is missing, so an absent schedule proves nothing."""
+        for schedule in ({}, {"games": []}, None, []):
+            with self.subTest(schedule=schedule):
+                self.assertEqual(
+                    safety_judge.detect_gameday_omission(
+                        self._post(self.SOX_ONLY), schedule, self.TODAY),
+                    [],
+                )
+
+    def test_a_day_before_the_schedule_window_is_not_audited(self):
+        """The fetchers anchor their window to wall-clock, not AS_OF_DATE, so a
+        replayed past day gets a window that cannot speak to it."""
+        schedule = self._schedule(
+            ("patriots", "NFL", "2026-09-27",
+             "Jacksonville Jaguars", "New England Patriots"),
+            from_date="2026-09-25")
+        self.assertEqual(
+            safety_judge.detect_gameday_omission(
+                self._post(self.SOX_ONLY), schedule, self.TODAY),
+            [],
+        )
+
+    def test_an_eliminated_team_is_not_owed_a_beat(self):
+        """SEASON_OVERRIDES is authoritative and Coverage Allocation buries an
+        eliminated team on purpose. Flagging that would be the pipeline
+        arguing with itself."""
+        self.assertEqual(
+            safety_judge.detect_gameday_omission(
+                self._post(self.SOX_ONLY),
+                self._schedule(self.PATS_TODAY, self.SOX_TODAY),
+                self.TODAY,
+                {"eliminations": {"patriots": {"date": "2026-09-01"}}}),
+            [],
+        )
+
+    def test_an_expired_elimination_does_not_exempt_anybody(self):
+        """season_overrides.json is hand-maintained, and a notice left over from
+        last season is exactly the trap _build_overrides_block() warns about."""
+        flags = safety_judge.detect_gameday_omission(
+            self._post(self.SOX_ONLY),
+            self._schedule(self.PATS_TODAY, self.SOX_TODAY),
+            self.TODAY,
+            {"eliminations": {"patriots": {"expires": "2026-09-01"}}})
+        self.assertEqual(len(flags), 1, flags)
+
+    def test_three_teams_playing_allows_covering_two(self):
+        """Rule 12's crowding exception, mirrored: on a late-October Saturday
+        four Boston teams can play, and Dan prioritizes."""
+        brew = [
+            "The Sox dropped another one in Tampa and the math keeps tightening.",
+            "Kickoff is at one and the Pats front seven better show up.",
+        ]
+        schedule = self._schedule(
+            self.PATS_TODAY, self.SOX_TODAY,
+            ("celtics", "NBA", self.TODAY, "Boston Celtics", "Toronto Raptors"),
+            ("bruins", "NHL", self.TODAY, "Boston Bruins", "Montreal Canadiens"),
+        )
+        self.assertEqual(
+            safety_judge.detect_gameday_omission(
+                self._post(brew), schedule, self.TODAY), [])
+
+    def test_three_teams_playing_still_flags_when_only_one_is_covered(self):
+        brew = ["The Sox dropped another one and the math keeps tightening."]
+        schedule = self._schedule(
+            self.PATS_TODAY, self.SOX_TODAY,
+            ("celtics", "NBA", self.TODAY, "Boston Celtics", "Toronto Raptors"),
+        )
+        flags = safety_judge.detect_gameday_omission(
+            self._post(brew), schedule, self.TODAY)
+        self.assertEqual(len(flags), 2, flags)
+
+    def test_a_doubleheader_is_one_team_to_cover(self):
+        schedule = self._schedule(
+            self.SOX_TODAY,
+            ("redsox", "MLB", self.TODAY, "Tampa Bay Rays", "Boston Red Sox"))
+        flags = safety_judge.detect_gameday_omission(
+            self._post(["Nothing but hockey talk in here today."],
+                       headline="Quiet morning in the Hub"),
+            schedule, self.TODAY)
+        self.assertEqual(len(flags), 1, flags)
+
+    def test_naming_the_opponent_counts_as_covering_the_game(self):
+        """A paragraph can be unmistakably about the game while calling the home
+        side "we" from start to finish."""
+        brew = self.SOX_ONLY + [
+            "Kickoff is at one against the Steelers, and Pittsburgh runs the ball "
+            "down your throat, so the front seven better show up."
+        ]
+        self.assertEqual(
+            safety_judge.detect_gameday_omission(
+                self._post(brew),
+                self._schedule(self.PATS_TODAY, self.SOX_TODAY),
+                self.TODAY),
+            [],
+        )
+
+    def test_rule_16_is_registered_everywhere_it_is_read(self):
+        """A flag whose rule number has no title lands in UNCLASSIFIED, where
+        the dashboard cannot attribute it and the correction prompt cannot
+        name it."""
+        self.assertIn(16, safety_judge.RULE_TITLES)
+        self.assertEqual(
+            safety_judge.flag_rule(safety_judge.make_flag(16, "x")), 16)
+        # Legacy plain-string flags are matched on their wording.
+        self.assertEqual(
+            safety_judge.flag_rule("game-day omission: the patriots play today"), 16)
+
+
+class TestGamesTodayPrompt(unittest.TestCase):
+    """GAMES_TODAY exists because the data was already in the prompt on
+    2026-09-20 and the model still missed it — UPCOMING_SCHEDULE carries the
+    next several days and "which of these is today" was a lookup inside ~30KB."""
+
+    TODAY = "2026-09-20"
+
+    SCHEDULE = {"games": [
+        {"sport": "NFL", "team": "patriots", "date": TODAY,
+         "day_of_week": "Sunday", "time_et": "1:00 PM ET",
+         "home_team": "New England Patriots", "away_team": "Pittsburgh Steelers"},
+        {"sport": "MLB", "team": "redsox", "date": TODAY,
+         "day_of_week": "Sunday", "time_et": "1:40 PM ET",
+         "home_team": "Tampa Bay Rays", "away_team": "Boston Red Sox"},
+        {"sport": "MLB", "team": "redsox", "date": "2026-09-22",
+         "day_of_week": "Tuesday", "time_et": "6:45 PM ET",
+         "home_team": "Boston Red Sox", "away_team": "Cleveland Guardians"},
+    ]}
+
+    def test_only_todays_games_are_hoisted(self):
+        games = generate_rant.compute_games_today(self.SCHEDULE, self.TODAY)
+        self.assertEqual([g["team"] for g in games], ["patriots", "redsox"])
+        self.assertEqual(games[0]["matchup"],
+                         "Pittsburgh Steelers at New England Patriots")
+        self.assertEqual(games[0]["time_et"], "1:00 PM ET")
+
+    def test_no_games_today_yields_an_empty_list(self):
+        self.assertEqual(
+            generate_rant.compute_games_today(self.SCHEDULE, "2026-09-21"), [])
+
+    def test_the_block_names_every_team_playing(self):
+        games = generate_rant.compute_games_today(self.SCHEDULE, self.TODAY)
+        message = generate_rant.build_user_message(
+            {}, [], [], {}, today_iso=self.TODAY, games_today=games)
+        self.assertIn("GAMES_TODAY", message)
+        self.assertIn("Pittsburgh Steelers at New England Patriots", message)
+        self.assertNotIn("Cleveland Guardians", message.split("LATEST_NEWS")[0]
+                         .split("GAMES_TODAY")[1])
+
+    def test_an_off_day_says_so_explicitly(self):
+        message = generate_rant.build_user_message(
+            {}, [], [], {}, today_iso="2026-09-21", games_today=[])
+        self.assertIn("GAMES_TODAY: none", message)
+
+    def test_a_team_playing_today_is_primary_even_with_no_recent_games(self):
+        """An NFL team is absent from rolling_7day on six days out of seven, so
+        "played recently" is the wrong question to ask about the Patriots on a
+        Sunday morning."""
+        games = generate_rant.compute_games_today(self.SCHEDULE, self.TODAY)
+        allocation = generate_rant.compute_coverage_allocation(
+            {}, {"patriots": {"status": "offseason"}}, {}, games_today=games)
+        self.assertIn("patriots", allocation["primary"])
+        self.assertNotIn("patriots", allocation["secondary"])
+        self.assertIn("patriots", allocation["playing_today"])
+
+    def test_elimination_still_outranks_a_game_today(self):
+        games = generate_rant.compute_games_today(self.SCHEDULE, self.TODAY)
+        allocation = generate_rant.compute_coverage_allocation(
+            {"eliminations": {"patriots": {"date": "2026-09-01"}}},
+            {}, {}, games_today=games)
+        self.assertIn("patriots", allocation["minimal"])
+        self.assertNotIn("patriots", allocation["playing_today"])
+
+    def test_allocation_without_a_schedule_is_unchanged(self):
+        """The argument is optional; existing callers keep their behavior."""
+        allocation = generate_rant.compute_coverage_allocation(
+            {}, {"patriots": {"status": "offseason"}}, {})
+        self.assertIn("patriots", allocation["secondary"])
+        self.assertEqual(allocation["playing_today"], [])
+
+
+class TestWrongGameWeekday(unittest.TestCase):
+    """The 2026-09-28 bug: a Monday post opened "Saturday was a tough day for
+    Boston sports fans across the board" about two games whose game_date was
+    2026-09-27, a Sunday. The cause was a data gap — the Off Days rule says to
+    name the day from the data and never from arithmetic, and pointed at
+    UPCOMING_SCHEDULE's day_of_week, a field that exists only for games that have
+    not happened. For a played game there was nothing to copy."""
+
+    TODAY = "2026-09-28"          # a Monday
+    YESTERDAY_NAME = "Sunday"
+
+    ROLLING = {"days": [
+        {"date": "2026-09-28",
+         "redsox": {"boxscore": {"game_date": "2026-09-27", "played": True,
+                                 "opponent": "Chicago Cubs"}},
+         "patriots": {"boxscore": {"game_date": "2026-09-27", "played": True,
+                                   "opponent": "Jacksonville Jaguars"}}},
+        # A Saturday doubleheader against the SAME opponent, on purpose: a correct
+        # callback to it must not read as the error.
+        {"date": "2026-09-27",
+         "redsox": {"boxscore": {"game_date": "2026-09-26", "played": True,
+                                 "opponent": "Chicago Cubs",
+                                 "games": [{"game_number": 1, "opponent": "Chicago Cubs"},
+                                           {"game_number": 2, "opponent": "Chicago Cubs"}]}}},
+    ]}
+
+    SCHEDULE = {"games": [
+        {"sport": "MLB", "team": "redsox", "date": "2026-09-29", "day_of_week": "Tuesday"},
+        {"sport": "NFL", "team": "patriots", "date": "2026-10-04", "day_of_week": "Sunday"},
+    ]}
+
+    PUBLISHED = (
+        "Saturday was a tough day for Boston sports fans across the board. The Red Sox "
+        "struggled to generate any offense at Fenway, dropping the series opener to the "
+        "Cubs after a rough start from Tanner Houck."
+    )
+
+    def _post(self, *paragraphs, headline="Red Sox stumble against Chicago"):
+        return {"headline": headline, "morning_brew": list(paragraphs)}
+
+    def _flags(self, *paragraphs):
+        return safety_judge.detect_wrong_game_weekday(
+            self._post(*paragraphs), self.ROLLING, self.SCHEDULE, self.TODAY)
+
+    def test_the_published_2026_09_28_lead_is_flagged(self):
+        flags = self._flags(self.PUBLISHED)
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("Sunday", flags[0])
+        self.assertIn("Saturday", flags[0])
+
+    def test_the_correct_weekday_passes(self):
+        self.assertEqual(
+            self._flags("Sunday was a tough day for Boston sports fans, and the Cubs "
+                        "made sure of it at Fenway."),
+            [])
+
+    def test_relative_framing_asserts_no_weekday(self):
+        for opener in ("Last night was a tough one at Fenway against the Cubs.",
+                       "Yesterday was a tough day all around for this town.",
+                       "What a miserable weekend that was against the Cubs."):
+            with self.subTest(opener=opener):
+                self.assertEqual(self._flags(opener), [])
+
+    def test_a_correct_series_callback_mid_sentence_is_not_the_error(self):
+        """During a three-game set every weekday in range is a day that opponent
+        was genuinely played on. A check that flagged this would fire on good
+        posts, so the deterministic half only takes a sentence-leading weekday."""
+        self.assertEqual(
+            self._flags("We dropped it to the Cubs after taking both on Saturday, "
+                        "which somehow stings even worse."),
+            [])
+
+    def test_a_forward_reference_is_not_a_result_claim(self):
+        for para in ("Tuesday we open against the Yankees in the Bronx.",
+                     "Sunday the Pats get Buffalo, a problem for another day.",
+                     "Thursday will tell us everything about this team."):
+            with self.subTest(para=para):
+                self.assertEqual(self._flags(para), [])
+
+    def test_a_reminiscence_is_not_about_last_night(self):
+        """Slow-day stories are set in another decade and say so."""
+        for para in ("Saturday back in 2004 I was in the bleachers for one of these.",
+                     "Friday in 1986 my pops took me to a game like that."):
+            with self.subTest(para=para):
+                self.assertEqual(self._flags(para), [])
+
+    def test_no_game_yesterday_means_nothing_to_anchor_on(self):
+        rolling = {"days": [{"date": "2026-09-28",
+                             "redsox": {"boxscore": {"game_date": "2026-09-25",
+                                                     "played": True,
+                                                     "opponent": "Chicago Cubs"}}}]}
+        self.assertEqual(
+            safety_judge.detect_wrong_game_weekday(
+                self._post(self.PUBLISHED), rolling, self.SCHEDULE, self.TODAY),
+            [])
+
+    def test_an_empty_rolling_store_never_flags(self):
+        for rolling in ({}, {"days": []}, None):
+            with self.subTest(rolling=rolling):
+                self.assertEqual(
+                    safety_judge.detect_wrong_game_weekday(
+                        self._post(self.PUBLISHED), rolling, self.SCHEDULE, self.TODAY),
+                    [])
+
+    def test_rule_17_is_registered_everywhere_it_is_read(self):
+        self.assertIn(17, safety_judge.RULE_TITLES)
+        self.assertEqual(
+            safety_judge.flag_rule(safety_judge.make_flag(17, "x")), 17)
+        self.assertEqual(
+            safety_judge.flag_rule("wrong game day: yesterday was a Sunday"), 17)
+
+
+class TestRollingWeekdayAnnotation(unittest.TestCase):
+    """game_day_of_week is what makes "copy the day, never compute it" possible
+    for a game already played. Before it existed the rule had nothing to point at
+    on the results side."""
+
+    def test_every_game_date_gains_its_weekday(self):
+        rolling = {"days": [{"date": "2026-09-28",
+            "redsox": {"boxscore": {"game_date": "2026-09-27", "played": True,
+                                    "games": [{"game_number": 1,
+                                               "game_date": "2026-09-27"}]}},
+            "patriots": {"boxscore": {"game_date": "2026-09-27", "played": True}}}]}
+        out = generate_rant.annotate_rolling_weekdays(rolling)
+        box = out["days"][0]["redsox"]["boxscore"]
+        self.assertEqual(box["game_day_of_week"], "Sunday")
+        self.assertEqual(box["games"][0]["game_day_of_week"], "Sunday")
+        self.assertEqual(
+            out["days"][0]["patriots"]["boxscore"]["game_day_of_week"], "Sunday")
+
+    def test_the_caller_dict_is_not_mutated(self):
+        rolling = {"days": [{"date": "2026-09-28",
+                             "redsox": {"boxscore": {"game_date": "2026-09-27"}}}]}
+        generate_rant.annotate_rolling_weekdays(rolling)
+        self.assertNotIn("game_day_of_week",
+                         rolling["days"][0]["redsox"]["boxscore"])
+
+    def test_an_unreadable_date_is_left_alone(self):
+        """A date we cannot parse is not a weekday we can assert."""
+        for bad in ("", "not-a-date", None, "2026-13-45"):
+            with self.subTest(bad=bad):
+                out = generate_rant.annotate_rolling_weekdays(
+                    {"days": [{"redsox": {"boxscore": {"game_date": bad}}}]})
+                self.assertNotIn("game_day_of_week",
+                                 out["days"][0]["redsox"]["boxscore"])
+
+    def test_an_existing_value_is_respected(self):
+        out = generate_rant.annotate_rolling_weekdays(
+            {"days": [{"redsox": {"boxscore": {"game_date": "2026-09-27",
+                                               "game_day_of_week": "Funday"}}}]})
+        self.assertEqual(
+            out["days"][0]["redsox"]["boxscore"]["game_day_of_week"], "Funday")
+
+    def test_a_non_dict_store_passes_through(self):
+        for value in (None, [], "nope"):
+            with self.subTest(value=value):
+                self.assertEqual(
+                    generate_rant.annotate_rolling_weekdays(value), value)
+
+    def test_the_prompt_names_yesterday_and_its_weekday(self):
+        message = generate_rant.build_user_message(
+            {}, [], [], {}, today_iso="2026-09-28")
+        self.assertIn("TODAY: 2026-09-28 (Monday)", message)
+        self.assertIn("YESTERDAY: 2026-09-27 (Sunday)", message)
+
+    def test_an_unparseable_today_omits_yesterday_rather_than_guessing(self):
+        """The YESTERDAY line is derived, so it has to be absent when the date it
+        derives from cannot be read — never a guessed day.
+
+        Note: build_user_message() as a whole still raises on an unreadable
+        TODAY, at the unguarded date.fromisoformat() in the DRAFT_PICKS freshness
+        block further down. That predates this change and is left as it is; a
+        nonsense TODAY_OVERRIDE failing loudly in production is defensible. This
+        test pins the weekday block's own behavior."""
+        with self.assertRaises(ValueError):
+            generate_rant.build_user_message(
+                {}, [], [], {}, today_iso="not-a-date")
+
+
+class TestVenueContradiction(unittest.TestCase):
+    """The 2026-09-26 bug: one brew opened "What a hell of a day at Fenway. We took
+    both ends of the doubleheader from the Cubs" and closed three paragraphs later
+    with "We close out the series against the Cubs on Sunday in Florida... Let us
+    hope the flight down to St. Petersburg is smooth." One home series, two states.
+    The Rays series that really was in St. Petersburg had ended a week earlier and
+    was still in the rolling window.
+
+    Cause, for the third time in this family: the fetchers write a bare
+    `"home": true/false` and no venue, so the park was a boolean plus a memory."""
+
+    TODAY = "2026-09-26"
+
+    def _rolling(self, team="redsox", home=True, opponent="Chicago Cubs",
+                 game_date="2026-09-26"):
+        return {"days": [{"date": self.TODAY,
+                          team: {"boxscore": {"game_date": game_date, "played": True,
+                                              "home": home, "opponent": opponent}}}]}
+
+    def _post(self, *paragraphs):
+        return {"headline": "Red Sox sweep the twin bill", "morning_brew": list(paragraphs)}
+
+    PUBLISHED_TAIL = (
+        "We close out the series against the Cubs on Sunday in Florida, and then the "
+        "real business begins against the Yankees. Let us hope the flight down to St. "
+        "Petersburg is smooth and we finish this regular season on a high note."
+    )
+
+    def test_the_published_2026_09_26_travel_claim_is_flagged(self):
+        flags = safety_judge.detect_venue_contradiction(
+            self._post("What a hell of a day at Fenway. We took both ends of the "
+                       "doubleheader from the Cubs.",
+                       self.PUBLISHED_TAIL),
+            self._rolling(), self.TODAY)
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("HOME game", flags[0])
+
+    def test_a_correct_home_writeup_passes(self):
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("What a day at Fenway. We took both from the Cubs and the "
+                           "place was absolutely electric."),
+                self._rolling(), self.TODAY),
+            [])
+
+    def test_a_road_game_placed_at_a_boston_park_is_flagged(self):
+        flags = safety_judge.detect_venue_contradiction(
+            self._post("The Jaguars ran us out of Gillette and I am sick about it."),
+            self._rolling(team="patriots", home=False,
+                          opponent="Jacksonville Jaguars"),
+            self.TODAY)
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("ROAD game", flags[0])
+
+    def test_a_correct_road_writeup_passes(self):
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("We lost to the Jaguars and the whole afternoon was ugly "
+                           "from the opening drive."),
+                self._rolling(team="patriots", home=False,
+                              opponent="Jacksonville Jaguars"),
+                self.TODAY),
+            [])
+
+    def test_a_city_inside_a_team_name_is_not_a_place_claim(self):
+        """"the Chicago Cubs" and "Tampa Bay lost" would light up every paragraph
+        if a bare preposition or city counted as travel."""
+        for para in ("The Chicago Cubs came into Fenway and took one from us.",
+                     "We handled the Cubs while Tampa Bay was busy losing again.",
+                     "Chicago is a good team and they showed it at Fenway."):
+            with self.subTest(para=para):
+                self.assertEqual(
+                    safety_judge.detect_venue_contradiction(
+                        self._post(para), self._rolling(), self.TODAY),
+                    [])
+
+    def test_forward_travel_talk_is_the_schedules_business(self):
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("We beat the Cubs, and we head to the Bronx on Tuesday "
+                           "for the Yankees."),
+                self._rolling(), self.TODAY),
+            [])
+
+    def test_a_paragraph_that_never_names_the_opponent_is_unattributable(self):
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("The flight down to St. Petersburg better be smooth."),
+                self._rolling(), self.TODAY),
+            [])
+
+    def test_a_boxscore_with_no_home_flag_is_not_a_claim_to_check(self):
+        rolling = {"days": [{"date": self.TODAY, "redsox": {"boxscore": {
+            "game_date": self.TODAY, "played": True, "opponent": "Chicago Cubs"}}}]}
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("We beat the Cubs and the flight down to St. Petersburg "
+                           "was rough."),
+                rolling, self.TODAY),
+            [])
+
+    def test_rule_18_is_registered_everywhere_it_is_read(self):
+        self.assertIn(18, safety_judge.RULE_TITLES)
+        self.assertEqual(
+            safety_judge.flag_rule(safety_judge.make_flag(18, "x")), 18)
+        self.assertEqual(
+            safety_judge.flag_rule("wrong game place: the redsox game"), 18)
+
+
+class TestRollingVenueAnnotation(unittest.TestCase):
+    """venue_note is what makes "copy where it was" possible. Before it existed the
+    boxscore offered a boolean and the park had to be remembered per team."""
+
+    def test_a_home_game_names_the_park(self):
+        out = generate_rant.annotate_rolling_venues({"days": [{"date": "2026-09-26",
+            "redsox": {"boxscore": {"home": True, "opponent": "Chicago Cubs"}}}]})
+        note = out["days"][0]["redsox"]["boxscore"]["venue_note"]
+        self.assertIn("HOME game at Fenway Park (Boston)", note)
+        self.assertIn("Chicago Cubs", note)
+
+    def test_a_road_game_refuses_to_name_a_venue(self):
+        """The boxscore has no venue for a road game, and the opponent's park is
+        not ours to invent — that is the mistake this exists to stop."""
+        out = generate_rant.annotate_rolling_venues({"days": [{"date": "2026-09-27",
+            "patriots": {"boxscore": {"home": False,
+                                      "opponent": "Jacksonville Jaguars"}}}]})
+        note = out["days"][0]["patriots"]["boxscore"]["venue_note"]
+        self.assertIn("ROAD game at the Jacksonville Jaguars", note)
+        self.assertIn("does not name the venue", note)
+        self.assertNotIn("Gillette", note)
+
+    def test_every_team_has_a_home_venue(self):
+        for team in generate_rant.TEAM_KEYS:
+            self.assertIn(team, generate_rant.HOME_VENUES)
+
+    def test_no_home_flag_means_no_note(self):
+        out = generate_rant.annotate_rolling_venues({"days": [{"date": "2026-09-26",
+            "redsox": {"boxscore": {"opponent": "Chicago Cubs"}}}]})
+        self.assertNotIn("venue_note", out["days"][0]["redsox"]["boxscore"])
+
+    def test_the_caller_dict_is_not_mutated(self):
+        rolling = {"days": [{"date": "2026-09-26",
+                             "redsox": {"boxscore": {"home": True,
+                                                     "opponent": "Chicago Cubs"}}}]}
+        generate_rant.annotate_rolling_venues(rolling)
+        self.assertNotIn("venue_note", rolling["days"][0]["redsox"]["boxscore"])
+
+    def test_a_non_dict_store_passes_through(self):
+        for value in (None, [], "nope", {"days": "not a list"}):
+            with self.subTest(value=value):
+                self.assertEqual(
+                    generate_rant.annotate_rolling_venues(value), value)
+
+    def test_games_today_states_home_or_away_and_venue(self):
+        schedule = {"games": [
+            {"sport": "MLB", "team": "redsox", "date": "2026-09-27",
+             "home_team": "Boston Red Sox", "away_team": "Chicago Cubs",
+             "venue": "Fenway Park", "time_et": "3:05 PM ET"},
+            {"sport": "NFL", "team": "patriots", "date": "2026-09-27",
+             "home_team": "Jacksonville Jaguars", "away_team": "New England Patriots",
+             "venue": "EverBank Stadium", "time_et": "1:00 PM ET"}]}
+        games = generate_rant.compute_games_today(schedule, "2026-09-27")
+        by_team = {g["team"]: g for g in games}
+        self.assertEqual(by_team["redsox"]["home_or_away"], "home")
+        self.assertEqual(by_team["redsox"]["venue"], "Fenway Park")
+        self.assertEqual(by_team["patriots"]["home_or_away"], "away")
+
+    def test_a_missing_schedule_venue_says_so_rather_than_guessing(self):
+        schedule = {"games": [{"sport": "MLB", "team": "redsox", "date": "2026-09-27",
+                               "home_team": "Boston Red Sox",
+                               "away_team": "Chicago Cubs"}]}
+        game = generate_rant.compute_games_today(schedule, "2026-09-27")[0]
+        self.assertEqual(game["venue"], "not in the data")
+
+
 if __name__ == "__main__":
     unittest.main()

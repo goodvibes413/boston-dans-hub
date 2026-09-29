@@ -26,7 +26,7 @@ import os
 import re
 import sys
 import time
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 
 from pipeline_dates import as_of_iso
 from pathlib import Path
@@ -88,6 +88,9 @@ RULE_TITLES = {
     13: "Cross-team misattribution",
     14: "Milestone omission",
     15: "Phantom scheduled game",
+    16: "Game-day omission",
+    17: "Wrong day named for a result",
+    18: "Wrong place named for a game",
 }
 
 # Flags are {"rule": int, "detail": str}. They used to be free prose in which the
@@ -123,6 +126,9 @@ JUDGE_RESPONSE_SCHEMA = {
 # Wordings the deterministic pre-passes and publish.py's coverage check use.
 # Only consulted for legacy string flags that carry no explicit "rule N".
 _LEGACY_FLAG_RULES = (
+    ("wrong game place", 18),
+    ("wrong game day", 17),
+    ("game-day omission", 16),
     ("phantom game", 15),
     ("off-roster", 11),
     ("coverage window", 12),
@@ -240,6 +246,12 @@ PHANTOM_TEAM_ALIASES = {
     "patriots": [r"\bpatriots\b", r"\bpats\b"],
 }
 
+# The Boston side of a schedule matchup, so _opponent_names() can drop it and
+# keep the other one. fetch_schedule.py writes these exact strings.
+BOSTON_TEAM_FULL_NAMES = {
+    "boston celtics", "boston bruins", "boston red sox", "new england patriots",
+}
+
 # Sport label in upcoming_schedule.json → team key, so a schedule entry can be
 # matched to the team a sentence names even if the "team" field ever drifts.
 PHANTOM_SPORT_TO_TEAM = {
@@ -346,7 +358,7 @@ Review the following sports commentary and return ONLY a JSON object with keys:
   verdict   ("PASS" or "FAIL")
   severity  ("low", "medium" or "high")
   flags     (list of objects — empty list if PASS. Each object is
-             {"rule": <the NUMBER of the rule below that this violates, 1-15>,
+             {"rule": <the NUMBER of the rule below that this violates, 1-18>,
               "detail": "<one sentence naming what in the output violates it,
                           quoting the offending phrase>"})
 
@@ -492,6 +504,67 @@ FAIL if ANY of these are present:
       about") with no today-marker attached to a game is fine.
     - If UPCOMING_SCHEDULE is missing, empty, or has no games at all, skip this check —
       an absent schedule is a fetch failure, not proof that nobody plays today.
+16. Game-day omission — the exact inverse of rule 15. UPCOMING_SCHEDULE lists a game
+    TODAY for a Boston team and the morning_brew gives that team no real coverage.
+    Flag as MEDIUM severity.
+    - A "real beat" is at least two sentences that name the opponent and say something
+      about the matchup. A passing clause inside another team's paragraph ("the Pats
+      play later too") does NOT satisfy this, the same way it does not satisfy rule 14.
+    - This matters most for the PATRIOTS, who play once a week and therefore appear in
+      rolling_7day on almost no weekday. Rule 12 asks about games already PLAYED and so
+      says nothing about a game that kicks off in three hours. On 2026-09-20 a 1:00 PM
+      Steelers-Patriots game went entirely unmentioned in a brew of three Red Sox
+      paragraphs, and every rule in this list passed it.
+    - The coverage must be FORWARD-LOOKING with no result — a brew that satisfies this
+      rule by recapping today's game violates rule 15's ceiling instead. Both can be
+      wrong at once; flag what you actually see.
+    - Do NOT flag a team listed as eliminated in source_data.season_overrides. The
+      Coverage Allocation rules deliberately bury an eliminated team, and an override
+      is authoritative.
+    - If 3+ Boston teams play today, covering 2 substantively is acceptable.
+    - If UPCOMING_SCHEDULE is missing, empty, or has no games at all, skip this check.
+17. Wrong day named for a result — the output names the weekday a game was PLAYED on
+    and gets it wrong. Flag as MEDIUM severity.
+    - Every game in rolling_7day carries `game_date` AND `game_day_of_week`, and the
+      YESTERDAY line at the top of this prompt names yesterday's date and weekday.
+      A named day must match one of those. Do not accept a weekday the model could
+      only have reached by counting back from an ISO date.
+    - On 2026-09-28 (a Monday) both of the previous day's games — Cubs at Fenway and
+      Patriots at Jacksonville, `game_date` 2026-09-27, a Sunday — were written up as
+      "Saturday was a tough day for Boston sports fans". Two days off, in the lead
+      sentence, about the games the post exists to cover.
+    - This is rule 15's sibling pointed backwards: rule 15 catches a wrong or invented
+      day for a game still to come, rule 17 catches a wrong day for one already played.
+    - "Last night", "yesterday", "this weekend" and similar relative framing assert no
+      weekday and are always fine. So is a correctly-named weekday for an OLDER game in
+      the window — check it against that game's own `game_day_of_week`.
+    - Also flag an unsupported claim about a game's POSITION IN A SERIES. "The series
+      opener", "the finale", "the rubber match", "game two" are factual claims, and
+      rolling_7day carries no series index. The 2026-09-28 post called a Sunday game
+      "the series opener" when it was the last of three. Stay qualitative unless the
+      data says otherwise.
+18. Wrong place named for a game — the output puts a game somewhere it was not played.
+    Flag as MEDIUM severity.
+    - Every boxscore carries a `home` boolean, and this prompt's ROLLING_7DAY adds a
+      `venue_note` spelling it out ("HOME game at Fenway Park (Boston) vs the Chicago
+      Cubs", or "ROAD game at the ..."). GAMES_TODAY carries `home_or_away` and `venue`.
+      A place claim must match those.
+    - On 2026-09-26 one brew said "What a hell of a day at Fenway. We took both ends of
+      the doubleheader from the Cubs" and then, three paragraphs later, "We close out the
+      series against the Cubs on Sunday in Florida... Let us hope the flight down to St.
+      Petersburg is smooth." Same home series, two different states. The Rays series that
+      really was in St. Petersburg had ended a week earlier and was still in the rolling
+      window — a stale venue bleeding onto a current opponent.
+    - Flag BOTH directions: a HOME game described as a road trip ("down in", "the flight
+      to", "on the road"), and a ROAD game placed at a Boston park ("back at Fenway",
+      "at the Garden") when the data says away.
+    - A ROAD game's venue is NOT in the boxscore data. Naming the opponent's park or city
+      when nothing supplies it is a fabrication under this rule even if it happens to be
+      right — UPCOMING_SCHEDULE's `venue` field is the only license for a specific park.
+    - Forward-looking travel talk about a game the schedule really does place on the road
+      is fine ("we head to the Bronx on Tuesday" when UPCOMING_SCHEDULE says so).
+    - Naming a team's CITY as part of its name ("the Chicago Cubs", "Tampa Bay") is not a
+      place claim about the game. Only a statement about where the game happened is.
 
 DOUBLEHEADER INTERPRETATION (applies to rules 7, 8, and 12):
 Two games between the same teams on the same game_date in rolling_7day — a "games"
@@ -1040,6 +1113,409 @@ def detect_phantom_game(today: dict, schedule, today_iso: str | None = None) -> 
     return flags
 
 
+def _opponent_names(game: dict) -> list[str]:
+    """Lowercased ways the post might name today's OPPONENT, from a schedule entry.
+
+    Both sides of the matchup are in the entry and neither is labelled, so the
+    Boston side is identified and dropped rather than guessed at. Returns the
+    full name and the bare nickname ("pittsburgh steelers", "steelers"); the
+    city alone is left out, because "new york" is two teams and "boston" is us.
+
+    Also reads a bare "opponent", which is how a rolling_7day boxscore names the
+    other side, so this serves both the schedule and the results store.
+    """
+    names = []
+    for side in (game.get("opponent", ""),
+                 game.get("home_team", ""), game.get("away_team", "")):
+        side = str(side or "").strip().lower()
+        if not side or side in BOSTON_TEAM_FULL_NAMES:
+            continue
+        names.append(side)
+        parts = side.split()
+        if len(parts) > 1:
+            names.append(parts[-1])
+    return names
+
+
+def detect_gameday_omission(today: dict, schedule, today_iso: str | None = None,
+                            season_overrides=None) -> list[str]:
+    """
+    Deterministic pre-pass: flag a Boston team that plays TODAY and is never
+    named anywhere in the post.
+
+    The mirror image of detect_phantom_game. That one catches a game Dan
+    invented; this one catches a game he slept through. 2026-09-20 is the case:
+    Steelers at Patriots at 1:00 PM ET, and the brew was three Red Sox
+    paragraphs that never said "Patriots", "Pats", "Foxborough" or "football".
+    Every check in the pipeline passed it, because every check was watching for
+    something that was WRITTEN rather than something that was missing, and
+    rule 12 only ever asks about games already PLAYED — which on a Sunday
+    morning the Patriots' game has not been.
+
+    Conservative by construction, same as its mirror:
+
+    - The schedule must actually list a game today for the team. No schedule,
+      no games, no flag.
+    - The audited day must fall inside the schedule's own window, for the reason
+      spelled out in detect_phantom_game: the fetchers anchor to wall-clock, so
+      a replayed past day gets a window that cannot speak to it.
+    - An eliminated team is skipped. SEASON_OVERRIDES is authoritative and the
+      Coverage Allocation rules deliberately bury an eliminated team; failing
+      the post for obeying them would be the pipeline arguing with itself.
+    - Mentioning the team ANYWHERE — headline or any paragraph, by name, by home
+      venue, or by naming today's OPPONENT — clears it. This asks "did football
+      exist in this post at all", not "was the coverage good enough". Depth is
+      the judge's call (rule 16) and the persona prompt's; absence is this
+      function's. The opponent counts because a paragraph can be unmistakably
+      about the game while calling the home side "we" throughout.
+    - Rule 12's crowding exception, mirrored: when 3+ Boston teams play on the
+      same day, covering 2 of them is acceptable and nothing flags.
+
+    Returns MEDIUM-severity flag strings.
+    """
+    games = _schedule_games(schedule)
+    if not games:
+        return []
+    if today_iso is None:
+        today_iso = as_of_iso()
+
+    window_start = str((schedule or {}).get("from_date", "")) if isinstance(schedule, dict) else ""
+    if window_start and today_iso < window_start:
+        print(f"  game-day check skipped: schedule window starts {window_start}, "
+              f"after the audited day {today_iso}", file=sys.stderr)
+        return []
+
+    # Expired notices do not exempt anybody. season_overrides.json is
+    # hand-maintained and generate_rant._build_overrides_block() already skips
+    # past-expiry entries with a warning; a stale one left over from last season
+    # must not go on buying a team out of coverage on a day it actually plays.
+    eliminations = set()
+    if isinstance(season_overrides, dict):
+        raw = season_overrides.get("eliminations")
+        if isinstance(raw, dict):
+            for team_key, info in raw.items():
+                expires = (info or {}).get("expires") if isinstance(info, dict) else None
+                if expires and str(expires) < today_iso:
+                    continue
+                eliminations.add(team_key)
+
+    # One entry per team, keeping the first game listed — a doubleheader is one
+    # team to cover, not two.
+    todays_games: dict = {}
+    for game in games:
+        team_key = _game_team_key(game)
+        if not team_key or team_key in todays_games:
+            continue
+        if str(game.get("date", "")).startswith(today_iso):
+            todays_games[team_key] = game
+    if not todays_games:
+        return []
+
+    text = " ".join([str(today.get("headline") or "")] + _paragraph_segments(today))
+    if not text.strip():
+        return []  # an empty draft is somebody else's failure to report
+    named = _teams_named(text, include_venues=True)
+    lowered = text.lower()
+
+    missing = []
+    for team_key, game in todays_games.items():
+        if team_key in named or team_key in eliminations:
+            continue
+        if any(t in lowered for t in _opponent_names(game)):
+            continue
+        missing.append(team_key)
+    covered = len(todays_games) - len(missing)
+    if len(todays_games) >= 3 and covered >= 2:
+        return []
+
+    flags: list[str] = []
+    for team_key in missing:
+        game = todays_games[team_key]
+        home = game.get("home_team", "")
+        away = game.get("away_team", "")
+        matchup = f"{away} at {home}" if away and home else (home or away or "a game")
+        time_et = game.get("time_et") or "TBD"
+        flags.append(
+            f"game-day omission: the {team_key} play today ({today_iso}) — "
+            f"{matchup}, {time_et} — and the post never mentions the team. "
+            f"Give it its own beat in morning_brew as a look forward, with NO "
+            f"result: the game has not been played yet."
+        )
+    return flags
+
+
+WEEKDAY_NAMES = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+                 "Saturday", "Sunday")
+
+# Vetoes a weekday match: the weekday is being used to point at something still
+# to come, so it is not a claim about when a result happened. Narrow on purpose —
+# rule 15 and detect_phantom_game own forward-looking day claims.
+WEEKDAY_FORWARD_MARKERS = [
+    r"\bstart(?:s|ing)\b", r"\bnext\b", r"\bcoming up\b", r"\bupcoming\b",
+    r"\bwe get\b", r"\bwe'?ll\b", r"\bwill\b", r"\bahead\b",
+    r"\bhead(?:s|ing)? (?:to|up|down|out|into|back)\b",
+    r"\bclose(?:s)? out\b", r"\bopen(?:s)? (?:up|against)\b",
+    r"\bfirst pitch\b", r"\bkick(?:s)?[- ]?off\b", r"\btip[- ]?off\b",
+]
+
+
+def _rolling_games_by_day(rolling) -> list[dict]:
+    """Every played game in the rolling store, flattened, with its date.
+
+    Mirrors generate_rant._extract_team_games but keeps the team key, which is
+    what a flag has to name.
+    """
+    out = []
+    if not isinstance(rolling, dict):
+        return out
+    for day_entry in rolling.get("days", []) or []:
+        if not isinstance(day_entry, dict):
+            continue
+        for team_key in PHANTOM_TEAM_ALIASES:
+            team_data = day_entry.get(team_key)
+            if not isinstance(team_data, dict):
+                continue
+            box = team_data.get("boxscore")
+            if not isinstance(box, dict) or not box.get("played"):
+                continue
+            game_date = str(box.get("game_date") or day_entry.get("date") or "")[:10]
+            games = box.get("games")
+            entries = games if isinstance(games, list) and games else [box]
+            for g in entries:
+                if not isinstance(g, dict):
+                    continue
+                merged = {k: v for k, v in box.items() if k != "games"}
+                merged.update(g)
+                merged["team"] = team_key
+                merged["game_date"] = game_date
+                out.append(merged)
+    return out
+
+
+def detect_wrong_game_weekday(today: dict, rolling, schedule=None,
+                              today_iso: str | None = None) -> list[str]:
+    """
+    Deterministic pre-pass: flag a weekday used to FRAME the day being recapped
+    when it is not yesterday's weekday.
+
+    Rule 15's sibling pointed backwards. That one catches a wrong day for a game
+    still to come; this catches a wrong day for one already played. 2026-09-28 is
+    the case: a Monday, both of Sunday's games (Cubs at Fenway, Patriots at
+    Jacksonville, game_date 2026-09-27) opening the brew as "Saturday was a tough
+    day for Boston sports fans across the board" — two days off, in the lead
+    sentence, about the games the post exists to cover.
+
+    The cause is worth naming, because it is a data gap and not a model whim: the
+    Off Days rule says NAME THE DAY FROM THE DATA AND NEVER FROM YOUR OWN
+    ARITHMETIC, and then points at UPCOMING_SCHEDULE's `day_of_week` — a field
+    that only exists for games that have NOT happened. For a played game there
+    was nothing to copy, so the prompt required the arithmetic it forbids.
+    generate_rant.annotate_rolling_weekdays() closes that gap; this check is what
+    notices when the weekday is wrong anyway.
+
+    WHAT IT LOOKS AT, and why it is this narrow. Only a weekday that OPENS a
+    sentence — "Saturday was a tough day", "On Saturday the bats went quiet" —
+    which is the shape that frames a whole recap around a day. A weekday buried
+    mid-sentence cannot be graded this way: during a three-game series every
+    weekday in range is a day that opponent was genuinely played on, so
+    "we took both on Saturday" inside a Sunday recap is correct and a check that
+    flagged it would fire on good posts. That reading belongs to rule 17 in the
+    LLM rubric, which can weigh the sentence; the deterministic half takes only
+    the case it can be sure about.
+
+    The remaining gates:
+
+    - Anchored on yesterday. The rolling store must hold a played game dated the
+      day before today; with nothing to anchor on, nothing flags.
+    - Yesterday's own weekday is correct, and today's belongs to rule 15.
+    - A weekday matching an UPCOMING game's day is a forward reference, as is one
+      in a sentence carrying a forward marker.
+    - A sentence naming a year, or opening a reminiscence ("back in"), is a
+      slow-day story about a different decade, not a claim about last night.
+
+    Returns MEDIUM-severity flag strings.
+    """
+    if today_iso is None:
+        today_iso = as_of_iso()
+    try:
+        today_obj = date.fromisoformat(today_iso)
+    except ValueError:
+        return []
+    yesterday = today_obj - timedelta(days=1)
+    yesterday_iso = yesterday.isoformat()
+    yesterday_name = yesterday.strftime("%A")
+    today_name = today_obj.strftime("%A")
+
+    games = _rolling_games_by_day(rolling)
+    yesterdays = [g for g in games if g.get("game_date") == yesterday_iso]
+    if not yesterdays:
+        return []
+
+    # Weekdays that point forward rather than back.
+    upcoming_days = set()
+    for game in _schedule_games(schedule):
+        raw = str(game.get("date", ""))[:10]
+        if raw <= today_iso:
+            continue
+        day_name = game.get("day_of_week")
+        if not day_name:
+            try:
+                day_name = date.fromisoformat(raw).strftime("%A")
+            except ValueError:
+                continue
+        upcoming_days.add(str(day_name).lower())
+
+    forward_rx = [re.compile(p, re.IGNORECASE) for p in WEEKDAY_FORWARD_MARKERS]
+    # A year, or a reminiscence opener, means this sentence is not about last night.
+    story_rx = [re.compile(r"\b(?:19|20)\d{2}\b"), re.compile(r"\bback in\b", re.I)]
+    # The weekday has to OPEN the sentence — see the docstring.
+    lead_rx = re.compile(
+        rf"^(?:and\s+|but\s+|so\s+)?(?:on\s+|last\s+)?({'|'.join(WEEKDAY_NAMES)})\b",
+        re.IGNORECASE)
+
+    teams_played = sorted({g.get("team") for g in yesterdays if g.get("team")})
+    opponents = []
+    for g in yesterdays:
+        opponents.extend(_opponent_names(g))
+
+    flags: list[str] = []
+    for paragraph in _paragraph_segments(today):
+        for sentence in _split_sentences(paragraph):
+            match = lead_rx.match(sentence)
+            if not match:
+                continue
+            day_name = match.group(1)
+            low = day_name.lower()
+            if low in (yesterday_name.lower(), today_name.lower()):
+                continue
+            if low in upcoming_days:
+                continue
+            if any(rx.search(sentence) for rx in forward_rx):
+                continue
+            if any(rx.search(sentence) for rx in story_rx):
+                continue
+            flags.append(
+                f"wrong game day: yesterday was {yesterday_iso}, a "
+                f"{yesterday_name}, and that is when {', '.join(teams_played)} "
+                f"played; the post frames the recap on {day_name}. Copy "
+                f"game_day_of_week from rolling_7day, or the YESTERDAY line, or "
+                f"just say \"last night\". Sentence: {sentence[:160]}"
+            )
+            return flags  # one framing error per post is enough to regenerate
+    return flags
+
+
+# "We travelled" markers. A HOME game described with one of these is placed in the
+# wrong state. Deliberately explicit phrases only — "at" and "in" are far too
+# common to read as travel, and "Chicago Cubs" must never register as a place.
+VENUE_ROAD_MARKERS = [
+    r"\bon the road\b", r"\broad trip\b", r"\broad game\b",
+    r"\bthe flight (?:down|up|out|over|back)?\s*to\b", r"\bflying (?:down|out|up)\b",
+    r"\btravel(?:s|ling|ing)? (?:down|up|out)? ?to\b",
+    r"\bthe trip (?:down|up|out|over) to\b",
+    r"\baway from (?:home|the fens|fenway)\b",
+    r"\bin enemy territory\b", r"\bhostile (?:crowd|building|territory)\b",
+]
+
+# A place claim pointing at a game still to come is rule 15's business, not this
+# check's — the same veto list the weekday check uses.
+VENUE_FORWARD_MARKERS = WEEKDAY_FORWARD_MARKERS
+
+
+def detect_venue_contradiction(today: dict, rolling, today_iso: str | None = None) -> list[str]:
+    """
+    Deterministic pre-pass: flag a game placed on the wrong side of home.
+
+    Third in the family after detect_phantom_game and detect_wrong_game_weekday,
+    and the same root cause each time: the data is right there and the model was
+    left to derive from it. Every fetcher writes `"home": true/false` on its
+    boxscore and none writes a venue, so "we were at Fenway" was a boolean plus a
+    memory of which park this team uses, and "we were on the road" named no place
+    at all.
+
+    2026-09-26 is the case: "What a hell of a day at Fenway. We took both ends of
+    the doubleheader from the Cubs" and, three paragraphs later, "We close out the
+    series against the Cubs on Sunday in Florida... Let us hope the flight down to
+    St. Petersburg is smooth." One home series, two states. The Rays series that
+    really was in St. Petersburg had ended a week earlier and was still sitting in
+    the rolling window.
+
+    generate_rant.annotate_rolling_venues() closes the derivation; this notices
+    when the place is wrong anyway.
+
+    Conservative by construction:
+
+    - Anchored on games in the rolling window with a `home` boolean. No boolean,
+      no claim to check.
+    - The paragraph must NAME that game's opponent, so the place claim can be
+      attributed to a specific game.
+    - HOME game + an explicit travel phrase ("the flight down to", "on the road")
+      = flagged. Bare prepositions are never read as travel, because "the Chicago
+      Cubs" and "Tampa Bay lost" would light up every paragraph.
+    - ROAD game + an unambiguous Boston park (Fenway, the Fens, Gillette,
+      Foxborough) = flagged. The Garden is excluded on purpose: two teams share
+      it, so PHANTOM_VENUE_TO_TEAM resolves it to nobody.
+    - A forward marker vetoes either direction — a trip still to come belongs to
+      the schedule and to rule 15.
+
+    Returns MEDIUM-severity flag strings.
+    """
+    if today_iso is None:
+        today_iso = as_of_iso()
+
+    games = [g for g in _rolling_games_by_day(rolling) if "home" in g]
+    if not games:
+        return []
+
+    road_rx = [re.compile(p, re.IGNORECASE) for p in VENUE_ROAD_MARKERS]
+    forward_rx = [re.compile(p, re.IGNORECASE) for p in VENUE_FORWARD_MARKERS]
+    venue_rx = [(re.compile(pat, re.IGNORECASE), team)
+                for pat, team in PHANTOM_VENUE_TO_TEAM.items()]
+
+    flags: list[str] = []
+    seen = set()
+    for paragraph in _paragraph_segments(today):
+        lowered = paragraph.lower()
+        for game in games:
+            team_key = game.get("team")
+            opponents = _opponent_names(game)
+            if not opponents or not any(o in lowered for o in opponents):
+                continue
+            key = (team_key, game.get("game_date"))
+            if key in seen:
+                continue
+
+            for sentence in _split_sentences(paragraph):
+                if any(rx.search(sentence) for rx in forward_rx):
+                    continue
+                opponent = game.get("opponent") or opponents[0]
+                if game.get("home"):
+                    hit = next((rx.pattern for rx in road_rx if rx.search(sentence)), None)
+                    if not hit:
+                        continue
+                    flags.append(
+                        f"wrong game place: the {team_key} game against "
+                        f"{opponent} on {game.get('game_date')} was a HOME game "
+                        f"(boxscore \"home\": true), and the post describes travel. "
+                        f"Copy venue_note from rolling_7day. Sentence: {sentence[:160]}"
+                    )
+                else:
+                    named = next((team for rx, team in venue_rx
+                                  if team == team_key and rx.search(sentence)), None)
+                    if not named:
+                        continue
+                    flags.append(
+                        f"wrong game place: the {team_key} game against "
+                        f"{opponent} on {game.get('game_date')} was a ROAD game "
+                        f"(boxscore \"home\": false), and the post puts it at a "
+                        f"Boston park. Copy venue_note from rolling_7day, and do "
+                        f"not name a venue the data omits. Sentence: {sentence[:160]}"
+                    )
+                seen.add(key)
+                break
+    return flags
+
+
 # Ascending badness. A pre-pass flag can raise a verdict's severity to its floor
 # but never lower it — a HIGH from the LLM judge always wins.
 _SEVERITY_ORDER = ["low", "medium", "high"]
@@ -1055,26 +1531,38 @@ def _at_least(severity: str | None, floor: str) -> str:
 
 
 def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
-                    all_flags: list | None = None, phantom_flags: list | None = None) -> None:
+                    all_flags: list | None = None, phantom_flags: list | None = None,
+                    gameday_flags: list | None = None,
+                    weekday_flags: list | None = None,
+                    venue_flags: list | None = None) -> None:
     """
     Write an enriched verdict to JUDGE_RESULT_PATH (if set).
     Safe to call at any exit point — failure is logged but never propagated.
 
-    phantom_flags is a subset of pre_pass_flags, broken out because the evals
-    dashboard maps the pre-pass to rule 10 (voice repetition). Without the split,
-    a schedule flag would light up the repetition rule.
+    phantom_flags, gameday_flags, weekday_flags and venue_flags are subsets of
+    pre_pass_flags,
+    broken out because the evals dashboard maps the pre-pass to rule 10 (voice
+    repetition). Without the split, a schedule flag would light up the
+    repetition rule.
     """
     judge_result_path = os.environ.get("JUDGE_RESULT_PATH")
     if not judge_result_path:
         return
     phantom = list(phantom_flags or [])
+    gameday = list(gameday_flags or [])
+    weekday = list(weekday_flags or [])
+    venue = list(venue_flags or [])
+    schedule_related = phantom + gameday + weekday + venue
     enriched = {
         "verdict": verdict.get("verdict"),
         "severity": verdict.get("severity"),
         "flags": all_flags if all_flags is not None else list(verdict.get("flags", [])),
         "pre_pass_flags": list(pre_pass_flags),
-        "repetition_flags": [f for f in pre_pass_flags if f not in phantom],
+        "repetition_flags": [f for f in pre_pass_flags if f not in schedule_related],
         "phantom_game_flags": phantom,
+        "gameday_omission_flags": gameday,
+        "wrong_weekday_flags": weekday,
+        "wrong_venue_flags": venue,
         "llm_flags": list(llm_flags),
         "rule_titles": {str(k): v for k, v in RULE_TITLES.items()},
     }
@@ -1186,6 +1674,31 @@ def main():
         print(f"  pre-pass: {len(phantom_flags)} phantom-game flag(s) detected", file=sys.stderr)
     pre_pass_flags += phantom_flags
 
+    # Game-day pre-pass — the mirror of the one above, and MEDIUM for the same
+    # reason: a team playing in three hours that the post never mentions is a
+    # coverage hole a reader spots instantly, not a voice nit.
+    gameday_flags = [make_flag(16, f) for f in detect_gameday_omission(
+        today_obj, schedule, today_iso, source_data.get("season_overrides"))]
+    if gameday_flags:
+        print(f"  pre-pass: {len(gameday_flags)} game-day omission flag(s) detected", file=sys.stderr)
+    pre_pass_flags += gameday_flags
+
+    # Weekday pre-pass — MEDIUM alongside the other two: a reader who watched the
+    # game knows what day it was, so a wrong day is a checkable factual error.
+    weekday_flags = [make_flag(17, f) for f in detect_wrong_game_weekday(
+        today_obj, source_data.get("rolling_7day"), schedule, today_iso)]
+    if weekday_flags:
+        print(f"  pre-pass: {len(weekday_flags)} wrong-game-day flag(s) detected", file=sys.stderr)
+    pre_pass_flags += weekday_flags
+
+    # Venue pre-pass — MEDIUM with the rest. A fan who was at the park knows
+    # which park it was, so the wrong one is a checkable factual error.
+    venue_flags = [make_flag(18, f) for f in detect_venue_contradiction(
+        today_obj, source_data.get("rolling_7day"), today_iso)]
+    if venue_flags:
+        print(f"  pre-pass: {len(venue_flags)} wrong-game-place flag(s) detected", file=sys.stderr)
+    pre_pass_flags += venue_flags
+
     full_prompt = (
         f"TODAY: {today_iso}\n\n"
         + JUDGE_PROMPT
@@ -1235,13 +1748,17 @@ def main():
         api_note = make_flag(UNCLASSIFIED_RULE,
                              f"judge skipped — API error: {type(e).__name__}")
         if pre_pass_flags:
-            v = {"verdict": "FAIL", "severity": "medium" if phantom_flags else "low",
+            v = {"verdict": "FAIL",
+                 "severity": "medium" if (phantom_flags or gameday_flags
+                                          or weekday_flags or venue_flags) else "low",
                  "flags": pre_pass_flags + [api_note]}
-            _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note], phantom_flags)
+            _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note], phantom_flags,
+                            gameday_flags, weekday_flags, venue_flags)
             print(json.dumps(v))
             sys.exit(1)
         v = {"verdict": "PASS", "severity": "low", "flags": [api_note]}
-        _write_enriched(v, pre_pass_flags, [], [api_note], phantom_flags)
+        _write_enriched(v, pre_pass_flags, [], [api_note], phantom_flags, gameday_flags,
+                        weekday_flags, venue_flags)
         print(json.dumps(v))
         sys.exit(0)
 
@@ -1267,12 +1784,14 @@ def main():
         if verdict.get("verdict") == "PASS":
             verdict["verdict"] = "FAIL"
             verdict["severity"] = "low"
-        if phantom_flags:
+        if phantom_flags or gameday_flags or weekday_flags or venue_flags:
             verdict["severity"] = _at_least(verdict.get("severity"), "medium")
 
     # Persist enriched verdict for the evals dashboard if JUDGE_RESULT_PATH is set.
     # This does NOT affect stdout or exit code — publish.py's existing parsing is unaffected.
-    _write_enriched(verdict, pre_pass_flags, llm_flags, phantom_flags=phantom_flags)
+    _write_enriched(verdict, pre_pass_flags, llm_flags, phantom_flags=phantom_flags,
+                    gameday_flags=gameday_flags, weekday_flags=weekday_flags,
+                    venue_flags=venue_flags)
 
     for f in verdict.get("flags", []):
         print(f"  flag: {flag_line(f)}", file=sys.stderr)

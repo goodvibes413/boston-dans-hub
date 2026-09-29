@@ -1,0 +1,132 @@
+{
+  "_fixture_notes": "The 2026-09-26 venue bleed. The Cubs series is at FENWAY (boxscore home: true, venue_note says so). A Rays series that really was in St. Petersburg sits earlier in the same 7-day window with home: false — that stale venue is the trap, and it is in the fixture on purpose. The published brew opened 'What a hell of a day at Fenway. We took both ends of the doubleheader from the Cubs' and closed three paragraphs later with 'We close out the series against the Cubs on Sunday in Florida... Let us hope the flight down to St. Petersburg is smooth' — one home series placed in two states inside one post. PASS: every place reference for the Cubs games is Fenway/Boston or no place at all, and the Rays games (if mentioned) are the only ones allowed any road framing. FAIL: any travel, flight, 'on the road' or non-Boston city attached to the Cubs; naming the Rays' park for a Cubs game; naming ANY opposing venue the data omits. Run the output through safety_judge.py too — detect_venue_contradiction() and rule 18 should both catch a failing generation.",
+  "today": "2026-09-26",
+  "upcoming_schedule": {
+    "generated_at": "2026-09-26T08:00:00+00:00",
+    "from_date": "2026-09-26",
+    "to_date": "2026-09-30",
+    "game_count": 2,
+    "games": [
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801590",
+        "date": "2026-09-27",
+        "day_of_week": "Sunday",
+        "time_et": "3:05 PM ET",
+        "datetime_utc": "2026-09-27T19:05:00+00:00",
+        "home_team": "Boston Red Sox",
+        "away_team": "Chicago Cubs",
+        "venue": "Fenway Park",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {
+          "day_night": "day",
+          "doubleheader": false,
+          "game_number": 1
+        }
+      },
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801601",
+        "date": "2026-09-29",
+        "day_of_week": "Tuesday",
+        "time_et": "8:00 PM ET",
+        "datetime_utc": "2026-09-30T00:00:00+00:00",
+        "home_team": "New York Yankees",
+        "away_team": "Boston Red Sox",
+        "venue": "Yankee Stadium",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {
+          "day_night": "night",
+          "doubleheader": false,
+          "game_number": 1
+        }
+      }
+    ]
+  },
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-09-26",
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-09-26",
+            "game_day_of_week": "Saturday",
+            "played": true,
+            "season_type": "regular",
+            "home": true,
+            "opponent": "Chicago Cubs",
+            "venue_note": "HOME game at Fenway Park (Boston) vs the Chicago Cubs",
+            "doubleheader": true,
+            "games": [
+              {
+                "game_number": 1,
+                "opponent": "Chicago Cubs",
+                "home": true,
+                "our_score": 4,
+                "their_score": 3,
+                "won": true
+              },
+              {
+                "game_number": 2,
+                "opponent": "Chicago Cubs",
+                "home": true,
+                "our_score": 2,
+                "their_score": 0,
+                "won": true
+              }
+            ]
+          },
+          "news": {
+            "generated_at": "2026-09-26T08:00:00+00:00",
+            "headlines": []
+          }
+        }
+      },
+      {
+        "date": "2026-09-21",
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-09-20",
+            "game_day_of_week": "Sunday",
+            "played": true,
+            "season_type": "regular",
+            "home": false,
+            "opponent": "Tampa Bay Rays",
+            "venue_note": "ROAD game at the Tampa Bay Rays — the data does not name the venue, so do not name one",
+            "our_score": 3,
+            "their_score": 5,
+            "won": false
+          },
+          "news": {
+            "generated_at": "2026-09-21T08:00:00+00:00",
+            "headlines": []
+          }
+        }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {},
+    "current_season": {
+      "redsox": {
+        "record": "87-72",
+        "standing": "2nd in AL East",
+        "status": "in_season"
+      }
+    }
+  },
+  "latest_news": {
+    "stories": []
+  },
+  "boston_drafts": {
+    "active_drafts": []
+  },
+  "boston_roster": {},
+  "recent_dan_output": []
+}

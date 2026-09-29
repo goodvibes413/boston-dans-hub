@@ -431,6 +431,9 @@ def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
             13: "A story blended into another team's paragraph without naming the team",
             14: "A must-cover milestone (trade, signing, firing) missing from the brew",
             15: "Claims a game today that the upcoming schedule does not list",
+            16: "A team plays today and the brew never covers the matchup",
+            17: "Names the wrong weekday for a game already played",
+            18: "Puts a game somewhere it was not played",
         }
         rules = [
             {"number": n, "title": RULE_TITLES[n], "summary": rule_summaries.get(n, "")}
@@ -751,7 +754,8 @@ def main():
         "total_attempts": 0,
         "generation_seconds": None,
         "pre_pass": {"repetition_check": "unknown", "schedule_check": "unknown",
-                     "flagged_phrases": []},
+                     "gameday_check": "unknown", "weekday_check": "unknown",
+                     "venue_check": "unknown", "flagged_phrases": []},
         "attempts": [],
     }
 
@@ -796,7 +800,7 @@ def main():
             attempt_duration = round(time.time() - attempt_start, 1)
 
             # Deterministic coverage check, merged into the judge's verdict. The
-            # judge is an LLM reading a 14-rule checklist and it has already let
+            # judge is an LLM reading a long rule checklist and it has already let
             # a missed-game post through; this cannot.
             coverage_flags = check_coverage_window(raw_output)
             if coverage_flags:
@@ -820,17 +824,25 @@ def main():
             if enriched:
                 pre_pass_flags = enriched.get("pre_pass_flags", [])
                 phantom_flags = enriched.get("phantom_game_flags", [])
+                gameday_flags = enriched.get("gameday_omission_flags", [])
+                weekday_flags = enriched.get("wrong_weekday_flags", [])
+                venue_flags = enriched.get("wrong_venue_flags", [])
                 # Reported separately: the dashboard maps repetition_check to rule
                 # 10, so a schedule flag folded in there would blame voice repetition
                 # for a phantom game. Fall back to the whole pre-pass list for an
                 # enriched verdict written before the split existed.
                 repetition_flags = enriched.get(
                     "repetition_flags",
-                    [f for f in pre_pass_flags if f not in phantom_flags],
+                    [f for f in pre_pass_flags
+                     if f not in phantom_flags and f not in gameday_flags
+                     and f not in weekday_flags and f not in venue_flags],
                 )
                 evals_doc["pre_pass"] = {
                     "repetition_check": "fail" if repetition_flags else "pass",
                     "schedule_check": "fail" if phantom_flags else "pass",
+                    "gameday_check": "fail" if gameday_flags else "pass",
+                    "weekday_check": "fail" if weekday_flags else "pass",
+                    "venue_check": "fail" if venue_flags else "pass",
                     "flagged_phrases": pre_pass_flags,
                 }
 

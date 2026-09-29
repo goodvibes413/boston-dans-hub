@@ -1,0 +1,184 @@
+{
+  "_fixture_notes": "The 2026-09-20 game-day omission. It is a Sunday: Steelers at Patriots at 1:00 PM ET and the Sox play in Tampa at 1:40. ROLLING_7DAY has a Red Sox loss and nothing at all for the Patriots, because an NFL team plays once a week and has not played on the morning of its own game. That is the trap: every backward-looking signal in the payload points at baseball, and the only thing that says football is happening today is UPCOMING_SCHEDULE (hoisted into GAMES_TODAY). The published post that day was three Red Sox paragraphs in which the word 'football' never appeared. PASS: the Patriots get their own beat naming the Steelers and what Dan expects, framed as a look forward with NO result, and the Sox stretch-run loss is still covered. FAIL: no Patriots mention at all; a passing clause instead of a real beat; or any result for either game (both are rule 15's ceiling, not this fixture's point). Run the output through safety_judge.py too — detect_gameday_omission() and rule 16 should both catch a failing generation.",
+  "today": "2026-09-20",
+  "upcoming_schedule": {
+    "generated_at": "2026-09-20T08:00:00+00:00",
+    "from_date": "2026-09-20",
+    "to_date": "2026-09-23",
+    "game_count": 4,
+    "games": [
+      {
+        "sport": "NFL",
+        "team": "patriots",
+        "game_id": "401773011",
+        "date": "2026-09-20",
+        "day_of_week": "Sunday",
+        "time_et": "1:00 PM ET",
+        "datetime_utc": "2026-09-20T17:00:00+00:00",
+        "home_team": "New England Patriots",
+        "away_team": "Pittsburgh Steelers",
+        "venue": "Gillette Stadium",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {}
+      },
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801501",
+        "date": "2026-09-20",
+        "day_of_week": "Sunday",
+        "time_et": "1:40 PM ET",
+        "datetime_utc": "2026-09-20T17:40:00+00:00",
+        "home_team": "Tampa Bay Rays",
+        "away_team": "Boston Red Sox",
+        "venue": "Tropicana Field",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {
+          "day_night": "day",
+          "doubleheader": false,
+          "game_number": 1
+        }
+      },
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801502",
+        "date": "2026-09-22",
+        "day_of_week": "Tuesday",
+        "time_et": "6:45 PM ET",
+        "datetime_utc": "2026-09-22T22:45:00+00:00",
+        "home_team": "Boston Red Sox",
+        "away_team": "Cleveland Guardians",
+        "venue": "Fenway Park",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {
+          "day_night": "night",
+          "doubleheader": false,
+          "game_number": 1
+        }
+      },
+      {
+        "sport": "MLB",
+        "team": "redsox",
+        "game_id": "801503",
+        "date": "2026-09-23",
+        "day_of_week": "Wednesday",
+        "time_et": "7:10 PM ET",
+        "datetime_utc": "2026-09-23T23:10:00+00:00",
+        "home_team": "Boston Red Sox",
+        "away_team": "Cleveland Guardians",
+        "venue": "Fenway Park",
+        "status": "Scheduled",
+        "season_type": "regular",
+        "broadcast": null,
+        "notes": {
+          "day_night": "night",
+          "doubleheader": false,
+          "game_number": 1
+        }
+      }
+    ]
+  },
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-09-20",
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-09-19",
+            "played": true,
+            "season_type": "regular",
+            "home_team": "Tampa Bay Rays",
+            "away_team": "Boston Red Sox",
+            "home_score": 2,
+            "away_score": 1,
+            "result": "L",
+            "venue": "Tropicana Field",
+            "notable": [
+              {
+                "name": "Brayan Bello",
+                "line": "8.0 IP, 4 H, 1 ER, 1 BB, 11 K"
+              },
+              {
+                "name": "Garrett Whitlock",
+                "line": "0.2 IP, 3 H, 2 ER, 1 BB, 0 K"
+              }
+            ]
+          },
+          "news": {
+            "generated_at": "2026-09-20T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "patriots": {
+          "boxscore": {
+            "game_date": "2026-09-19",
+            "played": false,
+            "season_type": "regular"
+          },
+          "news": {
+            "generated_at": "2026-09-20T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "celtics": {
+          "boxscore": {
+            "game_date": "2026-09-19",
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "generated_at": "2026-09-20T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "bruins": {
+          "boxscore": {
+            "game_date": "2026-09-19",
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "generated_at": "2026-09-20T08:00:00+00:00",
+            "headlines": []
+          }
+        }
+      }
+    ]
+  },
+  "season_memory": {
+    "past_seasons": {},
+    "current_season": {
+      "redsox": {
+        "record": "84-71",
+        "standing": "2nd in AL East",
+        "status": "in_season",
+        "playoff_race": {
+          "race_status": "in_position",
+          "wild_card_rank": 2,
+          "wild_card_games_up": 1.5,
+          "games_remaining": 7
+        }
+      },
+      "patriots": {
+        "record": "1-1",
+        "standing": "2nd in AFC East",
+        "status": "in_season"
+      }
+    }
+  },
+  "latest_news": {
+    "stories": []
+  },
+  "boston_drafts": {
+    "active_drafts": []
+  },
+  "boston_roster": {},
+  "recent_dan_output": []
+}
