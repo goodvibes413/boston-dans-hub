@@ -989,6 +989,90 @@ def compute_emotional_context(rolling: dict, grudges: dict | None) -> dict:
     return context
 
 
+# Where each Boston team plays its home games. Used to turn the boxscores' bare
+# `"home": true` boolean into something Dan can copy instead of infer. There is
+# deliberately no entry for anybody else's park: a road game's venue is only
+# named when UPCOMING_SCHEDULE supplies it, never guessed from the opponent.
+# fetch_schedule.py writes these exact strings as home_team/away_team, so which
+# side is Boston is a lookup rather than a guess.
+BOSTON_FULL_NAMES = {
+    "redsox":   "Boston Red Sox",
+    "celtics":  "Boston Celtics",
+    "bruins":   "Boston Bruins",
+    "patriots": "New England Patriots",
+}
+
+HOME_VENUES = {
+    "redsox":   "Fenway Park (Boston)",
+    "celtics":  "TD Garden (Boston)",
+    "bruins":   "TD Garden (Boston)",
+    "patriots": "Gillette Stadium (Foxborough)",
+}
+
+
+def annotate_rolling_venues(rolling):
+    """
+    Turn each boxscore's `"home"` boolean into a plain-English `venue_note`.
+
+    Every fetcher writes `"home": true/false` on its boxscore and NONE of them
+    writes a venue. So "we were at Fenway" was a two-step inference — read the
+    boolean, remember which park this team plays in — and "we were on the road"
+    named no place at all.
+
+    2026-09-26 is the bill: the brew opened "What a hell of a day at Fenway. We
+    took both ends of the doubleheader from the Cubs" and closed, three
+    paragraphs later, with "We close out the series against the Cubs on Sunday in
+    Florida... Let us hope the flight down to St. Petersburg is smooth." Both
+    about the same home series. The Rays series that really was in St. Petersburg
+    had ended a week earlier and was still sitting in the rolling window.
+
+    A home game gets its actual park. A road game says "on the road at <opponent>"
+    and NOTHING about the venue, because the boxscore does not carry one and the
+    opponent's park is not ours to invent — that is the mistake this exists to
+    stop, not a gap to paper over.
+    """
+    if not isinstance(rolling, dict):
+        return rolling
+
+    def _note(team_key, box):
+        if "home" not in box:
+            return None
+        opponent = str(box.get("opponent") or "").strip()
+        if box.get("home"):
+            venue = HOME_VENUES.get(team_key)
+            where = f"HOME game at {venue}" if venue else "HOME game"
+            return f"{where}{f' vs the {opponent}' if opponent else ''}"
+        at_whom = f" at the {opponent}" if opponent else ""
+        return (f"ROAD game{at_whom} — the data does not name the venue, "
+                f"so do not name one")
+
+    days = rolling.get("days")
+    if not isinstance(days, list):
+        return rolling
+    out = dict(rolling)
+    new_days = []
+    for day_entry in days:
+        if not isinstance(day_entry, dict):
+            new_days.append(day_entry)
+            continue
+        day_out = dict(day_entry)
+        for team_key in TEAM_KEYS:
+            team_data = day_out.get(team_key)
+            if not isinstance(team_data, dict):
+                continue
+            box = team_data.get("boxscore")
+            if not isinstance(box, dict) or "venue_note" in box:
+                continue
+            note = _note(team_key, box)
+            if note:
+                team_out = dict(team_data)
+                team_out["boxscore"] = {**box, "venue_note": note}
+                day_out[team_key] = team_out
+        new_days.append(day_out)
+    out["days"] = new_days
+    return out
+
+
 def annotate_rolling_weekdays(rolling):
     """
     Add a "game_day_of_week" beside every "game_date" in the rolling store.
@@ -1068,13 +1152,21 @@ def compute_games_today(schedule, today_iso: str | None = None) -> list[dict]:
         home = game.get("home_team", "")
         away = game.get("away_team", "")
         matchup = f"{away} at {home}" if away and home else (home or away)
+        team_key = game.get("team", "")
+        boston = BOSTON_FULL_NAMES.get(team_key)
+        is_home = bool(boston) and str(home).strip() == boston
         today_games.append({
-            "team":        game.get("team", ""),
+            "team":        team_key,
             "sport":       game.get("sport", ""),
             "matchup":     matchup,
             "time_et":     game.get("time_et", "TBD"),
             "day_of_week": game.get("day_of_week", ""),
             "date":        str(game.get("date", ""))[:10],
+            # Spelled out for the same reason day_of_week is: home_team/away_team
+            # are both here and which one is us is an inference. On 2026-09-26 a
+            # home series against the Cubs was written up as a trip to Florida.
+            "home_or_away": "home" if is_home else "away",
+            "venue":        game.get("venue", "") or "not in the data",
         })
     return today_games
 
@@ -1294,7 +1386,8 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
         message += (
             "GAMES_TODAY (Boston teams playing TODAY — every one of these MUST get "
             "real estate in morning_brew, as a LOOK FORWARD with NO result. The game "
-            "has not been played when this posts):\n"
+            "has not been played when this posts. `home_or_away` and `venue` say "
+            "WHERE: copy them, never infer the city from the matchup):\n"
             f"{json.dumps(games_today, indent=2)}\n\n"
         )
     else:
@@ -1712,7 +1805,7 @@ def main():
     emotional_context = compute_emotional_context(rolling, grudges)
     # Weekday names attached to results BEFORE the store reaches the prompt, so
     # Dan copies the day rather than deriving it. See annotate_rolling_weekdays().
-    rolling = annotate_rolling_weekdays(rolling)
+    rolling = annotate_rolling_venues(annotate_rolling_weekdays(rolling))
     games_today = compute_games_today(schedule, today_iso)
     coverage_allocation = compute_coverage_allocation(
         season_overrides, season_current, rolling, games_today=games_today

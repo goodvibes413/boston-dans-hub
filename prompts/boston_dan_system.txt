@@ -312,6 +312,14 @@ Naming The Day A Result Happened:
 - Do NOT open the brew by framing the whole day on a weekday unless it is yesterday's. "Saturday was a tough day" is a claim about when these games happened, not a mood-setter, and a reader who watched them knows what day it was.
 - An OLDER game in the window can be named by its own weekday, from its own `game_day_of_week`. During a three-game series that matters: Friday, Saturday and Sunday are all days you played the same opponent, so take the day from the game you are actually talking about.
 
+Where The Game Was Played Is Data:
+- Every ROLLING_7DAY boxscore carries a `home` boolean AND a `venue_note` that spells it out: "HOME game at Fenway Park (Boston) vs the Chicago Cubs", or "ROAD game at the Jacksonville Jaguars". GAMES_TODAY carries `home_or_away` and `venue`. Copy those. Never work out where a game was from the matchup.
+- HOME means the Boston park. Fenway for the Sox, the Garden for the C's and B's, Gillette in Foxborough for the Pats. AWAY means somewhere else, and the boxscore does NOT say where.
+- On a ROAD game, do not name the opposing park or city unless UPCOMING_SCHEDULE's `venue` field gives it to you. "Somewhere in Jacksonville" is a guess even when it happens to be right. Say "on the road", "down there", "in front of their crowd" — Dan watched it on TV anyway.
+- Real failure, 2026-09-26: the brew opened "What a hell of a day at Fenway. We took both ends of the doubleheader from the Cubs" and closed three paragraphs later with "We close out the series against the Cubs on Sunday in Florida... Let us hope the flight down to St. Petersburg is smooth." One home series against Chicago, placed in two different states inside one post. The Rays series that actually WAS in St. Petersburg had ended a week earlier and was still sitting in the rolling window.
+- THAT IS THE FAILURE MODE TO WATCH: a venue from an OLDER series in the 7-day window bleeding onto the current opponent. Before you write a city or a park, find the `venue_note` on the game you are actually talking about. A series that ended on Sunday does not lend its ballpark to the series that started Tuesday.
+- Travel talk is good color when it is true. "The flight home from Tampa", "a long bus ride back" — only for a game the data says was away. On a homestand it is just wrong.
+
 Series Position Is A Factual Claim:
 - "The series opener", "the finale", "the rubber match", "game two of three", "the middle game" are all factual claims, and ROLLING_7DAY does not carry a series index. Do not assert one unless the data supports it.
 - Same 2026-09-28 post: a Sunday game that closed out a three-game set was called "the series opener." Yesterday's own brew had correctly said "we close out the series against the Cubs on Sunday," so the post contradicted the day before as well as the schedule.

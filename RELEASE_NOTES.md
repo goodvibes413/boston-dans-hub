@@ -5,6 +5,82 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-29 — One home series, two states: where the game was played is data too
+
+Spotted while fixing the weekday bug, in the 2026-09-26 brew. Paragraph 1: *"What a hell
+of a day at Fenway. We took both ends of the doubleheader from the Cubs."* Paragraph 3,
+same post: *"We close out the series against the Cubs on Sunday in Florida… Let us hope
+the flight down to St. Petersburg is smooth."*
+
+One home series against Chicago, placed in two different states inside one post. The
+schedule said `home_team: "Boston Red Sox"` for all three games. St. Petersburg came from
+the **Rays** series, which had ended a week earlier and was still sitting in the rolling
+7-day window.
+
+### Third instance of one root cause
+
+Every fetcher writes `"home": true/false` on its boxscore. **None of them writes a venue.**
+So "we were at Fenway" was a two-step inference — read the boolean, remember which park
+this team plays in — and "we were on the road" named no place at all, leaving the nearest
+plausible city in the context window to fill the gap. The persona prompt had no venue rule
+whatsoever; the only mention of a ballpark was the Yawkey Way aside.
+
+That is the same shape as the two bugs before it, and the pattern is now worth naming
+outright, which `AGENTS.md` does:
+
+| Date | What Dan was left to derive | What should have been stated |
+|---|---|---|
+| 2026-09-10 | is there a game today? | the schedule, actually read |
+| 2026-09-20 | which of these games is today? | `GAMES_TODAY` |
+| 2026-09-28 | what weekday is `2026-09-27`? | `game_day_of_week`, `YESTERDAY:` |
+| 2026-09-26 | where does `"home": true` put us? | `venue_note`, `home_or_away` |
+
+**If a fact needs a second step to be useful, take the second step in Python.** A
+derivation the model performs correctly nine days out of ten is a bug with a ten-day fuse,
+and prompt text does not fix it: 2026-09-20 was already covered explicitly by the prompt
+and shipped anyway.
+
+### What shipped
+
+- **`annotate_rolling_venues()`** turns the boolean into prose: `"HOME game at Fenway Park
+  (Boston) vs the Chicago Cubs"`, or `"ROAD game at the Jacksonville Jaguars — the data
+  does not name the venue, so do not name one"`.
+- **`GAMES_TODAY` gained `home_or_away` and `venue`**, and says `"not in the data"` rather
+  than leaving the field blank for something to fill.
+- **Rule 18 (wrong place named for a game)** and `detect_venue_contradiction()`.
+- **A persona section, Where The Game Was Played Is Data**, which names the actual failure
+  mode: a venue from an older series in the window bleeding onto the current opponent.
+
+### A road game's venue is not ours to invent
+
+The deliberate choice here: on a road game the note refuses to name a park, and the prompt
+says so twice. `HOME_VENUES` has no entry for anybody else's stadium. Guessing
+"EverBank Stadium" for a Patriots game in Jacksonville would usually be right, and that is
+exactly the habit that produced St. Petersburg. `UPCOMING_SCHEDULE`'s `venue` field is the
+only license for a specific park.
+
+### Verification
+
+`detect_venue_contradiction()` is anchored on a game's `home` boolean, requires the
+paragraph to name that game's opponent, reads only explicit travel phrases ("the flight
+down to", "on the road") rather than bare prepositions, and takes the forward-marker veto.
+Bare prepositions were never an option: "the Chicago Cubs" and "Tampa Bay lost again"
+would otherwise light up every paragraph in the archive.
+
+Adversarial probe — all ten archived brews from 2026-09-19 onward, **forced to `home:
+true`**, the worst case for travel-phrase misfires: **one flag, on 2026-09-26.** Nine
+clean. The detector also passes the 2026-09-28 post both ways (home loss to the Cubs
+written at Fenway, road loss in Jacksonville with no Boston park named).
+
+### Also fixed here
+
+Two `AGENTS.md` edits in the rule-17 commit used `str.replace` without an assert and
+silently no-op'd, so the rubric sentence never learned about rules 17 and 18. Every doc
+edit in this change asserts its target first. A silent no-op in a docs update is how a
+source-of-truth file drifts.
+
+---
+
 ## 2026-09-28 — "Saturday was a tough day" on a Monday, about Sunday's games
 
 Both of yesterday's games — Cubs at Fenway, Patriots in Jacksonville, `game_date`

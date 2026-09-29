@@ -3071,5 +3071,180 @@ class TestRollingWeekdayAnnotation(unittest.TestCase):
                 {}, [], [], {}, today_iso="not-a-date")
 
 
+class TestVenueContradiction(unittest.TestCase):
+    """The 2026-09-26 bug: one brew opened "What a hell of a day at Fenway. We took
+    both ends of the doubleheader from the Cubs" and closed three paragraphs later
+    with "We close out the series against the Cubs on Sunday in Florida... Let us
+    hope the flight down to St. Petersburg is smooth." One home series, two states.
+    The Rays series that really was in St. Petersburg had ended a week earlier and
+    was still in the rolling window.
+
+    Cause, for the third time in this family: the fetchers write a bare
+    `"home": true/false` and no venue, so the park was a boolean plus a memory."""
+
+    TODAY = "2026-09-26"
+
+    def _rolling(self, team="redsox", home=True, opponent="Chicago Cubs",
+                 game_date="2026-09-26"):
+        return {"days": [{"date": self.TODAY,
+                          team: {"boxscore": {"game_date": game_date, "played": True,
+                                              "home": home, "opponent": opponent}}}]}
+
+    def _post(self, *paragraphs):
+        return {"headline": "Red Sox sweep the twin bill", "morning_brew": list(paragraphs)}
+
+    PUBLISHED_TAIL = (
+        "We close out the series against the Cubs on Sunday in Florida, and then the "
+        "real business begins against the Yankees. Let us hope the flight down to St. "
+        "Petersburg is smooth and we finish this regular season on a high note."
+    )
+
+    def test_the_published_2026_09_26_travel_claim_is_flagged(self):
+        flags = safety_judge.detect_venue_contradiction(
+            self._post("What a hell of a day at Fenway. We took both ends of the "
+                       "doubleheader from the Cubs.",
+                       self.PUBLISHED_TAIL),
+            self._rolling(), self.TODAY)
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("HOME game", flags[0])
+
+    def test_a_correct_home_writeup_passes(self):
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("What a day at Fenway. We took both from the Cubs and the "
+                           "place was absolutely electric."),
+                self._rolling(), self.TODAY),
+            [])
+
+    def test_a_road_game_placed_at_a_boston_park_is_flagged(self):
+        flags = safety_judge.detect_venue_contradiction(
+            self._post("The Jaguars ran us out of Gillette and I am sick about it."),
+            self._rolling(team="patriots", home=False,
+                          opponent="Jacksonville Jaguars"),
+            self.TODAY)
+        self.assertEqual(len(flags), 1, flags)
+        self.assertIn("ROAD game", flags[0])
+
+    def test_a_correct_road_writeup_passes(self):
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("We lost to the Jaguars and the whole afternoon was ugly "
+                           "from the opening drive."),
+                self._rolling(team="patriots", home=False,
+                              opponent="Jacksonville Jaguars"),
+                self.TODAY),
+            [])
+
+    def test_a_city_inside_a_team_name_is_not_a_place_claim(self):
+        """"the Chicago Cubs" and "Tampa Bay lost" would light up every paragraph
+        if a bare preposition or city counted as travel."""
+        for para in ("The Chicago Cubs came into Fenway and took one from us.",
+                     "We handled the Cubs while Tampa Bay was busy losing again.",
+                     "Chicago is a good team and they showed it at Fenway."):
+            with self.subTest(para=para):
+                self.assertEqual(
+                    safety_judge.detect_venue_contradiction(
+                        self._post(para), self._rolling(), self.TODAY),
+                    [])
+
+    def test_forward_travel_talk_is_the_schedules_business(self):
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("We beat the Cubs, and we head to the Bronx on Tuesday "
+                           "for the Yankees."),
+                self._rolling(), self.TODAY),
+            [])
+
+    def test_a_paragraph_that_never_names_the_opponent_is_unattributable(self):
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("The flight down to St. Petersburg better be smooth."),
+                self._rolling(), self.TODAY),
+            [])
+
+    def test_a_boxscore_with_no_home_flag_is_not_a_claim_to_check(self):
+        rolling = {"days": [{"date": self.TODAY, "redsox": {"boxscore": {
+            "game_date": self.TODAY, "played": True, "opponent": "Chicago Cubs"}}}]}
+        self.assertEqual(
+            safety_judge.detect_venue_contradiction(
+                self._post("We beat the Cubs and the flight down to St. Petersburg "
+                           "was rough."),
+                rolling, self.TODAY),
+            [])
+
+    def test_rule_18_is_registered_everywhere_it_is_read(self):
+        self.assertIn(18, safety_judge.RULE_TITLES)
+        self.assertEqual(
+            safety_judge.flag_rule(safety_judge.make_flag(18, "x")), 18)
+        self.assertEqual(
+            safety_judge.flag_rule("wrong game place: the redsox game"), 18)
+
+
+class TestRollingVenueAnnotation(unittest.TestCase):
+    """venue_note is what makes "copy where it was" possible. Before it existed the
+    boxscore offered a boolean and the park had to be remembered per team."""
+
+    def test_a_home_game_names_the_park(self):
+        out = generate_rant.annotate_rolling_venues({"days": [{"date": "2026-09-26",
+            "redsox": {"boxscore": {"home": True, "opponent": "Chicago Cubs"}}}]})
+        note = out["days"][0]["redsox"]["boxscore"]["venue_note"]
+        self.assertIn("HOME game at Fenway Park (Boston)", note)
+        self.assertIn("Chicago Cubs", note)
+
+    def test_a_road_game_refuses_to_name_a_venue(self):
+        """The boxscore has no venue for a road game, and the opponent's park is
+        not ours to invent — that is the mistake this exists to stop."""
+        out = generate_rant.annotate_rolling_venues({"days": [{"date": "2026-09-27",
+            "patriots": {"boxscore": {"home": False,
+                                      "opponent": "Jacksonville Jaguars"}}}]})
+        note = out["days"][0]["patriots"]["boxscore"]["venue_note"]
+        self.assertIn("ROAD game at the Jacksonville Jaguars", note)
+        self.assertIn("does not name the venue", note)
+        self.assertNotIn("Gillette", note)
+
+    def test_every_team_has_a_home_venue(self):
+        for team in generate_rant.TEAM_KEYS:
+            self.assertIn(team, generate_rant.HOME_VENUES)
+
+    def test_no_home_flag_means_no_note(self):
+        out = generate_rant.annotate_rolling_venues({"days": [{"date": "2026-09-26",
+            "redsox": {"boxscore": {"opponent": "Chicago Cubs"}}}]})
+        self.assertNotIn("venue_note", out["days"][0]["redsox"]["boxscore"])
+
+    def test_the_caller_dict_is_not_mutated(self):
+        rolling = {"days": [{"date": "2026-09-26",
+                             "redsox": {"boxscore": {"home": True,
+                                                     "opponent": "Chicago Cubs"}}}]}
+        generate_rant.annotate_rolling_venues(rolling)
+        self.assertNotIn("venue_note", rolling["days"][0]["redsox"]["boxscore"])
+
+    def test_a_non_dict_store_passes_through(self):
+        for value in (None, [], "nope", {"days": "not a list"}):
+            with self.subTest(value=value):
+                self.assertEqual(
+                    generate_rant.annotate_rolling_venues(value), value)
+
+    def test_games_today_states_home_or_away_and_venue(self):
+        schedule = {"games": [
+            {"sport": "MLB", "team": "redsox", "date": "2026-09-27",
+             "home_team": "Boston Red Sox", "away_team": "Chicago Cubs",
+             "venue": "Fenway Park", "time_et": "3:05 PM ET"},
+            {"sport": "NFL", "team": "patriots", "date": "2026-09-27",
+             "home_team": "Jacksonville Jaguars", "away_team": "New England Patriots",
+             "venue": "EverBank Stadium", "time_et": "1:00 PM ET"}]}
+        games = generate_rant.compute_games_today(schedule, "2026-09-27")
+        by_team = {g["team"]: g for g in games}
+        self.assertEqual(by_team["redsox"]["home_or_away"], "home")
+        self.assertEqual(by_team["redsox"]["venue"], "Fenway Park")
+        self.assertEqual(by_team["patriots"]["home_or_away"], "away")
+
+    def test_a_missing_schedule_venue_says_so_rather_than_guessing(self):
+        schedule = {"games": [{"sport": "MLB", "team": "redsox", "date": "2026-09-27",
+                               "home_team": "Boston Red Sox",
+                               "away_team": "Chicago Cubs"}]}
+        game = generate_rant.compute_games_today(schedule, "2026-09-27")[0]
+        self.assertEqual(game["venue"], "not in the data")
+
+
 if __name__ == "__main__":
     unittest.main()

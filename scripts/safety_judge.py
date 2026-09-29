@@ -90,6 +90,7 @@ RULE_TITLES = {
     15: "Phantom scheduled game",
     16: "Game-day omission",
     17: "Wrong day named for a result",
+    18: "Wrong place named for a game",
 }
 
 # Flags are {"rule": int, "detail": str}. They used to be free prose in which the
@@ -125,6 +126,7 @@ JUDGE_RESPONSE_SCHEMA = {
 # Wordings the deterministic pre-passes and publish.py's coverage check use.
 # Only consulted for legacy string flags that carry no explicit "rule N".
 _LEGACY_FLAG_RULES = (
+    ("wrong game place", 18),
     ("wrong game day", 17),
     ("game-day omission", 16),
     ("phantom game", 15),
@@ -356,7 +358,7 @@ Review the following sports commentary and return ONLY a JSON object with keys:
   verdict   ("PASS" or "FAIL")
   severity  ("low", "medium" or "high")
   flags     (list of objects — empty list if PASS. Each object is
-             {"rule": <the NUMBER of the rule below that this violates, 1-17>,
+             {"rule": <the NUMBER of the rule below that this violates, 1-18>,
               "detail": "<one sentence naming what in the output violates it,
                           quoting the offending phrase>"})
 
@@ -541,6 +543,28 @@ FAIL if ANY of these are present:
       rolling_7day carries no series index. The 2026-09-28 post called a Sunday game
       "the series opener" when it was the last of three. Stay qualitative unless the
       data says otherwise.
+18. Wrong place named for a game — the output puts a game somewhere it was not played.
+    Flag as MEDIUM severity.
+    - Every boxscore carries a `home` boolean, and this prompt's ROLLING_7DAY adds a
+      `venue_note` spelling it out ("HOME game at Fenway Park (Boston) vs the Chicago
+      Cubs", or "ROAD game at the ..."). GAMES_TODAY carries `home_or_away` and `venue`.
+      A place claim must match those.
+    - On 2026-09-26 one brew said "What a hell of a day at Fenway. We took both ends of
+      the doubleheader from the Cubs" and then, three paragraphs later, "We close out the
+      series against the Cubs on Sunday in Florida... Let us hope the flight down to St.
+      Petersburg is smooth." Same home series, two different states. The Rays series that
+      really was in St. Petersburg had ended a week earlier and was still in the rolling
+      window — a stale venue bleeding onto a current opponent.
+    - Flag BOTH directions: a HOME game described as a road trip ("down in", "the flight
+      to", "on the road"), and a ROAD game placed at a Boston park ("back at Fenway",
+      "at the Garden") when the data says away.
+    - A ROAD game's venue is NOT in the boxscore data. Naming the opponent's park or city
+      when nothing supplies it is a fabrication under this rule even if it happens to be
+      right — UPCOMING_SCHEDULE's `venue` field is the only license for a specific park.
+    - Forward-looking travel talk about a game the schedule really does place on the road
+      is fine ("we head to the Bronx on Tuesday" when UPCOMING_SCHEDULE says so).
+    - Naming a team's CITY as part of its name ("the Chicago Cubs", "Tampa Bay") is not a
+      place claim about the game. Only a statement about where the game happened is.
 
 DOUBLEHEADER INTERPRETATION (applies to rules 7, 8, and 12):
 Two games between the same teams on the same game_date in rolling_7day — a "games"
@@ -1381,6 +1405,117 @@ def detect_wrong_game_weekday(today: dict, rolling, schedule=None,
     return flags
 
 
+# "We travelled" markers. A HOME game described with one of these is placed in the
+# wrong state. Deliberately explicit phrases only — "at" and "in" are far too
+# common to read as travel, and "Chicago Cubs" must never register as a place.
+VENUE_ROAD_MARKERS = [
+    r"\bon the road\b", r"\broad trip\b", r"\broad game\b",
+    r"\bthe flight (?:down|up|out|over|back)?\s*to\b", r"\bflying (?:down|out|up)\b",
+    r"\btravel(?:s|ling|ing)? (?:down|up|out)? ?to\b",
+    r"\bthe trip (?:down|up|out|over) to\b",
+    r"\baway from (?:home|the fens|fenway)\b",
+    r"\bin enemy territory\b", r"\bhostile (?:crowd|building|territory)\b",
+]
+
+# A place claim pointing at a game still to come is rule 15's business, not this
+# check's — the same veto list the weekday check uses.
+VENUE_FORWARD_MARKERS = WEEKDAY_FORWARD_MARKERS
+
+
+def detect_venue_contradiction(today: dict, rolling, today_iso: str | None = None) -> list[str]:
+    """
+    Deterministic pre-pass: flag a game placed on the wrong side of home.
+
+    Third in the family after detect_phantom_game and detect_wrong_game_weekday,
+    and the same root cause each time: the data is right there and the model was
+    left to derive from it. Every fetcher writes `"home": true/false` on its
+    boxscore and none writes a venue, so "we were at Fenway" was a boolean plus a
+    memory of which park this team uses, and "we were on the road" named no place
+    at all.
+
+    2026-09-26 is the case: "What a hell of a day at Fenway. We took both ends of
+    the doubleheader from the Cubs" and, three paragraphs later, "We close out the
+    series against the Cubs on Sunday in Florida... Let us hope the flight down to
+    St. Petersburg is smooth." One home series, two states. The Rays series that
+    really was in St. Petersburg had ended a week earlier and was still sitting in
+    the rolling window.
+
+    generate_rant.annotate_rolling_venues() closes the derivation; this notices
+    when the place is wrong anyway.
+
+    Conservative by construction:
+
+    - Anchored on games in the rolling window with a `home` boolean. No boolean,
+      no claim to check.
+    - The paragraph must NAME that game's opponent, so the place claim can be
+      attributed to a specific game.
+    - HOME game + an explicit travel phrase ("the flight down to", "on the road")
+      = flagged. Bare prepositions are never read as travel, because "the Chicago
+      Cubs" and "Tampa Bay lost" would light up every paragraph.
+    - ROAD game + an unambiguous Boston park (Fenway, the Fens, Gillette,
+      Foxborough) = flagged. The Garden is excluded on purpose: two teams share
+      it, so PHANTOM_VENUE_TO_TEAM resolves it to nobody.
+    - A forward marker vetoes either direction — a trip still to come belongs to
+      the schedule and to rule 15.
+
+    Returns MEDIUM-severity flag strings.
+    """
+    if today_iso is None:
+        today_iso = as_of_iso()
+
+    games = [g for g in _rolling_games_by_day(rolling) if "home" in g]
+    if not games:
+        return []
+
+    road_rx = [re.compile(p, re.IGNORECASE) for p in VENUE_ROAD_MARKERS]
+    forward_rx = [re.compile(p, re.IGNORECASE) for p in VENUE_FORWARD_MARKERS]
+    venue_rx = [(re.compile(pat, re.IGNORECASE), team)
+                for pat, team in PHANTOM_VENUE_TO_TEAM.items()]
+
+    flags: list[str] = []
+    seen = set()
+    for paragraph in _paragraph_segments(today):
+        lowered = paragraph.lower()
+        for game in games:
+            team_key = game.get("team")
+            opponents = _opponent_names(game)
+            if not opponents or not any(o in lowered for o in opponents):
+                continue
+            key = (team_key, game.get("game_date"))
+            if key in seen:
+                continue
+
+            for sentence in _split_sentences(paragraph):
+                if any(rx.search(sentence) for rx in forward_rx):
+                    continue
+                opponent = game.get("opponent") or opponents[0]
+                if game.get("home"):
+                    hit = next((rx.pattern for rx in road_rx if rx.search(sentence)), None)
+                    if not hit:
+                        continue
+                    flags.append(
+                        f"wrong game place: the {team_key} game against "
+                        f"{opponent} on {game.get('game_date')} was a HOME game "
+                        f"(boxscore \"home\": true), and the post describes travel. "
+                        f"Copy venue_note from rolling_7day. Sentence: {sentence[:160]}"
+                    )
+                else:
+                    named = next((team for rx, team in venue_rx
+                                  if team == team_key and rx.search(sentence)), None)
+                    if not named:
+                        continue
+                    flags.append(
+                        f"wrong game place: the {team_key} game against "
+                        f"{opponent} on {game.get('game_date')} was a ROAD game "
+                        f"(boxscore \"home\": false), and the post puts it at a "
+                        f"Boston park. Copy venue_note from rolling_7day, and do "
+                        f"not name a venue the data omits. Sentence: {sentence[:160]}"
+                    )
+                seen.add(key)
+                break
+    return flags
+
+
 # Ascending badness. A pre-pass flag can raise a verdict's severity to its floor
 # but never lower it — a HIGH from the LLM judge always wins.
 _SEVERITY_ORDER = ["low", "medium", "high"]
@@ -1398,12 +1533,14 @@ def _at_least(severity: str | None, floor: str) -> str:
 def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
                     all_flags: list | None = None, phantom_flags: list | None = None,
                     gameday_flags: list | None = None,
-                    weekday_flags: list | None = None) -> None:
+                    weekday_flags: list | None = None,
+                    venue_flags: list | None = None) -> None:
     """
     Write an enriched verdict to JUDGE_RESULT_PATH (if set).
     Safe to call at any exit point — failure is logged but never propagated.
 
-    phantom_flags, gameday_flags and weekday_flags are subsets of pre_pass_flags,
+    phantom_flags, gameday_flags, weekday_flags and venue_flags are subsets of
+    pre_pass_flags,
     broken out because the evals dashboard maps the pre-pass to rule 10 (voice
     repetition). Without the split, a schedule flag would light up the
     repetition rule.
@@ -1414,7 +1551,8 @@ def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
     phantom = list(phantom_flags or [])
     gameday = list(gameday_flags or [])
     weekday = list(weekday_flags or [])
-    schedule_related = phantom + gameday + weekday
+    venue = list(venue_flags or [])
+    schedule_related = phantom + gameday + weekday + venue
     enriched = {
         "verdict": verdict.get("verdict"),
         "severity": verdict.get("severity"),
@@ -1424,6 +1562,7 @@ def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
         "phantom_game_flags": phantom,
         "gameday_omission_flags": gameday,
         "wrong_weekday_flags": weekday,
+        "wrong_venue_flags": venue,
         "llm_flags": list(llm_flags),
         "rule_titles": {str(k): v for k, v in RULE_TITLES.items()},
     }
@@ -1552,6 +1691,14 @@ def main():
         print(f"  pre-pass: {len(weekday_flags)} wrong-game-day flag(s) detected", file=sys.stderr)
     pre_pass_flags += weekday_flags
 
+    # Venue pre-pass — MEDIUM with the rest. A fan who was at the park knows
+    # which park it was, so the wrong one is a checkable factual error.
+    venue_flags = [make_flag(18, f) for f in detect_venue_contradiction(
+        today_obj, source_data.get("rolling_7day"), today_iso)]
+    if venue_flags:
+        print(f"  pre-pass: {len(venue_flags)} wrong-game-place flag(s) detected", file=sys.stderr)
+    pre_pass_flags += venue_flags
+
     full_prompt = (
         f"TODAY: {today_iso}\n\n"
         + JUDGE_PROMPT
@@ -1603,15 +1750,15 @@ def main():
         if pre_pass_flags:
             v = {"verdict": "FAIL",
                  "severity": "medium" if (phantom_flags or gameday_flags
-                                          or weekday_flags) else "low",
+                                          or weekday_flags or venue_flags) else "low",
                  "flags": pre_pass_flags + [api_note]}
             _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note], phantom_flags,
-                            gameday_flags, weekday_flags)
+                            gameday_flags, weekday_flags, venue_flags)
             print(json.dumps(v))
             sys.exit(1)
         v = {"verdict": "PASS", "severity": "low", "flags": [api_note]}
         _write_enriched(v, pre_pass_flags, [], [api_note], phantom_flags, gameday_flags,
-                        weekday_flags)
+                        weekday_flags, venue_flags)
         print(json.dumps(v))
         sys.exit(0)
 
@@ -1637,13 +1784,14 @@ def main():
         if verdict.get("verdict") == "PASS":
             verdict["verdict"] = "FAIL"
             verdict["severity"] = "low"
-        if phantom_flags or gameday_flags or weekday_flags:
+        if phantom_flags or gameday_flags or weekday_flags or venue_flags:
             verdict["severity"] = _at_least(verdict.get("severity"), "medium")
 
     # Persist enriched verdict for the evals dashboard if JUDGE_RESULT_PATH is set.
     # This does NOT affect stdout or exit code — publish.py's existing parsing is unaffected.
     _write_enriched(verdict, pre_pass_flags, llm_flags, phantom_flags=phantom_flags,
-                    gameday_flags=gameday_flags, weekday_flags=weekday_flags)
+                    gameday_flags=gameday_flags, weekday_flags=weekday_flags,
+                    venue_flags=venue_flags)
 
     for f in verdict.get("flags", []):
         print(f"  flag: {flag_line(f)}", file=sys.stderr)
