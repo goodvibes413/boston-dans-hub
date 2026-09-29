@@ -436,6 +436,44 @@
       justify-self: end;
     }
 
+    /* SCOREBOARD (team_pulse) — one row per team: phase chip, what is next,
+       what just happened. Built from publish.py's deterministic team_pulse
+       block; buildScoreboardWidget above it is the fallback for older posts. */
+    .tp-rows { display: flex; flex-direction: column; gap: 8px; }
+    .tp-row {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      column-gap: 10px;
+      row-gap: 4px;
+      align-items: center;
+      background: var(--surface-highest);
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+    }
+    .tp-row.dim { opacity: 0.5; }
+    .tp-row.today { box-shadow: inset 3px 0 0 var(--primary); }
+    .tp-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
+    .tp-team {
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--on-surface);
+    }
+    .tp-line { grid-column: 2; color: var(--on-surface-variant); line-height: 1.35; }
+    .tp-line.next.today { color: var(--on-surface); font-weight: 600; }
+    .tp-line .tp-tag {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+      margin-right: 6px;
+    }
+    .tp-line .win  { color: var(--primary); font-weight: 700; }
+    .tp-line .loss { color: var(--danger);  font-weight: 700; }
+
     /* PLAYOFF PUSH — shown only while a team is in contention.
        --chip-color is set per row from RACE_COLORS so the hero figure and the
        status chip take their colour from one source. */
@@ -1391,7 +1429,7 @@
         const team = boxScores[k]; if (!team) return ''; const g = extractGame(k, team); const bostonName = BOSTON_DISPLAY_NAME[k];
         const iconName = SPORT_ICON[g.sport] || 'sports'; const iconCls = SPORT_CLASS[g.sport] || '';
         const sportIcon = `<span class="ms ${iconCls}">${iconName}</span>`;
-        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) return `<div class="score-row dim"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code">${bostonName}</span></div><span class="score-status">Offseason</span></div>`;
+        if (g.seasonType === 'offseason') return `<div class="score-row dim"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code">${bostonName}</span></div><span class="score-status">Offseason</span></div>`;
         if (g.played && g.bostonScore != null && g.oppScore != null) {
           const won = g.bostonScore > g.oppScore; const oppCodeStr = oppCode(g.opponent); const connector = g.bostonHome ? 'vs' : '@';
           const leftWinCls = won ? 'win' : 'loss'; const rightWinCls = won ? 'loss' : 'win';
@@ -1402,6 +1440,81 @@
         return `<div class="score-row dim"><span class="score-sport-emoji">${sportIcon}</span><div class="score-matchup"><span class="team-code">${bostonName}</span>${connector ? `<span class="vs">${connector}</span>` : ''}${g.opponent ? `<span class="team-code">${escapeHtml(oppStr)}</span>` : ''}</div><span class="score-status">—</span></div>`;
       }).join('');
       return `<section class="widget scoreboard"><header class="widget-header"><span class="ms">trophy</span><span>Last Night</span></header><div class="score-rows">${rows}</div></section>`;
+    }
+
+    /* Scoreboard, built from team_pulse. publish.py computes it from the data
+       files (rolling_7day, upcoming_schedule, season_current), so the page
+       never infers a season phase from an empty day. The old widget did, and
+       on 2026-09-29 it called three in-season teams "Offseason". Nothing here
+       defaults to a label: a phase the page does not know renders "No data". */
+    const PULSE_CHIPS = {
+      postseason: ['Postseason', 'var(--primary)'],
+      regular:    ['In season',  'var(--on-surface-variant)'],
+      preseason:  ['Preseason',  'var(--on-surface-muted)'],
+      offseason:  ['Offseason',  'var(--on-surface-muted)'],
+      unknown:    ['No data',    'var(--warn)'],
+    };
+    function pulseDayLabel(isoDate, asOf) {
+      const [y, m, d] = String(isoDate || '').split('-').map(Number);
+      const [ay, am, ad] = String(asOf || '').split('-').map(Number);
+      if (!y || !ay) return '';
+      const diff = Math.round((new Date(ay, am - 1, ad) - new Date(y, m - 1, d)) / 86400000);
+      if (diff === 0) return 'Today';
+      if (diff === 1) return 'Yesterday';
+      if (diff === -1) return 'Tomorrow';
+      return new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'short' });
+    }
+    function pulseTimeLabel(timeEt) {
+      /* "7:00 PM ET" at or after 5 PM reads as tonight. */
+      const m = /^(\d{1,2}):\d{2}\s*(AM|PM)/i.exec(timeEt || '');
+      if (!m) return 'Today';
+      const hr = (parseInt(m[1], 10) % 12) + (m[2].toUpperCase() === 'PM' ? 12 : 0);
+      return hr >= 17 ? 'Tonight' : 'Today';
+    }
+    /* Opponent as a nickname ("@ Yankees"), not a code. OPP_CODE covers
+       eight teams and the last-three-letters fallback turns the Jaguars into
+       "JAG" and the Cubs into "CUB"; this row has room for the real word. */
+    const TWO_WORD_NICKS = ['red sox','white sox','blue jays','maple leafs','golden knights','blue jackets','red wings','trail blazers'];
+    function pulseNick(name) {
+      const words = String(name || '').trim().split(/\s+/).filter(Boolean);
+      if (!words.length) return 'TBD';
+      const lastTwo = words.slice(-2).join(' ');
+      return TWO_WORD_NICKS.includes(lastTwo.toLowerCase()) ? lastTwo : words[words.length - 1];
+    }
+    function buildTeamPulseWidget(pulse) {
+      if (!pulse || !Array.isArray(pulse.teams) || !pulse.teams.length) return '';
+      const asOf = pulse.as_of;
+      const rows = pulse.teams.map(t => {
+        const sport = t.sport || SPORT_MAP[t.team];
+        const icon = `<span class="ms ${SPORT_CLASS[sport] || ''}">${SPORT_ICON[sport] || 'sports'}</span>`;
+        const [baseLabel, color] = PULSE_CHIPS[t.phase] || PULSE_CHIPS.unknown;
+        let chipLabel = baseLabel;
+        if (t.phase === 'regular') chipLabel = t.opener ? 'Opener' : (t.record || baseLabel);
+        const chip = `<span class="vchip" style="--chip-color:${color}"><span class="vchip-dot"></span>${escapeHtml(chipLabel)}</span>`;
+        const nx = t.next, ls = t.last;
+        const lines = [];
+        if (nx) {
+          const where = `${nx.home ? 'vs' : '@'} ${escapeHtml(pulseNick(nx.opponent))}`;
+          const when = nx.is_today ? pulseTimeLabel(nx.time_et) : pulseDayLabel(nx.date, asOf);
+          const tag = nx.season_type === 'playoff' ? 'Playoffs' : (nx.is_today ? '' : 'Next');
+          lines.push(`<div class="tp-line next${nx.is_today ? ' today' : ''}">${tag ? `<span class="tp-tag">${tag}</span>` : ''}${escapeHtml(when)} ${escapeHtml(nx.time_et || '')} · ${where}</div>`);
+        }
+        if (ls) {
+          const cls = ls.result === 'W' ? 'win' : (ls.result === 'L' ? 'loss' : '');
+          const where = `${ls.home ? 'vs' : '@'} ${escapeHtml(pulseNick(ls.opponent))}`;
+          const dh = Array.isArray(ls.doubleheader) && ls.doubleheader.length > 1 ? ` (DH: ${escapeHtml(ls.doubleheader.join(', '))})` : '';
+          lines.push(`<div class="tp-line last"><span class="tp-tag">Last</span><span class="${cls}">${escapeHtml(ls.result)} ${escapeHtml(ls.boston_score)}-${escapeHtml(ls.opponent_score)}${ls.note ? ' ' + escapeHtml(ls.note) : ''}</span> ${where} · ${escapeHtml(pulseDayLabel(ls.date, asOf))}${dh}</div>`);
+        }
+        if (!lines.length) {
+          const msg = t.phase === 'offseason' ? 'No games on the schedule'
+                    : t.phase === 'unknown'   ? 'Schedule unavailable today'
+                    : 'No game this week';
+          lines.push(`<div class="tp-line">${msg}</div>`);
+        }
+        const today = nx && nx.is_today;
+        return `<div class="tp-row${t.phase === 'offseason' ? ' dim' : ''}${today ? ' today' : ''}" data-team="${escapeHtml(t.team)}" data-phase="${escapeHtml(t.phase)}">${icon}<div class="tp-top"><span class="tp-team">${escapeHtml(t.label || BOSTON_DISPLAY_NAME[t.team] || t.team)}</span>${chip}</div>${lines.join('')}</div>`;
+      }).join('');
+      return `<section class="widget scoreboard"><header class="widget-header"><span class="ms">scoreboard</span><span>Scoreboard</span></header><div class="tp-rows">${rows}</div></section>`;
     }
 
     /* Playoff Push — the team's playoff section, shown only while they are on
@@ -1464,7 +1577,7 @@
       const keys = ['celtics','bruins','redsox','patriots'];
       const cards = keys.map(k => {
         const team = boxScores[k]; if (!team) return ''; const g = extractGame(k, team); const bostonName = BOSTON_DISPLAY_NAME[k]; const sportLabel = g.sport || '';
-        if (g.seasonType === 'offseason' || (k === 'patriots' && !g.played)) return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel} · ${bostonName}</span><span class="msc-match">Offseason</span><span class="msc-status">—</span></div>`;
+        if (g.seasonType === 'offseason') return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel} · ${bostonName}</span><span class="msc-match">Offseason</span><span class="msc-status">—</span></div>`;
         if (g.played && g.bostonScore != null && g.oppScore != null) { const won = g.bostonScore > g.oppScore; const oppCodeStr = oppCode(g.opponent); const bostonCls = won ? 'win' : 'loss'; const connector = g.bostonHome ? 'vs' : '@'; return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel}</span><span class="msc-match"><span class="${bostonCls}">${bostonName}</span> ${g.bostonScore} ${connector} ${oppCodeStr} ${g.oppScore}</span><span class="msc-status">Final · ${won ? 'WIN' : 'LOSS'}</span></div>`; }
         const oppStr = g.opponent ? oppCode(g.opponent) : 'TBD'; const connector = g.bostonHome ? 'vs' : (g.opponent ? '@' : '');
         return `<div class="mobile-score-card"><span class="msc-sport">${sportLabel}</span><span class="msc-match">${bostonName} ${connector} ${oppStr}</span><span class="msc-status">Scheduled</span></div>`;
@@ -1702,7 +1815,9 @@
       // run — it outranks last night's box score), then scoreboard, trends, news
       const archiveWidgetHtml = buildArchiveWidget(evalsIndex, activeDate || getTodayISO(data));
       const playoffHtml = buildPlayoffPushWidget(data.playoff_race);
-      const scoreboardHtml = buildScoreboardWidget(data.box_scores);
+      // team_pulse is computed from the data files; box_scores is the model's
+      // output and stays only as the fallback for posts published before it.
+      const scoreboardHtml = data.team_pulse ? buildTeamPulseWidget(data.team_pulse) : buildScoreboardWidget(data.box_scores);
       const pulseHtml = buildTrendPulseWidget(data.trend_watch);
       const newsPulseHtml = buildNewsPulseWidget(data.news_digest);
       const mobileStripHtml = buildMobileStrip(data.box_scores);

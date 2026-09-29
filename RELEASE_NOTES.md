@@ -5,6 +5,51 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-29 (evening): The scoreboard reads the data, not the calendar
+
+The morning board, verbatim: Celtics **Offseason**, Bruins **Offseason**, Red Sox
+**No Game**, Patriots **Offseason**. That day the Red Sox opened a Wild Card series
+at Yankee Stadium, the Bruins opened their season at home against the Rangers, and
+the Patriots were two days removed from a 35-6 loss in Jacksonville with Buffalo
+next.
+
+### Four bugs, one shape
+
+| Row | Why it was wrong |
+|---|---|
+| Patriots | `index.html` hardcoded `k === 'patriots' && !g.played` → "Offseason". Every NFL Monday through Saturday. |
+| Red Sox | The widget only knew yesterday. Monday was an off day, so "No Game", on the morning of Game 1. `classify_mlb_game()` also tagged the Wild Card games `regular` because the postseason now starts in September. |
+| Bruins | `current_nhl_season()` flipped to the new season on October 1. The opener was September 29, so the schedule fetch asked for last season and found nothing; `season_current` still said `offseason` and `patch_box_score_season_types()` forced the label. |
+| All | The widget rendered `box_scores`, a field of Gemini's output, and fell back to a label whenever one calendar day was empty. |
+
+### What shipped
+
+- **`team_pulse`**, a deterministic block built in `publish.py` from the data files.
+  Each team gets a phase, its last result within a sport-aware lookback (NFL 8 days,
+  the rest 3), and its next game. Games decide the phase before any status file does.
+  See `AGENTS.md` for the ladder.
+- **The Scoreboard widget** replaces "Last Night": phase chip (Postseason, Opener,
+  record, Offseason, No data), a next-game line that reads "Tonight 8:00 PM ET" on game
+  day, and the last result with its day. Teams with a game today sort to the top.
+  Old posts without the block fall back to the legacy render, minus the Patriots hardcode.
+- **`current_nhl_season()`** flips on July 1 and reads `as_of_date()`.
+- **`classify_mlb_game()`** prefers StatsAPI's `gameType` (`F`/`D`/`L`/`W` → playoff).
+
+### Why in `publish.py` and not the prompt
+
+Same lesson as the weekday and venue fixes: if a fact needs a derivation step, take it
+in Python. A scoreboard is pure data. Asking the model for it, then patching the result,
+is how a hardcoded label survived a month into the NFL season.
+
+### Not done yet
+
+- **Final pending.** A West Coast game that has not closed by 03:00 ET still shows only
+  the previous result. The fix is a `status` check on yesterday's schedule entry.
+- **Celtics preseason.** `fetch_nba.py`'s schedule excludes preseason games, so the
+  Celtics read "Offseason" until opening night. Acceptable, but "Camp open" would be better.
+
+---
+
 ## 2026-09-29 — One home series, two states: where the game was played is data too
 
 Spotted while fixing the weekday bug, in the 2026-09-26 brew. Paragraph 1: *"What a hell

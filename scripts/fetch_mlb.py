@@ -148,15 +148,32 @@ def safe_int(val, default=0) -> int:
         return default
 
 
-def classify_mlb_game(game_date: str) -> str:
-    """
-    Heuristic classification based on game date.
+# StatsAPI's own gameType codes. The API tags every game, so the date
+# heuristic below is only a fallback for callers that have no game object.
+MLB_GAME_TYPES = {
+    "R": "regular",
+    "F": "playoff",   # Wild Card Series
+    "D": "playoff",   # Division Series
+    "L": "playoff",   # League Championship Series
+    "W": "playoff",   # World Series
+    "S": "preseason", # Spring Training
+    "E": "preseason", # Exhibition
+}
 
-    MLB regular season: Late Mar–Sep, Playoffs: Oct–Nov.
+
+def classify_mlb_game(game_date: str, game_type: str | None = None) -> str:
+    """
+    Classify an MLB game, preferring StatsAPI's gameType tag.
+
+    The date heuristic (regular Mar-Sep, playoff Oct-Nov) called the
+    2026-09-29 Wild Card opener "regular": the postseason now starts in
+    September. The tag is authoritative whenever the caller has one.
     game_date format: "2026-04-06" (ISO 8601).
 
-    Returns: "regular", "playoff", or "offseason".
+    Returns: "regular", "playoff", "preseason", or "offseason".
     """
+    if game_type in MLB_GAME_TYPES:
+        return MLB_GAME_TYPES[game_type]
     try:
         dt = datetime.strptime(game_date, "%Y-%m-%d")
         month = dt.month
@@ -517,7 +534,8 @@ def fetch_boxscore() -> None:
         result = {
             "game_date":    game_date_iso,
             "played":       True,
-            "season_type":  classify_mlb_game(game_date_iso),
+            "season_type":  classify_mlb_game(game_date_iso,
+                                              final_games[-1].get("gameType")),
             "doubleheader": is_doubleheader,
             "games":        parsed_games,
         }
@@ -594,7 +612,7 @@ def fetch_schedule() -> None:
                     "venue":        game.get("venue", {}).get("name", ""),
                     "day_night":    game.get("dayNight", ""),
                     "doubleheader": game.get("doubleHeader", "N") != "N",
-                    "season_type":  classify_mlb_game(game_date),
+                    "season_type":  classify_mlb_game(game_date, game.get("gameType")),
                 })
 
         print(f"  Found {len(games)} game(s) in the next 7 days.")

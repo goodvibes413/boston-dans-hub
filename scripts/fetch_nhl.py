@@ -98,19 +98,23 @@ def fetch_json(url: str) -> dict:
     raise RuntimeError(f"Too many redirects fetching {url}")
 
 
-def current_nhl_season() -> str:
+def current_nhl_season(today: date | None = None) -> str:
     """
     Return the current NHL season as an 8-digit string.
 
-    The NHL season starts in October, so months Jan–Sep belong to a season
-    that started the previous calendar year.
+    Flips to the new season on July 1, after the Stanley Cup Final and
+    before preseason. It used to flip on October 1, which is later than the
+    league now opens: the 2026-27 opener was 2026-09-29, the schedule fetch
+    asked for 20252026, found nothing, and the site called the Bruins
+    "Offseason" on opening night. Anchored to the run day (as_of_date), not
+    the wall clock, like every other window in the pipeline.
 
     Examples:
-        April  2026  →  "20252026"
-        October 2026 →  "20262027"
+        April     2026  →  "20252026"
+        September 2026  →  "20262027"
     """
-    today = date.today()
-    start_year = today.year if today.month >= 10 else today.year - 1
+    today = today or as_of_date()
+    start_year = today.year if today.month >= 7 else today.year - 1
     return f"{start_year}{start_year + 1}"
 
 
