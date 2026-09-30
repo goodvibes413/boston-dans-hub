@@ -1,40 +1,40 @@
 {
-  "headline": "Red Sox head to the Bronx to face Yankees in postseason showdown",
+  "headline": "Bruins cruise to shutout win while Sox look for answers",
   "morning_brew": [
-    "It is finally here, the time of year that either makes a legend or just ruins your whole October. We are headed into the Bronx tonight for the opening act of this Wild Card series against the Yankees, and you can practically taste the anxiety in the air. The bad blood between these two franchises is heavier than anything else in the sport, and once that first pitch crosses the plate, the regular season stats are just confetti in the trash. I'm not gonna lie, my nerves are completely fried, but this team has shown enough grit to make a statue cry and I am dying to see if they've got one more gear in the tank.",
-    "The Yankees might be missing Aaron Judge, but we aren't stupid enough to think that makes this a cakewalk. Every single pitch tonight at Yankee Stadium is going to feel like a high-wire act without a net, and that is exactly how it should be when we take on those guys. We need our rotation to lock in and our bats to find those gaps before the Bronx crowd even gets their beer, because the team that grabs the throat of this series early usually ends up holding all the cards. I'm praying for a clean, hard-fought game where we silence that stadium so fast the vendors start wondering why they showed up.",
-    "If you want to know what this is gonna look like, just remember the last time these two sides collided; it is always pure, unadulterated melodrama. I'll be glued to the screen all night, likely pacing around the living room like cousin Jimmy does when he's trying to talk himself out of a bad trade after three too many at the corner pub. It is a new chapter in this headache of a rivalry tonight, and I'm just looking for a win that sets the tone for the entire week. Let's go Sox, it's time to take it to 'em."
+    "It was a tale of two nights in the Hub, starting with a dominant show at the Garden. Our Bruins looked like they hadn't missed a beat from training camp, shutting out the Rangers to kick off the regular season. Fraser Minten played like a man possessed, breaking the tie late before JJ Peterka and Mark Kastelic piled on to seal it. Jeremy Swayman was an absolute wall in the crease, turning away every single shot that came his way. It was the kind of composed, start-to-finish effort that makes you feel like maybe, just maybe, this winter won't be a complete frozen nightmare.",
+    "Then you look at what happened in the Bronx, and man, I need a nap to recover from that one. The Red Sox got completely outclassed in the playoff opener, and watching the Yankees put up runs in bunches while our bats stayed frozen was a special kind of misery. We never got anything going, and the bullpen implosion in the late innings turned a tough night into a total disaster. I don't care who we're playing; you can't show up to the postseason and expect to survive with three hits. It felt like watching Uncle Carmine try to assemble IKEA furniture with no instructions \u2014 painful and doomed from the start.",
+    "We have to turn the page and get our heads right for the next one in the series tonight. It's a quick turnaround at Yankee Stadium, and the pressure is ratcheted up about as high as it can go this early in the bracket. My neighbor Rick has been pacing his porch since the final out yesterday, muttering about lineup adjustments and situational hitting, and for once I am not gonna argue with him. We need a clean, focused effort to even things up before this thing gets out of hand, because the Bronx isn't exactly a place where you want to dig yourself a hole."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Jarren Duran",
-      "trend": "Paced the offense in the season's closing stretch with a blistering batting average and timely extra-base hits.",
-      "dans_take": "He's been the only guy in this lineup who looks like he's actually trying to win a title."
+      "player": "Jeremy Swayman",
+      "trend": "Turned away every shot he faced to finish with a perfect save percentage in the season opener.",
+      "dans_take": "Swayman was a brick wall, and I'd trust him to guard my Dunks order with his life."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Payton Tolle",
+      "trend": "Took the loss after working into the fifth inning and allowing one earned run.",
+      "dans_take": "Tolle pitched his tail off, but you can't win when the lineup acts like they're allergic to base hits."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Garrett Whitlock",
-      "trend": "Locked down high-leverage situations with command and strikeout stuff over his last handful of appearances.",
-      "dans_take": "I need him to keep that icy composure when the Bronx crowd starts losing their minds."
-    },
-    {
-      "category": "Streak",
-      "player": "Brayan Bello",
-      "trend": "Struck out a career-high number of hitters while consistently going deep into his last three starts.",
-      "dans_take": "He is the kind of arm we need when the lights get this blindingly bright."
+      "player": "Red Sox bullpen",
+      "trend": "Gave up multiple earned runs in the late innings as the game slipped away.",
+      "dans_take": "The arson squad showed up right when we needed them to hold the line, and the Duck Boat fund just took a massive hit."
     }
   ],
   "news_digest": [
     {
-      "headline": "Aaron Judge not on Yankees' roster for ALWCS, source confirms",
-      "url": "https://www.espn.com/mlb/story/_/id/50058710/aaron-judge-not-yankees-roster-alwcs-source-confirms",
-      "dans_take": "I'll believe he's truly out when I don't see him in the box score, but it's a massive gift for our guys."
+      "headline": "Fraser Minten shines as late surge lifts the Bruins past the Rangers 3-0",
+      "url": "http://www.espn.com/nhl/recap?gameId=401891774",
+      "dans_take": "A perfect start to the year, and I'm already clearing space on the shelf for the trophy."
     },
     {
-      "headline": "Tatum 'comfortable' leading new-look Celtics post-Brown trade",
-      "url": "https://www.espn.com/nba/story/_/id/50055438/tatum-comfortable-leading-new-look-celtics-post-brown-trade",
-      "dans_take": "The new era is officially here, and now I'm just waiting to see if this chemistry is real or just a summer dream."
+      "headline": "Schlittler and Rice torment hometown team as Yankees beat rival Red Sox 9-0 in playoff opener",
+      "url": "http://www.espn.com/mlb/recap?gameId=401907924",
+      "dans_take": "Absolutely brutal night for our guys, and frankly, we have to show up with a pulse tonight."
     }
   ],
   "box_scores": {
@@ -44,29 +44,29 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-09-28",
+      "game_date": "2026-09-29",
       "played": false,
       "season_type": "offseason"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-09-28",
-      "played": false,
+      "home_team": "Boston Bruins",
+      "away_team": "Rangers",
+      "home_score": 3,
+      "away_score": 0,
+      "game_date": "2026-09-29",
+      "played": true,
       "season_type": "offseason"
     },
     "redsox": {
       "sport": "MLB",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-09-28",
-      "played": false,
-      "season_type": "regular"
+      "home_team": "New York Yankees",
+      "away_team": "Boston Red Sox",
+      "home_score": 9,
+      "away_score": 0,
+      "game_date": "2026-09-29",
+      "played": true,
+      "season_type": "playoff"
     },
     "patriots": {
       "sport": "NFL",
@@ -74,18 +74,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-09-28",
+      "game_date": "2026-09-29",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-09-29",
-      "matchup": "Boston Red Sox at New York Yankees",
-      "day_of_week": "Tuesday",
-      "time_et": "8:00 PM ET"
-    },
     {
       "date": "2026-09-30",
       "matchup": "Boston Red Sox at New York Yankees",
@@ -99,10 +93,28 @@
       "time_et": "8:00 PM ET"
     },
     {
+      "date": "2026-10-02",
+      "matchup": "Boston Bruins at Winnipeg Jets",
+      "day_of_week": "Friday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-03",
+      "matchup": "Boston Bruins at Minnesota Wild",
+      "day_of_week": "Saturday",
+      "time_et": "8:00 PM ET"
+    },
+    {
       "date": "2026-10-04",
       "matchup": "New England Patriots at Buffalo Bills",
       "day_of_week": "Sunday",
       "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-10-05",
+      "matchup": "Ottawa Senators at Boston Bruins",
+      "day_of_week": "Monday",
+      "time_et": "7:30 PM ET"
     }
   ],
   "_timings": [
@@ -110,26 +122,29 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 14.84,
-      "prompt_tokens": 39071,
-      "output_tokens": 1404,
+      "seconds": 8.25,
+      "prompt_tokens": 41910,
+      "output_tokens": 1366,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 5.42,
-      "prompt_tokens": 17843,
-      "output_tokens": 1465,
+      "seconds": 7.73,
+      "prompt_tokens": 17805,
+      "output_tokens": 1414,
       "thinking_tokens": null
     }
   ],
-  "generated_at": "2026-09-29T16:02:08.950999+00:00",
-  "date": "2026-09-30",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 24.6,
+  "generated_at": "2026-09-30T18:12:15.642195+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
+    {
+      "rule": 12,
+      "detail": "coverage window: the bruins played Rangers on 2026-09-29 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+    }
+  ],
   "playoff_race": {
     "redsox": {
       "phase": "stretch_run",
@@ -231,5 +246,6 @@
         "next": null
       }
     ]
-  }
+  },
+  "date": "2026-09-30"
 }

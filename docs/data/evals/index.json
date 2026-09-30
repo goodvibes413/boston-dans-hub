@@ -100,19 +100,19 @@
   ],
   "summary_5day": {
     "fresh": 2,
-    "retry": 2,
-    "fallback": 1,
+    "retry": 3,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
+      {
+        "rule": 12,
+        "count": 5,
+        "title": "Game coverage gap"
+      },
       {
         "rule": 10,
         "count": 4,
         "title": "Voice repetition"
-      },
-      {
-        "rule": 12,
-        "count": 4,
-        "title": "Game coverage gap"
       },
       {
         "rule": 15,
