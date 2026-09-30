@@ -47,6 +47,12 @@ DEFAULT_SEASON_OVERRIDES = REPO / "data" / "season_overrides.json"
 # free tier was persistently exhausted on 2026-07-01.
 DEFAULT_MODEL = "gemini-3.1-flash-lite"
 
+# The judge could not run (API error after retries). Distinct from PASS (0) and
+# FAIL (1): nothing was validated. publish.py treats it as "keep the last
+# validated post", never as a pass.
+JUDGE_UNAVAILABLE = "UNAVAILABLE"
+JUDGE_UNAVAILABLE_EXIT = 3
+
 # thinking_level and per-call timing are shared with generate_rant rather than
 # copied — describe_api_error/call_with_retry are already duplicated verbatim
 # across these two files and a third copy of the same logic is not worth it.
@@ -668,8 +674,9 @@ def call_with_retry(fn, max_retries=MAX_RETRIES):
     Shares generate_rant's retry budget constants so the two halves of the
     pipeline cannot drift apart — tests/test_pipeline.py::TestRetryBudget
     asserts the combined worst case still fits the workflow's 25-min job
-    timeout. If quota is truly exhausted, the existing exception handler
-    treats the API failure as PASS so content still publishes.
+    timeout. If quota is truly exhausted, the exception handler in main()
+    reports the judge UNAVAILABLE (never PASS) and publish.py keeps the last
+    validated post up with a degraded reason.
     """
     backoff_delays = BACKOFF_DELAYS
 
@@ -1739,28 +1746,25 @@ def main():
         record_timing("judge", model_name, time.perf_counter() - _t0, resp,
                           thinking_level_for(model_name))
     except Exception as e:
-        # API unavailable or quota exhausted — PASS with a warning so content
-        # still publishes. A judge that can't run should not block publication;
-        # only a judge that returns an explicit FAIL verdict should block.
-        # Pre-pass repetition flags are still surfaced as a low-severity FAIL
-        # to give the regen loop one shot at variation.
-        print(f"warning: safety judge API error ({type(e).__name__}), treating as PASS", file=sys.stderr)
+        # API unavailable or quota exhausted: the content was NOT validated, so
+        # this is neither a PASS nor a FAIL. It used to be recorded as PASS, and
+        # on 2026-09-29 (run 36594502371) a post the judge never read shipped as
+        # "fresh" -- which also made every later cron slot that day skip.
+        # UNAVAILABLE + its own exit code lets publish.py keep the last validated
+        # post up with an explicit degraded reason, so the freshness gate and
+        # the later slots retry. Pre-pass flags ride along for the evals record;
+        # a regen cannot help while the judge itself is unreachable.
+        detail = describe_api_error(e)
+        print(f"warning: safety judge API error ({type(e).__name__}: {detail}); "
+              f"verdict UNAVAILABLE", file=sys.stderr)
         api_note = make_flag(UNCLASSIFIED_RULE,
-                             f"judge skipped — API error: {type(e).__name__}")
-        if pre_pass_flags:
-            v = {"verdict": "FAIL",
-                 "severity": "medium" if (phantom_flags or gameday_flags
-                                          or weekday_flags or venue_flags) else "low",
-                 "flags": pre_pass_flags + [api_note]}
-            _write_enriched(v, pre_pass_flags, pre_pass_flags, [api_note], phantom_flags,
-                            gameday_flags, weekday_flags, venue_flags)
-            print(json.dumps(v))
-            sys.exit(1)
-        v = {"verdict": "PASS", "severity": "low", "flags": [api_note]}
-        _write_enriched(v, pre_pass_flags, [], [api_note], phantom_flags, gameday_flags,
+                             f"judge unavailable — API error: {type(e).__name__}: {detail}"[:300])
+        v = {"verdict": JUDGE_UNAVAILABLE, "severity": None,
+             "flags": pre_pass_flags + [api_note], "judge_unavailable": True}
+        _write_enriched(v, pre_pass_flags, [], v["flags"], phantom_flags, gameday_flags,
                         weekday_flags, venue_flags)
         print(json.dumps(v))
-        sys.exit(0)
+        sys.exit(JUDGE_UNAVAILABLE_EXIT)
 
     try:
         verdict = json.loads(resp.text)

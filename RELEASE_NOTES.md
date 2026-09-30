@@ -5,6 +5,53 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-09-30 — Grounding quota fails fast; an unreachable judge is not a PASS
+
+Issues #62 and #64. Morning Brew runs 36731147371, 36740883472 and 36745541891 all
+went green while republishing 9/29's post as stale. Two separate failures were
+stacked in every run, plus a third that had already let an unread post through.
+
+### 1. Grounded 429: persistent, not a spike
+
+Every published `_timings` block since timing capture began (~2026-09-10) holds only
+`generate[nogrounding]` calls. Grounded generation has not succeeded once in 20+ days.
+Each run's grounded call got `429 RESOURCE_EXHAUSTED` back in ~0.2s, then retried
+twice (~20s, two more requests) before the same ungrounded fallback. Ungrounded calls on
+the same key never saw a 429, so this is the grounding quota and not the model's. The
+log could not say which quota: `describe_api_error` printed `msg[:160]`, which cuts off
+the `Quota exceeded for metric: …, limit: N` tail.
+
+- `call_with_retry(..., retry_on_429=False)` for the grounded call: first 429 raises,
+  generation drops straight to source data only. 503 still gets the normal ladder.
+- `describe_api_error` parses the metric/limit/model and `Please retry in Xs` out of the
+  full message when no structured QuotaFailure is attached.
+- Output carries `_grounding`: `used` / `quota_exhausted` / `failed` / `off`.
+
+No model switch, no billing, no new retries. The budget can only have shrunk.
+
+### 2. Ungrounded 503: real overload
+
+Today all three attempts per run returned `503 UNAVAILABLE` within ~25s. On 9/29 attempt 2
+succeeded. That is server load, and spaced cron slots are the answer to it. Note that
+GitHub also dropped or delayed today's 08:00–13:00 slots (the first run started 14:42 UTC),
+so the day got four tries instead of five. The 18:10 run published fresh, validated content.
+
+### 3. Judge 503 was recorded as PASS
+
+Run 36594502371 (9/29) generated fresh content. The judge then hit 503 on both its structured and
+unstructured calls, printed "treating as PASS", exited 0, and `publish.py` shipped the
+unread post as **fresh**. That also made the freshness gate skip every later slot that day.
+
+- `safety_judge.py` now emits `verdict: "UNAVAILABLE"` with exit code
+  `JUDGE_UNAVAILABLE_EXIT = 3`, carrying the API error detail, regardless of pre-pass flags.
+- `publish.py` treats exit 3 and a judge timeout (`None`) the same way. If an earlier
+  attempt was genuinely judged LOW/MEDIUM, that draft still wins through the best-attempt path.
+  Otherwise `publish_fallback("judge unavailable: …")` keeps the last post up as `_stale`,
+  or SAFE_FALLBACK if it is past 48h. The unvalidated draft is neither published nor
+  archived. The stale marker opens the `pipeline-degraded` issue and lets the next slot retry.
+
+---
+
 ## 2026-09-29 (evening): The scoreboard reads the data, not the calendar
 
 The morning board, verbatim: Celtics **Offseason**, Bruins **Offseason**, Red Sox

@@ -228,6 +228,27 @@ def describe_api_error(e) -> str:
         elif "RetryInfo" in dtype:
             retry_delay = d.get("retryDelay")
 
+    # No structured QuotaFailure: the quota name is still in the message, past
+    # the 160 chars the msg= slice below keeps. On 2026-09-29/30 every grounded
+    # call logged only "You exceeded your current quota, please check your plan
+    # and billing details. For more information..." — the part that says WHICH
+    # quota ("Quota exceeded for metric: ..., limit: N") was cut off.
+    full_text = str(message) if message else str(e)
+    if not quotas:
+        for m in _re.finditer(r"Quota exceeded for metric:\s*([^\s,]+)"
+                              r"(?:,\s*limit:\s*(\d+))?(?:,\s*model:\s*([\w.\-]+))?",
+                              full_text):
+            bit = m.group(1)
+            if m.group(2) is not None:
+                bit += f" limit={m.group(2)}"
+            if m.group(3):
+                bit += f" (model={m.group(3)})"
+            quotas.append(bit)
+        if not retry_delay:
+            m = _re.search(r"Please retry in ([\d.]+s)", full_text)
+            if m:
+                retry_delay = m.group(1)
+
     parts = []
     if code:
         parts.append(f"code={code}")
@@ -273,12 +294,22 @@ def worst_case_call_seconds(max_retries=MAX_RETRIES, backoff=BACKOFF_DELAYS,
     return (max_retries + 1) * timeout_s + sum(backoff[:max_retries])
 
 
-def call_with_retry(fn, max_retries=MAX_RETRIES):
+def is_quota_exhausted(e) -> bool:
+    """True for a 429 RESOURCE_EXHAUSTED — a quota answer, not an overload one."""
+    s = str(e)
+    return "429" in s or "RESOURCE_EXHAUSTED" in s
+
+
+def call_with_retry(fn, max_retries=MAX_RETRIES, retry_on_429=True):
     """
     Call fn() with exponential backoff retry on 503/429 errors.
 
     On 503 UNAVAILABLE: wait BACKOFF_DELAYS in order
-    On 429 QUOTA_EXCEEDED: parse retryDelay from error, wait that duration
+    On 429 QUOTA_EXCEEDED: parse retryDelay from error, wait that duration —
+      unless retry_on_429=False, which raises on the first 429. The grounded
+      call passes that: its 429 is the grounding quota, which has refused every
+      grounded call since at least 2026-09-10, so retrying it only spends ~20s
+      and two requests before the same source-data-only fallback runs anyway.
     On other errors: fail immediately
 
     See the budget block above for why the ladder is this short. If Gemini is
@@ -303,6 +334,10 @@ def call_with_retry(fn, max_retries=MAX_RETRIES):
             # Don't retry permanent errors
             if status_code not in [503, 429]:
                 print(f"  non-retryable API error: {describe_api_error(e)}", file=sys.stderr)
+                raise
+
+            if status_code == 429 and not retry_on_429:
+                print(f"  quota exhausted (429), not retrying: {describe_api_error(e)}", file=sys.stderr)
                 raise
 
             if attempt >= max_retries:
@@ -1617,7 +1652,8 @@ def call_gemini(system_prompt: str, user_message: str, model_name: str,
                 model=model_name,
                 contents=user_message,
                 config=types.GenerateContentConfig(**kwargs),
-            )
+            ),
+            retry_on_429=not use_grounding,
         )
 
     _t0 = time.perf_counter()
@@ -1903,6 +1939,9 @@ def main():
     # back. The retry's job is to write what the structured data says, so it runs
     # against the data alone.
     use_grounding = not correction_notes
+    # Recorded on the output as _grounding so git history shows whether Dan
+    # actually had live search: used | quota_exhausted | failed | off.
+    grounding_status = "used" if use_grounding else "off"
     if correction_notes:
         print("  correction retry: grounding OFF (source data only)")
     parsed = None
@@ -1911,9 +1950,16 @@ def main():
         try:
             parsed = json.loads(raw)
         except json.JSONDecodeError:
+            grounding_status = "failed"
             print("  warn: grounding response was not valid JSON, retrying without grounding", file=sys.stderr)
     except Exception as e:
-        print(f"  warn: grounding call failed ({type(e).__name__}: {describe_api_error(e)}), retrying without grounding", file=sys.stderr)
+        if use_grounding and is_quota_exhausted(e):
+            grounding_status = "quota_exhausted"
+            print(f"  warn: grounding quota exhausted ({describe_api_error(e)}); "
+                  f"generating from source data only", file=sys.stderr)
+        else:
+            grounding_status = "failed"
+            print(f"  warn: grounding call failed ({type(e).__name__}: {describe_api_error(e)}), retrying without grounding", file=sys.stderr)
 
     # Attempt 2: grounding OFF, force JSON mime type
     if parsed is None:
@@ -1940,6 +1986,7 @@ def main():
                 # Keep timings even on the failure path — a day that burned the
                 # full retry budget is exactly the day the latency numbers matter.
                 "_timings": CALL_TIMINGS,
+                "_grounding": grounding_status,
             }
             output_path.parent.mkdir(parents=True, exist_ok=True)
             output_path.write_text(json.dumps(sentinel, indent=2))
@@ -1973,6 +2020,7 @@ def main():
     # and _stale, so publish.py's existing marker handling and the frontend both
     # ignore it, but it lands in git history where it can be read back later.
     parsed["_timings"] = CALL_TIMINGS
+    parsed["_grounding"] = grounding_status
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(parsed, indent=2))
