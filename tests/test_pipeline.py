@@ -533,8 +533,10 @@ class TestRetryBudget(unittest.TestCase):
         # generate_rant chains up to MAX_CALLS_PER_RUN calls (grounded →
         # ungrounded fallback → punch-up), then publish.py runs the judge once.
         # The multi-regeneration path cannot coexist with a full-timeout
-        # outage: a judge whose API call fails is treated as PASS and returns
-        # immediately, so the regen loop only runs while the API is healthy.
+        # outage: a judge whose API call fails exits UNAVAILABLE and publish.py
+        # stops the loop there, so the regen loop only runs while the API is
+        # healthy. A grounded 429 now fails on its first attempt, so this bound
+        # (every call at the full ladder) only got looser.
         generate = generate_rant.MAX_CALLS_PER_RUN * generate_rant.worst_case_call_seconds()
         judge = safety_judge.worst_case_call_seconds()
         total = generate + judge + NON_MODEL_ALLOWANCE_S
@@ -2561,7 +2563,10 @@ class TestPlayoffRaceSurvivesThePublishPaths(unittest.TestCase):
             if ln == "output = patch_box_score_season_types(output)":
                 self.assertEqual(lines[i + 1], "output = attach_playoff_race(output)",
                                  f"publish path at line {i + 1} skips the race attach")
-        self.assertEqual(lines.count("output = patch_box_score_season_types(output)"), 3)
+        # 2: PASS and best-attempt. The judge-unavailable path no longer
+        # publishes the draft (it republishes stale, which refreshes the race
+        # separately -- see test_the_stale_path_refreshes_the_race).
+        self.assertEqual(lines.count("output = patch_box_score_season_types(output)"), 2)
 
     def test_the_stale_path_refreshes_the_race(self):
         self.assertIn("stale = attach_playoff_race(stale)", self.src)
@@ -3430,3 +3435,277 @@ class TestSeasonBoundariesComeFromTheData(unittest.TestCase):
         self.assertEqual(fetch_mlb.classify_mlb_game("2026-09-29", "F"), "playoff")
         self.assertEqual(fetch_mlb.classify_mlb_game("2026-09-27", "R"), "regular")
         self.assertEqual(fetch_mlb.classify_mlb_game("2026-09-29"), "regular")  # heuristic fallback
+
+
+# --- 2026-09-30: grounding quota + unavailable judge (issues #62, #64) -------
+
+# The grounded-call 429 as the logs show it: the message runs past the 160
+# chars describe_api_error used to keep, and the quota name is in the tail.
+GROUNDING_429 = (
+    "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your "
+    "current quota, please check your plan and billing details. For more information "
+    "on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. "
+    "\\n* Quota exceeded for metric: generativelanguage.googleapis.com/"
+    "search_grounding_requests_free_tier, limit: 0, model: gemini-3.1-flash-lite\\n"
+    "Please retry in 41.5s.', 'status': 'RESOURCE_EXHAUSTED'}}"
+)
+MODEL_503 = (
+    "503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently "
+    "experiencing high demand. Spikes in demand are usually temporary. Please try "
+    "again later.', 'status': 'UNAVAILABLE'}}"
+)
+
+
+class _Raiser:
+    """Callable that raises the given message every time and counts calls."""
+
+    def __init__(self, msg):
+        self.msg, self.calls = msg, 0
+
+    def __call__(self):
+        self.calls += 1
+        raise RuntimeError(self.msg)
+
+
+class TestGroundingQuotaFailsFast(unittest.TestCase):
+    """Grounded generation has not succeeded once since timing capture began
+    (~2026-09-10): every run's grounded call got an instant 429, then spent two
+    more requests and ~20s of backoff before the same ungrounded fallback."""
+
+    def setUp(self):
+        from unittest import mock
+        self.sleep = mock.patch.object(generate_rant.time, "sleep").start()
+        self.addCleanup(mock.patch.stopall)
+
+    def test_429_without_retry_is_called_once(self):
+        fn = _Raiser(GROUNDING_429)
+        with self.assertRaises(RuntimeError):
+            generate_rant.call_with_retry(fn, retry_on_429=False)
+        self.assertEqual(fn.calls, 1)
+        self.sleep.assert_not_called()
+
+    def test_503_is_still_retried_when_429_retry_is_off(self):
+        # Overload is transient; only the quota answer skips the ladder.
+        fn = _Raiser(MODEL_503)
+        with self.assertRaises(RuntimeError):
+            generate_rant.call_with_retry(fn, retry_on_429=False)
+        self.assertEqual(fn.calls, generate_rant.MAX_RETRIES + 1)
+
+    def test_429_default_behaviour_unchanged(self):
+        fn = _Raiser(GROUNDING_429)
+        with self.assertRaises(RuntimeError):
+            generate_rant.call_with_retry(fn)
+        self.assertEqual(fn.calls, generate_rant.MAX_RETRIES + 1)
+
+    def test_only_the_grounded_call_skips_429_retries(self):
+        src = (REPO / "scripts" / "generate_rant.py").read_text()
+        fn = src.split("def call_gemini(")[1].split("\ndef ")[0]
+        self.assertIn("retry_on_429=not use_grounding", fn)
+
+    def test_describe_api_error_names_the_quota_from_the_message_tail(self):
+        d = generate_rant.describe_api_error(RuntimeError(GROUNDING_429))
+        self.assertIn("search_grounding_requests_free_tier limit=0", d)
+        self.assertIn("model=gemini-3.1-flash-lite", d)
+        self.assertIn("retryDelay=41.5s", d)
+        self.assertIn("code=429", d)
+
+    def test_describe_api_error_does_not_echo_the_key(self):
+        os.environ["GEMINI_API_KEY_TEST_SENTINEL"] = "AIza-not-a-real-key"
+        try:
+            d = generate_rant.describe_api_error(RuntimeError(GROUNDING_429))
+        finally:
+            del os.environ["GEMINI_API_KEY_TEST_SENTINEL"]
+        self.assertNotIn("AIza", d)
+
+
+class TestGroundingQuotaStillPublishesFromSourceData(unittest.TestCase):
+    """End to end through generate_rant.main(): a grounding 429 must fall
+    through to the source-data-only call and write a real draft, not a sentinel."""
+
+    def _run_main(self, grounded_error):
+        import tempfile
+        from unittest import mock
+        calls = []
+
+        def fake_call_gemini(system_prompt, user_message, model_name,
+                             use_grounding=True, force_json=False):
+            calls.append(use_grounding)
+            if use_grounding:
+                raise RuntimeError(grounded_error)
+            return json.dumps({"headline": "h", "morning_brew": ["p1"],
+                               "trend_watch": [], "news_digest": []})
+
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "raw.json"
+            env = {"OUTPUT_PATH": str(out), "PUNCH_UP": "0", "CORRECTION_NOTES": "",
+                   "DRY_RUN": ""}
+            with mock.patch.dict(os.environ, env), \
+                 mock.patch.object(generate_rant, "call_gemini", fake_call_gemini), \
+                 mock.patch("sys.stdout"), mock.patch("sys.stderr"):
+                generate_rant.main()
+            return calls, json.loads(out.read_text())
+
+    def test_quota_exhausted_grounding_yields_a_fresh_draft(self):
+        calls, doc = self._run_main(GROUNDING_429)
+        self.assertEqual(calls, [True, False])
+        self.assertNotIn("_generation_failed", doc)
+        self.assertEqual(doc["_grounding"], "quota_exhausted")
+        self.assertEqual(doc["morning_brew"], ["p1"])
+
+    def test_other_grounding_failures_are_labelled_failed(self):
+        _, doc = self._run_main(MODEL_503)
+        self.assertEqual(doc["_grounding"], "failed")
+
+
+class TestUnavailableJudgeIsNeverAPass(unittest.TestCase):
+    """2026-09-29 run 36594502371: the judge hit 503 on every attempt, printed
+    'treating as PASS', and an unread post shipped as fresh."""
+
+    def _run_judge(self, repetition=None):
+        import io
+        import tempfile
+        import types as _types
+        from unittest import mock
+
+        class _Types:
+            HttpOptions = GenerateContentConfig = ThinkingConfig = staticmethod(lambda **kw: kw)
+
+        class _Models:
+            calls = 0
+
+            def generate_content(self, **kw):
+                _Models.calls += 1
+                raise RuntimeError(MODEL_503)
+
+        class _Client:
+            def __init__(self, **kw):
+                self.models = _Models()
+
+        genai = _types.ModuleType("google.genai")
+        genai.Client = _Client
+        genai.types = _Types
+        google = _types.ModuleType("google")
+        google.genai = genai
+        with tempfile.TemporaryDirectory() as tmp:
+            draft = Path(tmp) / "raw.json"
+            draft.write_text(json.dumps({"headline": "h", "morning_brew": ["p"]}))
+            enriched = Path(tmp) / "enriched.json"
+            env = {"INPUT_PATH": str(draft), "GEMINI_API_KEY": "x",
+                   "JUDGE_RESULT_PATH": str(enriched)}
+            out = io.StringIO()
+            with mock.patch.dict(sys.modules, {"google": google, "google.genai": genai,
+                                               "google.genai.types": _Types}), \
+                 mock.patch.dict(os.environ, env), \
+                 mock.patch.object(safety_judge.time, "sleep"), \
+                 mock.patch.object(safety_judge, "detect_repetition",
+                                   return_value=repetition or []), \
+                 mock.patch("sys.stdout", out), mock.patch("sys.stderr"):
+                with self.assertRaises(SystemExit) as cm:
+                    safety_judge.main()
+            return cm.exception.code, json.loads(out.getvalue()), \
+                json.loads(enriched.read_text())
+
+    def test_api_outage_is_unavailable_not_pass(self):
+        code, verdict, enriched = self._run_judge()
+        self.assertEqual(code, safety_judge.JUDGE_UNAVAILABLE_EXIT)
+        self.assertEqual(verdict["verdict"], "UNAVAILABLE")
+        self.assertTrue(verdict["judge_unavailable"])
+        self.assertIn("503", verdict["flags"][-1]["detail"])
+        self.assertEqual(enriched["verdict"], "UNAVAILABLE")
+
+    def test_pre_pass_flags_do_not_turn_an_outage_into_a_regen(self):
+        code, verdict, _ = self._run_judge(repetition=["repeated phrase 'x'"])
+        self.assertEqual(code, safety_judge.JUDGE_UNAVAILABLE_EXIT)
+        self.assertEqual(verdict["verdict"], "UNAVAILABLE")
+        self.assertEqual(len(verdict["flags"]), 2)
+
+    def test_exit_code_is_distinct_from_pass_and_fail(self):
+        self.assertNotIn(safety_judge.JUDGE_UNAVAILABLE_EXIT, (0, 1))
+
+
+class TestPublishKeepsValidatedContentWhenJudgeUnavailable(unittest.TestCase):
+    """publish.main() with the judge unreachable: the last published post stays
+    up, marked stale with the real reason, and the unvalidated draft is neither
+    published nor archived."""
+
+    PRIOR_GEN_AT = None
+
+    def _run_publish(self, judge_results, prior_age_hours=20, regen_output=None):
+        import tempfile
+        from datetime import timedelta
+        from unittest import mock
+
+        results = list(judge_results)
+        archived = []
+        with tempfile.TemporaryDirectory() as tmp:
+            raw = Path(tmp) / "raw.json"
+            pub = Path(tmp) / "daily_output.json"
+            raw.write_text(json.dumps({"headline": "UNVALIDATED", "morning_brew": ["new"]}))
+            gen_at = (datetime.now(timezone.utc) - timedelta(hours=prior_age_hours)).isoformat()
+            self.PRIOR_GEN_AT = gen_at
+            pub.write_text(json.dumps({"headline": "VALIDATED", "morning_brew": ["old"],
+                                       "generated_at": gen_at, "date": "2026-09-29"}))
+
+            def fake_regen(flags):
+                raw.write_text(json.dumps(regen_output))
+                return 0
+
+            ident = lambda o: o  # noqa: E731
+            with mock.patch.object(publish, "RAW_OUTPUT_PATH", raw), \
+                 mock.patch.object(publish, "PUBLISHED_OUTPUT_PATH", pub), \
+                 mock.patch.object(publish, "run_judge", lambda save_path=None: results.pop(0)), \
+                 mock.patch.object(publish, "check_coverage_window", lambda o: []), \
+                 mock.patch.object(publish, "regenerate_with_correction", fake_regen), \
+                 mock.patch.object(publish, "archive_dan_output", archived.append), \
+                 mock.patch.object(publish, "archive_evals", lambda d: None), \
+                 mock.patch.object(publish, "publish_evals_to_docs", lambda: None), \
+                 mock.patch.object(publish, "attach_team_pulse", ident), \
+                 mock.patch.object(publish, "attach_playoff_race", ident), \
+                 mock.patch.object(publish, "patch_box_score_season_types", ident), \
+                 mock.patch("sys.stdout"), mock.patch("sys.stderr"):
+                rc = publish.main()
+            return rc, json.loads(pub.read_text()), archived
+
+    UNAVAILABLE = (3, {"verdict": "UNAVAILABLE", "severity": None, "judge_unavailable": True,
+                       "flags": [{"rule": 0, "detail": "judge unavailable — API error: "
+                                  "ServerError: code=503 | status=UNAVAILABLE"}]}, None)
+
+    def test_api_outage_keeps_the_last_post_marked_stale(self):
+        rc, doc, archived = self._run_publish([self.UNAVAILABLE])
+        self.assertEqual(rc, 0)
+        self.assertEqual(doc["headline"], "VALIDATED")
+        self.assertTrue(doc["_stale"])
+        self.assertTrue(doc["_stale_reason"].startswith("judge unavailable: API error"))
+        self.assertIn("503", doc["_stale_reason"])
+        self.assertEqual(doc["generated_at"], self.PRIOR_GEN_AT)
+        self.assertEqual(archived, [])
+
+    def test_judge_timeout_is_treated_the_same(self):
+        rc, doc, archived = self._run_publish([(None, None, None)])
+        self.assertEqual(doc["headline"], "VALIDATED")
+        self.assertTrue(doc["_stale"])
+        self.assertIn("timed out", doc["_stale_reason"])
+        self.assertEqual(archived, [])
+
+    def test_too_old_prior_post_still_goes_to_safe_fallback(self):
+        rc, doc, _ = self._run_publish([self.UNAVAILABLE], prior_age_hours=60)
+        self.assertTrue(doc["_fallback"])
+        self.assertTrue(doc["_fallback_reason"].startswith("judge unavailable"))
+
+    def test_an_earlier_genuinely_judged_low_draft_still_wins(self):
+        low_fail = (1, {"verdict": "FAIL", "severity": "low",
+                        "flags": [{"rule": 10, "detail": "repeated phrase"}]}, None)
+        rc, doc, archived = self._run_publish(
+            [low_fail, self.UNAVAILABLE],
+            regen_output={"headline": "REGEN", "morning_brew": ["r"]})
+        self.assertEqual(doc["headline"], "UNVALIDATED")  # attempt 1, judged LOW
+        self.assertTrue(doc["_quality_warning"])
+        self.assertNotIn("_stale", doc)
+        self.assertEqual(len(archived), 1)
+
+    def test_a_real_pass_still_publishes_fresh(self):
+        rc, doc, archived = self._run_publish(
+            [(0, {"verdict": "PASS", "severity": "low", "flags": []}, None)])
+        self.assertEqual(doc["headline"], "UNVALIDATED")
+        self.assertNotIn("_stale", doc)
+        self.assertEqual(len(archived), 1)

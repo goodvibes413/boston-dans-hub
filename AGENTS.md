@@ -70,6 +70,8 @@ Boston Dan's Hub is a public-facing static website featuring an AI-generated Bos
 - **A pin is a known, stable quantity.** The whole point of pinning here is the opposite of the old strategy: we'd rather have a fixed, predictable quota than an alias that can silently point somewhere worse. Re-evaluate the alias-vs-pin tradeoff only if this model gets deprecated or its quota changes materially — check `GEMINI_MODEL`/`JUDGE_MODEL` behavior against [ai.google.dev/gemini-api/docs/pricing](https://ai.google.dev/gemini-api/docs/pricing) before ever switching again.
 - **API demand spike resilience unchanged**: the in-process retry logic in `generate_rant.py` (4 retries, `[5, 15, 30, 60]`s, ~110s/call, plus a 90s per-request timeout added 2026-07-01 to prevent an unbounded hang) and `safety_judge.py` (same pattern) absorbs short spikes; the spaced safety-net cron slots in `morning_brew.yml` absorb longer ones.
 
+**Grounded 429 ≠ model 429.** The grounded (Google Search) call has returned an instant `429 RESOURCE_EXHAUSTED` on every run since at least 2026-09-10 while ungrounded calls on the same key never did — it is the grounding quota, not the model's. `call_gemini` therefore does not retry a grounded 429 (`retry_on_429=False`); it drops straight to the source-data-only call, and the output records `_grounding` (`used` / `quota_exhausted` / `failed` / `off`). `describe_api_error` now pulls the `Quota exceeded for metric: …, limit: N` tail out of the message, so the log names the exact quota. A 503 is model overload and still gets the normal ladder.
+
 **If you see persistent 429s again**: check whether `gemini-3.1-flash-lite` itself has been deprecated or re-quota'd before assuming it's a transient spike — that's exactly the failure mode that motivated this pin in the first place. A degraded (stale/fallback) publish opens a `pipeline-degraded` GitHub issue automatically so it is not silently green.
 
 **Note**: Free tier vs. paid is not the distinction here — `gemini-flash-latest`, `gemini-2.5-flash`, and `gemini-3.1-flash-lite` are all free. The distinction is daily request quota, and whether that quota is a fixed known value (pinned) or whatever Google currently maps "latest" to (floating).
@@ -170,11 +172,14 @@ generate_rant.py    → data/raw_dan_output.json  (gemini-3.1-flash-lite + groun
                       then a punch-up pass: one extra call that amps emotion/humor in
                       voice fields only — facts merge-locked; PUNCH_UP=0 disables)
     ↓
-safety_judge.py     → PASS / FAIL + severity  (gemini-3.1-flash-lite)
+safety_judge.py     → PASS / FAIL + severity, or UNAVAILABLE (exit 3) when the
+                      API never answers — never recorded as a PASS
     ↓
 publish.py          → docs/data/daily_output.json  (severity ladder after 3 judge
                       attempts: LOW/MEDIUM publish fresh with _quality_warning;
-                      only HIGH — fabrication/safety — falls back to stale)
+                      only HIGH — fabrication/safety — falls back to stale;
+                      judge UNAVAILABLE keeps the last post up as _stale with
+                      "judge unavailable: …" so later cron slots retry)
     ↓
 healthcheck.py      → validates all JSON files are parseable
 ```

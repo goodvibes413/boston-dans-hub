@@ -71,6 +71,8 @@ DAN_MEMORY_DAYS = int(os.environ.get("DAN_MEMORY_DAYS", 5))  # match generate_ra
 # Importing the module only defines constants/functions; execution is main-guarded.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from safety_judge import (  # noqa: E402
+    JUDGE_UNAVAILABLE,
+    JUDGE_UNAVAILABLE_EXIT,
     RULE_TITLES,
     UNCLASSIFIED_RULE,
     flag_line,
@@ -851,13 +853,23 @@ def publish_fallback(reason: str) -> int:
     return 0 if ok else 1
 
 
+def judge_unavailable_detail(verdict: dict | None) -> str:
+    """Why the judge could not validate, for _stale_reason. Never raises."""
+    for f in (verdict or {}).get("flags", []) or []:
+        text = flag_text(f)
+        if "judge unavailable" in text:
+            return text.split("judge unavailable", 1)[1].lstrip(" —-:")[:240]
+    return "safety_judge.py timed out or could not start"
+
+
 def run_judge(save_path: Path | None = None) -> tuple[int | None, dict | None, dict | None]:
     """
     Run safety_judge.py against data/raw_dan_output.json.
 
     Returns (exit_code, parsed_verdict, enriched_verdict).
-    - exit_code is None if the judge couldn't run at all (timeout, subprocess error);
-      callers should treat that like a PASS (don't block on unavailable judge).
+    - exit_code is None if the judge couldn't run at all (timeout, subprocess error),
+      and JUDGE_UNAVAILABLE_EXIT if it ran but the model API never answered.
+      Both mean "not validated" -- never a PASS. See judge_unavailable_detail().
     - enriched_verdict is the richer dict written to save_path by safety_judge.py
       (includes pre_pass_flags, llm_flags, rule_titles). None if save_path not set
       or the file couldn't be read.
@@ -1086,6 +1098,7 @@ def main():
     # Step 2: Judge, regenerate on FAIL, re-judge (up to MAX_JUDGE_ATTEMPTS times)
     last_flags: list = []   # structured flags: {"rule": int, "detail": str}
     best_attempt: dict | None = None  # least-bad draft seen across all attempts
+    judge_unavailable_reason: str | None = None
     original_raw_output = dict(raw_output)  # save before any retry overwrites it
     try:
         for attempt in range(1, MAX_JUDGE_ATTEMPTS + 1):
@@ -1145,24 +1158,25 @@ def main():
             attempt_record: dict = {
                 "attempt": attempt,
                 "verdict": (verdict.get("verdict") if verdict else
-                            ("PASS" if exit_code == 0 else "FAIL" if exit_code is not None else "UNKNOWN")),
+                            ("PASS" if exit_code == 0 else "FAIL" if exit_code == 1
+                             else JUDGE_UNAVAILABLE)),
                 "severity": verdict.get("severity") if verdict else None,
                 "flags": list(verdict.get("flags", [])) if verdict else [],
                 "duration_seconds": attempt_duration,
             }
             evals_doc["attempts"].append(attempt_record)
 
-            if exit_code is None:
-                # Judge couldn't run — treat as PASS so content still publishes.
-                print("  warning: judge unavailable — publishing without safety gate this run")
-                output = dict(raw_output)
-                output["generated_at"] = now_iso()
-                output = patch_box_score_season_types(output)
-                output = attach_playoff_race(output)
-                publish_output(output, label="output (judge unavailable)")
-                archive_dan_output(output)
-                _finalize_evals("fresh", winning_attempt=attempt)
-                return 0
+            if exit_code is None or exit_code == JUDGE_UNAVAILABLE_EXIT:
+                # Judge couldn't validate this draft. It used to publish anyway,
+                # as "fresh" -- on 2026-09-29 an unread post went live and locked
+                # out every later cron slot. Now: an earlier draft the judge DID
+                # grade LOW/MEDIUM still wins below; otherwise keep the last
+                # published post up, marked stale with this reason, so the
+                # freshness gate lets the next slot try again.
+                detail = judge_unavailable_detail(verdict)
+                print(f"  ⚠️  judge unavailable ({detail}) — this draft was not validated")
+                judge_unavailable_reason = f"judge unavailable: {detail}"
+                break
 
             if exit_code == 0:
                 print("  ✅ safety judge PASSED")
@@ -1257,6 +1271,10 @@ def main():
             archive_dan_output(output)
             _finalize_evals("retry", winning_attempt=best_attempt["attempt"])
         return 0 if success else 1
+
+    if judge_unavailable_reason:
+        _finalize_evals("fallback")
+        return publish_fallback(judge_unavailable_reason)
 
     # flag_line() renders structured flags; a bare join would stringify the dicts.
     reason = (f"safety judge FAILed after {MAX_JUDGE_ATTEMPTS} attempts: "
