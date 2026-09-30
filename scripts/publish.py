@@ -22,7 +22,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from pipeline_dates import as_of_iso
 from pathlib import Path
@@ -32,6 +32,9 @@ RAW_OUTPUT_PATH = Path("data/raw_dan_output.json")
 PUBLISHED_OUTPUT_PATH = Path("docs/data/daily_output.json")
 ARCHIVE_DIR = Path(os.environ.get("DAN_ARCHIVE_PATH", "data/dan_archive"))
 SEASON_CURRENT_PATH = Path(os.environ.get("SEASON_CURRENT_PATH", "data/season_current.json"))
+ROLLING_7DAY_PATH = Path(os.environ.get("ROLLING_7DAY_PATH", "data/rolling_7day.json"))
+UPCOMING_SCHEDULE_PATH = Path(os.environ.get("UPCOMING_SCHEDULE_PATH", "data/upcoming_schedule.json"))
+TEAM_DATA_DIR = Path(os.environ.get("TEAM_DATA_DIR", "data"))
 ARCHIVE_RETENTION_DAYS = 9  # generate_rant reads 5; extra buffer covers UTC date boundary edge cases
 STALE_MAX_AGE_HOURS = 48
 MAX_JUDGE_ATTEMPTS = 3  # original + 2 regenerations with correction notes
@@ -206,6 +209,294 @@ def attach_playoff_race(output: dict) -> dict:
     return output
 
 
+# ---------------------------------------------------------------------------
+# Team Pulse: the scoreboard's data, computed here rather than asked of Gemini
+# ---------------------------------------------------------------------------
+#
+# The old "Last Night" widget read box_scores, which is a field of the model's
+# output, looked at exactly one calendar day, and fell back to a label when
+# that day was empty. On 2026-09-29 it said all four teams were idle or out of
+# season, on a morning the Red Sox opened a Wild Card series and the Bruins
+# opened their season, two days after a Patriots loss. Every one of those facts
+# was already sitting in data/. This block reads them directly.
+
+PULSE_ORDER = ("celtics", "bruins", "redsox", "patriots")
+
+BOSTON_FULL_NAMES = {
+    "celtics":  "Boston Celtics",
+    "bruins":   "Boston Bruins",
+    "redsox":   "Boston Red Sox",
+    "patriots": "New England Patriots",
+}
+
+# How far back a result still counts as "the last game". Days, not games: a
+# daily sport's 4-day-old score is stale, a weekly sport's is last week's game
+# and exactly what a Friday reader wants to see.
+PULSE_LOOKBACK_DAYS = {"NBA": 3, "NHL": 3, "MLB": 3, "NFL": 8}
+
+PULSE_PHASES = ("postseason", "regular", "preseason", "offseason", "unknown")
+
+
+def _date_or_none(raw) -> "datetime.date | None":
+    try:
+        return datetime.strptime(str(raw)[:10], "%Y-%m-%d").date()
+    except (TypeError, ValueError):
+        return None
+
+
+def _pulse_last_result(box: dict, team: str) -> dict | None:
+    """One Boston result out of any of the four fetchers' boxscore shapes.
+
+    Returns None rather than a half-filled row when the scores are not there:
+    a row that says "Final" with no score is worse than no row.
+    """
+    if not isinstance(box, dict) or not box.get("played"):
+        return None
+    game_date = box.get("game_date")
+    games = box.get("games")
+    doubleheader = None
+    status = box.get("status") or ""
+    if isinstance(games, list) and games:
+        # MLB: one entry per game, a doubleheader carries two. The row shows
+        # the later game and lists both results.
+        def score_pair(g):
+            ours = g.get(f"{team}_score", g.get("our_score", g.get("boston_score")))
+            theirs = g.get("opponent_score", g.get("their_score"))
+            return ours, theirs
+        g = games[-1]
+        ours, theirs = score_pair(g)
+        opponent = g.get("opponent") or box.get("opponent") or ""
+        home = g.get("home")
+        if home is None and box.get("home_team"):
+            home = box.get("home_team") == BOSTON_FULL_NAMES[team]
+        status = g.get("status") or status
+        game_date = g.get("game_date") or game_date
+        if len(games) > 1:
+            doubleheader = []
+            for dg in games:
+                o, t = score_pair(dg)
+                if o is None or t is None:
+                    continue
+                doubleheader.append(f"{'W' if o > t else 'L'} {o}-{t}")
+    elif box.get(f"{team}_score") is not None:
+        ours = box.get(f"{team}_score")
+        theirs = box.get("opponent_score")
+        opponent = box.get("opponent") or ""
+        home = box.get("home")
+    elif box.get("home_team") or box.get("away_team"):
+        home = box.get("home_team") == BOSTON_FULL_NAMES[team]
+        ours = box.get("home_score") if home else box.get("away_score")
+        theirs = box.get("away_score") if home else box.get("home_score")
+        opponent = box.get("opponent") or (box.get("away_team") if home else box.get("home_team")) or ""
+    else:
+        return None
+    try:
+        ours, theirs = int(ours), int(theirs)
+    except (TypeError, ValueError):
+        return None
+    result = "W" if ours > theirs else ("L" if ours < theirs else "T")
+    note = ""
+    upper = str(status).upper()
+    if "SO" in upper.replace("/", " ").split():
+        note = "SO"
+    elif "OT" in upper or "OVERTIME" in upper:
+        note = "OT"
+    elif "EXTRA" in upper:
+        note = "F/X"
+    d = _date_or_none(game_date)
+    row = {
+        "date": d.isoformat() if d else game_date,
+        "day_of_week": d.strftime("%A") if d else None,
+        "opponent": opponent,
+        "home": bool(home) if home is not None else None,
+        "boston_score": ours,
+        "opponent_score": theirs,
+        "result": result,
+        "season_type": box.get("season_type") or "unknown",
+    }
+    if note:
+        row["note"] = note
+    if doubleheader:
+        row["doubleheader"] = doubleheader
+    return row
+
+
+def _pulse_find_last(rolling: dict | None, team: str, sport: str, as_of) -> dict | None:
+    """Most recent played game inside the sport's lookback, newest day first."""
+    if not isinstance(rolling, dict):
+        return None
+    cutoff = as_of - timedelta(days=PULSE_LOOKBACK_DAYS.get(sport, 3))
+    best = None
+    for day in rolling.get("days") or []:
+        if not isinstance(day, dict):
+            continue
+        box = ((day.get(team) or {}).get("boxscore")) if isinstance(day.get(team), dict) else None
+        row = _pulse_last_result(box, team)
+        if not row:
+            continue
+        d = _date_or_none(row["date"])
+        if d is None or d < cutoff or d >= as_of:
+            continue
+        if best is None or d > _date_or_none(best["date"]):
+            best = row
+    return best
+
+
+def _pulse_find_next(schedule: dict | None, team: str, as_of) -> dict | None:
+    """First scheduled game on or after the run day."""
+    if not isinstance(schedule, dict):
+        return None
+    games = [g for g in (schedule.get("games") or [])
+             if isinstance(g, dict) and g.get("team") == team]
+    games.sort(key=lambda g: str(g.get("datetime_utc") or g.get("date") or ""))
+    for g in games:
+        d = _date_or_none(g.get("date"))
+        if d is None or d < as_of:
+            continue
+        if str(g.get("status", "")).lower().startswith(("final", "postponed", "cancel")):
+            continue
+        home = g.get("home_team") == BOSTON_FULL_NAMES[team]
+        return {
+            "date": d.isoformat(),
+            "day_of_week": g.get("day_of_week") or d.strftime("%A"),
+            "time_et": g.get("time_et") or "TBD",
+            "opponent": (g.get("away_team") if home else g.get("home_team")) or "",
+            "home": home,
+            "season_type": g.get("season_type") or "unknown",
+            "is_today": d == as_of,
+        }
+    return None
+
+
+def _pulse_record(season: dict) -> str | None:
+    if not isinstance(season, dict) or season.get("status") != "regular_season":
+        return None
+    if season.get("summary"):
+        return str(season["summary"])
+    w, l = season.get("wins"), season.get("losses")
+    if w is None or l is None:
+        return None
+    extra = season.get("ties") or season.get("ot_losses")
+    return f"{w}-{l}" + (f"-{extra}" if extra else "")
+
+
+def build_team_pulse(rolling: dict | None, schedule: dict | None,
+                     season_current: dict | None, as_of,
+                     schedule_errors: set | None = None) -> dict:
+    """The scoreboard for one run day: per team, what just happened, what is
+    next, and which part of the season it is.
+
+    Phase is decided by the games themselves first (a scheduled playoff game
+    is the postseason whatever any status file says), then by
+    season_current.json, and only then is a team called out of season. Two
+    rules keep this from ever again printing the 2026-09-29 board:
+
+      * A team with a game on the schedule is never "offseason".
+      * Missing data is "unknown", shown as such. It never defaults to a label.
+    """
+    schedule_errors = schedule_errors or set()
+    season_current = season_current if isinstance(season_current, dict) else {}
+    teams = []
+    for idx, team in enumerate(PULSE_ORDER):
+        label, sport = TEAM_LABELS[team]
+        last = _pulse_find_last(rolling, team, sport, as_of)
+        nxt = _pulse_find_next(schedule, team, as_of)
+        season = season_current.get(team) if isinstance(season_current.get(team), dict) else {}
+        status = season.get("status")
+        race = season.get("playoff_race") if isinstance(season.get("playoff_race"), dict) else {}
+        types = {x["season_type"] for x in (last, nxt) if x}
+
+        opener = False
+        if ("playoff" in types or status == "in_playoffs"
+                or (nxt and race.get("race_status") == "clinched"
+                    and race.get("games_remaining") == 0)):
+            phase = "postseason"
+        elif "regular" in types:
+            phase = "regular"
+            opener = bool(nxt and nxt["season_type"] == "regular"
+                          and status != "regular_season"
+                          and not (last and last["season_type"] == "regular"))
+        elif "preseason" in types:
+            phase = "preseason"
+        elif status == "regular_season":
+            phase = "regular"
+        elif status == "offseason" and team not in schedule_errors:
+            phase = "offseason"
+        else:
+            phase = "unknown"
+
+        # By construction a scheduled game rules out "offseason"; stated anyway
+        # so a future edit to the ladder above cannot quietly break it.
+        if nxt and phase == "offseason":
+            print(f"  warning: team_pulse {team} has a game on "
+                  f"{nxt['date']} but resolved offseason; forcing unknown",
+                  file=sys.stderr)
+            phase = "unknown"
+
+        if nxt and nxt["is_today"]:
+            priority = 0 if phase == "postseason" else 1
+        elif phase == "postseason":
+            priority = 2
+        elif last:
+            priority = 3
+        elif nxt:
+            priority = 4
+        elif phase == "unknown":
+            priority = 5
+        else:
+            priority = 6
+
+        teams.append({
+            "team": team,
+            "label": label,
+            "sport": sport,
+            "phase": phase,
+            "opener": opener,
+            "record": _pulse_record(season),
+            "last": last,
+            "next": nxt,
+            "_rank": (priority, idx),
+        })
+    teams.sort(key=lambda t: t.pop("_rank"))
+    return {"as_of": as_of.isoformat(), "teams": teams}
+
+
+def attach_team_pulse(output: dict) -> dict:
+    """Recompute team_pulse from today's data files onto the published doc.
+
+    Runs inside publish_output(), so every path gets it: fresh, stale and safe
+    fallback. On a stale republish the brew is yesterday's but the scoreboard
+    is today's, which is the point; it does not depend on Gemini at all.
+
+    Clears the key first. If the data files are missing entirely the key is
+    left absent and the page falls back to the legacy box_scores render.
+    Never raises.
+    """
+    output.pop("team_pulse", None)
+    try:
+        rolling = read_json(ROLLING_7DAY_PATH)
+        schedule = read_json(UPCOMING_SCHEDULE_PATH)
+        season_current = read_json(SEASON_CURRENT_PATH)
+        if rolling is None and schedule is None and season_current is None:
+            return output
+        errors = set()
+        for team in PULSE_ORDER:
+            per_team = read_json(TEAM_DATA_DIR / f"{team}_schedule.json")
+            if per_team is None or (isinstance(per_team, dict) and per_team.get("error")):
+                errors.add(team)
+        as_of = datetime.strptime(as_of_iso(), "%Y-%m-%d").date()
+        pulse = build_team_pulse(rolling, schedule, season_current, as_of, errors)
+        output["team_pulse"] = pulse
+        for t in pulse["teams"]:
+            print(f"  team_pulse: {t['team']:<9} {t['phase']:<10} "
+                  f"last={'yes' if t['last'] else 'no'} "
+                  f"next={t['next']['date'] if t['next'] else 'none'}")
+    except Exception as e:
+        print(f"  warning: attach_team_pulse failed: {e}", file=sys.stderr)
+        output.pop("team_pulse", None)
+    return output
+
+
 def write_json(path: Path, data: dict, label: str = "published") -> bool:
     """Safely write JSON file. Create parent directories as needed. Return success."""
     try:
@@ -227,6 +518,9 @@ def publish_output(output: dict, label: str = "published") -> bool:
     them. A path that writes the file directly is a path whose post the archive
     picker cannot find.
     """
+    # The scoreboard is rebuilt from today's data on every path, so even a
+    # stale or safe-fallback brew ships a correct board.
+    output = attach_team_pulse(output)
     return write_json(PUBLISHED_OUTPUT_PATH, stamp_run_date(output), label=label)
 
 
@@ -478,6 +772,7 @@ def publish_evals_to_docs(archive_dir: Path = ARCHIVE_DIR,
                     "box_scores": today_data.get("box_scores", {}),
                     "schedule": today_data.get("schedule", []),
                     "playoff_race": today_data.get("playoff_race"),
+                    "team_pulse": today_data.get("team_pulse"),
                     "_stale": today_data.get("_stale"),
                     "_fallback": today_data.get("_fallback"),
                 }

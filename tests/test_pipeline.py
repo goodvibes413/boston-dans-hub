@@ -3248,3 +3248,185 @@ class TestRollingVenueAnnotation(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ---------------------------------------------------------------------------
+# Scoreboard (team_pulse): the 2026-09-29 board
+# ---------------------------------------------------------------------------
+
+def pulse_fixture():
+    """The morning of 2026-09-29, as the data files would read once the
+    NHL season-year and MLB gameType fixes are in: Sox open a Wild Card series
+    tonight, Bruins open their season tonight, Patriots lost Sunday and play
+    Sunday, Celtics are idle. The published board called three of those four
+    teams 'Offseason'."""
+    rolling = {"days": [
+        {"date": "2026-09-29",
+         "celtics":  {"boxscore": {"game_date": "2026-09-28", "played": False, "season_type": "offseason"}},
+         "bruins":   {"boxscore": {"game_date": "2026-09-28", "played": False, "season_type": "unknown"}},
+         "redsox":   {"boxscore": {"game_date": "2026-09-28", "played": False, "season_type": "regular"}},
+         "patriots": {"boxscore": {"game_date": "2026-09-28", "played": False, "season_type": "regular"}}},
+        {"date": "2026-09-28",
+         "redsox":   {"boxscore": {"game_date": "2026-09-27", "played": True, "season_type": "regular",
+                                   "doubleheader": False,
+                                   "games": [{"game_date": "2026-09-27", "home": True, "redsox_score": 2,
+                                              "opponent": "Chicago Cubs", "opponent_score": 6,
+                                              "status": "Final"}]}},
+         "patriots": {"boxscore": {"game_date": "2026-09-27", "played": True, "season_type": "regular",
+                                   "home": False, "patriots_score": 6,
+                                   "opponent": "Jacksonville Jaguars", "opponent_score": 35}}},
+    ]}
+    schedule = {"games": [
+        {"team": "bruins", "date": "2026-09-29", "time_et": "7:00 PM ET",
+         "datetime_utc": "2026-09-29T23:00:00+00:00", "home_team": "Boston Bruins",
+         "away_team": "New York Rangers", "season_type": "regular", "status": "Scheduled"},
+        {"team": "redsox", "date": "2026-09-29", "time_et": "8:00 PM ET",
+         "datetime_utc": "2026-09-30T00:00:00+00:00", "home_team": "New York Yankees",
+         "away_team": "Boston Red Sox", "season_type": "playoff", "status": "Scheduled"},
+        {"team": "patriots", "date": "2026-10-04", "time_et": "1:00 PM ET",
+         "datetime_utc": "2026-10-04T17:00:00+00:00", "home_team": "Buffalo Bills",
+         "away_team": "New England Patriots", "season_type": "regular", "status": "Scheduled"},
+    ]}
+    season_current = {
+        "redsox":   {"status": "regular_season", "summary": "87-75",
+                     "playoff_race": {"race_status": "clinched", "games_remaining": 0}},
+        "bruins":   {"status": "offseason", "last_season_summary": "45-30-7"},
+        "celtics":  {"status": "offseason"},
+        "patriots": {"status": "regular_season", "wins": 1, "losses": 2},
+    }
+    return rolling, schedule, season_current
+
+
+class TestTeamPulseOnTheNightItBroke(unittest.TestCase):
+    def setUp(self):
+        r, s, sc = pulse_fixture()
+        self.pulse = publish.build_team_pulse(r, s, sc, date(2026, 9, 29))
+        self.by = {t["team"]: t for t in self.pulse["teams"]}
+
+    def test_phases(self):
+        self.assertEqual(self.by["redsox"]["phase"], "postseason")
+        self.assertEqual(self.by["bruins"]["phase"], "regular")
+        self.assertTrue(self.by["bruins"]["opener"])
+        self.assertEqual(self.by["patriots"]["phase"], "regular")
+        self.assertEqual(self.by["celtics"]["phase"], "offseason")
+
+    def test_patriots_show_sundays_loss_and_next_sunday(self):
+        """NFL lookback is 8 days: a weekly sport's last game is always 'last night' to nobody."""
+        p = self.by["patriots"]
+        self.assertEqual((p["last"]["result"], p["last"]["boston_score"], p["last"]["opponent_score"]),
+                         ("L", 6, 35))
+        self.assertFalse(p["last"]["home"])
+        self.assertEqual(p["next"]["date"], "2026-10-04")
+        self.assertEqual(p["record"], "1-2")
+
+    def test_games_tonight_lead_and_the_playoff_game_leads_them(self):
+        order = [t["team"] for t in self.pulse["teams"]]
+        self.assertEqual(order[:2], ["redsox", "bruins"])
+        self.assertEqual(order[-1], "celtics")
+
+    def test_postseason_holds_even_when_the_schedule_still_says_regular(self):
+        """Belt and braces for the date heuristic: a clinched team with no games
+        left and a game on the schedule is in the postseason."""
+        r, s, sc = pulse_fixture()
+        for g in s["games"]:
+            g["season_type"] = "regular"
+        pulse = publish.build_team_pulse(r, s, sc, date(2026, 9, 29))
+        self.assertEqual({t["team"]: t["phase"] for t in pulse["teams"]}["redsox"], "postseason")
+
+
+class TestTeamPulseNeverGuesses(unittest.TestCase):
+    def test_a_scheduled_team_is_never_offseason(self):
+        for season_type in ("regular", "playoff", "preseason", "unknown"):
+            with self.subTest(season_type=season_type):
+                s = {"games": [{"team": "bruins", "date": "2026-10-02", "home_team": "Boston Bruins",
+                                "away_team": "X", "season_type": season_type}]}
+                pulse = publish.build_team_pulse(None, s, {"bruins": {"status": "offseason"}},
+                                                 date(2026, 9, 29))
+                bruins = [t for t in pulse["teams"] if t["team"] == "bruins"][0]
+                self.assertNotEqual(bruins["phase"], "offseason")
+
+    def test_no_data_is_unknown_not_offseason(self):
+        pulse = publish.build_team_pulse(None, None, None, date(2026, 9, 29))
+        self.assertEqual({t["phase"] for t in pulse["teams"]}, {"unknown"})
+
+    def test_a_failed_schedule_fetch_is_unknown_even_if_status_says_offseason(self):
+        pulse = publish.build_team_pulse(None, {"games": []}, {"celtics": {"status": "offseason"}},
+                                         date(2026, 9, 29), schedule_errors={"celtics"})
+        self.assertEqual([t for t in pulse["teams"] if t["team"] == "celtics"][0]["phase"], "unknown")
+
+    def test_daily_sport_lookback_is_three_days(self):
+        r = {"days": [{"date": "2026-09-25", "celtics": {"boxscore": {
+            "game_date": "2026-09-24", "played": True, "season_type": "regular",
+            "home": True, "celtics_score": 100, "opponent": "X", "opponent_score": 90}}}]}
+        pulse = publish.build_team_pulse(r, None, None, date(2026, 9, 29))
+        self.assertIsNone([t for t in pulse["teams"] if t["team"] == "celtics"][0]["last"])
+
+    def test_doubleheader_lists_both_games(self):
+        box = {"played": True, "game_date": "2026-09-26", "season_type": "regular", "games": [
+            {"home": True, "redsox_score": 4, "opponent": "Chicago Cubs", "opponent_score": 3},
+            {"home": True, "redsox_score": 2, "opponent": "Chicago Cubs", "opponent_score": 0}]}
+        row = publish._pulse_last_result(box, "redsox")
+        self.assertEqual(row["doubleheader"], ["W 4-3", "W 2-0"])
+        self.assertEqual((row["boston_score"], row["opponent_score"]), (2, 0))
+
+    def test_a_played_game_without_scores_is_not_a_row(self):
+        self.assertIsNone(publish._pulse_last_result({"played": True, "game_date": "2026-09-27"}, "bruins"))
+
+
+class TestTeamPulseReachesEveryPublishPath(unittest.TestCase):
+    def setUp(self):
+        self.src = (REPO / "scripts" / "publish.py").read_text()
+
+    def test_publish_output_attaches_it(self):
+        fn = self.src.split("def publish_output(")[1].split("\ndef ")[0]
+        self.assertIn("attach_team_pulse(", fn)
+
+    def test_todays_post_snapshot_carries_it(self):
+        self.assertIn('"team_pulse": today_data.get("team_pulse")', self.src)
+
+    def test_attach_clears_a_stale_block_when_data_is_missing(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            saved = (publish.ROLLING_7DAY_PATH, publish.UPCOMING_SCHEDULE_PATH,
+                     publish.SEASON_CURRENT_PATH, publish.TEAM_DATA_DIR)
+            publish.ROLLING_7DAY_PATH = Path(tmp) / "a.json"
+            publish.UPCOMING_SCHEDULE_PATH = Path(tmp) / "b.json"
+            publish.SEASON_CURRENT_PATH = Path(tmp) / "c.json"
+            publish.TEAM_DATA_DIR = Path(tmp)
+            try:
+                out = publish.attach_team_pulse({"team_pulse": {"as_of": "old"}})
+            finally:
+                (publish.ROLLING_7DAY_PATH, publish.UPCOMING_SCHEDULE_PATH,
+                 publish.SEASON_CURRENT_PATH, publish.TEAM_DATA_DIR) = saved
+        self.assertNotIn("team_pulse", out)
+
+    def test_healthcheck_does_not_require_it(self):
+        self.assertNotIn("team_pulse", (REPO / "scripts" / "healthcheck.py").read_text())
+
+
+class TestScoreboardWidgetIsWiredIn(unittest.TestCase):
+    def setUp(self):
+        self.src = (REPO / "docs" / "index.html").read_text()
+
+    def test_the_board_prefers_team_pulse(self):
+        self.assertIn("data.team_pulse ? buildTeamPulseWidget(data.team_pulse) : "
+                      "buildScoreboardWidget(data.box_scores)", self.src)
+
+    def test_the_patriots_are_no_longer_hardcoded_offseason(self):
+        self.assertNotIn("k === 'patriots' && !g.played", self.src)
+
+    def test_every_published_phase_has_a_chip(self):
+        chips = self.src.split("const PULSE_CHIPS = {")[1].split("};")[0]
+        for phase in publish.PULSE_PHASES:
+            self.assertIn(phase + ":", chips)
+
+
+class TestSeasonBoundariesComeFromTheData(unittest.TestCase):
+    def test_nhl_season_flips_before_a_september_opener(self):
+        self.assertEqual(fetch_nhl.current_nhl_season(date(2026, 9, 29)), "20262027")
+        self.assertEqual(fetch_nhl.current_nhl_season(date(2026, 6, 20)), "20252026")
+
+    def test_mlb_prefers_the_statsapi_game_type(self):
+        self.assertEqual(fetch_mlb.classify_mlb_game("2026-09-29", "F"), "playoff")
+        self.assertEqual(fetch_mlb.classify_mlb_game("2026-09-27", "R"), "regular")
+        self.assertEqual(fetch_mlb.classify_mlb_game("2026-09-29"), "regular")  # heuristic fallback

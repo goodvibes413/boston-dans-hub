@@ -1007,6 +1007,48 @@ Two whitelists drop unknown keys and both had to learn this one:
 does **not** — that archive feeds Dan's continuity memory, which is voice and
 phrasing, not date-specific facts.
 
+### `team_pulse` (publisher-added, powers the Scoreboard widget)
+
+```json
+"team_pulse": {
+  "as_of": "2026-09-29",
+  "teams": [
+    { "team": "redsox", "label": "Red Sox", "sport": "MLB",
+      "phase": "postseason", "opener": false, "record": "87-75",
+      "last": { "date": "2026-09-27", "day_of_week": "Sunday", "opponent": "Chicago Cubs",
+                "home": true, "boston_score": 2, "opponent_score": 6, "result": "L",
+                "season_type": "regular" },
+      "next": { "date": "2026-09-29", "day_of_week": "Tuesday", "time_et": "8:00 PM ET",
+                "opponent": "New York Yankees", "home": false,
+                "season_type": "playoff", "is_today": true } }
+  ]
+}
+```
+
+Built by `build_team_pulse()` in `publish.py` from `rolling_7day.json`,
+`upcoming_schedule.json`, `season_current.json` and the per-team
+`{team}_schedule.json` error flags. **It never reads `box_scores`**, which is
+model output. `attach_team_pulse()` runs inside `publish_output()`, so fresh,
+stale and safe-fallback publishes all carry today's board. It clears the key
+first, and omits it entirely when all three data files are missing; the page
+then falls back to the legacy `box_scores` render.
+
+**Phase ladder** (first match wins): any playoff game in `last`/`next`, or
+`in_playoffs`, or a clinched race with 0 games left and a game scheduled →
+`postseason`; any regular game → `regular` (`opener: true` when the team has no
+regular-season record yet); any preseason game → `preseason`; `season_current`
+`regular_season` → `regular`; `offseason` with a healthy schedule fetch →
+`offseason`; anything else → `unknown`.
+
+**Two invariants, both tested:** a team with a game on the schedule is never
+`offseason`, and missing data is `unknown` (rendered "No data"), never a
+default label.
+
+`last` looks back `PULSE_LOOKBACK_DAYS` (NBA/NHL/MLB 3, NFL 8). Teams are
+sorted: playoff game today, any game today, postseason, recent result, upcoming
+game, unknown, offseason. `slim_today` carries the key into posts snapshots;
+`healthcheck.py` does not require it.
+
 ### Safe fallback content (used when safety judge fails)
 ```json
 {
@@ -1314,6 +1356,11 @@ game:
    SECONDARY gets one buried sentence a day.
 6. Clear any `season_overrides.json` entry for that team, and check the
    `expires` date on the others.
+7. Check the season-year helpers against the **real** opener date, not the
+   month it used to be. `current_nhl_season()` flipped on October 1 and the
+   2026-27 NHL season opened September 29; the Bruins' opener never reached the
+   schedule. MLB's postseason now starts in September too, so season type
+   comes from StatsAPI's `gameType`, with the month heuristic as fallback only.
 
 **Note on time formatting:** `format_time_et` used to infer "no time
 announced" from the clock reading exactly midnight UTC. That cannot tell a
