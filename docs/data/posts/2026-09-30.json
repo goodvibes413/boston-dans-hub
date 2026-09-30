@@ -1,9 +1,23 @@
 {
+  "date": "2026-09-30",
+  "generated_at": "2026-09-29T16:02:08.950999+00:00",
   "headline": "Red Sox head to the Bronx to face Yankees in postseason showdown",
   "morning_brew": [
     "It is finally here, the time of year that either makes a legend or just ruins your whole October. We are headed into the Bronx tonight for the opening act of this Wild Card series against the Yankees, and you can practically taste the anxiety in the air. The bad blood between these two franchises is heavier than anything else in the sport, and once that first pitch crosses the plate, the regular season stats are just confetti in the trash. I'm not gonna lie, my nerves are completely fried, but this team has shown enough grit to make a statue cry and I am dying to see if they've got one more gear in the tank.",
     "The Yankees might be missing Aaron Judge, but we aren't stupid enough to think that makes this a cakewalk. Every single pitch tonight at Yankee Stadium is going to feel like a high-wire act without a net, and that is exactly how it should be when we take on those guys. We need our rotation to lock in and our bats to find those gaps before the Bronx crowd even gets their beer, because the team that grabs the throat of this series early usually ends up holding all the cards. I'm praying for a clean, hard-fought game where we silence that stadium so fast the vendors start wondering why they showed up.",
     "If you want to know what this is gonna look like, just remember the last time these two sides collided; it is always pure, unadulterated melodrama. I'll be glued to the screen all night, likely pacing around the living room like cousin Jimmy does when he's trying to talk himself out of a bad trade after three too many at the corner pub. It is a new chapter in this headache of a rivalry tonight, and I'm just looking for a win that sets the tone for the entire week. Let's go Sox, it's time to take it to 'em."
+  ],
+  "news_digest": [
+    {
+      "headline": "Aaron Judge not on Yankees' roster for ALWCS, source confirms",
+      "url": "https://www.espn.com/mlb/story/_/id/50058710/aaron-judge-not-yankees-roster-alwcs-source-confirms",
+      "dans_take": "I'll believe he's truly out when I don't see him in the box score, but it's a massive gift for our guys."
+    },
+    {
+      "headline": "Tatum 'comfortable' leading new-look Celtics post-Brown trade",
+      "url": "https://www.espn.com/nba/story/_/id/50055438/tatum-comfortable-leading-new-look-celtics-post-brown-trade",
+      "dans_take": "The new era is officially here, and now I'm just waiting to see if this chemistry is real or just a summer dream."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Brayan Bello",
       "trend": "Struck out a career-high number of hitters while consistently going deep into his last three starts.",
       "dans_take": "He is the kind of arm we need when the lights get this blindingly bright."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Aaron Judge not on Yankees' roster for ALWCS, source confirms",
-      "url": "https://www.espn.com/mlb/story/_/id/50058710/aaron-judge-not-yankees-roster-alwcs-source-confirms",
-      "dans_take": "I'll believe he's truly out when I don't see him in the box score, but it's a massive gift for our guys."
-    },
-    {
-      "headline": "Tatum 'comfortable' leading new-look Celtics post-Brown trade",
-      "url": "https://www.espn.com/nba/story/_/id/50055438/tatum-comfortable-leading-new-look-celtics-post-brown-trade",
-      "dans_take": "The new era is officially here, and now I'm just waiting to see if this chemistry is real or just a summer dream."
     }
   ],
   "box_scores": {
@@ -105,30 +107,6 @@
       "time_et": "1:00 PM ET"
     }
   ],
-  "_timings": [
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 14.84,
-      "prompt_tokens": 39071,
-      "output_tokens": 1404,
-      "thinking_tokens": null
-    },
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 5.42,
-      "prompt_tokens": 17843,
-      "output_tokens": 1465,
-      "thinking_tokens": null
-    }
-  ],
-  "generated_at": "2026-09-29T16:02:08.950999+00:00",
-  "date": "2026-09-30",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
   "playoff_race": {
     "redsox": {
       "phase": "stretch_run",
@@ -144,92 +122,7 @@
       "record": "87-75"
     }
   },
-  "_stale_age_hours": 22.7,
-  "team_pulse": {
-    "as_of": "2026-09-30",
-    "teams": [
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": "87-75",
-        "last": {
-          "date": "2026-09-29",
-          "day_of_week": "Tuesday",
-          "opponent": "New York Yankees",
-          "home": false,
-          "boston_score": 0,
-          "opponent_score": 9,
-          "result": "L",
-          "season_type": "playoff"
-        },
-        "next": {
-          "date": "2026-09-30",
-          "day_of_week": "Wednesday",
-          "time_et": "8:00 PM ET",
-          "opponent": "New York Yankees",
-          "home": false,
-          "season_type": "playoff",
-          "is_today": true
-        }
-      },
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": null,
-        "last": {
-          "date": "2026-09-29",
-          "day_of_week": "Tuesday",
-          "opponent": "Rangers",
-          "home": true,
-          "boston_score": 3,
-          "opponent_score": 0,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-02",
-          "day_of_week": "Friday",
-          "time_et": "8:00 PM ET",
-          "opponent": "Winnipeg Jets",
-          "home": false,
-          "season_type": "regular",
-          "is_today": false
-        }
-      },
-      {
-        "team": "patriots",
-        "label": "Patriots",
-        "sport": "NFL",
-        "phase": "regular",
-        "opener": false,
-        "record": "1-2",
-        "last": null,
-        "next": {
-          "date": "2026-10-04",
-          "day_of_week": "Sunday",
-          "time_et": "1:00 PM ET",
-          "opponent": "Buffalo Bills",
-          "home": false,
-          "season_type": "regular",
-          "is_today": false
-        }
-      },
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "offseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      }
-    ]
-  }
+  "team_pulse": null,
+  "_stale": null,
+  "_fallback": null
 }

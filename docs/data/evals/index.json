@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-09-25",
     "2026-09-26",
     "2026-09-27",
     "2026-09-28",
-    "2026-09-29"
+    "2026-09-29",
+    "2026-09-30"
   ],
   "rules": [
     {
@@ -100,19 +100,19 @@
   ],
   "summary_5day": {
     "fresh": 2,
-    "retry": 3,
-    "fallback": 0,
+    "retry": 2,
+    "fallback": 1,
     "stale": 0,
     "most_flagged_rules": [
       {
-        "rule": 12,
-        "count": 6,
-        "title": "Game coverage gap"
+        "rule": 10,
+        "count": 4,
+        "title": "Voice repetition"
       },
       {
-        "rule": 10,
-        "count": 5,
-        "title": "Voice repetition"
+        "rule": 12,
+        "count": 4,
+        "title": "Game coverage gap"
       },
       {
         "rule": 15,
