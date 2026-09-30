@@ -122,7 +122,93 @@
       "record": "87-75"
     }
   },
-  "team_pulse": null,
-  "_stale": null,
+  "team_pulse": {
+    "as_of": "2026-09-30",
+    "teams": [
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": "87-75",
+        "last": {
+          "date": "2026-09-29",
+          "day_of_week": "Tuesday",
+          "opponent": "New York Yankees",
+          "home": false,
+          "boston_score": 0,
+          "opponent_score": 9,
+          "result": "L",
+          "season_type": "playoff"
+        },
+        "next": {
+          "date": "2026-09-30",
+          "day_of_week": "Wednesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "New York Yankees",
+          "home": false,
+          "season_type": "playoff",
+          "is_today": true
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": null,
+        "last": {
+          "date": "2026-09-29",
+          "day_of_week": "Tuesday",
+          "opponent": "Rangers",
+          "home": true,
+          "boston_score": 3,
+          "opponent_score": 0,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-02",
+          "day_of_week": "Friday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Winnipeg Jets",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "1-2",
+        "last": null,
+        "next": {
+          "date": "2026-10-04",
+          "day_of_week": "Sunday",
+          "time_et": "1:00 PM ET",
+          "opponent": "Buffalo Bills",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "offseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      }
+    ]
+  },
+  "_stale": true,
   "_fallback": null
 }
