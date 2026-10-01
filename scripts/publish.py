@@ -463,6 +463,34 @@ def build_team_pulse(rolling: dict | None, schedule: dict | None,
     return {"as_of": as_of.isoformat(), "teams": teams}
 
 
+def carry_forward_last(pulse: dict, previous: dict | None, as_of) -> dict:
+    """Fill a missing `last` from the previously published board.
+
+    rolling_7day.json is gitignored and the Actions runner starts clean, so in
+    production the store holds one day, not seven. The 8-day NFL lookback had
+    nothing to look back over: on 2026-09-30 the Patriots row lost Sunday's
+    35-6 result. The published daily_output.json IS committed, so yesterday's
+    board is always on disk. A result carries forward until it ages past the
+    sport's lookback, then drops. A fresher result in today's data always wins.
+    """
+    if not isinstance(previous, dict):
+        return pulse
+    prev_by_team = {t.get("team"): t for t in previous.get("teams") or []
+                    if isinstance(t, dict)}
+    for t in pulse.get("teams") or []:
+        if t.get("last"):
+            continue
+        prev_last = (prev_by_team.get(t["team"]) or {}).get("last")
+        if not isinstance(prev_last, dict):
+            continue
+        d = _date_or_none(prev_last.get("date"))
+        cutoff = as_of - timedelta(days=PULSE_LOOKBACK_DAYS.get(t["sport"], 3))
+        if d is None or d < cutoff or d >= as_of:
+            continue
+        t["last"] = dict(prev_last)
+    return pulse
+
+
 def attach_team_pulse(output: dict) -> dict:
     """Recompute team_pulse from today's data files onto the published doc.
 
@@ -488,6 +516,8 @@ def attach_team_pulse(output: dict) -> dict:
                 errors.add(team)
         as_of = datetime.strptime(as_of_iso(), "%Y-%m-%d").date()
         pulse = build_team_pulse(rolling, schedule, season_current, as_of, errors)
+        previous = read_json(PUBLISHED_OUTPUT_PATH)
+        carry_forward_last(pulse, (previous or {}).get("team_pulse"), as_of)
         output["team_pulse"] = pulse
         for t in pulse["teams"]:
             print(f"  team_pulse: {t['team']:<9} {t['phase']:<10} "
