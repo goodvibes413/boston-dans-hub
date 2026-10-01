@@ -1049,7 +1049,10 @@ regular-season record yet); any preseason game → `preseason`; `season_current`
 `offseason`, and missing data is `unknown` (rendered "No data"), never a
 default label.
 
-`last` looks back `PULSE_LOOKBACK_DAYS` (NBA/NHL/MLB 3, NFL 8). Teams are
+`last` looks back `PULSE_LOOKBACK_DAYS` (NBA/NHL/MLB 3, NFL 8). **`rolling_7day.json`
+does not persist between Actions runs** (gitignored, clean runner), so in
+production it holds one day; `carry_forward_last()` fills a missing `last` from
+the previously published `team_pulse`, which is committed, until it ages out. Teams are
 sorted: playoff game today, any game today, postseason, recent result, upcoming
 game, unknown, offseason. `slim_today` carries the key into posts snapshots;
 `healthcheck.py` does not require it.

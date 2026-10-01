@@ -3709,3 +3709,38 @@ class TestPublishKeepsValidatedContentWhenJudgeUnavailable(unittest.TestCase):
         self.assertEqual(doc["headline"], "UNVALIDATED")
         self.assertNotIn("_stale", doc)
         self.assertEqual(len(archived), 1)
+
+
+class TestTeamPulseCarriesForwardAcrossCleanRunners(unittest.TestCase):
+    """rolling_7day.json does not survive between Actions runs, so the NFL
+    lookback has to come from yesterday's published board."""
+
+    def prev(self, date_str):
+        return {"teams": [{"team": "patriots", "last": {
+            "date": date_str, "result": "L", "boston_score": 6, "opponent_score": 35,
+            "opponent": "Jacksonville Jaguars", "home": False}}]}
+
+    def test_the_patriots_keep_sundays_result_on_wednesday(self):
+        pulse = publish.build_team_pulse(None, None, None, date(2026, 9, 30))
+        publish.carry_forward_last(pulse, self.prev("2026-09-27"), date(2026, 9, 30))
+        pats = [t for t in pulse["teams"] if t["team"] == "patriots"][0]
+        self.assertEqual(pats["last"]["opponent_score"], 35)
+
+    def test_it_drops_once_past_the_lookback(self):
+        pulse = publish.build_team_pulse(None, None, None, date(2026, 10, 6))
+        publish.carry_forward_last(pulse, self.prev("2026-09-27"), date(2026, 10, 6))
+        pats = [t for t in pulse["teams"] if t["team"] == "patriots"][0]
+        self.assertIsNone(pats["last"])
+
+    def test_todays_result_wins(self):
+        r = {"days": [{"date": "2026-10-05", "patriots": {"boxscore": {
+            "game_date": "2026-10-04", "played": True, "season_type": "regular", "home": False,
+            "patriots_score": 20, "opponent": "Buffalo Bills", "opponent_score": 17}}}]}
+        pulse = publish.build_team_pulse(r, None, None, date(2026, 10, 5))
+        publish.carry_forward_last(pulse, self.prev("2026-09-27"), date(2026, 10, 5))
+        pats = [t for t in pulse["teams"] if t["team"] == "patriots"][0]
+        self.assertEqual(pats["last"]["opponent"], "Buffalo Bills")
+
+    def test_attach_reads_the_published_board(self):
+        fn = (REPO / "scripts" / "publish.py").read_text().split("def attach_team_pulse(")[1]
+        self.assertIn("carry_forward_last(pulse", fn.split("\ndef ")[0])
