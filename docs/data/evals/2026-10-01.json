@@ -1,17 +1,41 @@
 {
   "date": "2026-10-01",
-  "generated_at": "2026-10-01T15:12:24.343986+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
-  "total_attempts": 0,
-  "generation_seconds": 0.0,
+  "generated_at": "2026-10-01T16:33:48.657765+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 76.2,
   "pre_pass": {
-    "repetition_check": "unknown",
-    "schedule_check": "unknown",
-    "gameday_check": "unknown",
-    "weekday_check": "unknown",
-    "venue_check": "unknown",
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
     "flagged_phrases": []
   },
-  "attempts": []
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"my neighbor rick has been pacing his\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 18,
+          "detail": "wrong game place: the redsox game against New York Yankees on 2026-09-30 was a ROAD game (boxscore \"home\": false), and the post puts it at a Boston park. Copy venue_note from rolling_7day, and do not name a venue the data omits. Sentence: I am not saying it was the worst way to end a year, but getting battered 9-2 in a must-win game is about as painful as it gets for anyone who calls Fenway home."
+        }
+      ],
+      "duration_seconds": 51.5
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 5.8
+    }
+  ]
 }

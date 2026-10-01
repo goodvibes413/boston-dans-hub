@@ -100,19 +100,24 @@
   ],
   "summary_5day": {
     "fresh": 2,
-    "retry": 2,
-    "fallback": 1,
+    "retry": 3,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
+      {
+        "rule": 10,
+        "count": 2,
+        "title": "Voice repetition"
+      },
+      {
+        "rule": 18,
+        "count": 1,
+        "title": "Wrong place named for a game"
+      },
       {
         "rule": 12,
         "count": 1,
         "title": "Game coverage gap"
-      },
-      {
-        "rule": 10,
-        "count": 1,
-        "title": "Voice repetition"
       }
     ],
     "rule15_agreement": {
