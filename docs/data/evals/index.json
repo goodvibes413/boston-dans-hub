@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-09-29",
     "2026-09-30",
     "2026-10-01",
     "2026-10-02",
-    "2026-10-03"
+    "2026-10-03",
+    "2026-10-04"
   ],
   "rules": [
     {
@@ -99,25 +99,25 @@
     }
   ],
   "summary_5day": {
-    "fresh": 2,
-    "retry": 3,
+    "fresh": 1,
+    "retry": 4,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 3,
+        "count": 4,
         "title": "Voice repetition"
+      },
+      {
+        "rule": 16,
+        "count": 2,
+        "title": "Game-day omission"
       },
       {
         "rule": 12,
         "count": 2,
         "title": "Game coverage gap"
-      },
-      {
-        "rule": 18,
-        "count": 1,
-        "title": "Wrong place named for a game"
       }
     ],
     "rule15_agreement": {
