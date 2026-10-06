@@ -1,13 +1,16 @@
 {
-  "date": "2026-09-27",
-  "generated_at": "2026-09-27T13:37:42.726782+00:00",
+  "date": "2026-10-06",
+  "generated_at": "2026-10-06T14:51:19.540509+00:00",
   "outcome": "fresh",
   "winning_attempt": 1,
   "total_attempts": 1,
-  "generation_seconds": 1.4,
+  "generation_seconds": 3.8,
   "pre_pass": {
     "repetition_check": "pass",
     "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
     "flagged_phrases": []
   },
   "attempts": [
@@ -16,7 +19,7 @@
       "verdict": "PASS",
       "severity": "low",
       "flags": [],
-      "duration_seconds": 1.4
+      "duration_seconds": 3.8
     }
   ]
 }
