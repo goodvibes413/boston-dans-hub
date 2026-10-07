@@ -1,38 +1,25 @@
 {
   "date": "2026-10-07",
-  "generated_at": "2026-10-06T14:51:23.316346+00:00",
-  "headline": "Bruins lay an absolute egg at the Garden in Ottawa loss",
+  "generated_at": "2026-10-07T16:43:12.105655+00:00",
+  "headline": "Alex Cora says no to Philly as the Hub waits for next winter move",
   "morning_brew": [
-    "I am still trying to scrub the memory of Monday night out of my brain with a stiff drink and a long shower. The B's turned the Garden into a skating rink for the Senators, letting them waltz out of here with a four-to-one win that felt even worse than the score suggests. We looked like we were skating in mud from the opening faceoff, falling behind early and never once looking like we had the pulse to fight back. It is only October, but watching this team give away points on home ice like they are handing out candy on Halloween makes me want to pull my hair out.",
-    "Jeremy Swayman did not have his usual magic, getting tagged four times on twenty-four shots, and aside from a late goal by James Hagens, the offense looked like they were stuck in neutral. Ottawa played like they actually wanted to be there, while we gave them enough space in the defensive zone to hold a town meeting. The Hub is already getting restless, and honestly, can you blame us? This roster is miles better than the garbage product we watched for sixty minutes on Monday night.",
-    "We have a few days to figure out which end of the stick is which before Utah hits the ice on Thursday. I am betting the practice schedule is gonna be hell, and it better be, because that effort was flat-out embarrassing. If we have any delusions of being serious contenders in the Atlantic, we need to stop spotting every opponent a head start and hoping our goaltender can pull a miracle out of his hat every single night."
+    "Quiet day in the Hub, which reminds me of a night back in 2013 when the whole city felt like it was holding its breath. I was sitting in Section thirty-six at Fenway for that ALCS game, and when David Ortiz stepped up and cleared the bullpen fence, the guy next to me, a total stranger, grabbed me in a bear hug so tight my fourteen-dollar Bud Light went flying all over his jacket. We didn't even know each other's names, but for that one moment, when the park shook like an earthquake, we were brothers. Those are the nights that keep us coming back, even through the long, quiet October days when the dust is settling on another season.",
+    "It is a bit of a weird feeling not having a game to sweat through, but maybe it is for the best. With Alex Cora officially turning down the Phillies to take 2027 off, the rumors about him heading elsewhere can finally cool off. I respect his run here, but this team needs a jolt, and while ownership is keeping their cards close to the vest regarding the analytics philosophy, at least the air is cleared on the managerial front. I am just looking for a team that plays with that same fire I saw back in the 2013 postseason, because watching this squad navigate a transition period is enough to make any townie pull their hair out.",
+    "We will be back at it soon enough, and the sports calendar is already turning toward the hardwood and the ice. The Bruins have a date with Utah at the Garden on Thursday, and the Pats are prepping for the Raiders this Sunday in Foxborough. No baseball tonight, which is probably a mercy for my blood pressure, but I will be spending the time stewing over what this roster needs to look like for next spring. It is gonna be a long winter if we do not start seeing some real movement, but for now, I am just gonna enjoy the silence before the next storm."
   ],
   "news_digest": [
     {
-      "headline": "Stutzle's 3-point game, Ullmark and Ersson power Senators to a 4-1 win over Bruins",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892446",
-      "dans_take": "Watching Stutzle treat our defense like traffic cones made for a miserable Monday."
+      "headline": "Report: Alex Cora again declines chance to manage Phillies",
+      "url": "https://www.espn.com/mlb/story/_/id/50124485/report-alex-cora-again-declines-chance-manage-phillies",
+      "dans_take": "Cora is taking 2027 off, and honestly, the front office has enough to worry about without a managerial search dragging into the holidays."
     },
     {
-      "headline": "Breslow, Tracy: Red Sox not overly reliant on analytics",
-      "url": "https://www.espn.com/mlb/story/_/id/50113295/breslow-tracy-red-sox-not-overly-reliant-analytics",
-      "dans_take": "I do not care about the numbers or the philosophy, just give me a winning team at Fenway."
+      "headline": "Basketball Power Index: NBA projections, playoff chances for 2026-27 season",
+      "url": "https://www.espn.com/nba/story/_/id/50111217/nba-season-projections-2026-27-bpi",
+      "dans_take": "The spreadsheets are out, but I will believe in these projections when I see Jayson Tatum hoisting another banner at the Garden."
     }
   ],
-  "trend_watch": [
-    {
-      "category": "Cold Snap",
-      "player": "Jeremy Swayman",
-      "trend": "Stopped twenty of twenty-four shots and finished the night with a lackluster point-eight-three-three save percentage.",
-      "dans_take": "He is the backbone of this team, but he looked like he was reading the menu while the pucks were flying by him."
-    },
-    {
-      "category": "Heater",
-      "player": "James Hagens",
-      "trend": "Scored the lone Bruins goal in the third period to prevent the shutout.",
-      "dans_take": "He managed to find the net, but it was like bringing a squirt gun to a house fire."
-    }
-  ],
+  "trend_watch": [],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
@@ -40,19 +27,19 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-05",
+      "game_date": "2026-10-06",
       "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Senators",
-      "home_score": 1,
-      "away_score": 4,
-      "game_date": "2026-10-05",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-06",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -60,7 +47,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-05",
+      "game_date": "2026-10-06",
       "played": false,
       "season_type": "playoff"
     },
@@ -70,7 +57,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-05",
+      "game_date": "2026-10-06",
       "played": false,
       "season_type": "regular"
     }
@@ -103,7 +90,7 @@
   ],
   "playoff_race": null,
   "team_pulse": {
-    "as_of": "2026-10-06",
+    "as_of": "2026-10-07",
     "teams": [
       {
         "team": "redsox",
