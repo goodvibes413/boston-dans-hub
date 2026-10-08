@@ -1,17 +1,11 @@
 {
+  "date": "2026-10-08",
+  "generated_at": "2026-10-08T15:21:58.545395+00:00",
   "headline": "Bruins open the Garden doors as Boston hits a slow stretch",
   "morning_brew": [
     "It has been a weird few days in the Hub with the diamond dust finally settling on another season and that cold air starting to bite. I spent my morning grabbing a medium roast at Dunks and listening to the radio, and the consensus is exactly what we're all feeling: it's a bit empty out there until the hardwood and the ice get into full swing. Watching the Red Sox season end without a deep run is always a tough pill to swallow, and with Alex Cora officially confirming he is taking next year off, it is clear we are in for a long winter of waiting to see what the front office actually has in mind.",
     "The football team has been dealing with some real headaches on the injury front, specifically with Rhamondre Stevenson, and we are all just holding our breath hoping the depth chart holds up while the staff figures out the next move. It feels like we are in that awkward transition phase where the hype of the season opener has worn off, replaced by the daily grind of trying to stay in the mix before things really heat up in late autumn. My neighbor Rick is already deep into his armchair coaching session, convinced he has the secret playbook for the running back situation, though I am pretty sure his only qualification is owning a couch and being loud enough to annoy the whole street.",
     "Looking ahead, the calendar is finally giving us something to watch with the Bruins stepping onto the ice at the Garden tomorrow against the Utah Mammoth. I am expecting a much sharper effort than we have seen lately, and honestly, the building needs a win to get the energy back where it belongs. It is gonna be a cool night in the city, but at least we have a game to focus on instead of just reading rumors and staring at the standings. Grab your gear and get ready for puck drop, because we are overdue for a result that actually makes us smile."
-  ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Drake Maye",
-      "trend": "The quarterback has been the steady hand for the offense during this stretch of early season matchups.",
-      "dans_take": "He is showing the kind of poise that keeps this ship pointed in the right direction, and frankly, I need more of that in my life right now."
-    }
   ],
   "news_digest": [
     {
@@ -23,6 +17,14 @@
       "headline": "What does your NBA team need? The biggest hole on all 30 rosters",
       "url": "https://www.espn.com/nba/story/_/id/50111204/nba-preseason-roster-holes-30-teams",
       "dans_take": "Every team in the league has a hole to fill, but I am feeling pretty good about where our squad stands heading into the year."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Drake Maye",
+      "trend": "The quarterback has been the steady hand for the offense during this stretch of early season matchups.",
+      "dans_take": "He is showing the kind of poise that keeps this ship pointed in the right direction, and frankly, I need more of that in my life right now."
     }
   ],
   "box_scores": {
@@ -93,43 +95,7 @@
       "time_et": "11:00 PM ET"
     }
   ],
-  "_timings": [
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 18.57,
-      "prompt_tokens": 39818,
-      "output_tokens": 1261,
-      "thinking_tokens": null
-    },
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 15.75,
-      "prompt_tokens": 17700,
-      "output_tokens": 1284,
-      "thinking_tokens": null
-    }
-  ],
-  "_grounding": "off",
-  "generated_at": "2026-10-08T15:21:58.545395+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    {
-      "rule": 12,
-      "detail": "The morning_brew fails to mention the Bruins' game against the Ottawa Senators that occurred on Monday, October 5th, which is within the rolling_7day window."
-    },
-    {
-      "rule": 7,
-      "detail": "The content references a game against the Ottawa Senators on Monday, but the provided rolling_7day data does not contain any game record for the Bruins on that date."
-    },
-    {
-      "rule": 10,
-      "detail": "repetition: formulaic paragraph opener \"it is a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    }
-  ],
+  "playoff_race": null,
   "team_pulse": {
     "as_of": "2026-10-08",
     "teams": [
@@ -209,5 +175,6 @@
       }
     ]
   },
-  "date": "2026-10-08"
+  "_stale": null,
+  "_fallback": null
 }
