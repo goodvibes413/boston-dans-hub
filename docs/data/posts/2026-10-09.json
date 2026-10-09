@@ -1,9 +1,23 @@
 {
+  "date": "2026-10-09",
+  "generated_at": "2026-10-09T15:04:40.721316+00:00",
   "headline": "Bruins crush the Mammoth at the Garden as Boston sports teams keep winning",
   "morning_brew": [
     "Thursday night was a beautiful sight down on Causeway Street as the Bruins absolutely throttled the Mammoth six to one. It was the kind of statement win that makes you feel a hell of a lot better about this group, especially after a rocky start to the month. Jeremy Swayman was a brick wall between the pipes, and seeing the puck hit the back of the net that often had the Garden rocking like it was the middle of May. We needed that energy, and the guys delivered in a big way.",
     "The C's kept the party going on the road, taking down the Cavaliers in a game that felt like a proper team effort. Luka Garza was putting in work with a double-double, and even on a night where the shooting percentages weren't exactly a masterpiece, the defense stepped up to hold the line. It's early in the season, but seeing this squad grind out a win on the road is a good sign that the focus is right where it needs to be. I'm not saying it's time to book the parade, but it's a hell of a lot better than the alternative.",
     "With no games on the schedule for today, I guess I'll just be spending my time drinking too much Dunks and wondering what the front office is gonna do next now that the baseball season has officially moved into the off-season. My neighbor Rick is already three days deep into a dossier on why the Sox missed the cut, and I don't have the heart to tell him to put the pen down. It's a quiet Friday in the Hub, but at least we can look forward to the Bruins getting back at it on Saturday afternoon at the Garden against Philadelphia. Enjoy the day off and try to keep your blood pressure down, because we've got a long stretch of action coming our way."
+  ],
+  "news_digest": [
+    {
+      "headline": "Flyers enter matchup with the Bruins on losing streak",
+      "url": "http://www.espn.com/nhl/preview?gameId=401892469",
+      "dans_take": "A struggling Flyers team coming to the Garden is exactly the kind of game we need to take advantage of if we wanna keep this momentum going."
+    },
+    {
+      "headline": "2026 MLB playoffs: Offseason questions for eliminated teams",
+      "url": "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions",
+      "dans_take": "The winter is already here and the questions about what this roster needs to look like for next spring are only just starting to ruin my peace of mind."
+    }
   ],
   "trend_watch": [
     {
@@ -23,18 +37,6 @@
       "player": "Luka Garza",
       "trend": "Garza finished his night with twenty-two points and ten rebounds to anchor the Celtics in the win against Cleveland.",
       "dans_take": "He was everywhere on the floor, and you can't ask for much more than that production in twenty-seven minutes."
-    }
-  ],
-  "news_digest": [
-    {
-      "headline": "Flyers enter matchup with the Bruins on losing streak",
-      "url": "http://www.espn.com/nhl/preview?gameId=401892469",
-      "dans_take": "A struggling Flyers team coming to the Garden is exactly the kind of game we need to take advantage of if we wanna keep this momentum going."
-    },
-    {
-      "headline": "2026 MLB playoffs: Offseason questions for eliminated teams",
-      "url": "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions",
-      "dans_take": "The winter is already here and the questions about what this roster needs to look like for next spring are only just starting to ruin my peace of mind."
     }
   ],
   "box_scores": {
@@ -105,35 +107,7 @@
       "time_et": "10:00 PM ET"
     }
   ],
-  "_timings": [
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 4.41,
-      "prompt_tokens": 42514,
-      "output_tokens": 1387,
-      "thinking_tokens": null
-    },
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 3.55,
-      "prompt_tokens": 17825,
-      "output_tokens": 1438,
-      "thinking_tokens": null
-    }
-  ],
-  "_grounding": "quota_exhausted",
-  "generated_at": "2026-10-09T15:04:40.721316+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    {
-      "rule": 17,
-      "detail": "The content incorrectly identifies the Bruins game as occurring on 'Thursday night' when the game date in the source data is 2026-10-08, which was a Wednesday."
-    }
-  ],
+  "playoff_race": null,
   "team_pulse": {
     "as_of": "2026-10-09",
     "teams": [
@@ -222,5 +196,6 @@
       }
     ]
   },
-  "date": "2026-10-09"
+  "_stale": null,
+  "_fallback": null
 }

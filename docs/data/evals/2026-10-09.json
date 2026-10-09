@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-09",
+  "generated_at": "2026-10-09T15:03:32.677185+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 68.0,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 17,
+          "detail": "The content incorrectly identifies the Bruins game as occurring on 'Thursday night' when the game date in the source data is 2026-10-08, which was a Wednesday."
+        }
+      ],
+      "duration_seconds": 2.1
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 12,
+          "detail": "The morning_brew fails to mention the Celtics' game against the Cleveland Cavaliers that occurred on October 8th, which is within the rolling_7day window."
+        },
+        {
+          "rule": 12,
+          "detail": "coverage window: the celtics played Cleveland Cavaliers on 2026-10-08 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        }
+      ],
+      "duration_seconds": 6.7
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The commentary claims the Bruins played on 'Thursday night' ('if the B's bring that same intensity from Thursday night'), but the UPCOMING_SCHEDULE lists no game for the Bruins on that date."
+        },
+        {
+          "rule": 12,
+          "detail": "coverage window: the bruins played Mammoth on 2026-10-08 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        }
+      ],
+      "duration_seconds": 40.4
+    }
+  ]
+}
