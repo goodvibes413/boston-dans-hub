@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-11",
+  "generated_at": "2026-10-11T14:44:25.290155+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 55.0,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The headline and morning_brew claim the Patriots face the Raiders 'today' (2026-10-11), but the UPCOMING_SCHEDULE lists the game for Sunday, 2026-10-11, which is today, but the content refers to it as a 'Saturday' in the first paragraph."
+        },
+        {
+          "rule": 17,
+          "detail": "The content incorrectly identifies the Celtics and Bruins games as occurring on 'Saturday' (2026-10-11), but the game_date in the source data is 2026-10-10, which was a Friday."
+        }
+      ],
+      "duration_seconds": 2.2
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 12,
+          "detail": "coverage window: the celtics played Philadelphia 76ers on 2026-10-10 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        }
+      ],
+      "duration_seconds": 3.4
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 8,
+          "detail": "The headline and body claim the Celtics are contending for 'Banner 19', but the historical_facts.celtics.total_championships is 18, making 'Banner 19' a fabricated historical goal/count."
+        },
+        {
+          "rule": 17,
+          "detail": "The headline and body incorrectly state the games occurred on 'Saturday night', but the source data confirms the games were played on 2026-10-10, which was a Friday."
+        }
+      ],
+      "duration_seconds": 27.6
+    }
+  ]
+}
