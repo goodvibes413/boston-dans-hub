@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-10-07",
     "2026-10-08",
     "2026-10-09",
     "2026-10-10",
-    "2026-10-11"
+    "2026-10-11",
+    "2026-10-12"
   ],
   "rules": [
     {
@@ -99,25 +99,25 @@
     }
   ],
   "summary_5day": {
-    "fresh": 2,
-    "retry": 3,
+    "fresh": 1,
+    "retry": 4,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
+      {
+        "rule": 17,
+        "count": 5,
+        "title": "Wrong day named for a result"
+      },
       {
         "rule": 12,
         "count": 5,
         "title": "Game coverage gap"
       },
       {
-        "rule": 17,
-        "count": 3,
-        "title": "Wrong day named for a result"
-      },
-      {
-        "rule": 15,
+        "rule": 10,
         "count": 2,
-        "title": "Phantom scheduled game"
+        "title": "Voice repetition"
       }
     ],
     "rule15_agreement": {
