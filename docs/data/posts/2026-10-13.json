@@ -1,0 +1,201 @@
+{
+  "date": "2026-10-13",
+  "generated_at": "2026-10-12T17:33:38.531721+00:00",
+  "headline": "Maye and the Patriots dismantle the Raiders in a dominant home victory",
+  "morning_brew": [
+    "That is the kind of performance that makes you feel like a genius for sitting through all those painful Sundays. Watching Drake Maye carve up the Raiders defense for four touchdowns and nearly four hundred yards had me feeling like we were back in the glory days, and honestly, the sheer energy in Gillette Stadium was infectious. Rhamondre Stevenson looked like a man possessed on the ground, and for once, the scoreboard matched the effort we saw from the opening kickoff.",
+    "It was a complete beatdown from start to finish, and after the shaky start we had earlier this year, seeing this offense find its rhythm is a wicked relief. Losing a veteran like Mack Hollins to IR is still a tough pill to swallow, but if our receiving corps keeps stepping up like this, we might just be able to keep the ship upright while we get healthy. Our defense held strong when they had to, and seeing the team celebrate in front of the 2001 championship squad just felt right.",
+    "We are sitting at three and two now, and this is exactly the momentum we need heading into the rest of the schedule. I don't want to get ahead of myself, but if the boys can keep executing like they did on Sunday, we've got a hell of a path ahead of us. My neighbor Rick is already whispering about a playoff run, and for the first time in a long time, I'm finding it hard to tell him he's crazy."
+  ],
+  "news_digest": [
+    {
+      "headline": "How Drake Maye has rebounded from bad start despite mounting Patriots injuries",
+      "url": "https://www.espn.com/nfl/story/_/id/50163881/new-england-patriots-drake-maye-injuries-week-5",
+      "dans_take": "He has found his confidence and his deep ball, and he is doing it with half our starters in the training room."
+    },
+    {
+      "headline": "NFL Week 6 betting: Odds, lines and totals for every game",
+      "url": "https://www.espn.com/espn/betting/story/_/id/50147670/2026-nfl-week-6-schedule-odds-point-spreads-totals",
+      "dans_take": "I don't need a betting line to tell me we look like a real football team again, but I'll take the wins."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Drake Maye",
+      "trend": "He dominated the Raiders with an efficient twenty-six of thirty-four passing for three hundred seventy-four yards and four touchdowns.",
+      "dans_take": "That is the kind of franchise quarterback play that makes you wanna run through a brick wall."
+    },
+    {
+      "category": "Ground Game",
+      "player": "Rhamondre Stevenson",
+      "trend": "He carried the ball thirteen times for sixty-four yards and punched in a score on the ground.",
+      "dans_take": "Having Stevenson back and healthy is the heartbeat of this offense, and he was running like he had a train to catch."
+    },
+    {
+      "category": "Streak",
+      "player": "Kyle Williams",
+      "trend": "He racked up three receptions for ninety-one yards and found the end zone for a crucial touchdown.",
+      "dans_take": "He is becoming our go-to deep threat, and I trust him more than I trust the T to get me to work on time."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-11",
+      "played": false,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-11",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-11",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": "New England Patriots",
+      "away_team": "Las Vegas Raiders",
+      "home_score": 45,
+      "away_score": 17,
+      "game_date": "2026-10-11",
+      "played": true,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-10-13",
+      "matchup": "Boston Bruins at San Jose Sharks",
+      "day_of_week": "Tuesday",
+      "time_et": "11:00 PM ET"
+    },
+    {
+      "date": "2026-10-16",
+      "matchup": "Boston Bruins at Anaheim Ducks",
+      "day_of_week": "Friday",
+      "time_et": "10:00 PM ET"
+    },
+    {
+      "date": "2026-10-17",
+      "matchup": "Boston Bruins at Los Angeles Kings",
+      "day_of_week": "Saturday",
+      "time_et": "9:00 PM ET"
+    },
+    {
+      "date": "2026-10-18",
+      "matchup": "New York Jets at New England Patriots",
+      "day_of_week": "Sunday",
+      "time_et": "1:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-10-12",
+    "teams": [
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "3-2",
+        "last": {
+          "date": "2026-10-11",
+          "day_of_week": "Sunday",
+          "opponent": "Las Vegas Raiders",
+          "home": true,
+          "boston_score": 45,
+          "opponent_score": 17,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-18",
+          "day_of_week": "Sunday",
+          "time_et": "1:00 PM ET",
+          "opponent": "New York Jets",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-2-0",
+        "last": {
+          "date": "2026-10-10",
+          "day_of_week": "Saturday",
+          "opponent": "Flyers",
+          "home": true,
+          "boston_score": 5,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-13",
+          "day_of_week": "Tuesday",
+          "time_et": "11:00 PM ET",
+          "opponent": "San Jose Sharks",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "2-0",
+        "last": {
+          "date": "2026-10-10",
+          "day_of_week": "Saturday",
+          "opponent": "Philadelphia 76ers",
+          "home": true,
+          "boston_score": 144,
+          "opponent_score": 106,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": null
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}
