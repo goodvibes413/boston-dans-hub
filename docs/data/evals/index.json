@@ -100,8 +100,8 @@
   ],
   "summary_5day": {
     "fresh": 1,
-    "retry": 3,
-    "fallback": 1,
+    "retry": 4,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
@@ -115,9 +115,9 @@
         "title": "Game coverage gap"
       },
       {
-        "rule": 15,
+        "rule": 10,
         "count": 2,
-        "title": "Phantom scheduled game"
+        "title": "Voice repetition"
       }
     ],
     "rule15_agreement": {

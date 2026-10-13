@@ -1,17 +1,37 @@
 {
   "date": "2026-10-13",
-  "generated_at": "2026-10-13T17:02:09.146141+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
-  "total_attempts": 0,
-  "generation_seconds": 0.0,
+  "generated_at": "2026-10-13T17:54:12.728054+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 113.7,
   "pre_pass": {
-    "repetition_check": "unknown",
-    "schedule_check": "unknown",
-    "gameday_check": "unknown",
-    "weekday_check": "unknown",
-    "venue_check": "unknown",
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
     "flagged_phrases": []
   },
-  "attempts": []
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: the sentence skeleton \"We're sitting at # and #\" is reused from the 2026-10-12 output."
+        }
+      ],
+      "duration_seconds": 41.8
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 18.9
+    }
+  ]
 }

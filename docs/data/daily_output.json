@@ -1,40 +1,40 @@
 {
-  "headline": "Maye and the Patriots dismantle the Raiders in a dominant home victory",
+  "headline": "Bruins hit the road for Frozen Frenzy while Patriots navigate injury woes",
   "morning_brew": [
-    "That is the kind of performance that makes you feel like a genius for sitting through all those painful Sundays. Watching Drake Maye carve up the Raiders defense for four touchdowns and nearly four hundred yards had me feeling like we were back in the glory days, and honestly, the sheer energy in Gillette Stadium was infectious. Rhamondre Stevenson looked like a man possessed on the ground, and for once, the scoreboard matched the effort we saw from the opening kickoff.",
-    "It was a complete beatdown from start to finish, and after the shaky start we had earlier this year, seeing this offense find its rhythm is a wicked relief. Losing a veteran like Mack Hollins to IR is still a tough pill to swallow, but if our receiving corps keeps stepping up like this, we might just be able to keep the ship upright while we get healthy. Our defense held strong when they had to, and seeing the team celebrate in front of the 2001 championship squad just felt right.",
-    "We are sitting at three and two now, and this is exactly the momentum we need heading into the rest of the schedule. I don't want to get ahead of myself, but if the boys can keep executing like they did on Sunday, we've got a hell of a path ahead of us. My neighbor Rick is already whispering about a playoff run, and for the first time in a long time, I'm finding it hard to tell him he's crazy."
+    "It is a hell of a busy night for the NHL as the Frozen Frenzy takes center stage, and our Bruins are heading all the way out to San Jose to clash with the Sharks. Being out west makes for a late one here in the Hub, but these are the nights you live for when every team in the league is hitting the ice at once. We need the boys to bring that high energy from the drop of the puck because points are gonna be at a premium in this shortened season.",
+    "Football season isn't giving us a breather either, with some real bad news regarding TreVeyon Henderson. Finding out he is set to miss a significant chunk of time with an ankle injury is a massive blow to the run game that we were just starting to feel good about. Coach is gonna have to get creative with the backfield depth we have on the roster, because the Jets are coming to Foxborough this weekend and we need every yard we can scratch out to keep this winning streak alive.",
+    "I am still keeping an eye on the baseball playoffs even if the Sox aren't the ones making headlines this time around. It is a strange feeling watching the postseason from the couch without our boys, but the league is buzzing with chatter about potential MVPs and where teams go from here. No matter what is happening on the diamond or the gridiron, we just have to keep moving forward and hope the training room starts emptying out before the winter sets in for good."
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "Drake Maye",
-      "trend": "He dominated the Raiders with an efficient twenty-six of thirty-four passing for three hundred seventy-four yards and four touchdowns.",
-      "dans_take": "That is the kind of franchise quarterback play that makes you wanna run through a brick wall."
+      "trend": "Paced the offense during the recent win by racking up four passing touchdowns and nearly four hundred yards through the air.",
+      "dans_take": "He is playing with a level of confidence I haven't seen in this town for years."
     },
     {
-      "category": "Ground Game",
-      "player": "Rhamondre Stevenson",
-      "trend": "He carried the ball thirteen times for sixty-four yards and punched in a score on the ground.",
-      "dans_take": "Having Stevenson back and healthy is the heartbeat of this offense, and he was running like he had a train to catch."
+      "category": "Cold Snap",
+      "player": "TreVeyon Henderson",
+      "trend": "Heading to the sidelines for a multi-week stint after picking up a high ankle sprain.",
+      "dans_take": "This is a damn disaster for our backfield at the absolute worst possible time."
     },
     {
-      "category": "Streak",
-      "player": "Kyle Williams",
-      "trend": "He racked up three receptions for ninety-one yards and found the end zone for a crucial touchdown.",
-      "dans_take": "He is becoming our go-to deep threat, and I trust him more than I trust the T to get me to work on time."
+      "category": "Bullpen Watch",
+      "player": "Garrett Whitlock",
+      "trend": "Remained a steady presence in relief whenever the situation called for a shutdown arm.",
+      "dans_take": "He is the kind of reliable arm you want when the game is hanging in the balance, unlike the rest of the arson squad."
     }
   ],
   "news_digest": [
     {
-      "headline": "How Drake Maye has rebounded from bad start despite mounting Patriots injuries",
-      "url": "https://www.espn.com/nfl/story/_/id/50163881/new-england-patriots-drake-maye-injuries-week-5",
-      "dans_take": "He has found his confidence and his deep ball, and he is doing it with half our starters in the training room."
+      "headline": "Sources: Patriots' TreVeyon Henderson out multiple weeks with high ankle sprain",
+      "url": "https://www.espn.com/nfl/story/_/id/50173985/sources-patriots-treveyon-henderson-high-ankle-sprain",
+      "dans_take": "Losing a back like that hurts, so we better hope the depth chart can hold the line or I might lose my mind."
     },
     {
-      "headline": "NFL Week 6 betting: Odds, lines and totals for every game",
-      "url": "https://www.espn.com/espn/betting/story/_/id/50147670/2026-nfl-week-6-schedule-odds-point-spreads-totals",
-      "dans_take": "I don't need a betting line to tell me we look like a real football team again, but I'll take the wins."
+      "headline": "2026 NFL Power Rankings: How all 32 teams stack up for Week 6",
+      "url": "https://www.espn.com/nfl/story/_/id/50166454/nfl-power-rankings-week-6-teams-biggest-issue-defense",
+      "dans_take": "Power rankings are just noise for the columnists until you prove it on the field every Sunday."
     }
   ],
   "box_scores": {
@@ -44,7 +44,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-11",
+      "game_date": "2026-10-12",
       "played": false,
       "season_type": "regular"
     },
@@ -54,7 +54,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-11",
+      "game_date": "2026-10-12",
       "played": false,
       "season_type": "unknown"
     },
@@ -64,18 +64,18 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-11",
+      "game_date": "2026-10-12",
       "played": false,
       "season_type": "playoff"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Las Vegas Raiders",
-      "home_score": 45,
-      "away_score": 17,
-      "game_date": "2026-10-11",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-12",
+      "played": false,
       "season_type": "regular"
     }
   },
@@ -103,6 +103,18 @@
       "matchup": "New York Jets at New England Patriots",
       "day_of_week": "Sunday",
       "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-10-20",
+      "matchup": "Boston Celtics at Detroit Pistons",
+      "day_of_week": "Tuesday",
+      "time_et": "3:00 PM ET"
+    },
+    {
+      "date": "2026-10-20",
+      "matchup": "Boston Bruins at Dallas Stars",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
     }
   ],
   "_timings": [
@@ -110,34 +122,30 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 34.74,
-      "prompt_tokens": 39419,
-      "output_tokens": 1406,
+      "seconds": 12.99,
+      "prompt_tokens": 40002,
+      "output_tokens": 1348,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 54.45,
-      "prompt_tokens": 17845,
-      "output_tokens": 1418,
+      "seconds": 11.66,
+      "prompt_tokens": 17787,
+      "output_tokens": 1369,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "quota_exhausted",
-  "generated_at": "2026-10-12T17:33:38.531721+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
+  "_grounding": "failed",
+  "generated_at": "2026-10-13T17:56:06.472651+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
     {
       "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"we are sitting at # and #\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "detail": "repetition: the sentence skeleton \"We're sitting at # and #\" is reused from the 2026-10-12 output."
     }
   ],
-  "date": "2026-10-13",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 23.5,
   "team_pulse": {
     "as_of": "2026-10-13",
     "teams": [
@@ -233,5 +241,6 @@
         }
       }
     ]
-  }
+  },
+  "date": "2026-10-13"
 }
