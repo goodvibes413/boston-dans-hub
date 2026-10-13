@@ -109,8 +109,35 @@
   ],
   "playoff_race": null,
   "team_pulse": {
-    "as_of": "2026-10-12",
+    "as_of": "2026-10-13",
     "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-2",
+        "last": {
+          "date": "2026-10-10",
+          "day_of_week": "Saturday",
+          "opponent": "Flyers",
+          "home": true,
+          "boston_score": 5,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-13",
+          "day_of_week": "Tuesday",
+          "time_et": "11:00 PM ET",
+          "opponent": "San Jose Sharks",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -120,6 +147,33 @@
         "record": null,
         "last": null,
         "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "0-0",
+        "last": {
+          "date": "2026-10-10",
+          "day_of_week": "Saturday",
+          "opponent": "Philadelphia 76ers",
+          "home": true,
+          "boston_score": 144,
+          "opponent_score": 106,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "3:00 PM ET",
+          "opponent": "Detroit Pistons",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
       },
       {
         "team": "patriots",
@@ -147,55 +201,9 @@
           "season_type": "regular",
           "is_today": false
         }
-      },
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "4-2-0",
-        "last": {
-          "date": "2026-10-10",
-          "day_of_week": "Saturday",
-          "opponent": "Flyers",
-          "home": true,
-          "boston_score": 5,
-          "opponent_score": 1,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-13",
-          "day_of_week": "Tuesday",
-          "time_et": "11:00 PM ET",
-          "opponent": "San Jose Sharks",
-          "home": false,
-          "season_type": "regular",
-          "is_today": false
-        }
-      },
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "2-0",
-        "last": {
-          "date": "2026-10-10",
-          "day_of_week": "Saturday",
-          "opponent": "Philadelphia 76ers",
-          "home": true,
-          "boston_score": 144,
-          "opponent_score": 106,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": null
       }
     ]
   },
-  "_stale": null,
+  "_stale": true,
   "_fallback": null
 }
