@@ -1,40 +1,40 @@
 {
-  "headline": "Bruins hit the road for Frozen Frenzy while Patriots navigate injury woes",
+  "headline": "Charlie McAvoy returns in style as Bruins dominate the Sharks",
   "morning_brew": [
-    "It is a hell of a busy night for the NHL as the Frozen Frenzy takes center stage, and our Bruins are heading all the way out to San Jose to clash with the Sharks. Being out west makes for a late one here in the Hub, but these are the nights you live for when every team in the league is hitting the ice at once. We need the boys to bring that high energy from the drop of the puck because points are gonna be at a premium in this shortened season.",
-    "Football season isn't giving us a breather either, with some real bad news regarding TreVeyon Henderson. Finding out he is set to miss a significant chunk of time with an ankle injury is a massive blow to the run game that we were just starting to feel good about. Coach is gonna have to get creative with the backfield depth we have on the roster, because the Jets are coming to Foxborough this weekend and we need every yard we can scratch out to keep this winning streak alive.",
-    "I am still keeping an eye on the baseball playoffs even if the Sox aren't the ones making headlines this time around. It is a strange feeling watching the postseason from the couch without our boys, but the league is buzzing with chatter about potential MVPs and where teams go from here. No matter what is happening on the diamond or the gridiron, we just have to keep moving forward and hope the training room starts emptying out before the winter sets in for good."
+    "Tuesday night was a damn good time for the B's, and having Charlie McAvoy back in the lineup felt like the missing piece finally snapped into place. He stepped onto the ice like he never spent a minute away, scoring in his first game back from suspension and helping us cruise to a 6-3 win over the Sharks. Jeremy Swayman was absolutely locked in between the pipes, turning away thirty-five shots to keep things settled while the offense kept the pressure on all night long. That is the kind of cohesive performance we need if we wanna keep this winning streak alive as we head out on this West Coast swing.",
+    "Over on Causeway Street, the C's finally did something sensible, locking up Payton Pritchard with a two-year extension. It is a wicked smart move by the front office to keep a spark plug like that in the rotation, especially with the grind of a regular season right around the corner. We have all seen what he can do when the lights are bright, and having him committed to the Hub for the next couple of years is a nice little boost for the squad. It is good to see ownership actually putting pen to paper instead of just talking about the future for a change.",
+    "The football side of things is a massive headache this morning with word that Will Campbell is dealing with an MCL sprain. Losing a guy on the offensive line is never what you wanna hear, especially with the Jets coming to Gillette this weekend, so I hope the medical staff has a plan to shuffle the deck. We have been grinding out some results lately, but the training room is getting crowded and we need the depth chart to step up. My neighbor Rick is already convinced this is some sort of league-wide plot against our tackle situation, and honestly, I am just praying he is wrong for once."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Drake Maye",
-      "trend": "Paced the offense during the recent win by racking up four passing touchdowns and nearly four hundred yards through the air.",
-      "dans_take": "He is playing with a level of confidence I haven't seen in this town for years."
+      "player": "Charlie McAvoy",
+      "trend": "Returned to the ice in his season debut and netted a goal to lead the way in a 6-3 victory.",
+      "dans_take": "He didn't miss a single shift, pure impact player."
     },
     {
-      "category": "Cold Snap",
-      "player": "TreVeyon Henderson",
-      "trend": "Heading to the sidelines for a multi-week stint after picking up a high ankle sprain.",
-      "dans_take": "This is a damn disaster for our backfield at the absolute worst possible time."
+      "category": "Heater",
+      "player": "Jeremy Swayman",
+      "trend": "Turned aside thirty-five of thirty-eight shots faced to anchor the defensive effort in San Jose.",
+      "dans_take": "That is the kind of goaltending that keeps me from biting my nails through the third period."
     },
     {
-      "category": "Bullpen Watch",
-      "player": "Garrett Whitlock",
-      "trend": "Remained a steady presence in relief whenever the situation called for a shutdown arm.",
-      "dans_take": "He is the kind of reliable arm you want when the game is hanging in the balance, unlike the rest of the arson squad."
+      "category": "Heater",
+      "player": "Fraser Minten",
+      "trend": "Provided a massive lift for the offense by burying two goals throughout the night.",
+      "dans_take": "The kid was in the right spot at the right time all game long, absolute beauty."
     }
   ],
   "news_digest": [
     {
-      "headline": "Sources: Patriots' TreVeyon Henderson out multiple weeks with high ankle sprain",
-      "url": "https://www.espn.com/nfl/story/_/id/50173985/sources-patriots-treveyon-henderson-high-ankle-sprain",
-      "dans_take": "Losing a back like that hurts, so we better hope the depth chart can hold the line or I might lose my mind."
+      "headline": "Celtics, Payton Pritchard agree to two-year extension",
+      "url": "https://www.espn.com/video/clip/_/id/50176265/celtics-payton-pritchard-agree-two-year-extension",
+      "dans_take": "About damn time they locked him up so he can keep doing his thing in Boston."
     },
     {
-      "headline": "2026 NFL Power Rankings: How all 32 teams stack up for Week 6",
-      "url": "https://www.espn.com/nfl/story/_/id/50166454/nfl-power-rankings-week-6-teams-biggest-issue-defense",
-      "dans_take": "Power rankings are just noise for the columnists until you prove it on the field every Sunday."
+      "headline": "Source: Patriots lineman Will Campbell out with MCL sprain",
+      "url": "https://www.espn.com/nfl/story/_/id/50175463/source-patriots-lineman-campbell-mcl-sprain",
+      "dans_take": "This is a straight-up disaster for our line, someone else better find a backbone fast."
     }
   ],
   "box_scores": {
@@ -44,19 +44,19 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-12",
+      "game_date": "2026-10-13",
       "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-10-12",
-      "played": false,
-      "season_type": "unknown"
+      "home_team": "Sharks",
+      "away_team": "Boston Bruins",
+      "home_score": 3,
+      "away_score": 6,
+      "game_date": "2026-10-13",
+      "played": true,
+      "season_type": "regular"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,7 +64,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-12",
+      "game_date": "2026-10-13",
       "played": false,
       "season_type": "playoff"
     },
@@ -74,18 +74,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-12",
+      "game_date": "2026-10-13",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-10-13",
-      "matchup": "Boston Bruins at San Jose Sharks",
-      "day_of_week": "Tuesday",
-      "time_et": "11:00 PM ET"
-    },
     {
       "date": "2026-10-16",
       "matchup": "Boston Bruins at Anaheim Ducks",
@@ -122,60 +116,33 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 12.99,
-      "prompt_tokens": 40002,
-      "output_tokens": 1348,
+      "seconds": 15.76,
+      "prompt_tokens": 40979,
+      "output_tokens": 1425,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 11.66,
-      "prompt_tokens": 17787,
-      "output_tokens": 1369,
+      "seconds": 13.4,
+      "prompt_tokens": 17864,
+      "output_tokens": 1428,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "failed",
-  "generated_at": "2026-10-13T17:56:06.472651+00:00",
+  "_grounding": "off",
+  "generated_at": "2026-10-14T13:25:51.369532+00:00",
   "_regenerated": true,
   "_regeneration_reason": [
     {
-      "rule": 10,
-      "detail": "repetition: the sentence skeleton \"We're sitting at # and #\" is reused from the 2026-10-12 output."
+      "rule": 14,
+      "detail": "The Celtics' Payton Pritchard extension is a major milestone that must be covered in the morning_brew prose, but it is only mentioned in the news_digest."
     }
   ],
   "team_pulse": {
-    "as_of": "2026-10-13",
+    "as_of": "2026-10-14",
     "teams": [
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "4-2",
-        "last": {
-          "date": "2026-10-10",
-          "day_of_week": "Saturday",
-          "opponent": "Flyers",
-          "home": true,
-          "boston_score": 5,
-          "opponent_score": 1,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-13",
-          "day_of_week": "Tuesday",
-          "time_et": "11:00 PM ET",
-          "opponent": "San Jose Sharks",
-          "home": false,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -187,22 +154,40 @@
         "next": null
       },
       {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-2",
+        "last": {
+          "date": "2026-10-13",
+          "day_of_week": "Tuesday",
+          "opponent": "Sharks",
+          "home": false,
+          "boston_score": 6,
+          "opponent_score": 3,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-16",
+          "day_of_week": "Friday",
+          "time_et": "10:00 PM ET",
+          "opponent": "Anaheim Ducks",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
         "team": "celtics",
         "label": "Celtics",
         "sport": "NBA",
         "phase": "regular",
         "opener": false,
         "record": "0-0",
-        "last": {
-          "date": "2026-10-10",
-          "day_of_week": "Saturday",
-          "opponent": "Philadelphia 76ers",
-          "home": true,
-          "boston_score": 144,
-          "opponent_score": 106,
-          "result": "W",
-          "season_type": "regular"
-        },
+        "last": null,
         "next": {
           "date": "2026-10-20",
           "day_of_week": "Tuesday",
@@ -242,5 +227,5 @@
       }
     ]
   },
-  "date": "2026-10-13"
+  "date": "2026-10-14"
 }

@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-14",
+  "generated_at": "2026-10-14T13:25:12.637658+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 38.7,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 14,
+          "detail": "The Celtics' Payton Pritchard extension is a major milestone that must be covered in the morning_brew prose, but it is only mentioned in the news_digest."
+        }
+      ],
+      "duration_seconds": 2.6
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 6.3
+    }
+  ]
+}
