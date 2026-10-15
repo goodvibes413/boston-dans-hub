@@ -1,64 +1,59 @@
 {
   "date": "2026-10-15",
-  "generated_at": "2026-10-14T13:25:51.369532+00:00",
-  "headline": "Charlie McAvoy returns in style as Bruins dominate the Sharks",
+  "generated_at": "2026-10-15T17:27:02.678721+00:00",
+  "headline": "Celtics look ready for business after crushing Hornets in home debut",
   "morning_brew": [
-    "Tuesday night was a damn good time for the B's, and having Charlie McAvoy back in the lineup felt like the missing piece finally snapped into place. He stepped onto the ice like he never spent a minute away, scoring in his first game back from suspension and helping us cruise to a 6-3 win over the Sharks. Jeremy Swayman was absolutely locked in between the pipes, turning away thirty-five shots to keep things settled while the offense kept the pressure on all night long. That is the kind of cohesive performance we need if we wanna keep this winning streak alive as we head out on this West Coast swing.",
-    "Over on Causeway Street, the C's finally did something sensible, locking up Payton Pritchard with a two-year extension. It is a wicked smart move by the front office to keep a spark plug like that in the rotation, especially with the grind of a regular season right around the corner. We have all seen what he can do when the lights are bright, and having him committed to the Hub for the next couple of years is a nice little boost for the squad. It is good to see ownership actually putting pen to paper instead of just talking about the future for a change.",
-    "The football side of things is a massive headache this morning with word that Will Campbell is dealing with an MCL sprain. Losing a guy on the offensive line is never what you wanna hear, especially with the Jets coming to Gillette this weekend, so I hope the medical staff has a plan to shuffle the deck. We have been grinding out some results lately, but the training room is getting crowded and we need the depth chart to step up. My neighbor Rick is already convinced this is some sort of league-wide plot against our tackle situation, and honestly, I am just praying he is wrong for once."
+    "Wednesday night was about as smooth as it gets at the Garden, with the C's putting a real hurting on the Charlotte Hornets to the tune of a twenty-one-point win. After the way things ended last spring, it was a massive relief to see the squad come out with that kind of energy and just dismantle an opponent from the jump. The ball movement was crisp, the defense was suffocating, and for one night at least, we didn't have to sweat out a single possession like I'm watching a horror movie through my fingers. It is only one win, but that is the kind of clean, efficient basketball that reminds you why we're always in the conversation.",
+    "Jayson Tatum looked like a man on a mission, leading the charge with nineteen points and filling up the stat sheet while Neemias Queta and Luka Garza provided a huge spark off the bench. It was absolute magic to watch the second unit take over and keep the lead ballooning late in the game, especially with how active they were on the glass and in the passing lanes. Payton Pritchard was dealing all night long, picking up eleven assists and basically orchestrating the offense like he had the whole playbook memorized before he even checked in. If our bench keeps playing with that kind of fire, the rest of the league is gonna have a long, miserable season trying to keep up with us.",
+    "Looking ahead, we've got a few days to catch our breath before we hit the road for Detroit next Tuesday. It is a nice stretch of time to let the guys stay in the rhythm of practice while we see how the rest of the league shakes out in these final preseason looks. I am not gonna get ahead of myself and start talking about another banner, but if we keep playing like we did on Wednesday, this could be a hell of a year to be a fan in the Hub. For now, I am just happy we finally got a game that didn't require me to keep a bottle of antacids on the coffee table."
   ],
   "news_digest": [
     {
-      "headline": "Celtics, Payton Pritchard agree to two-year extension",
-      "url": "https://www.espn.com/video/clip/_/id/50176265/celtics-payton-pritchard-agree-two-year-extension",
-      "dans_take": "About damn time they locked him up so he can keep doing his thing in Boston."
-    },
-    {
-      "headline": "Source: Patriots lineman Will Campbell out with MCL sprain",
-      "url": "https://www.espn.com/nfl/story/_/id/50175463/source-patriots-lineman-campbell-mcl-sprain",
-      "dans_take": "This is a straight-up disaster for our line, someone else better find a backbone fast."
+      "headline": "What NBA preseason has revealed about the Lakers, 76ers, Celtics and every team",
+      "url": "https://www.espn.com/nba/story/_/id/50176718/nba-preseason-lakers-76ers-celtics-30-teams",
+      "dans_take": "All these national writers can analyze the preseason until they're blue in the face, but the C's look like they're playing a different sport."
     }
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Charlie McAvoy",
-      "trend": "Returned to the ice in his season debut and netted a goal to lead the way in a 6-3 victory.",
-      "dans_take": "He didn't miss a single shift, pure impact player."
+      "player": "Jayson Tatum",
+      "trend": "Finished with nineteen points, eight rebounds, and six assists in his twenty-nine minutes on the floor.",
+      "dans_take": "That's the kind of superstar stat line that makes me feel a little bit better about my blood pressure."
     },
     {
       "category": "Heater",
-      "player": "Jeremy Swayman",
-      "trend": "Turned aside thirty-five of thirty-eight shots faced to anchor the defensive effort in San Jose.",
-      "dans_take": "That is the kind of goaltending that keeps me from biting my nails through the third period."
+      "player": "Payton Pritchard",
+      "trend": "Dished out eleven assists while anchoring the second unit during his twenty-nine minutes of action.",
+      "dans_take": "He was seeing the court like he had an aerial view, and frankly, it was beautiful to watch."
     },
     {
       "category": "Heater",
-      "player": "Fraser Minten",
-      "trend": "Provided a massive lift for the offense by burying two goals throughout the night.",
-      "dans_take": "The kid was in the right spot at the right time all game long, absolute beauty."
+      "player": "Neemias Queta",
+      "trend": "Shot seven for eleven from the field to contribute sixteen points in just twenty-four minutes of play.",
+      "dans_take": "He was absolutely beastly in the paint, and I haven't seen someone that dominant down low since Uncle Carmine tried to clear the buffet line at my cousin's wedding."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-10-13",
-      "played": false,
+      "home_team": "Boston Celtics",
+      "away_team": "Charlotte Hornets",
+      "home_score": 114,
+      "away_score": 93,
+      "game_date": "2026-10-14",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Sharks",
-      "away_team": "Boston Bruins",
-      "home_score": 3,
-      "away_score": 6,
-      "game_date": "2026-10-13",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-14",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -66,7 +61,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-13",
+      "game_date": "2026-10-14",
       "played": false,
       "season_type": "playoff"
     },
@@ -76,7 +71,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-13",
+      "game_date": "2026-10-14",
       "played": false,
       "season_type": "regular"
     }
@@ -111,6 +106,12 @@
       "matchup": "Boston Bruins at Dallas Stars",
       "day_of_week": "Tuesday",
       "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-22",
+      "matchup": "Nashville Predators at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
     }
   ],
   "playoff_race": null,
@@ -210,6 +211,6 @@
       }
     ]
   },
-  "_stale": true,
+  "_stale": null,
   "_fallback": null
 }

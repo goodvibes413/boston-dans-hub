@@ -100,24 +100,24 @@
   ],
   "summary_5day": {
     "fresh": 0,
-    "retry": 4,
-    "fallback": 1,
+    "retry": 5,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 17,
-        "count": 4,
+        "count": 5,
         "title": "Wrong day named for a result"
+      },
+      {
+        "rule": 8,
+        "count": 2,
+        "title": "Fabricated historical events"
       },
       {
         "rule": 10,
         "count": 2,
         "title": "Voice repetition"
-      },
-      {
-        "rule": 14,
-        "count": 1,
-        "title": "Milestone omission"
       }
     ],
     "rule15_agreement": {
