@@ -142,8 +142,8 @@
   ],
   "date": "2026-10-15",
   "_stale": true,
-  "_stale_reason": "safety judge FAILed after 3 attempts: rule 7 (Fabricated statistics): The headline and morning_brew claim the Celtics played on 'Wednesday night', but the source data confirms the game against the Charlotte Hornets took place on 2026-10-1",
-  "_stale_age_hours": 23.8,
+  "_stale_reason": "judge unavailable: API error: ServerError: code=503 | status=UNAVAILABLE | msg=This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+  "_stale_age_hours": 24.8,
   "team_pulse": {
     "as_of": "2026-10-15",
     "teams": [

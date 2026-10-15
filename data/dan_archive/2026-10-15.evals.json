@@ -1,10 +1,10 @@
 {
   "date": "2026-10-15",
-  "generated_at": "2026-10-15T13:10:08.817753+00:00",
+  "generated_at": "2026-10-15T14:14:50.461855+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
-  "total_attempts": 3,
-  "generation_seconds": 53.6,
+  "total_attempts": 1,
+  "generation_seconds": 75.8,
   "pre_pass": {
     "repetition_check": "pass",
     "schedule_check": "pass",
@@ -16,43 +16,15 @@
   "attempts": [
     {
       "attempt": 1,
-      "verdict": "FAIL",
-      "severity": "high",
+      "verdict": "UNAVAILABLE",
+      "severity": null,
       "flags": [
         {
-          "rule": 7,
-          "detail": "The headline and morning_brew incorrectly characterize the Celtics' game against the Charlotte Hornets as a regular season game, when the source data indicates it was a preseason game."
-        },
-        {
-          "rule": 10,
-          "detail": "repetition: number-masked sentence skeleton \"my neighbor rick is already convinced\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+          "rule": 0,
+          "detail": "judge unavailable \u2014 API error: ServerError: code=503 | status=UNAVAILABLE | msg=This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
         }
       ],
-      "duration_seconds": 1.9
-    },
-    {
-      "attempt": 2,
-      "verdict": "FAIL",
-      "severity": "high",
-      "flags": [
-        {
-          "rule": 7,
-          "detail": "The headline and morning_brew incorrectly claim the Celtics played the Hornets on Wednesday night, when the source data confirms the game was played on Tuesday, 2026-10-14."
-        }
-      ],
-      "duration_seconds": 3.6
-    },
-    {
-      "attempt": 3,
-      "verdict": "FAIL",
-      "severity": "high",
-      "flags": [
-        {
-          "rule": 7,
-          "detail": "The headline and morning_brew claim the Celtics played on 'Wednesday night', but the source data confirms the game against the Charlotte Hornets took place on 2026-10-14, which was a Tuesday."
-        }
-      ],
-      "duration_seconds": 2.3
+      "duration_seconds": 75.8
     }
   ]
 }
