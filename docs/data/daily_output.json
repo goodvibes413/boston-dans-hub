@@ -141,9 +141,40 @@
       "detail": "The content incorrectly identifies the game date as 'Wednesday night' when the boxscore confirms it was played on Tuesday, 2026-10-14."
     }
   ],
+  "date": "2026-10-16",
+  "_stale": true,
+  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+  "_stale_age_hours": 19.6,
   "team_pulse": {
-    "as_of": "2026-10-15",
+    "as_of": "2026-10-16",
     "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-2",
+        "last": {
+          "date": "2026-10-13",
+          "day_of_week": "Tuesday",
+          "opponent": "Sharks",
+          "home": false,
+          "boston_score": 6,
+          "opponent_score": 3,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-16",
+          "day_of_week": "Friday",
+          "time_et": "10:00 PM ET",
+          "opponent": "Anaheim Ducks",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -182,33 +213,6 @@
         }
       },
       {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "5-2",
-        "last": {
-          "date": "2026-10-13",
-          "day_of_week": "Tuesday",
-          "opponent": "Sharks",
-          "home": false,
-          "boston_score": 6,
-          "opponent_score": 3,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-16",
-          "day_of_week": "Friday",
-          "time_et": "10:00 PM ET",
-          "opponent": "Anaheim Ducks",
-          "home": false,
-          "season_type": "regular",
-          "is_today": false
-        }
-      },
-      {
         "team": "patriots",
         "label": "Patriots",
         "sport": "NFL",
@@ -236,6 +240,5 @@
         }
       }
     ]
-  },
-  "date": "2026-10-15"
+  }
 }
