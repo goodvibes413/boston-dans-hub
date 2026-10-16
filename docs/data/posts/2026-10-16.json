@@ -116,8 +116,35 @@
   ],
   "playoff_race": null,
   "team_pulse": {
-    "as_of": "2026-10-15",
+    "as_of": "2026-10-16",
     "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-2",
+        "last": {
+          "date": "2026-10-13",
+          "day_of_week": "Tuesday",
+          "opponent": "Sharks",
+          "home": false,
+          "boston_score": 6,
+          "opponent_score": 3,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-16",
+          "day_of_week": "Friday",
+          "time_et": "10:00 PM ET",
+          "opponent": "Anaheim Ducks",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -156,33 +183,6 @@
         }
       },
       {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "5-2",
-        "last": {
-          "date": "2026-10-13",
-          "day_of_week": "Tuesday",
-          "opponent": "Sharks",
-          "home": false,
-          "boston_score": 6,
-          "opponent_score": 3,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-16",
-          "day_of_week": "Friday",
-          "time_et": "10:00 PM ET",
-          "opponent": "Anaheim Ducks",
-          "home": false,
-          "season_type": "regular",
-          "is_today": false
-        }
-      },
-      {
         "team": "patriots",
         "label": "Patriots",
         "sport": "NFL",
@@ -211,6 +211,6 @@
       }
     ]
   },
-  "_stale": null,
+  "_stale": true,
   "_fallback": null
 }
