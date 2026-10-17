@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-10-12",
     "2026-10-13",
     "2026-10-14",
     "2026-10-15",
-    "2026-10-16"
+    "2026-10-16",
+    "2026-10-17"
   ],
   "rules": [
     {
@@ -110,14 +110,14 @@
         "title": "Wrong day named for a result"
       },
       {
+        "rule": 7,
+        "count": 2,
+        "title": "Fabricated statistics"
+      },
+      {
         "rule": 10,
         "count": 2,
         "title": "Voice repetition"
-      },
-      {
-        "rule": 7,
-        "count": 1,
-        "title": "Fabricated statistics"
       }
     ],
     "rule15_agreement": {

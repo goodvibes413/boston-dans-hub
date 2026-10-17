@@ -1,0 +1,233 @@
+{
+  "date": "2026-10-17",
+  "generated_at": "2026-10-17T12:02:37.308993+00:00",
+  "headline": "Bruins and Celtics handle business on a loud Friday night in Boston",
+  "morning_brew": [
+    "Friday was a wicked busy night for the Hub, and watching both the B's and the C's grind out results was exactly what I needed after a long week. The Bruins went into Anaheim and showed some serious heart, clawing back from an early hole to take down the Ducks in a thriller that took three years off my life. It wasn't the prettiest start, falling behind early, but once the power play clicked in the final two periods, the squad looked like the team we expect to see on the ice every single night. Seeing Matthew Poitras find the back of the net late in the third was the perfect exclamation point to a comeback that had me pacing the kitchen floor like Uncle Carmine waiting for his dinner.",
+    "Switching over to the hardwood, the C's went into Philadelphia and put on a clinic, hanging a five-point win on the 76ers in their own building. It was a physical, back-and-forth battle, but Hugo Gonzalez was an absolute revelation off the bench, pouring in twenty-one points to keep the momentum on our side. Any time you can go into a hostile arena and walk out with a win, you take it, and this team is showing all the right signs of a group that knows how to close out tight games against tough competition. Even with a few defensive lapses, the way they rallied together in the clutch shows they're already locked into the rhythm of the season.",
+    "Now we have to look ahead because this schedule isn't doing anyone any favors with the travel grind. The B's are right back at it tonight, flying out to Los Angeles for a date with the Kings at Crypto.com Arena. It is a quick turnaround after that battle in Anaheim, so I am praying the legs are fresh and the energy stays high from the opening puck drop. I'll be glued to the screen for this one, just hoping we can keep the streak alive as we finish off this West Coast trip and add a little more to the Duck Boat fund."
+  ],
+  "news_digest": [
+    {
+      "headline": "James, Embiid play 76ers' preseason finale, but 'still working on our rhythm'",
+      "url": "https://www.espn.com/nba/story/_/id/50199797/lebron-james-76ers-working-our-rhythm-opener-nears",
+      "dans_take": "They can work on their rhythm until the sun comes up, but our boys showed them how to actually play ball."
+    },
+    {
+      "headline": "Kings bring 5-game losing streak into matchup with the Bruins",
+      "url": "http://www.espn.com/nhl/preview?gameId=401892530",
+      "dans_take": "A desperate team with a losing streak is always a trap, so let's hope the B's don't get lazy."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Hugo Gonzalez",
+      "trend": "Poured in twenty-one points on six-of-ten shooting and added three assists in the road win over Philadelphia.",
+      "dans_take": "The kid was an absolute spark plug, hitting shots like he was playing in his own driveway."
+    },
+    {
+      "category": "Heater",
+      "player": "Michael DiPietro",
+      "trend": "Turned away twenty-five of twenty-seven shots to backstop the Bruins to a come-from-behind victory against the Ducks.",
+      "dans_take": "He stood on his head when we were drowning in the first period, absolute brick wall stuff."
+    },
+    {
+      "category": "Heater",
+      "player": "David Pastrnak",
+      "trend": "Converted on a power-play goal in the third period and added an assist to lead the Bruins offense.",
+      "dans_take": "Pasta is finally finding his rhythm, and watching him snipe that goal in the third was a beautiful sight."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Philadelphia 76ers",
+      "away_team": "Boston Celtics",
+      "home_score": 120,
+      "away_score": 125,
+      "game_date": "2026-10-16",
+      "played": true,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Ducks",
+      "away_team": "Boston Bruins",
+      "home_score": 2,
+      "away_score": 4,
+      "game_date": "2026-10-16",
+      "played": true,
+      "season_type": "regular"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-16",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-16",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-10-17",
+      "matchup": "Boston Bruins at Los Angeles Kings",
+      "day_of_week": "Saturday",
+      "time_et": "9:00 PM ET"
+    },
+    {
+      "date": "2026-10-18",
+      "matchup": "New York Jets at New England Patriots",
+      "day_of_week": "Sunday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-10-20",
+      "matchup": "Boston Celtics at Detroit Pistons",
+      "day_of_week": "Tuesday",
+      "time_et": "3:00 PM ET"
+    },
+    {
+      "date": "2026-10-20",
+      "matchup": "Boston Bruins at Dallas Stars",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-22",
+      "matchup": "Nashville Predators at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-22",
+      "matchup": "New England Patriots at Chicago Bears",
+      "day_of_week": "Thursday",
+      "time_et": "8:15 PM ET"
+    },
+    {
+      "date": "2026-10-23",
+      "matchup": "New York Knicks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-24",
+      "matchup": "San Jose Sharks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-10-17",
+    "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "6-2",
+        "last": {
+          "date": "2026-10-16",
+          "day_of_week": "Friday",
+          "opponent": "Ducks",
+          "home": false,
+          "boston_score": 4,
+          "opponent_score": 2,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-17",
+          "day_of_week": "Saturday",
+          "time_et": "9:00 PM ET",
+          "opponent": "Los Angeles Kings",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-0",
+        "last": {
+          "date": "2026-10-16",
+          "day_of_week": "Friday",
+          "opponent": "Philadelphia 76ers",
+          "home": false,
+          "boston_score": 125,
+          "opponent_score": 120,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "3:00 PM ET",
+          "opponent": "Detroit Pistons",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "3-2",
+        "last": {
+          "date": "2026-10-11",
+          "day_of_week": "Sunday",
+          "opponent": "Las Vegas Raiders",
+          "home": true,
+          "boston_score": 45,
+          "opponent_score": 17,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-18",
+          "day_of_week": "Sunday",
+          "time_et": "1:00 PM ET",
+          "opponent": "New York Jets",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}

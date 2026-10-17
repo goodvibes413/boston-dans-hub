@@ -1,57 +1,62 @@
 {
-  "headline": "Celtics look ready for business after crushing Hornets in home debut",
+  "headline": "Bruins and Celtics handle business on a loud Friday night in Boston",
   "morning_brew": [
-    "Wednesday night was about as smooth as it gets at the Garden, with the C's putting a real hurting on the Charlotte Hornets to the tune of a twenty-one-point win. After the way things ended last spring, it was a massive relief to see the squad come out with that kind of energy and just dismantle an opponent from the jump. The ball movement was crisp, the defense was suffocating, and for one night at least, we didn't have to sweat out a single possession like I'm watching a horror movie through my fingers. It is only one win, but that is the kind of clean, efficient basketball that reminds you why we're always in the conversation.",
-    "Jayson Tatum looked like a man on a mission, leading the charge with nineteen points and filling up the stat sheet while Neemias Queta and Luka Garza provided a huge spark off the bench. It was absolute magic to watch the second unit take over and keep the lead ballooning late in the game, especially with how active they were on the glass and in the passing lanes. Payton Pritchard was dealing all night long, picking up eleven assists and basically orchestrating the offense like he had the whole playbook memorized before he even checked in. If our bench keeps playing with that kind of fire, the rest of the league is gonna have a long, miserable season trying to keep up with us.",
-    "Looking ahead, we've got a few days to catch our breath before we hit the road for Detroit next Tuesday. It is a nice stretch of time to let the guys stay in the rhythm of practice while we see how the rest of the league shakes out in these final preseason looks. I am not gonna get ahead of myself and start talking about another banner, but if we keep playing like we did on Wednesday, this could be a hell of a year to be a fan in the Hub. For now, I am just happy we finally got a game that didn't require me to keep a bottle of antacids on the coffee table."
+    "Friday was a wicked busy night for the Hub, and watching both the B's and the C's grind out results was exactly what I needed after a long week. The Bruins went into Anaheim and showed some serious heart, clawing back from an early hole to take down the Ducks in a thriller that took three years off my life. It wasn't the prettiest start, falling behind early, but once the power play clicked in the final two periods, the squad looked like the team we expect to see on the ice every single night. Seeing Matthew Poitras find the back of the net late in the third was the perfect exclamation point to a comeback that had me pacing the kitchen floor like Uncle Carmine waiting for his dinner.",
+    "Switching over to the hardwood, the C's went into Philadelphia and put on a clinic, hanging a five-point win on the 76ers in their own building. It was a physical, back-and-forth battle, but Hugo Gonzalez was an absolute revelation off the bench, pouring in twenty-one points to keep the momentum on our side. Any time you can go into a hostile arena and walk out with a win, you take it, and this team is showing all the right signs of a group that knows how to close out tight games against tough competition. Even with a few defensive lapses, the way they rallied together in the clutch shows they're already locked into the rhythm of the season.",
+    "Now we have to look ahead because this schedule isn't doing anyone any favors with the travel grind. The B's are right back at it tonight, flying out to Los Angeles for a date with the Kings at Crypto.com Arena. It is a quick turnaround after that battle in Anaheim, so I am praying the legs are fresh and the energy stays high from the opening puck drop. I'll be glued to the screen for this one, just hoping we can keep the streak alive as we finish off this West Coast trip and add a little more to the Duck Boat fund."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Jayson Tatum",
-      "trend": "Finished with nineteen points, eight rebounds, and six assists in his twenty-nine minutes on the floor.",
-      "dans_take": "That's the kind of superstar stat line that makes me feel a little bit better about my blood pressure."
+      "player": "Hugo Gonzalez",
+      "trend": "Poured in twenty-one points on six-of-ten shooting and added three assists in the road win over Philadelphia.",
+      "dans_take": "The kid was an absolute spark plug, hitting shots like he was playing in his own driveway."
     },
     {
       "category": "Heater",
-      "player": "Payton Pritchard",
-      "trend": "Dished out eleven assists while anchoring the second unit during his twenty-nine minutes of action.",
-      "dans_take": "He was seeing the court like he had an aerial view, and frankly, it was beautiful to watch."
+      "player": "Michael DiPietro",
+      "trend": "Turned away twenty-five of twenty-seven shots to backstop the Bruins to a come-from-behind victory against the Ducks.",
+      "dans_take": "He stood on his head when we were drowning in the first period, absolute brick wall stuff."
     },
     {
       "category": "Heater",
-      "player": "Neemias Queta",
-      "trend": "Shot seven for eleven from the field to contribute sixteen points in just twenty-four minutes of play.",
-      "dans_take": "He was absolutely beastly in the paint, and I haven't seen someone that dominant down low since Uncle Carmine tried to clear the buffet line at my cousin's wedding."
+      "player": "David Pastrnak",
+      "trend": "Converted on a power-play goal in the third period and added an assist to lead the Bruins offense.",
+      "dans_take": "Pasta is finally finding his rhythm, and watching him snipe that goal in the third was a beautiful sight."
     }
   ],
   "news_digest": [
     {
-      "headline": "What NBA preseason has revealed about the Lakers, 76ers, Celtics and every team",
-      "url": "https://www.espn.com/nba/story/_/id/50176718/nba-preseason-lakers-76ers-celtics-30-teams",
-      "dans_take": "All these national writers can analyze the preseason until they're blue in the face, but the C's look like they're playing a different sport."
+      "headline": "James, Embiid play 76ers' preseason finale, but 'still working on our rhythm'",
+      "url": "https://www.espn.com/nba/story/_/id/50199797/lebron-james-76ers-working-our-rhythm-opener-nears",
+      "dans_take": "They can work on their rhythm until the sun comes up, but our boys showed them how to actually play ball."
+    },
+    {
+      "headline": "Kings bring 5-game losing streak into matchup with the Bruins",
+      "url": "http://www.espn.com/nhl/preview?gameId=401892530",
+      "dans_take": "A desperate team with a losing streak is always a trap, so let's hope the B's don't get lazy."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Charlotte Hornets",
-      "home_score": 114,
-      "away_score": 93,
-      "game_date": "2026-10-14",
+      "home_team": "Philadelphia 76ers",
+      "away_team": "Boston Celtics",
+      "home_score": 120,
+      "away_score": 125,
+      "game_date": "2026-10-16",
       "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-10-14",
-      "played": false,
-      "season_type": "unknown"
+      "home_team": "Ducks",
+      "away_team": "Boston Bruins",
+      "home_score": 2,
+      "away_score": 4,
+      "game_date": "2026-10-16",
+      "played": true,
+      "season_type": "regular"
     },
     "redsox": {
       "sport": "MLB",
@@ -59,7 +64,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-14",
+      "game_date": "2026-10-16",
       "played": false,
       "season_type": "playoff"
     },
@@ -69,18 +74,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-14",
+      "game_date": "2026-10-16",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-10-16",
-      "matchup": "Boston Bruins at Anaheim Ducks",
-      "day_of_week": "Friday",
-      "time_et": "10:00 PM ET"
-    },
     {
       "date": "2026-10-17",
       "matchup": "Boston Bruins at Los Angeles Kings",
@@ -110,6 +109,24 @@
       "matchup": "Nashville Predators at Boston Bruins",
       "day_of_week": "Thursday",
       "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-22",
+      "matchup": "New England Patriots at Chicago Bears",
+      "day_of_week": "Thursday",
+      "time_et": "8:15 PM ET"
+    },
+    {
+      "date": "2026-10-23",
+      "matchup": "New York Knicks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-24",
+      "matchup": "San Jose Sharks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
     }
   ],
   "_timings": [
@@ -117,36 +134,32 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 25.38,
-      "prompt_tokens": 41996,
-      "output_tokens": 1336,
+      "seconds": 11.95,
+      "prompt_tokens": 43491,
+      "output_tokens": 1428,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 13.26,
-      "prompt_tokens": 17785,
-      "output_tokens": 1376,
+      "seconds": 6.77,
+      "prompt_tokens": 17867,
+      "output_tokens": 1479,
       "thinking_tokens": null
     }
   ],
   "_grounding": "off",
-  "generated_at": "2026-10-15T17:27:02.678721+00:00",
+  "generated_at": "2026-10-17T12:02:37.308993+00:00",
   "_quality_warning": true,
   "_quality_flags": [
     {
       "rule": 17,
-      "detail": "The content incorrectly identifies the game date as 'Wednesday night' when the boxscore confirms it was played on Tuesday, 2026-10-14."
+      "detail": "The headline and morning_brew incorrectly state the games were played on 'Friday night' when the source data confirms they were played on Thursday, 2026-10-16."
     }
   ],
-  "date": "2026-10-16",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 25.0,
   "team_pulse": {
-    "as_of": "2026-10-16",
+    "as_of": "2026-10-17",
     "teams": [
       {
         "team": "bruins",
@@ -154,22 +167,22 @@
         "sport": "NHL",
         "phase": "regular",
         "opener": false,
-        "record": "5-2",
+        "record": "6-2",
         "last": {
-          "date": "2026-10-13",
-          "day_of_week": "Tuesday",
-          "opponent": "Sharks",
+          "date": "2026-10-16",
+          "day_of_week": "Friday",
+          "opponent": "Ducks",
           "home": false,
-          "boston_score": 6,
-          "opponent_score": 3,
+          "boston_score": 4,
+          "opponent_score": 2,
           "result": "W",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-10-16",
-          "day_of_week": "Friday",
-          "time_et": "10:00 PM ET",
-          "opponent": "Anaheim Ducks",
+          "date": "2026-10-17",
+          "day_of_week": "Saturday",
+          "time_et": "9:00 PM ET",
+          "opponent": "Los Angeles Kings",
           "home": false,
           "season_type": "regular",
           "is_today": true
@@ -191,14 +204,14 @@
         "sport": "NBA",
         "phase": "regular",
         "opener": false,
-        "record": "3-0",
+        "record": "4-0",
         "last": {
-          "date": "2026-10-14",
-          "day_of_week": "Wednesday",
-          "opponent": "Charlotte Hornets",
-          "home": true,
-          "boston_score": 114,
-          "opponent_score": 93,
+          "date": "2026-10-16",
+          "day_of_week": "Friday",
+          "opponent": "Philadelphia 76ers",
+          "home": false,
+          "boston_score": 125,
+          "opponent_score": 120,
           "result": "W",
           "season_type": "regular"
         },
@@ -240,5 +253,6 @@
         }
       }
     ]
-  }
+  },
+  "date": "2026-10-17"
 }
