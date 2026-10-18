@@ -1,60 +1,55 @@
 {
-  "headline": "Bruins and Celtics handle business on a loud Friday night in Boston",
+  "headline": "Bruins cruise in LA as Foxborough braces for Jets rivalry tilt",
   "morning_brew": [
-    "Friday was a wicked busy night for the Hub, and watching both the B's and the C's grind out results was exactly what I needed after a long week. The Bruins went into Anaheim and showed some serious heart, clawing back from an early hole to take down the Ducks in a thriller that took three years off my life. It wasn't the prettiest start, falling behind early, but once the power play clicked in the final two periods, the squad looked like the team we expect to see on the ice every single night. Seeing Matthew Poitras find the back of the net late in the third was the perfect exclamation point to a comeback that had me pacing the kitchen floor like Uncle Carmine waiting for his dinner.",
-    "Switching over to the hardwood, the C's went into Philadelphia and put on a clinic, hanging a five-point win on the 76ers in their own building. It was a physical, back-and-forth battle, but Hugo Gonzalez was an absolute revelation off the bench, pouring in twenty-one points to keep the momentum on our side. Any time you can go into a hostile arena and walk out with a win, you take it, and this team is showing all the right signs of a group that knows how to close out tight games against tough competition. Even with a few defensive lapses, the way they rallied together in the clutch shows they're already locked into the rhythm of the season.",
-    "Now we have to look ahead because this schedule isn't doing anyone any favors with the travel grind. The B's are right back at it tonight, flying out to Los Angeles for a date with the Kings at Crypto.com Arena. It is a quick turnaround after that battle in Anaheim, so I am praying the legs are fresh and the energy stays high from the opening puck drop. I'll be glued to the screen for this one, just hoping we can keep the streak alive as we finish off this West Coast trip and add a little more to the Duck Boat fund."
+    "Saturday night was a absolute clinic from the B's out in Los Angeles. After giving up a goal just thirty seconds in, the squad locked it down and rattled off four unanswered goals to walk away with a decisive win. Jeremy Swayman was stone cold in net, stopping twenty-five of twenty-six shots to silence the Kings. Watching the offense click like that in the third period, with Elias Lindholm and JJ Peterka both hitting empty-netters to seal the deal, had me feeling like we're really starting to find our rhythm on this road trip. The Duck Boat fund is getting a nice little deposit after a performance that smooth.",
+    "It is a massive Sunday in Foxborough with the Jets coming to Gillette for a one o'clock kickoff. We are coming off two straight wins and finally getting A.J. Brown back in the mix after that ankle issue, which should give our passing game the jolt it needs. The Jets always love to talk a big game, but I expect us to control the trenches and keep the momentum building before we head out on a short week to face the Bears on Thursday. My stomach is already in knots, which is how you know it's a real Patriots Sunday.",
+    "The C's are still in that quiet stretch of the schedule with no action until Tuesday, so I am just keeping an eye on the wire and waiting for them to get back on the floor against Detroit. It is a nice breather for the roster, but I am already itching to see them back in the flow of things. Uncle Carmine says he's been sleeping through the downtime, but I don't buy it for a second. For now, the focus is entirely on football and hoping the Pats can take care of business at home against our divisional rivals."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Hugo Gonzalez",
-      "trend": "Poured in twenty-one points on six-of-ten shooting and added three assists in the road win over Philadelphia.",
-      "dans_take": "The kid was an absolute spark plug, hitting shots like he was playing in his own driveway."
+      "player": "Jeremy Swayman",
+      "trend": "Swayman stood tall in the crease and stopped twenty-five of twenty-six shots for a dominant road win.",
+      "dans_take": "He looked like he was reading the Kings' minds all night, absolute robbery."
     },
     {
-      "category": "Heater",
-      "player": "Michael DiPietro",
-      "trend": "Turned away twenty-five of twenty-seven shots to backstop the Bruins to a come-from-behind victory against the Ducks.",
-      "dans_take": "He stood on his head when we were drowning in the first period, absolute brick wall stuff."
-    },
-    {
-      "category": "Heater",
+      "category": "Streak",
       "player": "David Pastrnak",
-      "trend": "Converted on a power-play goal in the third period and added an assist to lead the Bruins offense.",
-      "dans_take": "Pasta is finally finding his rhythm, and watching him snipe that goal in the third was a beautiful sight."
+      "trend": "Pastrnak sparked the comeback in the second period and added a helper on the final goal of the night.",
+      "dans_take": "When Pasta is cooking like this, you just grab a seat and enjoy the show."
+    },
+    {
+      "category": "Trench Report",
+      "player": "A.J. Brown",
+      "trend": "Brown was officially activated from injured reserve on Saturday after being sidelined for four weeks.",
+      "dans_take": "About damn time. I've missed seeing him haul down deep balls like he's playing catch in the yard."
     }
   ],
   "news_digest": [
     {
-      "headline": "James, Embiid play 76ers' preseason finale, but 'still working on our rhythm'",
-      "url": "https://www.espn.com/nba/story/_/id/50199797/lebron-james-76ers-working-our-rhythm-opener-nears",
-      "dans_take": "They can work on their rhythm until the sun comes up, but our boys showed them how to actually play ball."
-    },
-    {
-      "headline": "Kings bring 5-game losing streak into matchup with the Bruins",
-      "url": "http://www.espn.com/nhl/preview?gameId=401892530",
-      "dans_take": "A desperate team with a losing streak is always a trap, so let's hope the B's don't get lazy."
+      "headline": "Patriots activate WR A.J. Brown for Sunday's game vs. Jets",
+      "url": "https://www.espn.com/nfl/story/_/id/50200910/source-patriots-likely-activate-aj-brown-jets-game",
+      "dans_take": "This is the best gift the offense could've asked for before a divisional grudge match."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Philadelphia 76ers",
-      "away_team": "Boston Celtics",
-      "home_score": 120,
-      "away_score": 125,
-      "game_date": "2026-10-16",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-17",
+      "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Ducks",
+      "home_team": "Kings",
       "away_team": "Boston Bruins",
-      "home_score": 2,
+      "home_score": 1,
       "away_score": 4,
-      "game_date": "2026-10-16",
+      "game_date": "2026-10-17",
       "played": true,
       "season_type": "regular"
     },
@@ -64,7 +59,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-16",
+      "game_date": "2026-10-17",
       "played": false,
       "season_type": "playoff"
     },
@@ -74,18 +69,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-16",
+      "game_date": "2026-10-17",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-10-17",
-      "matchup": "Boston Bruins at Los Angeles Kings",
-      "day_of_week": "Saturday",
-      "time_et": "9:00 PM ET"
-    },
     {
       "date": "2026-10-18",
       "matchup": "New York Jets at New England Patriots",
@@ -134,56 +123,56 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 11.95,
-      "prompt_tokens": 43491,
-      "output_tokens": 1428,
+      "seconds": 4.54,
+      "prompt_tokens": 40630,
+      "output_tokens": 1261,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 6.77,
-      "prompt_tokens": 17867,
-      "output_tokens": 1479,
+      "seconds": 3.74,
+      "prompt_tokens": 17700,
+      "output_tokens": 1329,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "off",
-  "generated_at": "2026-10-17T12:02:37.308993+00:00",
+  "_grounding": "quota_exhausted",
+  "generated_at": "2026-10-18T12:31:00.351013+00:00",
   "_quality_warning": true,
   "_quality_flags": [
     {
       "rule": 17,
-      "detail": "The headline and morning_brew incorrectly state the games were played on 'Friday night' when the source data confirms they were played on Thursday, 2026-10-16."
+      "detail": "The content incorrectly identifies the Bruins' game against the Kings as occurring on 'Saturday night' when the source data confirms it was played on Friday, 2026-10-17."
     }
   ],
   "team_pulse": {
-    "as_of": "2026-10-17",
+    "as_of": "2026-10-18",
     "teams": [
       {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
         "phase": "regular",
         "opener": false,
-        "record": "6-2",
+        "record": "3-2",
         "last": {
-          "date": "2026-10-16",
-          "day_of_week": "Friday",
-          "opponent": "Ducks",
-          "home": false,
-          "boston_score": 4,
-          "opponent_score": 2,
+          "date": "2026-10-11",
+          "day_of_week": "Sunday",
+          "opponent": "Las Vegas Raiders",
+          "home": true,
+          "boston_score": 45,
+          "opponent_score": 17,
           "result": "W",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-10-17",
-          "day_of_week": "Saturday",
-          "time_et": "9:00 PM ET",
-          "opponent": "Los Angeles Kings",
-          "home": false,
+          "date": "2026-10-18",
+          "day_of_week": "Sunday",
+          "time_et": "1:00 PM ET",
+          "opponent": "New York Jets",
+          "home": true,
           "season_type": "regular",
           "is_today": true
         }
@@ -197,6 +186,33 @@
         "record": null,
         "last": null,
         "next": null
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "7-2",
+        "last": {
+          "date": "2026-10-17",
+          "day_of_week": "Saturday",
+          "opponent": "Kings",
+          "home": false,
+          "boston_score": 4,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Dallas Stars",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
       },
       {
         "team": "celtics",
@@ -224,35 +240,8 @@
           "season_type": "regular",
           "is_today": false
         }
-      },
-      {
-        "team": "patriots",
-        "label": "Patriots",
-        "sport": "NFL",
-        "phase": "regular",
-        "opener": false,
-        "record": "3-2",
-        "last": {
-          "date": "2026-10-11",
-          "day_of_week": "Sunday",
-          "opponent": "Las Vegas Raiders",
-          "home": true,
-          "boston_score": 45,
-          "opponent_score": 17,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-18",
-          "day_of_week": "Sunday",
-          "time_et": "1:00 PM ET",
-          "opponent": "New York Jets",
-          "home": true,
-          "season_type": "regular",
-          "is_today": false
-        }
       }
     ]
   },
-  "date": "2026-10-17"
+  "date": "2026-10-18"
 }
