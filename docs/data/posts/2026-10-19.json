@@ -1,37 +1,42 @@
 {
   "date": "2026-10-19",
-  "generated_at": "2026-10-18T12:31:00.351013+00:00",
-  "headline": "Bruins cruise in LA as Foxborough braces for Jets rivalry tilt",
+  "generated_at": "2026-10-19T18:56:01.890048+00:00",
+  "headline": "Maye shows serious grit as Patriots ground the Jets at home",
   "morning_brew": [
-    "Saturday night was a absolute clinic from the B's out in Los Angeles. After giving up a goal just thirty seconds in, the squad locked it down and rattled off four unanswered goals to walk away with a decisive win. Jeremy Swayman was stone cold in net, stopping twenty-five of twenty-six shots to silence the Kings. Watching the offense click like that in the third period, with Elias Lindholm and JJ Peterka both hitting empty-netters to seal the deal, had me feeling like we're really starting to find our rhythm on this road trip. The Duck Boat fund is getting a nice little deposit after a performance that smooth.",
-    "It is a massive Sunday in Foxborough with the Jets coming to Gillette for a one o'clock kickoff. We are coming off two straight wins and finally getting A.J. Brown back in the mix after that ankle issue, which should give our passing game the jolt it needs. The Jets always love to talk a big game, but I expect us to control the trenches and keep the momentum building before we head out on a short week to face the Bears on Thursday. My stomach is already in knots, which is how you know it's a real Patriots Sunday.",
-    "The C's are still in that quiet stretch of the schedule with no action until Tuesday, so I am just keeping an eye on the wire and waiting for them to get back on the floor against Detroit. It is a nice breather for the roster, but I am already itching to see them back in the flow of things. Uncle Carmine says he's been sleeping through the downtime, but I don't buy it for a second. For now, the focus is entirely on football and hoping the Pats can take care of business at home against our divisional rivals."
+    "That win over the Jets was exactly the kind of physical, ugly football you expect when these two meet up at Gillette. We controlled the clock, leaned on the ground game, and let the defense do the heavy lifting to move us to a winning record. Drake Maye looked composed under pressure, hitting his targets when we needed to move the chains, and that fourth quarter drive to put the game on ice was a thing of beauty. I haven't seen a clock-killing drive that satisfying since the glory days. Satisfied is the only way to feel after taking down a division rival, especially with the way the guys battled back in that second half.",
+    "My pops always said a win is a win, even if it doesn't win you any style points, and he would have loved the way we wore them down in the trenches. DeMario Douglas was all over the field, making plays and finding soft spots in the coverage that kept the chains moving all afternoon. It wasn't perfect, and that third quarter gave me a few gray hairs\u2014I was watching through my fingers like it was a horror flick\u2014but seeing this squad hold firm when the pressure was cranked up is a massive step forward for a group finding its identity.",
+    "Now we have to turn the page and get ready for a short week, with a trip out to Chicago to face the Bears on Thursday. There isn't much time to celebrate after a divisional battle like that, and the coaches know we need to clean up those lapses before heading into a hostile stadium. I'll be spending the next few days hoping for a clean injury report and keeping my fingers crossed that the momentum we built at home carries over to the road."
   ],
   "news_digest": [
     {
-      "headline": "Patriots activate WR A.J. Brown for Sunday's game vs. Jets",
-      "url": "https://www.espn.com/nfl/story/_/id/50200910/source-patriots-likely-activate-aj-brown-jets-game",
-      "dans_take": "This is the best gift the offense could've asked for before a divisional grudge match."
+      "headline": "NFL Week 7 betting odds: Lines and totals for every game",
+      "url": "https://www.espn.com/espn/betting/story/_/id/50179373/2026-nfl-week-7-schedule-odds-point-spreads-totals",
+      "dans_take": "It's about damn time the odds-makers started showing some respect to what we're building here."
+    },
+    {
+      "headline": "How active NFL players continue to redefine all-time sack list",
+      "url": "https://www.espn.com/nfl/story/_/id/49545945/all-sack-list-tracker-myles-garrett-von-miller-aaron-donald",
+      "dans_take": "It's a nice trip down memory lane, but I'm only interested in our defensive line adding to their own totals."
     }
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Jeremy Swayman",
-      "trend": "Swayman stood tall in the crease and stopped twenty-five of twenty-six shots for a dominant road win.",
-      "dans_take": "He looked like he was reading the Kings' minds all night, absolute robbery."
+      "player": "Drake Maye",
+      "trend": "Completed eighteen of thirty-two passes for two hundred thirty-five yards and three touchdowns in the win.",
+      "dans_take": "He played like a veteran with ice in his veins, and that is a sight for sore eyes."
     },
     {
-      "category": "Streak",
-      "player": "David Pastrnak",
-      "trend": "Pastrnak sparked the comeback in the second period and added a helper on the final goal of the night.",
-      "dans_take": "When Pasta is cooking like this, you just grab a seat and enjoy the show."
+      "category": "Ground Game",
+      "player": "Corey Kiner",
+      "trend": "Carried the ball eleven times for fifty-seven yards while grinding out tough yards against the Jets.",
+      "dans_take": "He ran like a man possessed, churning out yardage when we absolutely had to keep the clock ticking."
     },
     {
       "category": "Trench Report",
-      "player": "A.J. Brown",
-      "trend": "Brown was officially activated from injured reserve on Saturday after being sidelined for four weeks.",
-      "dans_take": "About damn time. I've missed seeing him haul down deep balls like he's playing catch in the yard."
+      "player": "DeMario Douglas",
+      "trend": "Caught seven passes for eighty-six yards and a score to lead the team in receiving production.",
+      "dans_take": "He was the electric spark we needed to bail us out whenever the drive hit a wall."
     }
   ],
   "box_scores": {
@@ -41,19 +46,19 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-17",
+      "game_date": "2026-10-18",
       "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Kings",
-      "away_team": "Boston Bruins",
-      "home_score": 1,
-      "away_score": 4,
-      "game_date": "2026-10-17",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-18",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -61,28 +66,22 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-17",
+      "game_date": "2026-10-18",
       "played": false,
       "season_type": "playoff"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-10-17",
-      "played": false,
+      "home_team": "New England Patriots",
+      "away_team": "New York Jets",
+      "home_score": 26,
+      "away_score": 19,
+      "game_date": "2026-10-18",
+      "played": true,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-10-18",
-      "matchup": "New York Jets at New England Patriots",
-      "day_of_week": "Sunday",
-      "time_et": "1:00 PM ET"
-    },
     {
       "date": "2026-10-20",
       "matchup": "Boston Celtics at Detroit Pistons",
@@ -118,6 +117,12 @@
       "matchup": "San Jose Sharks at Boston Bruins",
       "day_of_week": "Saturday",
       "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-26",
+      "matchup": "Chicago Bulls at Boston Celtics",
+      "day_of_week": "Monday",
+      "time_et": "7:30 PM ET"
     }
   ],
   "playoff_race": null,
@@ -217,6 +222,6 @@
       }
     ]
   },
-  "_stale": true,
+  "_stale": null,
   "_fallback": null
 }
