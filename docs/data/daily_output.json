@@ -150,7 +150,7 @@
   "date": "2026-10-19",
   "_stale": true,
   "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 28.0,
+  "_stale_age_hours": 28.8,
   "team_pulse": {
     "as_of": "2026-10-19",
     "teams": [
