@@ -147,36 +147,13 @@
       "detail": "The content incorrectly identifies the Bruins' game against the Kings as occurring on 'Saturday night' when the source data confirms it was played on Friday, 2026-10-17."
     }
   ],
+  "date": "2026-10-19",
+  "_stale": true,
+  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+  "_stale_age_hours": 26.8,
   "team_pulse": {
-    "as_of": "2026-10-18",
+    "as_of": "2026-10-19",
     "teams": [
-      {
-        "team": "patriots",
-        "label": "Patriots",
-        "sport": "NFL",
-        "phase": "regular",
-        "opener": false,
-        "record": "3-2",
-        "last": {
-          "date": "2026-10-11",
-          "day_of_week": "Sunday",
-          "opponent": "Las Vegas Raiders",
-          "home": true,
-          "boston_score": 45,
-          "opponent_score": 17,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-18",
-          "day_of_week": "Sunday",
-          "time_et": "1:00 PM ET",
-          "opponent": "New York Jets",
-          "home": true,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -188,27 +165,27 @@
         "next": null
       },
       {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
         "phase": "regular",
         "opener": false,
-        "record": "7-2",
+        "record": "4-2",
         "last": {
-          "date": "2026-10-17",
-          "day_of_week": "Saturday",
-          "opponent": "Kings",
-          "home": false,
-          "boston_score": 4,
-          "opponent_score": 1,
+          "date": "2026-10-18",
+          "day_of_week": "Sunday",
+          "opponent": "New York Jets",
+          "home": true,
+          "boston_score": 26,
+          "opponent_score": 19,
           "result": "W",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-10-20",
-          "day_of_week": "Tuesday",
-          "time_et": "8:00 PM ET",
-          "opponent": "Dallas Stars",
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "time_et": "8:15 PM ET",
+          "opponent": "Chicago Bears",
           "home": false,
           "season_type": "regular",
           "is_today": false
@@ -240,8 +217,34 @@
           "season_type": "regular",
           "is_today": false
         }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "7-2",
+        "last": {
+          "date": "2026-10-17",
+          "day_of_week": "Saturday",
+          "opponent": "Kings",
+          "home": false,
+          "boston_score": 4,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Dallas Stars",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
       }
     ]
-  },
-  "date": "2026-10-18"
+  }
 }

@@ -1,0 +1,222 @@
+{
+  "date": "2026-10-19",
+  "generated_at": "2026-10-18T12:31:00.351013+00:00",
+  "headline": "Bruins cruise in LA as Foxborough braces for Jets rivalry tilt",
+  "morning_brew": [
+    "Saturday night was a absolute clinic from the B's out in Los Angeles. After giving up a goal just thirty seconds in, the squad locked it down and rattled off four unanswered goals to walk away with a decisive win. Jeremy Swayman was stone cold in net, stopping twenty-five of twenty-six shots to silence the Kings. Watching the offense click like that in the third period, with Elias Lindholm and JJ Peterka both hitting empty-netters to seal the deal, had me feeling like we're really starting to find our rhythm on this road trip. The Duck Boat fund is getting a nice little deposit after a performance that smooth.",
+    "It is a massive Sunday in Foxborough with the Jets coming to Gillette for a one o'clock kickoff. We are coming off two straight wins and finally getting A.J. Brown back in the mix after that ankle issue, which should give our passing game the jolt it needs. The Jets always love to talk a big game, but I expect us to control the trenches and keep the momentum building before we head out on a short week to face the Bears on Thursday. My stomach is already in knots, which is how you know it's a real Patriots Sunday.",
+    "The C's are still in that quiet stretch of the schedule with no action until Tuesday, so I am just keeping an eye on the wire and waiting for them to get back on the floor against Detroit. It is a nice breather for the roster, but I am already itching to see them back in the flow of things. Uncle Carmine says he's been sleeping through the downtime, but I don't buy it for a second. For now, the focus is entirely on football and hoping the Pats can take care of business at home against our divisional rivals."
+  ],
+  "news_digest": [
+    {
+      "headline": "Patriots activate WR A.J. Brown for Sunday's game vs. Jets",
+      "url": "https://www.espn.com/nfl/story/_/id/50200910/source-patriots-likely-activate-aj-brown-jets-game",
+      "dans_take": "This is the best gift the offense could've asked for before a divisional grudge match."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Jeremy Swayman",
+      "trend": "Swayman stood tall in the crease and stopped twenty-five of twenty-six shots for a dominant road win.",
+      "dans_take": "He looked like he was reading the Kings' minds all night, absolute robbery."
+    },
+    {
+      "category": "Streak",
+      "player": "David Pastrnak",
+      "trend": "Pastrnak sparked the comeback in the second period and added a helper on the final goal of the night.",
+      "dans_take": "When Pasta is cooking like this, you just grab a seat and enjoy the show."
+    },
+    {
+      "category": "Trench Report",
+      "player": "A.J. Brown",
+      "trend": "Brown was officially activated from injured reserve on Saturday after being sidelined for four weeks.",
+      "dans_take": "About damn time. I've missed seeing him haul down deep balls like he's playing catch in the yard."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-17",
+      "played": false,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Kings",
+      "away_team": "Boston Bruins",
+      "home_score": 1,
+      "away_score": 4,
+      "game_date": "2026-10-17",
+      "played": true,
+      "season_type": "regular"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-17",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-17",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-10-18",
+      "matchup": "New York Jets at New England Patriots",
+      "day_of_week": "Sunday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-10-20",
+      "matchup": "Boston Celtics at Detroit Pistons",
+      "day_of_week": "Tuesday",
+      "time_et": "3:00 PM ET"
+    },
+    {
+      "date": "2026-10-20",
+      "matchup": "Boston Bruins at Dallas Stars",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-22",
+      "matchup": "Nashville Predators at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-22",
+      "matchup": "New England Patriots at Chicago Bears",
+      "day_of_week": "Thursday",
+      "time_et": "8:15 PM ET"
+    },
+    {
+      "date": "2026-10-23",
+      "matchup": "New York Knicks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-24",
+      "matchup": "San Jose Sharks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-10-18",
+    "teams": [
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "3-2",
+        "last": {
+          "date": "2026-10-11",
+          "day_of_week": "Sunday",
+          "opponent": "Las Vegas Raiders",
+          "home": true,
+          "boston_score": 45,
+          "opponent_score": 17,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-18",
+          "day_of_week": "Sunday",
+          "time_et": "1:00 PM ET",
+          "opponent": "New York Jets",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "7-2",
+        "last": {
+          "date": "2026-10-17",
+          "day_of_week": "Saturday",
+          "opponent": "Kings",
+          "home": false,
+          "boston_score": 4,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Dallas Stars",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-0",
+        "last": {
+          "date": "2026-10-16",
+          "day_of_week": "Friday",
+          "opponent": "Philadelphia 76ers",
+          "home": false,
+          "boston_score": 125,
+          "opponent_score": 120,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "3:00 PM ET",
+          "opponent": "Detroit Pistons",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}
