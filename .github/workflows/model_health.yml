@@ -72,7 +72,11 @@ jobs:
           Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
           Next steps are in the job log, and the full rationale is in AGENTS.md → Model Strategy. Do not switch the pin without running \`--check-quota\` and a voice bake-off against the candidate first."
-          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number' || true)
+          # Exact title match, not `--search "$title in:title"`: the search API
+          # mis-parses titles with `(`, `)` or `:`, the empty result was masked by
+          # `|| true`, and every run filed a fresh issue (#76-#80, all 2026-10-16).
+          existing=$(TITLE="$title" gh issue list --state open --limit 200 --json number,title \
+            --jq '[.[] | select(.title == env.TITLE)][0].number // empty' || true)
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body "$body"
           else

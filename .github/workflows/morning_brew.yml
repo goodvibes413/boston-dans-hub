@@ -314,7 +314,11 @@ jobs:
           \`gh workflow run \"Morning Brew — Daily Dan Commentary\" --ref main -f force=true\`
 
           Later safety-net cron slots will also retry automatically."
-          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number' || true)
+          # Exact title match, not `--search "$title in:title"`: the search API
+          # mis-parses titles with `(`, `)` or `:`, the empty result was masked by
+          # `|| true`, and every run filed a fresh issue (#76-#80, all 2026-10-16).
+          existing=$(TITLE="$title" gh issue list --state open --limit 200 --json number,title \
+            --jq '[.[] | select(.title == env.TITLE)][0].number // empty' || true)
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body "$body"
           else
@@ -341,7 +345,11 @@ jobs:
 
           See run logs for details."
           # Try to find an existing open issue with today's title; if none, create one.
-          existing=$(gh issue list --state open --search "$title in:title" --json number --jq '.[0].number' || true)
+          # Exact title match, not `--search "$title in:title"`: the search API
+          # mis-parses titles with `(`, `)` or `:`, the empty result was masked by
+          # `|| true`, and every run filed a fresh issue (#76-#80, all 2026-10-16).
+          existing=$(TITLE="$title" gh issue list --state open --limit 200 --json number,title \
+            --jq '[.[] | select(.title == env.TITLE)][0].number // empty' || true)
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body "$body"
           else
