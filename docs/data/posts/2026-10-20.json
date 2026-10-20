@@ -1,0 +1,212 @@
+{
+  "date": "2026-10-20",
+  "generated_at": "2026-10-20T13:24:32.659430+00:00",
+  "headline": "Celtics and Bruins ready to invade Detroit and Dallas",
+  "morning_brew": [
+    "It is a massive Tuesday in the Hub with two of our teams hitting the road to do battle. The C's are set to square off against the Pistons down in Detroit this afternoon, and I am absolutely itching to see them back on the hardwood. After the quiet stretch we have had, finally getting a game on the schedule feels like a breath of fresh air. I will be keeping a close eye on how the rotation looks early on, especially with the grind of the full season just getting underway.",
+    "Switching over to the ice, the B's are heading into Dallas for a clash with the Stars later tonight. Coming off that stretch of five wins on the bounce, the confidence in the locker room has to be sky high right now. I just hope the squad brings that same defensive intensity they showed against the Kings, because going into their barn and stealing two points is never easy. I have been feeling pretty good about how we are playing, and I hope we keep the momentum rolling while Uncle Carmine finishes his afternoon nap.",
+    "While we are looking ahead to the action, the news wires are still buzzing about the offseason moves across the league. It is always a long winter when the baseball season ends, but at least we have plenty of basketball and hockey to keep us occupied. I plan on being planted in front of the television all night, hoping for a clean sweep of the evening's games. Let us hope the boys can take care of business and keep the Duck Boat fund growing."
+  ],
+  "news_digest": [
+    {
+      "headline": "NHL Tonight: Previewing Bruins-Stars, all 10 other matchups on Tuesday",
+      "url": "https://www.espn.com/nhl/story/_/id/50218542/nhl-2026-27-tonight-games-schedule-matchups-stats-top-players-betting",
+      "dans_take": "The Stars are a tough out, but I trust the B's to handle the pressure tonight without giving me a heart attack."
+    },
+    {
+      "headline": "Biggest offseason questions for teams eliminated from MLB playoffs",
+      "description": "Here's how the winter looks in Cleveland following a season-ending loss to the Rays.",
+      "url": "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions",
+      "dans_take": "The winter is already hitting hard, and I am ready to start debating the roster moves like I'm the GM."
+    }
+  ],
+  "trend_watch": [],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-19",
+      "played": false,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-19",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-19",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-19",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-10-20",
+      "matchup": "Boston Celtics at Detroit Pistons",
+      "day_of_week": "Tuesday",
+      "time_et": "3:00 PM ET"
+    },
+    {
+      "date": "2026-10-20",
+      "matchup": "Boston Bruins at Dallas Stars",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-22",
+      "matchup": "Nashville Predators at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-22",
+      "matchup": "New England Patriots at Chicago Bears",
+      "day_of_week": "Thursday",
+      "time_et": "8:15 PM ET"
+    },
+    {
+      "date": "2026-10-23",
+      "matchup": "New York Knicks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-24",
+      "matchup": "San Jose Sharks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-26",
+      "matchup": "Chicago Bulls at Boston Celtics",
+      "day_of_week": "Monday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-27",
+      "matchup": "Brooklyn Nets at Boston Celtics",
+      "day_of_week": "Tuesday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-27",
+      "matchup": "Boston Bruins at Carolina Hurricanes",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-10-20",
+    "teams": [
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "0-0",
+        "last": null,
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "3:00 PM ET",
+          "opponent": "Detroit Pistons",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "7-2",
+        "last": {
+          "date": "2026-10-17",
+          "day_of_week": "Saturday",
+          "opponent": "Kings",
+          "home": false,
+          "boston_score": 4,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Dallas Stars",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-2",
+        "last": {
+          "date": "2026-10-18",
+          "day_of_week": "Sunday",
+          "opponent": "New York Jets",
+          "home": true,
+          "boston_score": 26,
+          "opponent_score": 19,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "time_et": "8:15 PM ET",
+          "opponent": "Chicago Bears",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}

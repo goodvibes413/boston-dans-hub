@@ -1,40 +1,22 @@
 {
-  "headline": "Maye shows serious grit as Patriots ground the Jets at home",
+  "headline": "Celtics and Bruins ready to invade Detroit and Dallas",
   "morning_brew": [
-    "That win over the Jets was exactly the kind of physical, ugly football you expect when these two meet up at Gillette. We controlled the clock, leaned on the ground game, and let the defense do the heavy lifting to move us to a winning record. Drake Maye looked composed under pressure, hitting his targets when we needed to move the chains, and that fourth quarter drive to put the game on ice was a thing of beauty. I haven't seen a clock-killing drive that satisfying since the glory days. Satisfied is the only way to feel after taking down a division rival, especially with the way the guys battled back in that second half.",
-    "My pops always said a win is a win, even if it doesn't win you any style points, and he would have loved the way we wore them down in the trenches. DeMario Douglas was all over the field, making plays and finding soft spots in the coverage that kept the chains moving all afternoon. It wasn't perfect, and that third quarter gave me a few gray hairs\u2014I was watching through my fingers like it was a horror flick\u2014but seeing this squad hold firm when the pressure was cranked up is a massive step forward for a group finding its identity.",
-    "Now we have to turn the page and get ready for a short week, with a trip out to Chicago to face the Bears on Thursday. There isn't much time to celebrate after a divisional battle like that, and the coaches know we need to clean up those lapses before heading into a hostile stadium. I'll be spending the next few days hoping for a clean injury report and keeping my fingers crossed that the momentum we built at home carries over to the road."
+    "It is a massive Tuesday in the Hub with two of our teams hitting the road to do battle. The C's are set to square off against the Pistons down in Detroit this afternoon, and I am absolutely itching to see them back on the hardwood. After the quiet stretch we have had, finally getting a game on the schedule feels like a breath of fresh air. I will be keeping a close eye on how the rotation looks early on, especially with the grind of the full season just getting underway.",
+    "Switching over to the ice, the B's are heading into Dallas for a clash with the Stars later tonight. Coming off that stretch of five wins on the bounce, the confidence in the locker room has to be sky high right now. I just hope the squad brings that same defensive intensity they showed against the Kings, because going into their barn and stealing two points is never easy. I have been feeling pretty good about how we are playing, and I hope we keep the momentum rolling while Uncle Carmine finishes his afternoon nap.",
+    "While we are looking ahead to the action, the news wires are still buzzing about the offseason moves across the league. It is always a long winter when the baseball season ends, but at least we have plenty of basketball and hockey to keep us occupied. I plan on being planted in front of the television all night, hoping for a clean sweep of the evening's games. Let us hope the boys can take care of business and keep the Duck Boat fund growing."
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "Drake Maye",
-      "trend": "Completed eighteen of thirty-two passes for two hundred thirty-five yards and three touchdowns in the win.",
-      "dans_take": "He played like a veteran with ice in his veins, and that is a sight for sore eyes."
-    },
-    {
-      "category": "Ground Game",
-      "player": "Corey Kiner",
-      "trend": "Carried the ball eleven times for fifty-seven yards while grinding out tough yards against the Jets.",
-      "dans_take": "He ran like a man possessed, churning out yardage when we absolutely had to keep the clock ticking."
-    },
-    {
-      "category": "Trench Report",
-      "player": "DeMario Douglas",
-      "trend": "Caught seven passes for eighty-six yards and a score to lead the team in receiving production.",
-      "dans_take": "He was the electric spark we needed to bail us out whenever the drive hit a wall."
-    }
-  ],
+  "trend_watch": [],
   "news_digest": [
     {
-      "headline": "NFL Week 7 betting odds: Lines and totals for every game",
-      "url": "https://www.espn.com/espn/betting/story/_/id/50179373/2026-nfl-week-7-schedule-odds-point-spreads-totals",
-      "dans_take": "It's about damn time the odds-makers started showing some respect to what we're building here."
+      "headline": "NHL Tonight: Previewing Bruins-Stars, all 10 other matchups on Tuesday",
+      "url": "https://www.espn.com/nhl/story/_/id/50218542/nhl-2026-27-tonight-games-schedule-matchups-stats-top-players-betting",
+      "dans_take": "The Stars are a tough out, but I trust the B's to handle the pressure tonight without giving me a heart attack."
     },
     {
-      "headline": "How active NFL players continue to redefine all-time sack list",
-      "url": "https://www.espn.com/nfl/story/_/id/49545945/all-sack-list-tracker-myles-garrett-von-miller-aaron-donald",
-      "dans_take": "It's a nice trip down memory lane, but I'm only interested in our defensive line adding to their own totals."
+      "headline": "Biggest offseason questions for teams eliminated from MLB playoffs",
+      "description": "Here's how the winter looks in Cleveland following a season-ending loss to the Rays.",
+      "url": "https://www.espn.com/mlb/story/_/id/50052092/mlb-playoffs-2026-offseason-eliminated-teams-questions",
+      "dans_take": "The winter is already hitting hard, and I am ready to start debating the roster moves like I'm the GM."
     }
   ],
   "box_scores": {
@@ -44,7 +26,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-18",
+      "game_date": "2026-10-19",
       "played": false,
       "season_type": "regular"
     },
@@ -54,7 +36,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-18",
+      "game_date": "2026-10-19",
       "played": false,
       "season_type": "unknown"
     },
@@ -64,18 +46,18 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-18",
+      "game_date": "2026-10-19",
       "played": false,
       "season_type": "playoff"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "New York Jets",
-      "home_score": 26,
-      "away_score": 19,
-      "game_date": "2026-10-18",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-19",
+      "played": false,
       "season_type": "regular"
     }
   },
@@ -121,6 +103,18 @@
       "matchup": "Chicago Bulls at Boston Celtics",
       "day_of_week": "Monday",
       "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-27",
+      "matchup": "Brooklyn Nets at Boston Celtics",
+      "day_of_week": "Tuesday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-27",
+      "matchup": "Boston Bruins at Carolina Hurricanes",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
     }
   ],
   "_timings": [
@@ -128,33 +122,82 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 11.7,
-      "prompt_tokens": 40424,
-      "output_tokens": 1387,
+      "seconds": 4.38,
+      "prompt_tokens": 40586,
+      "output_tokens": 1134,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 7.72,
-      "prompt_tokens": 17826,
-      "output_tokens": 1434,
+      "seconds": 4.6,
+      "prompt_tokens": 17573,
+      "output_tokens": 1154,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "failed",
-  "generated_at": "2026-10-19T18:56:01.890048+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
+  "_grounding": "off",
+  "generated_at": "2026-10-20T13:24:32.659430+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
     {
       "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"to face the bears on thursday\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "detail": "repetition: formulaic phrase \"glued to the screen for\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    },
+    {
+      "rule": 10,
+      "detail": "repetition: number-masked sentence skeleton \"found the back of the net\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     }
   ],
   "team_pulse": {
-    "as_of": "2026-10-19",
+    "as_of": "2026-10-20",
     "teams": [
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "0-0",
+        "last": null,
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "3:00 PM ET",
+          "opponent": "Detroit Pistons",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "7-2",
+        "last": {
+          "date": "2026-10-17",
+          "day_of_week": "Saturday",
+          "opponent": "Kings",
+          "home": false,
+          "boston_score": 4,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Dallas Stars",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -191,62 +234,8 @@
           "season_type": "regular",
           "is_today": false
         }
-      },
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "4-0",
-        "last": {
-          "date": "2026-10-16",
-          "day_of_week": "Friday",
-          "opponent": "Philadelphia 76ers",
-          "home": false,
-          "boston_score": 125,
-          "opponent_score": 120,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-20",
-          "day_of_week": "Tuesday",
-          "time_et": "3:00 PM ET",
-          "opponent": "Detroit Pistons",
-          "home": false,
-          "season_type": "regular",
-          "is_today": false
-        }
-      },
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "7-2",
-        "last": {
-          "date": "2026-10-17",
-          "day_of_week": "Saturday",
-          "opponent": "Kings",
-          "home": false,
-          "boston_score": 4,
-          "opponent_score": 1,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-20",
-          "day_of_week": "Tuesday",
-          "time_et": "8:00 PM ET",
-          "opponent": "Dallas Stars",
-          "home": false,
-          "season_type": "regular",
-          "is_today": false
-        }
       }
     ]
   },
-  "date": "2026-10-19"
+  "date": "2026-10-20"
 }
