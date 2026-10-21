@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-10-16",
     "2026-10-17",
     "2026-10-18",
     "2026-10-19",
-    "2026-10-20"
+    "2026-10-20",
+    "2026-10-21"
   ],
   "rules": [
     {
@@ -100,23 +100,23 @@
   ],
   "summary_5day": {
     "fresh": 0,
-    "retry": 4,
-    "fallback": 1,
+    "retry": 5,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 8,
+        "count": 9,
         "title": "Voice repetition"
       },
       {
         "rule": 17,
-        "count": 7,
+        "count": 8,
         "title": "Wrong day named for a result"
       },
       {
         "rule": 12,
-        "count": 2,
+        "count": 3,
         "title": "Game coverage gap"
       }
     ],
