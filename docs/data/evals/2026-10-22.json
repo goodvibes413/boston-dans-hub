@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-22",
+  "generated_at": "2026-10-22T13:35:12.692045+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 23.0,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"my neighbor rick is already deep into his conspiracy theory\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"the boys in black and gold\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 4.3
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 2.6
+    }
+  ]
+}

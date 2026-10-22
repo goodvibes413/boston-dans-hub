@@ -1,62 +1,45 @@
 {
-  "headline": "A miserable Tuesday as the C's and Bruins both drop games",
+  "headline": "Bruins and Patriots look to ignite the city tonight",
   "morning_brew": [
-    "Tuesday was an absolute nightmare for our teams on the road. The C's opened their campaign in Detroit and managed to choke away a twenty-two point lead against the Pistons, which is about the worst way to kick off a season I've ever seen. It was one of those performances that makes you wonder if the team was daydreaming about their vacation plans in the second half. Watching a lead that massive evaporate in the season opener is just brutal for the blood pressure, and I might need to switch to decaf if they keep playing like that.",
-    "Over on the ice, the Bruins saw their five-game winning streak snapped in Dallas, and it was a total heartbreaker in overtime. Despite a real gritty effort from Matthew Poitras and James Hagens, the Stars found a way to swipe the extra point. The game was tighter than a pair of jeans after a Thanksgiving dinner, but losing in OT feels like a kick in the shins when you consider how well the boys have been skating. My neighbor Rick is already deep into his conspiracy theory that the refs were wearing Dallas jerseys, and frankly, I am too exhausted to even argue with him this morning.",
-    "We have to flush these results and get our heads back in the game. The Bruins return to the Garden on Thursday to handle the Predators, and the C's have a few days to get their act together before the home opener against the Knicks on Friday. It is early, and while nobody enjoys watching a double-header of losses like this, there is plenty of time for both squads to find their rhythm. I am just praying the boys in black and gold can defend our own ice when the Predators hit town."
+    "It is a massive Thursday for us, and I have enough caffeine coursing through my veins to power the T through a full commute. The Bruins are back at TD Garden to host the Predators, and after that gut-wrenching overtime result in Dallas, the team needs to wake up and tighten things up in front of the crease. It is a absolute meat grinder in the Atlantic Division, and catching Nashville at home is exactly what we need to build some momentum before the weekend. I am dying to see the lines tonight, and if the boys can bring a little extra sandpaper and dictate the tempo early, I might actually be able to watch a game without my usual cardiac anxiety.",
+    "Switching over to the gridiron, the Patriots have a Thursday night clash against the Bears out at Soldier Field. We have had a hell of a start to the campaign, and keeping that intensity going on a short week is never easy. Rhamondre Stevenson has been doing all the dirty work, and I expect him to be a massive factor in keeping the chains moving against a nasty Chicago defense. We have seen how quickly things can turn in this league, so executing on the road tonight is critical if we want to stay in the thick of the AFC race without needing to pull out the calculator.",
+    "It is a total drag that I have to wait until tonight to see any action, but that is the life of a sports fan in the Hub. I will be glued to the tube for both, hopefully avoiding a trip to the ER, and aiming for a clean sweep of the evening. There is something about playing under the lights that just raises the stakes, and I have a feeling tonight might be a defining stretch for both of these rosters. My neighbor Rick already has a theory about the officiating tonight, but I am just hoping the boys can execute their game plans and bring home two wins for the city."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Paul George",
-      "trend": "Paul George lit up the scoreboard with thirty-eight points on twelve of twenty-one shooting while knocking down seven three-pointers.",
-      "dans_take": "The man was a one-man wrecking crew, but watching him work that hard for nothing is depressing."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Jayson Tatum",
-      "trend": "Jayson Tatum struggled to find his stroke and finished with thirteen points on six of twenty-three shooting from the field.",
-      "dans_take": "If you told me JT was shooting with a blindfold on, I would have believed you."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Jeremy Swayman",
-      "trend": "Jeremy Swayman logged over sixty-three minutes of ice time and stopped twenty-two of twenty-five shots in the overtime defeat.",
-      "dans_take": "He stood on his head for three periods, but he cannot play goalie and score goals at the same time."
+      "player": "Rhamondre Stevenson",
+      "trend": "Stevenson is closing in on a century of carries for the sixth year in a row while providing consistent protection out of the backfield.",
+      "dans_take": "He is the heartbeat of the offense right now, working harder than my cousin Jimmy trying to fix his own transmission."
     }
   ],
   "news_digest": [
     {
-      "headline": "Pistons kick off season vs. Celtics with NBA's largest opening day comeback",
-      "url": "https://www.espn.com/nba/story/_/id/50233539/pistons-open-season-22-point-comeback-vs-celtics",
-      "dans_take": "To hold the record for the biggest collapse on opening day is a dubious honor I could have lived without."
-    },
-    {
-      "headline": "Mikko Rantanen's overtime hat trick gives the Stars a 3-2 win over the Bruins",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892545",
-      "dans_take": "Giving up a hat trick to lose in overtime is a special kind of misery."
+      "headline": "Proposing NFL trade deadline offers: Moves for Saquon Barkley, Khalil Mack, more",
+      "url": "https://www.espn.com/nfl/story/_/id/50238049/trade-deadline-2026-barnwell-offers-pitches-barkley-thomas",
+      "dans_take": "The trade deadline chatter is heating up, and I am watching to see if the front office actually pulls the trigger on something useful."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Detroit Pistons",
-      "away_team": "Boston Celtics",
-      "home_score": 121,
-      "away_score": 113,
-      "game_date": "2026-10-20",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-21",
+      "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Stars",
-      "away_team": "Boston Bruins",
-      "home_score": 3,
-      "away_score": 2,
-      "game_date": "2026-10-20",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-21",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,7 +47,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-20",
+      "game_date": "2026-10-21",
       "played": false,
       "season_type": "playoff"
     },
@@ -74,7 +57,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-20",
+      "game_date": "2026-10-21",
       "played": false,
       "season_type": "regular"
     }
@@ -121,6 +104,12 @@
       "matchup": "Boston Bruins at Carolina Hurricanes",
       "day_of_week": "Tuesday",
       "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-29",
+      "matchup": "Boston Bruins at St. Louis Blues",
+      "day_of_week": "Thursday",
+      "time_et": "8:00 PM ET"
     }
   ],
   "_timings": [
@@ -128,33 +117,92 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 16.23,
-      "prompt_tokens": 42745,
-      "output_tokens": 1372,
+      "seconds": 3.87,
+      "prompt_tokens": 40481,
+      "output_tokens": 1138,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 14.02,
-      "prompt_tokens": 17821,
-      "output_tokens": 1421,
+      "seconds": 11.69,
+      "prompt_tokens": 17577,
+      "output_tokens": 1209,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "failed",
-  "generated_at": "2026-10-21T13:38:42.930037+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
+  "_grounding": "off",
+  "generated_at": "2026-10-22T13:35:35.714757+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
     {
-      "rule": 17,
-      "detail": "The content incorrectly identifies the games as occurring on 'Tuesday' when the source data confirms they were played on Monday, 2026-10-20."
+      "rule": 10,
+      "detail": "repetition: number-masked sentence skeleton \"my neighbor rick is already deep into his conspiracy theory\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    },
+    {
+      "rule": 10,
+      "detail": "repetition: number-masked sentence skeleton \"the boys in black and gold\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     }
   ],
   "team_pulse": {
-    "as_of": "2026-10-21",
+    "as_of": "2026-10-22",
     "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "7-2",
+        "last": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "opponent": "Stars",
+          "home": false,
+          "boston_score": 2,
+          "opponent_score": 3,
+          "result": "L",
+          "season_type": "regular",
+          "note": "OT"
+        },
+        "next": {
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Nashville Predators",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-2",
+        "last": {
+          "date": "2026-10-18",
+          "day_of_week": "Sunday",
+          "opponent": "New York Jets",
+          "home": true,
+          "boston_score": 26,
+          "opponent_score": 19,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "time_et": "8:15 PM ET",
+          "opponent": "Chicago Bears",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -191,63 +239,8 @@
           "season_type": "regular",
           "is_today": false
         }
-      },
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "7-2",
-        "last": {
-          "date": "2026-10-20",
-          "day_of_week": "Tuesday",
-          "opponent": "Stars",
-          "home": false,
-          "boston_score": 2,
-          "opponent_score": 3,
-          "result": "L",
-          "season_type": "regular",
-          "note": "OT"
-        },
-        "next": {
-          "date": "2026-10-22",
-          "day_of_week": "Thursday",
-          "time_et": "7:00 PM ET",
-          "opponent": "Nashville Predators",
-          "home": true,
-          "season_type": "regular",
-          "is_today": false
-        }
-      },
-      {
-        "team": "patriots",
-        "label": "Patriots",
-        "sport": "NFL",
-        "phase": "regular",
-        "opener": false,
-        "record": "4-2",
-        "last": {
-          "date": "2026-10-18",
-          "day_of_week": "Sunday",
-          "opponent": "New York Jets",
-          "home": true,
-          "boston_score": 26,
-          "opponent_score": 19,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-22",
-          "day_of_week": "Thursday",
-          "time_et": "8:15 PM ET",
-          "opponent": "Chicago Bears",
-          "home": false,
-          "season_type": "regular",
-          "is_today": false
-        }
       }
     ]
   },
-  "date": "2026-10-21"
+  "date": "2026-10-22"
 }

@@ -1,0 +1,217 @@
+{
+  "date": "2026-10-22",
+  "generated_at": "2026-10-22T13:35:35.714757+00:00",
+  "headline": "Bruins and Patriots look to ignite the city tonight",
+  "morning_brew": [
+    "It is a massive Thursday for us, and I have enough caffeine coursing through my veins to power the T through a full commute. The Bruins are back at TD Garden to host the Predators, and after that gut-wrenching overtime result in Dallas, the team needs to wake up and tighten things up in front of the crease. It is a absolute meat grinder in the Atlantic Division, and catching Nashville at home is exactly what we need to build some momentum before the weekend. I am dying to see the lines tonight, and if the boys can bring a little extra sandpaper and dictate the tempo early, I might actually be able to watch a game without my usual cardiac anxiety.",
+    "Switching over to the gridiron, the Patriots have a Thursday night clash against the Bears out at Soldier Field. We have had a hell of a start to the campaign, and keeping that intensity going on a short week is never easy. Rhamondre Stevenson has been doing all the dirty work, and I expect him to be a massive factor in keeping the chains moving against a nasty Chicago defense. We have seen how quickly things can turn in this league, so executing on the road tonight is critical if we want to stay in the thick of the AFC race without needing to pull out the calculator.",
+    "It is a total drag that I have to wait until tonight to see any action, but that is the life of a sports fan in the Hub. I will be glued to the tube for both, hopefully avoiding a trip to the ER, and aiming for a clean sweep of the evening. There is something about playing under the lights that just raises the stakes, and I have a feeling tonight might be a defining stretch for both of these rosters. My neighbor Rick already has a theory about the officiating tonight, but I am just hoping the boys can execute their game plans and bring home two wins for the city."
+  ],
+  "news_digest": [
+    {
+      "headline": "Proposing NFL trade deadline offers: Moves for Saquon Barkley, Khalil Mack, more",
+      "url": "https://www.espn.com/nfl/story/_/id/50238049/trade-deadline-2026-barnwell-offers-pitches-barkley-thomas",
+      "dans_take": "The trade deadline chatter is heating up, and I am watching to see if the front office actually pulls the trigger on something useful."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Rhamondre Stevenson",
+      "trend": "Stevenson is closing in on a century of carries for the sixth year in a row while providing consistent protection out of the backfield.",
+      "dans_take": "He is the heartbeat of the offense right now, working harder than my cousin Jimmy trying to fix his own transmission."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-21",
+      "played": false,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-21",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-21",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-21",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-10-22",
+      "matchup": "Nashville Predators at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-22",
+      "matchup": "New England Patriots at Chicago Bears",
+      "day_of_week": "Thursday",
+      "time_et": "8:15 PM ET"
+    },
+    {
+      "date": "2026-10-23",
+      "matchup": "New York Knicks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-24",
+      "matchup": "San Jose Sharks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-26",
+      "matchup": "Chicago Bulls at Boston Celtics",
+      "day_of_week": "Monday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-27",
+      "matchup": "Brooklyn Nets at Boston Celtics",
+      "day_of_week": "Tuesday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-27",
+      "matchup": "Boston Bruins at Carolina Hurricanes",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-29",
+      "matchup": "Boston Bruins at St. Louis Blues",
+      "day_of_week": "Thursday",
+      "time_et": "8:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-10-22",
+    "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "7-2",
+        "last": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "opponent": "Stars",
+          "home": false,
+          "boston_score": 2,
+          "opponent_score": 3,
+          "result": "L",
+          "season_type": "regular",
+          "note": "OT"
+        },
+        "next": {
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Nashville Predators",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-2",
+        "last": {
+          "date": "2026-10-18",
+          "day_of_week": "Sunday",
+          "opponent": "New York Jets",
+          "home": true,
+          "boston_score": 26,
+          "opponent_score": 19,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "time_et": "8:15 PM ET",
+          "opponent": "Chicago Bears",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "0-1",
+        "last": {
+          "date": "2026-10-20",
+          "day_of_week": "Tuesday",
+          "opponent": "Detroit Pistons",
+          "home": false,
+          "boston_score": 113,
+          "opponent_score": 121,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-23",
+          "day_of_week": "Friday",
+          "time_et": "7:00 PM ET",
+          "opponent": "New York Knicks",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}
