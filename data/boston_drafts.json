@@ -1,32 +1,7 @@
 {
-  "generated_at": "2026-10-22T13:34:46.378648+00:00",
-  "last_active_date": "2026-09-10",
-  "active_drafts": [
-    {
-      "sport": "NBA",
-      "year": 2026,
-      "team": "celtics",
-      "picks": [
-        {
-          "round": 1,
-          "pick_overall": 27,
-          "player_name": "Chris Cenac Jr.",
-          "position": "F",
-          "college": "Houston",
-          "team": "celtics"
-        },
-        {
-          "round": 2,
-          "pick_overall": 40,
-          "player_name": "Dillon Mitchell",
-          "position": "F",
-          "college": "St. John's",
-          "team": "celtics"
-        }
-      ],
-      "last_active_date": "2026-09-10"
-    }
-  ],
+  "generated_at": "2026-10-23T13:10:28.521685+00:00",
+  "last_active_date": "1970-01-01",
+  "active_drafts": [],
   "fetch_ok": {
     "NFL": true,
     "NBA": true,

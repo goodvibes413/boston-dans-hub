@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-23",
+  "generated_at": "2026-10-23T13:11:16.983820+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 3,
+  "generation_seconds": 50.1,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content asserts the Celtics play 'tonight' (Friday, 2026-10-23) against the Knicks, but the UPCOMING_SCHEDULE lists the game date as 2026-10-23, which is a Friday, and the content incorrectly refers to the game as 'tonight' while also referencing a 'disaster on Tuesday' which contradicts the schedule."
+        }
+      ],
+      "duration_seconds": 7.5
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"i will be glued to the tube\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 5.8
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 7,
+          "detail": "The trend_watch section claims Drake Maye accounted for 'three total touchdowns' when the source data shows 2 passing and 1 rushing, which is correct, but the total yardage cited as 'three hundred twenty-one' is correct while the passing stats are 24/31, 321 YDS, 2 TD, 1 INT, and rushing 4 CAR, 26 YDS, 1 TD, making the total touchdowns 3, but the output incorrectly implies these are the only stats, and the rule 7 violation is triggered by the fabricated stat 'twenty-four passes' which is not in the source data as a total count, but rather a completion count."
+        }
+      ],
+      "duration_seconds": 8.3
+    }
+  ]
+}
