@@ -38,6 +38,9 @@ concurrency:
   group: morning-brew
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
   daily_pipeline:
     name: Generate and publish Boston Dan commentary
@@ -54,7 +57,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Skip if today's content already published
         id: freshness
@@ -125,19 +128,15 @@ jobs:
 
       - name: Set up Python 3.14
         if: steps.freshness.outputs.skip != 'true'
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.14'
 
       - name: Install dependencies
         if: steps.freshness.outputs.skip != 'true'
         run: |
-          python3 -m pip install --upgrade pip
-          # Pinned: this is the only third-party dependency the daily pipeline
-          # has, and it was installed unpinned on every production run until
-          # 2026-09-04 — a breaking release would have shipped straight into
-          # the morning brew. Bump deliberately, not by accident.
-          pip install "google-genai==2.22.0" pydantic
+          python3 -m pip install 'pip @ https://files.pythonhosted.org/packages/3f/06/3e4420302363fbb71be3c7f35ce042f54bfca330e3e66b3a2e3c4cca579f/pip-26.2.2-py3-none-any.whl#sha256=fd7f4dfa8190e014013b9f08f3e973f4e4c26ffd179a204895533a7254813a70'
+          python3 -m pip install --require-hashes -r requirements.txt
 
       - name: Fetch NBA games
         if: steps.freshness.outputs.skip != 'true'

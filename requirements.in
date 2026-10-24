@@ -1,0 +1,4 @@
+# Runtime dependencies; compile with pip-compile --generate-hashes.
+-c security-constraints.txt
+google-genai==2.22.0
+pydantic>=2.12.5,<3
