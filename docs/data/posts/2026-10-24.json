@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-24",
+  "generated_at": "2026-10-24T12:30:49.618756+00:00",
+  "headline": "Tatum catches fire in second half to sink the Knicks",
+  "morning_brew": [
+    "Friday night at the Garden was a total cardiac event, and I\u2019m still scraping myself off the ceiling. Jayson Tatum decided he wasn't gonna let the Knicks walk out of our building with a win, dropping twenty-five of his thirty-six points in the second half like it was a layup line. It was the kind of takeover that makes you wanna run through a brick wall, and honestly, seeing him put the team on his back after that sluggish start had me feeling like we might just have something special here.",
+    "The heavy lifting didn't end with Tatum, though, because the bench finally showed up with a pulse. Neemias Queta was an absolute wrecking ball under the rim with three blocks and double-digit points, and watching him fight for every loose ball made me happier than a fresh Dunks run on a Monday morning. It is only October, but grinding out a win like this against New York feels like a deposit in the Duck Boat fund, even if I have to keep my expectations grounded for another few months.",
+    "We aren't done yet because the Bruins are back at the Garden tonight against San Jose. Puck drop is at seven, and my blood pressure needs a break from the high-stakes drama, so I\u2019m looking for a nice, boring blowout victory. I\u2019ll be glued to the couch with my feet up, and if the boys can keep this citywide momentum rolling, I might just have to stop being such a cynical fan for at least forty-eight hours."
+  ],
+  "news_digest": [
+    {
+      "headline": "Jayson Tatum insists 'there's no beef' with Jaylen Brown in wake of trade",
+      "url": "https://www.espn.com/nba/story/_/id/50263591/celtics-jayson-tatum-insists-no-beef-76ers-jaylen-brown-wake-trade",
+      "dans_take": "Good, because the media is exhausting and I\u2019d rather talk about rings than rumors."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Jayson Tatum",
+      "trend": "Jayson Tatum poured in thirty-six points on fourteen-of-twenty-six shooting and pulled down nine rebounds to carry the offense.",
+      "dans_take": "That is the kind of performance that reminds you why we put up with all the other nonsense."
+    },
+    {
+      "category": "Heater",
+      "player": "Neemias Queta",
+      "trend": "Neemias Queta provided a major spark off the bench by contributing fifteen points, six rebounds, and three blocks in twenty-two minutes.",
+      "dans_take": "If he keeps playing like this, neighbor Rick is gonna start a conspiracy theory that he\u2019s actually three guys in a trench coat."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Payton Pritchard",
+      "trend": "Payton Pritchard struggled to find his rhythm, finishing with just four points on one-of-five shooting from the field.",
+      "dans_take": "He was ice cold last night, but I\u2019ve seen him hit enough miracle shots to know he\u2019ll bounce back."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Boston Celtics",
+      "away_team": "New York Knicks",
+      "home_score": 107,
+      "away_score": 103,
+      "game_date": "2026-10-23",
+      "played": true,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-23",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-23",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-23",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-10-24",
+      "matchup": "San Jose Sharks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-10-26",
+      "matchup": "Chicago Bulls at Boston Celtics",
+      "day_of_week": "Monday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-27",
+      "matchup": "Brooklyn Nets at Boston Celtics",
+      "day_of_week": "Tuesday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-27",
+      "matchup": "Boston Bruins at Carolina Hurricanes",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-29",
+      "matchup": "Boston Bruins at St. Louis Blues",
+      "day_of_week": "Thursday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-30",
+      "matchup": "Chicago Bulls at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-31",
+      "matchup": "Chicago Blackhawks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "1:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-10-24",
+    "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "8-2",
+        "last": {
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "opponent": "Predators",
+          "home": true,
+          "boston_score": 6,
+          "opponent_score": 0,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-24",
+          "day_of_week": "Saturday",
+          "time_et": "7:00 PM ET",
+          "opponent": "San Jose Sharks",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "1-1",
+        "last": {
+          "date": "2026-10-23",
+          "day_of_week": "Friday",
+          "opponent": "New York Knicks",
+          "home": true,
+          "boston_score": 107,
+          "opponent_score": 103,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-26",
+          "day_of_week": "Monday",
+          "time_et": "7:30 PM ET",
+          "opponent": "Chicago Bulls",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-3",
+        "last": {
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "opponent": "Chicago Bears",
+          "home": false,
+          "boston_score": 24,
+          "opponent_score": 30,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": null
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}

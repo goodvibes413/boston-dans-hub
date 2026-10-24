@@ -1,57 +1,57 @@
 {
-  "headline": "Bruins crush Predators while Patriots endure a heartbreaker in Chicago",
+  "headline": "Tatum catches fire in second half to sink the Knicks",
   "morning_brew": [
-    "Thursday night was a straight-up Dr. Jekyll and Mr. Hyde experience for Boston sports fans. The Bruins absolutely dismantled the Predators at the Garden, looking like the kind of juggernaut that makes me wanna start looking at flight prices for the Cup Final. Putting up six goals against an NHL opponent is a thing of beauty, and seeing the scoring spread out across the lineup feels like a major deposit into the Duck Boat fund. It was a clean, clinical demolition that wiped the taste of that earlier overtime slip-up right out of my mouth, and frankly, I could get used to nights where I don't have to watch through my fingers like I'm sitting through a horror movie.",
-    "On the flip side, the football result out in Chicago was a kick in the teeth that still stings this morning. We hung in there, but we just didn't have the juice to close out the Bears when it mattered most, and that is a special kind of misery. It is agonizing to watch us go toe-to-toe and come up short because of a few plays. Drake Maye showed some serious flashes of brilliance, but my neighbor Rick is currently six hours into a conspiracy theory about the play-calling that would make a tinfoil hat look reasonable, and as much as I want to tell him to take a hike, I am feeling every bit of that gloom right along with him.",
-    "We have to shake it off, because the calendar never stops for a pity party. The C's are back at the Garden tonight to square up with the Knicks, and I am itching to see them erase the memory of that opener. It is a massive early test to see if they can handle their business on their own parquet. I will be glued to the tube again, praying for a win because I'm not sure how much more of this cardiac-event sports schedule my ticker can take. Let's see if the boys can channel some of that Bruins energy and get us back on the right side of the ledger."
+    "Friday night at the Garden was a total cardiac event, and I\u2019m still scraping myself off the ceiling. Jayson Tatum decided he wasn't gonna let the Knicks walk out of our building with a win, dropping twenty-five of his thirty-six points in the second half like it was a layup line. It was the kind of takeover that makes you wanna run through a brick wall, and honestly, seeing him put the team on his back after that sluggish start had me feeling like we might just have something special here.",
+    "The heavy lifting didn't end with Tatum, though, because the bench finally showed up with a pulse. Neemias Queta was an absolute wrecking ball under the rim with three blocks and double-digit points, and watching him fight for every loose ball made me happier than a fresh Dunks run on a Monday morning. It is only October, but grinding out a win like this against New York feels like a deposit in the Duck Boat fund, even if I have to keep my expectations grounded for another few months.",
+    "We aren't done yet because the Bruins are back at the Garden tonight against San Jose. Puck drop is at seven, and my blood pressure needs a break from the high-stakes drama, so I\u2019m looking for a nice, boring blowout victory. I\u2019ll be glued to the couch with my feet up, and if the boys can keep this citywide momentum rolling, I might just have to stop being such a cynical fan for at least forty-eight hours."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "David Pastrnak",
-      "trend": "Netted two goals in the victory against the Nashville Predators.",
-      "dans_take": "When Pasta is playing like he's skating on a frozen pond in his backyard, there isn't a goalie on earth who can stop him."
+      "player": "Jayson Tatum",
+      "trend": "Jayson Tatum poured in thirty-six points on fourteen-of-twenty-six shooting and pulled down nine rebounds to carry the offense.",
+      "dans_take": "That is the kind of performance that reminds you why we put up with all the other nonsense."
     },
     {
-      "category": "Trench Report",
-      "player": "Drake Maye",
-      "trend": "Finished the night with two passing touchdowns and a rushing score against Chicago.",
-      "dans_take": "The kid has the heart of a lion, but watching him carry the whole building on his back is gonna give me gray hair."
+      "category": "Heater",
+      "player": "Neemias Queta",
+      "trend": "Neemias Queta provided a major spark off the bench by contributing fifteen points, six rebounds, and three blocks in twenty-two minutes.",
+      "dans_take": "If he keeps playing like this, neighbor Rick is gonna start a conspiracy theory that he\u2019s actually three guys in a trench coat."
     },
     {
-      "category": "Bullpen Watch",
-      "player": "Michael DiPietro",
-      "trend": "Stopped all twenty-eight shots he faced to earn the win.",
-      "dans_take": "A perfect night in the crease is exactly what the doctor ordered to keep my blood pressure from hitting triple digits."
+      "category": "Cold Snap",
+      "player": "Payton Pritchard",
+      "trend": "Payton Pritchard struggled to find his rhythm, finishing with just four points on one-of-five shooting from the field.",
+      "dans_take": "He was ice cold last night, but I\u2019ve seen him hit enough miracle shots to know he\u2019ll bounce back."
     }
   ],
   "news_digest": [
     {
-      "headline": "NHL Power Rankings: Fantasy hockey pickups for all 32 teams",
-      "url": "https://www.espn.com/nhl/story/_/id/50250699/nhl-2026-27-power-rankings-top-teams-players-stats-projections-standings-fantasy-hockey",
-      "dans_take": "I usually think these polls are total garbage, but sure, let's pretend that ego boost is worth my time this morning."
+      "headline": "Jayson Tatum insists 'there's no beef' with Jaylen Brown in wake of trade",
+      "url": "https://www.espn.com/nba/story/_/id/50263591/celtics-jayson-tatum-insists-no-beef-76ers-jaylen-brown-wake-trade",
+      "dans_take": "Good, because the media is exhausting and I\u2019d rather talk about rings than rumors."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-10-22",
-      "played": false,
+      "home_team": "Boston Celtics",
+      "away_team": "New York Knicks",
+      "home_score": 107,
+      "away_score": 103,
+      "game_date": "2026-10-23",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Predators",
-      "home_score": 6,
-      "away_score": 0,
-      "game_date": "2026-10-22",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-23",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -59,34 +59,22 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-22",
+      "game_date": "2026-10-23",
       "played": false,
       "season_type": "playoff"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "Chicago Bears",
-      "away_team": "New England Patriots",
-      "home_score": 30,
-      "away_score": 24,
-      "game_date": "2026-10-22",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-23",
+      "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-10-22",
-      "matchup": "New England Patriots at Chicago Bears",
-      "day_of_week": "Thursday",
-      "time_et": "8:15 PM ET"
-    },
-    {
-      "date": "2026-10-23",
-      "matchup": "New York Knicks at Boston Celtics",
-      "day_of_week": "Friday",
-      "time_et": "7:00 PM ET"
-    },
     {
       "date": "2026-10-24",
       "matchup": "San Jose Sharks at Boston Bruins",
@@ -122,6 +110,12 @@
       "matchup": "Chicago Bulls at Boston Celtics",
       "day_of_week": "Friday",
       "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-31",
+      "matchup": "Chicago Blackhawks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "1:00 PM ET"
     }
   ],
   "_timings": [
@@ -129,70 +123,37 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 5.59,
-      "prompt_tokens": 41705,
-      "output_tokens": 1327,
+      "seconds": 4.4,
+      "prompt_tokens": 41654,
+      "output_tokens": 1309,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 9.19,
-      "prompt_tokens": 17766,
-      "output_tokens": 1407,
+      "seconds": 4.5,
+      "prompt_tokens": 17748,
+      "output_tokens": 1309,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "off",
-  "generated_at": "2026-10-23T13:12:07.052222+00:00",
+  "_grounding": "quota_exhausted",
+  "generated_at": "2026-10-24T12:30:49.618756+00:00",
   "_quality_warning": true,
   "_quality_flags": [
     {
+      "rule": 15,
+      "detail": "The content asserts the Bruins play 'tonight' (Friday, 2026-10-24) against San Jose, but the UPCOMING_SCHEDULE lists the game date as 2026-10-24, which is a Saturday."
+    },
+    {
       "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"i will be glued to the tube\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "detail": "repetition: number-masked sentence skeleton \"are back at the garden tonight\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     }
   ],
   "team_pulse": {
-    "as_of": "2026-10-23",
+    "as_of": "2026-10-24",
     "teams": [
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "0-1",
-        "last": {
-          "date": "2026-10-20",
-          "day_of_week": "Tuesday",
-          "opponent": "Detroit Pistons",
-          "home": false,
-          "boston_score": 113,
-          "opponent_score": 121,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-23",
-          "day_of_week": "Friday",
-          "time_et": "7:00 PM ET",
-          "opponent": "New York Knicks",
-          "home": true,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      },
       {
         "team": "bruins",
         "label": "Bruins",
@@ -215,6 +176,43 @@
           "day_of_week": "Saturday",
           "time_et": "7:00 PM ET",
           "opponent": "San Jose Sharks",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "1-1",
+        "last": {
+          "date": "2026-10-23",
+          "day_of_week": "Friday",
+          "opponent": "New York Knicks",
+          "home": true,
+          "boston_score": 107,
+          "opponent_score": 103,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-26",
+          "day_of_week": "Monday",
+          "time_et": "7:30 PM ET",
+          "opponent": "Chicago Bulls",
           "home": true,
           "season_type": "regular",
           "is_today": false
@@ -241,5 +239,5 @@
       }
     ]
   },
-  "date": "2026-10-23"
+  "date": "2026-10-24"
 }
