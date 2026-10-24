@@ -41,6 +41,9 @@ concurrency:
   group: content-watchdog
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
   watchdog:
     name: Verify today's content is published and current
@@ -52,7 +55,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Check published content
         id: check

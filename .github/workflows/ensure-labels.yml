@@ -9,6 +9,9 @@ name: Ensure issue labels
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   ensure_labels:
     name: Ensure pipeline issue labels exist
