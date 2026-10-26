@@ -1,35 +1,23 @@
 {
-  "headline": "Bruins stay hot with comeback win against Sharks at the Garden",
+  "headline": "Celtics look to bounce back against Bulls tonight at the Garden",
   "morning_brew": [
-    "Saturday night at the Garden was an absolute heater that proved why you never walk out of a hockey game early. Watching the boys erase that third-period deficit with a flurry of goals reminded me exactly why I endure the stress of this sport, as James Hagens and David Pastrnak lit the lamp in rapid succession to turn the tide. That points streak is sitting at eight games now, and for a team that looked like it had no answers earlier this season, this group is starting to look like a legitimate juggernaut.",
-    "Jeremy Swayman didn't have his sharpest night between the pipes, but he held the line when the pressure ratcheted up, which is what you need from your starter. It was a hell of a battle against San Jose, but pulling out that victory while the offense spreads the scoring around is a massive deposit into the Duck Boat fund. I am trying my best to stay cool and not get ahead of myself, yet seeing the lineup clicking like this is making it awfully difficult to remain a cynical Boston fan.",
-    "Looking ahead, we have a few days to catch our breath before hitting the road to take on Carolina on Tuesday. I am hoping the rest of the city keeps this momentum rolling because we have some serious hockey to play before the calendar turns. My neighbor Rick is already busy plotting out his next dossier on the officiating crews, so I might just take a break from the noise and enjoy the fact that for once, the scoreboard is finally leaning our way."
+    "It is a quiet Monday in the Hub after a weekend that felt like an eternity, but the C's are back at TD Garden tonight for a conference clash with the Chicago Bulls. We are sitting at one and one on the young season, and frankly, I am looking for a statement performance to settle the nerves before I start pacing holes in my living room rug. We have seen some flashes, but now is the time to really lock in and defend home court against a team we should be treating like a speed bump if we have championship aspirations.",
+    "Payton Pritchard has been getting a lot of ink lately for his iso game, and honestly, seeing that kind of grit in the summer practices is exactly what I want to hear about. It is that kind of dog-in-the-fight mentality that made us love this team during the Banner 18 run. If he can keep that energy going off the bench tonight, I think we have a real chance to put some distance between ourselves and the middle of the pack early on instead of waiting for the schedule to get harder.",
+    "I am knocking on wood because the last thing I need is a cardiac event this early in the schedule, but I am feeling optimistic about tonight. My neighbor Rick is already whispering about the officiating crew assigned for this one, and he is convinced they have a dossier on us that goes back to the Coolidge administration, but I am just hoping for a clean game where the shots fall. First tip is at seven-thirty, and I will be parked in my spot, feet up, ready to see if we can start building some real momentum."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "David Pastrnak",
-      "trend": "Pastrnak buried a clutch goal in the third period to ignite a late rally against San Jose.",
-      "dans_take": "When Pasta finds the back of the net in a tight game, the whole building just feels like it's gonna take flight."
-    },
-    {
-      "category": "Heater",
-      "player": "James Hagens",
-      "trend": "Hagens found the back of the net during a critical stretch of the final period to break the tie.",
-      "dans_take": "The kid has serious poise under pressure and that goal was smoother than a fresh cup from Dunks."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Jeremy Swayman",
-      "trend": "Swayman turned aside twenty-three shots on goal to secure the win in front of the home crowd.",
-      "dans_take": "He wasn't perfect, but he stood tall when it mattered most, which is all I can ask for."
+      "player": "Payton Pritchard",
+      "trend": "The sixth man has been putting in serious work this summer to sharpen his isolation game for the new season.",
+      "dans_take": "Love it, that kind of work ethic is exactly why he is a fan favorite."
     }
   ],
   "news_digest": [
     {
-      "headline": "76ers' Jaylen Brown claims no beef but says Jayson Tatum has 'hell of a PR team'",
-      "url": "https://www.espn.com/nba/story/_/id/50273329/76ers-brown-claims-no-beef-says-tatum-stay-ready-all-s",
-      "dans_take": "My head is spinning with this nonsense, can we just move past it and win some games?"
+      "headline": "How Payton Pritchard became Boston's unlikely iso king",
+      "url": "https://www.espn.com/nba/story/_/id/50259828/payton-pritchard-celtics-iso-king",
+      "dans_take": "The man is playing with a chip on his shoulder the size of the Zakim Bridge."
     }
   ],
   "box_scores": {
@@ -39,19 +27,19 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-24",
+      "game_date": "2026-10-25",
       "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Sharks",
-      "home_score": 6,
-      "away_score": 4,
-      "game_date": "2026-10-24",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-25",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -59,7 +47,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-24",
+      "game_date": "2026-10-25",
       "played": false,
       "season_type": "playoff"
     },
@@ -69,7 +57,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-24",
+      "game_date": "2026-10-25",
       "played": false,
       "season_type": "regular"
     }
@@ -122,6 +110,12 @@
       "matchup": "New England Patriots at Miami Dolphins",
       "day_of_week": "Sunday",
       "time_et": "4:25 PM ET"
+    },
+    {
+      "date": "2026-11-02",
+      "matchup": "Vegas Golden Knights at Boston Bruins",
+      "day_of_week": "Monday",
+      "time_et": "7:00 PM ET"
     }
   ],
   "_timings": [
@@ -129,33 +123,53 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 12.27,
-      "prompt_tokens": 41506,
-      "output_tokens": 1264,
+      "seconds": 9.59,
+      "prompt_tokens": 39838,
+      "output_tokens": 1051,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 5.39,
-      "prompt_tokens": 17703,
-      "output_tokens": 1281,
+      "seconds": 4.0,
+      "prompt_tokens": 17490,
+      "output_tokens": 1110,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "off",
-  "generated_at": "2026-10-25T13:02:03.721873+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"have to stop being such a\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    }
-  ],
+  "_grounding": "quota_exhausted",
+  "generated_at": "2026-10-26T14:56:07.113700+00:00",
   "team_pulse": {
-    "as_of": "2026-10-25",
+    "as_of": "2026-10-26",
     "teams": [
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "1-1",
+        "last": {
+          "date": "2026-10-23",
+          "day_of_week": "Friday",
+          "opponent": "New York Knicks",
+          "home": true,
+          "boston_score": 107,
+          "opponent_score": 103,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-26",
+          "day_of_week": "Monday",
+          "time_et": "7:30 PM ET",
+          "opponent": "Chicago Bulls",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -194,33 +208,6 @@
         }
       },
       {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "1-1",
-        "last": {
-          "date": "2026-10-23",
-          "day_of_week": "Friday",
-          "opponent": "New York Knicks",
-          "home": true,
-          "boston_score": 107,
-          "opponent_score": 103,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-26",
-          "day_of_week": "Monday",
-          "time_et": "7:30 PM ET",
-          "opponent": "Chicago Bulls",
-          "home": true,
-          "season_type": "regular",
-          "is_today": false
-        }
-      },
-      {
         "team": "patriots",
         "label": "Patriots",
         "sport": "NFL",
@@ -249,5 +236,5 @@
       }
     ]
   },
-  "date": "2026-10-25"
+  "date": "2026-10-26"
 }
