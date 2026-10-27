@@ -140,8 +140,12 @@
   ],
   "_grounding": "quota_exhausted",
   "generated_at": "2026-10-26T14:56:07.113700+00:00",
+  "date": "2026-10-27",
+  "_stale": true,
+  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+  "_stale_age_hours": 23.2,
   "team_pulse": {
-    "as_of": "2026-10-26",
+    "as_of": "2026-10-27",
     "teams": [
       {
         "team": "celtics",
@@ -149,36 +153,26 @@
         "sport": "NBA",
         "phase": "regular",
         "opener": false,
-        "record": "1-1",
+        "record": "2-1",
         "last": {
-          "date": "2026-10-23",
-          "day_of_week": "Friday",
-          "opponent": "New York Knicks",
+          "date": "2026-10-26",
+          "day_of_week": "Monday",
+          "opponent": "Chicago Bulls",
           "home": true,
-          "boston_score": 107,
-          "opponent_score": 103,
+          "boston_score": 134,
+          "opponent_score": 99,
           "result": "W",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-10-26",
-          "day_of_week": "Monday",
+          "date": "2026-10-27",
+          "day_of_week": "Tuesday",
           "time_et": "7:30 PM ET",
-          "opponent": "Chicago Bulls",
+          "opponent": "Brooklyn Nets",
           "home": true,
           "season_type": "regular",
           "is_today": true
         }
-      },
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
       },
       {
         "team": "bruins",
@@ -204,8 +198,18 @@
           "opponent": "Carolina Hurricanes",
           "home": false,
           "season_type": "regular",
-          "is_today": false
+          "is_today": true
         }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
       },
       {
         "team": "patriots",
@@ -235,6 +239,5 @@
         }
       }
     ]
-  },
-  "date": "2026-10-26"
+  }
 }
