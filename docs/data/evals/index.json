@@ -100,24 +100,24 @@
   ],
   "summary_5day": {
     "fresh": 1,
-    "retry": 3,
-    "fallback": 1,
+    "retry": 4,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 4,
+        "count": 7,
         "title": "Voice repetition"
+      },
+      {
+        "rule": 16,
+        "count": 3,
+        "title": "Game-day omission"
       },
       {
         "rule": 15,
         "count": 3,
         "title": "Phantom scheduled game"
-      },
-      {
-        "rule": 16,
-        "count": 2,
-        "title": "Game-day omission"
       }
     ],
     "rule15_agreement": {

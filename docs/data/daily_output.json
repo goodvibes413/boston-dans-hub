@@ -1,34 +1,46 @@
 {
-  "headline": "Celtics look to bounce back against Bulls tonight at the Garden",
+  "headline": "Celtics look to keep rolling tonight against the visiting Nets",
   "morning_brew": [
-    "It is a quiet Monday in the Hub after a weekend that felt like an eternity, but the C's are back at TD Garden tonight for a conference clash with the Chicago Bulls. We are sitting at one and one on the young season, and frankly, I am looking for a statement performance to settle the nerves before I start pacing holes in my living room rug. We have seen some flashes, but now is the time to really lock in and defend home court against a team we should be treating like a speed bump if we have championship aspirations.",
-    "Payton Pritchard has been getting a lot of ink lately for his iso game, and honestly, seeing that kind of grit in the summer practices is exactly what I want to hear about. It is that kind of dog-in-the-fight mentality that made us love this team during the Banner 18 run. If he can keep that energy going off the bench tonight, I think we have a real chance to put some distance between ourselves and the middle of the pack early on instead of waiting for the schedule to get harder.",
-    "I am knocking on wood because the last thing I need is a cardiac event this early in the schedule, but I am feeling optimistic about tonight. My neighbor Rick is already whispering about the officiating crew assigned for this one, and he is convinced they have a dossier on us that goes back to the Coolidge administration, but I am just hoping for a clean game where the shots fall. First tip is at seven-thirty, and I will be parked in my spot, feet up, ready to see if we can start building some real momentum."
+    "Monday night was a total blowout at TD Garden and I am still buzzing from that 134-99 demolition of the Bulls. Seeing the C's put up that kind of scoring margin really makes you appreciate the depth of this roster, even if it is only the first week of the season. Everything was clicking on all cylinders, and when the defense is swarming like that, it reminds me of the championship-caliber basketball we saw during the Banner 18 run.",
+    "We are right back at it tonight at the Garden, hosting the Brooklyn Nets. I am not saying I expect another thirty-five point spread, but I do expect this team to stay aggressive and keep their foot on the gas. The Nets have been struggling to find their rhythm, and if we can dictate the pace from the opening tip, this is exactly the kind of game we need to bank while we are feeling good.",
+    "First tip is at seven-thirty and I have a feeling the atmosphere is going to be electric. I'm keeping my expectations tempered because it is a long season, but my neighbor Rick is already convinced we are going to see a statement defensive performance tonight. I am just hoping for a clean game, no injuries, and a win that keeps us moving up the standings. After that, we've got a little break before the next one on Friday."
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "Payton Pritchard",
-      "trend": "The sixth man has been putting in serious work this summer to sharpen his isolation game for the new season.",
-      "dans_take": "Love it, that kind of work ethic is exactly why he is a fan favorite."
+      "trend": "Pritchard exploded for 28 points on 10-of-16 shooting and buried seven three-pointers in the win over Chicago.",
+      "dans_take": "The man is playing like he's auditioning for a starting spot every single night."
+    },
+    {
+      "category": "Trench Report",
+      "player": "Jayson Tatum",
+      "trend": "Tatum stuffed the stat sheet with 23 points, seven rebounds, and six assists in just 28 minutes of action.",
+      "dans_take": "Efficient and controlled, exactly the kind of leadership this team needs to lean on."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Sam Hauser",
+      "trend": "Hauser was lights out from downtown, hitting three of his four attempts and finishing with a massive plus-36 rating.",
+      "dans_take": "When the bench provides that kind of spacing, life gets a whole lot easier for the starters."
     }
   ],
   "news_digest": [
     {
-      "headline": "How Payton Pritchard became Boston's unlikely iso king",
-      "url": "https://www.espn.com/nba/story/_/id/50259828/payton-pritchard-celtics-iso-king",
-      "dans_take": "The man is playing with a chip on his shoulder the size of the Zakim Bridge."
+      "headline": "Rep for Sixers' Jaylen Brown denies report he demanded trade from Celtics",
+      "url": "https://www.espn.com/nba/story/_/id/50293411/sixers-jaylen-brown-denies-report-saying-demanded-trade-celtics",
+      "dans_take": "This whole thing is just noise; I'd rather focus on the guys who are actually in the building tonight."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-10-25",
-      "played": false,
+      "home_team": "Boston Celtics",
+      "away_team": "Chicago Bulls",
+      "home_score": 134,
+      "away_score": 99,
+      "game_date": "2026-10-26",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
@@ -37,7 +49,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-25",
+      "game_date": "2026-10-26",
       "played": false,
       "season_type": "unknown"
     },
@@ -47,7 +59,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-25",
+      "game_date": "2026-10-26",
       "played": false,
       "season_type": "playoff"
     },
@@ -57,18 +69,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-25",
+      "game_date": "2026-10-26",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-10-26",
-      "matchup": "Chicago Bulls at Boston Celtics",
-      "day_of_week": "Monday",
-      "time_et": "7:30 PM ET"
-    },
     {
       "date": "2026-10-27",
       "matchup": "Brooklyn Nets at Boston Celtics",
@@ -116,6 +122,12 @@
       "matchup": "Vegas Golden Knights at Boston Bruins",
       "day_of_week": "Monday",
       "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-02",
+      "matchup": "Boston Celtics at Houston Rockets",
+      "day_of_week": "Monday",
+      "time_et": "8:30 PM ET"
     }
   ],
   "_timings": [
@@ -123,27 +135,37 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 9.59,
-      "prompt_tokens": 39838,
-      "output_tokens": 1051,
-      "thinking_tokens": null
-    },
-    {
-      "label": "generate[nogrounding]",
-      "model": "gemini-3.1-flash-lite",
-      "thinking_level": "minimal",
-      "seconds": 4.0,
-      "prompt_tokens": 17490,
-      "output_tokens": 1110,
+      "seconds": 6.08,
+      "prompt_tokens": 42201,
+      "output_tokens": 1226,
       "thinking_tokens": null
     }
   ],
   "_grounding": "quota_exhausted",
-  "generated_at": "2026-10-26T14:56:07.113700+00:00",
-  "date": "2026-10-27",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 24.5,
+  "generated_at": "2026-10-27T16:14:02.315029+00:00",
+  "_quality_warning": true,
+  "_quality_flags": [
+    {
+      "rule": 17,
+      "detail": "The output incorrectly identifies the game against the Chicago Bulls as occurring on 'Monday night' when the source data confirms it was played on 2026-10-26, which was a Sunday."
+    },
+    {
+      "rule": 10,
+      "detail": "repetition: number-masked sentence skeleton \"first tip is at # # and i\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    },
+    {
+      "rule": 10,
+      "detail": "repetition: number-masked sentence skeleton \"i am just hoping for a clean game\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    },
+    {
+      "rule": 10,
+      "detail": "repetition: formulaic paragraph opener \"celtics look to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    },
+    {
+      "rule": 16,
+      "detail": "game-day omission: the bruins play today (2026-10-27) \u2014 Boston Bruins at Carolina Hurricanes, 8:00 PM ET \u2014 and the post never mentions the team. Give it its own beat in morning_brew as a look forward, with NO result: the game has not been played yet."
+    }
+  ],
   "team_pulse": {
     "as_of": "2026-10-27",
     "teams": [
@@ -239,5 +261,6 @@
         }
       }
     ]
-  }
+  },
+  "date": "2026-10-27"
 }
