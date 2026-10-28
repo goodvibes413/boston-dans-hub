@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-28",
+  "generated_at": "2026-10-28T14:56:35.148133+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 320.8,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "fail",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": [
+      {
+        "rule": 15,
+        "detail": "phantom game: output claims bruins has a game today (2026-10-28); upcoming_schedule lists none (next game 2026-10-29). Sentence: It is a quiet Wednesday in the Hub with nobody playing today, which is probably a mercy for my blood pressure and Uncle Carmine's nap schedule."
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 17,
+          "detail": "The output incorrectly identifies the game against the Nets as occurring on 'Tuesday night' when the source data confirms it was played on 2026-10-27, which was a Monday."
+        }
+      ],
+      "duration_seconds": 8.9
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 17,
+          "detail": "The output incorrectly identifies the Bruins game as occurring on 'Tuesday' in the trend_watch section, while the source data confirms the game was played on 2026-10-27, which was a Monday."
+        },
+        {
+          "rule": 15,
+          "detail": "phantom game: output claims a Boston team has a game today (2026-10-28); upcoming_schedule lists none (next game 2026-10-29). Sentence: It is a quiet Wednesday in the Hub with nobody playing today, which is probably a mercy for my blood pressure and Uncle Carmine's nap schedule."
+        },
+        {
+          "rule": 12,
+          "detail": "coverage window: the bruins played Hurricanes on 2026-10-27 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        }
+      ],
+      "duration_seconds": 61.5
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "phantom game: output claims bruins has a game today (2026-10-28); upcoming_schedule lists none (next game 2026-10-29). Sentence: It is a quiet Wednesday in the Hub with nobody playing today, which is probably a mercy for my blood pressure and Uncle Carmine's nap schedule."
+        },
+        {
+          "rule": 0,
+          "detail": "judge unavailable \u2014 API error: ServerError: code=503 | status=UNAVAILABLE | msg=This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+        },
+        {
+          "rule": 12,
+          "detail": "coverage window: the bruins played Hurricanes on 2026-10-27 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
+        }
+      ],
+      "duration_seconds": 47.6
+    }
+  ]
+}

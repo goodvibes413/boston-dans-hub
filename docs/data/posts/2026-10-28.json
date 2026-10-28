@@ -1,0 +1,222 @@
+{
+  "date": "2026-10-28",
+  "generated_at": "2026-10-28T15:01:55.980797+00:00",
+  "headline": "Tatum plays hero in a Garden nail-biter as B's suffer late heartbreaker",
+  "morning_brew": [
+    "Tuesday night was one of those games that takes three years off your life, but Jayson Tatum put the whole city on his back. He dropped forty points and played forty-two minutes to drag us to a one-point victory over the Nets at the Garden. It wasn't pretty, and frankly the rebounding was enough to make you want to throw your Dunks at the TV, but a win is a win in this league and we're stacking them up now. Agonized relief is the only way to describe the feeling at that final buzzer.",
+    "Switching over to the ice, it was a brutal night for the B's. We dropped a one-goal heartbreaker to the Hurricanes, and watching Sebastian Aho bury that late go-ahead goal in the third period was just pure, unadulterated misery. Jeremy Swayman played his tail off with twenty-eight saves, but we just could not generate enough juice on offense to pull it out. A tough loss, but we have to flush it and get ready for St. Louis on Thursday night.",
+    "My neighbor Rick is already deep into his umpire dossier for the season, and honestly, if he wants to spend his Wednesday night mapping out officiating conspiracies instead of getting a life, I am not gonna stop him. For the rest of us, it is a quiet day in the Hub with nobody playing. We will be stewing on these results until the puck drops down in Missouri tomorrow evening, and I will be right here waiting for the B's to show us some real bounce-back energy."
+  ],
+  "news_digest": [
+    {
+      "headline": "Aho's late goal helps Kochetkov improve to 8-0-0 as Hurricanes beat Bruins 2-1",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892586",
+      "dans_take": "Just a kick in the teeth in the final frame against a team that knows how to make us pay."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Jayson Tatum",
+      "trend": "Tatum erupted for forty points on ten-of-twenty shooting while pulling down five rebounds and dishing out eight assists in the win.",
+      "dans_take": "The man is playing like he is auditioning for a statue in front of the Garden."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Derrick White",
+      "trend": "White struggled to find his stroke, finishing with sixteen points on five-of-fifteen shooting from the field.",
+      "dans_take": "He looked a bit lost out there, but I trust him to find the range again soon."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Jeremy Swayman",
+      "trend": "Swayman stopped twenty-eight of thirty shots and carried a .933 save percentage in a tough one-goal loss.",
+      "dans_take": "He gave us every chance to steal that game, but the offense clearly left their shooting boots on the bus."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Boston Celtics",
+      "away_team": "Brooklyn Nets",
+      "home_score": 125,
+      "away_score": 124,
+      "game_date": "2026-10-27",
+      "played": true,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Hurricanes",
+      "away_team": "Boston Bruins",
+      "home_score": 2,
+      "away_score": 1,
+      "game_date": "2026-10-27",
+      "played": true,
+      "season_type": "regular"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-27",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-27",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-10-29",
+      "matchup": "Boston Bruins at St. Louis Blues",
+      "day_of_week": "Thursday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-30",
+      "matchup": "Chicago Bulls at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-31",
+      "matchup": "Chicago Blackhawks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-01",
+      "matchup": "Boston Celtics at Orlando Magic",
+      "day_of_week": "Sunday",
+      "time_et": "3:30 PM ET"
+    },
+    {
+      "date": "2026-11-01",
+      "matchup": "New England Patriots at Miami Dolphins",
+      "day_of_week": "Sunday",
+      "time_et": "4:25 PM ET"
+    },
+    {
+      "date": "2026-11-02",
+      "matchup": "Vegas Golden Knights at Boston Bruins",
+      "day_of_week": "Monday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-02",
+      "matchup": "Boston Celtics at Houston Rockets",
+      "day_of_week": "Monday",
+      "time_et": "8:30 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-10-28",
+    "teams": [
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "3-1",
+        "last": {
+          "date": "2026-10-27",
+          "day_of_week": "Tuesday",
+          "opponent": "Brooklyn Nets",
+          "home": true,
+          "boston_score": 125,
+          "opponent_score": 124,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-30",
+          "day_of_week": "Friday",
+          "time_et": "7:30 PM ET",
+          "opponent": "Chicago Bulls",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "9-3",
+        "last": {
+          "date": "2026-10-27",
+          "day_of_week": "Tuesday",
+          "opponent": "Hurricanes",
+          "home": false,
+          "boston_score": 1,
+          "opponent_score": 2,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-29",
+          "day_of_week": "Thursday",
+          "time_et": "8:00 PM ET",
+          "opponent": "St. Louis Blues",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-3",
+        "last": {
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "opponent": "Chicago Bears",
+          "home": false,
+          "boston_score": 24,
+          "opponent_score": 30,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-01",
+          "day_of_week": "Sunday",
+          "time_et": "4:25 PM ET",
+          "opponent": "Miami Dolphins",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}
