@@ -1,0 +1,227 @@
+{
+  "date": "2026-10-29",
+  "generated_at": "2026-10-29T16:20:16.307193+00:00",
+  "headline": "Bruins hit the road for pivotal Thursday night showdown in St. Louis",
+  "morning_brew": [
+    "It is a quiet Thursday morning in the Hub with the B's packing their bags for Missouri, but the atmosphere around the team feels heavy after that Tuesday night heartbreaker. We had the Hurricanes on the ropes, but Aho found the gap in the final frame and suddenly we were walking out of the building empty-handed. Jeremy Swayman stood on his head all night to give us a fighting chance, but a goal-starved offense left us chasing shadows in the third. It is the kind of loss that makes me wanna punch a wall, but in this league, you do not get time to dwell.",
+    "Tonight we head into the Enterprise Center to face the Blues, and I am expecting a hell of a response from this group. We cannot afford to drop points in bunches if we want to keep pace in the Atlantic, and the boys know it. I have been watching the tape, and if we can get Pasta and Zacha connecting early, we might just settle the nerves and get back in the win column. My neighbor Rick has already started his pre-game conspiracy theory about the officiating being funded by a secret cabal of whistle-happy referees, but I am just hoping for a clean sixty minutes and a win that lets me sleep without having to take a walk around the block.",
+    "Looking further ahead, the C's are back in action at the Garden on Friday night for an NBA Cup clash against the Bulls. It is a crowded weekend ahead for Boston sports fans, and I am ready for the roller coaster. First things first though, it is all eyes on the puck drop in St. Louis at eight tonight. Let us hope the B's have their legs under them and come out swinging like they actually want those two points."
+  ],
+  "news_digest": [
+    {
+      "headline": "St. Louis and Boston meet for non-conference matchup",
+      "url": "http://www.espn.com/nhl/preview?gameId=401892604",
+      "dans_take": "Big test tonight on the road against a Blues team that is looking to find some consistency."
+    },
+    {
+      "headline": "Patriots' starting secondary will start vs. the Dolphins",
+      "url": "https://www.espn.com/video/clip/_/id/50311096/patriots-starting-secondary-start-vs-dolphins",
+      "dans_take": "Finally some good injury news as we gear up for Miami on Sunday."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Jeremy Swayman",
+      "trend": "Stood tall against Carolina on Tuesday with twenty-eight saves in a losing effort.",
+      "dans_take": "The man is playing out of his mind and carrying this squad on his back like he is training for the Olympics."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-28",
+      "played": false,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-28",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-28",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-10-28",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-10-29",
+      "matchup": "Boston Bruins at St. Louis Blues",
+      "day_of_week": "Thursday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-10-30",
+      "matchup": "Chicago Bulls at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-10-31",
+      "matchup": "Chicago Blackhawks at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-01",
+      "matchup": "Boston Celtics at Orlando Magic",
+      "day_of_week": "Sunday",
+      "time_et": "3:30 PM ET"
+    },
+    {
+      "date": "2026-11-01",
+      "matchup": "New England Patriots at Miami Dolphins",
+      "day_of_week": "Sunday",
+      "time_et": "4:25 PM ET"
+    },
+    {
+      "date": "2026-11-02",
+      "matchup": "Vegas Golden Knights at Boston Bruins",
+      "day_of_week": "Monday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-02",
+      "matchup": "Boston Celtics at Houston Rockets",
+      "day_of_week": "Monday",
+      "time_et": "8:30 PM ET"
+    },
+    {
+      "date": "2026-11-04",
+      "matchup": "Milwaukee Bucks at Boston Celtics",
+      "day_of_week": "Wednesday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-11-05",
+      "matchup": "Boston Bruins at Pittsburgh Penguins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-10-29",
+    "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "9-3",
+        "last": {
+          "date": "2026-10-27",
+          "day_of_week": "Tuesday",
+          "opponent": "Hurricanes",
+          "home": false,
+          "boston_score": 1,
+          "opponent_score": 2,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-29",
+          "day_of_week": "Thursday",
+          "time_et": "8:00 PM ET",
+          "opponent": "St. Louis Blues",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "3-1",
+        "last": {
+          "date": "2026-10-27",
+          "day_of_week": "Tuesday",
+          "opponent": "Brooklyn Nets",
+          "home": true,
+          "boston_score": 125,
+          "opponent_score": 124,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-30",
+          "day_of_week": "Friday",
+          "time_et": "7:30 PM ET",
+          "opponent": "Chicago Bulls",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "4-3",
+        "last": {
+          "date": "2026-10-22",
+          "day_of_week": "Thursday",
+          "opponent": "Chicago Bears",
+          "home": false,
+          "boston_score": 24,
+          "opponent_score": 30,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-01",
+          "day_of_week": "Sunday",
+          "time_et": "4:25 PM ET",
+          "opponent": "Miami Dolphins",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}

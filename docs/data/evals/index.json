@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-10-24",
     "2026-10-25",
     "2026-10-26",
     "2026-10-27",
-    "2026-10-28"
+    "2026-10-28",
+    "2026-10-29"
   ],
   "rules": [
     {
@@ -105,14 +105,14 @@
     "stale": 0,
     "most_flagged_rules": [
       {
-        "rule": 10,
-        "count": 6,
-        "title": "Voice repetition"
+        "rule": 12,
+        "count": 4,
+        "title": "Game coverage gap"
       },
       {
-        "rule": 15,
+        "rule": 10,
         "count": 4,
-        "title": "Phantom scheduled game"
+        "title": "Voice repetition"
       },
       {
         "rule": 17,
@@ -122,7 +122,7 @@
     ],
     "rule15_agreement": {
       "deterministic": 1,
-      "llm": 1,
+      "llm": 0,
       "both": 0
     }
   }
