@@ -1,28 +1,34 @@
 {
-  "headline": "Bruins hit the road for pivotal Thursday night showdown in St. Louis",
+  "headline": "Bruins get steamrolled in St. Louis and need a serious reset",
   "morning_brew": [
-    "It is a quiet Thursday morning in the Hub with the B's packing their bags for Missouri, but the atmosphere around the team feels heavy after that Tuesday night heartbreaker. We had the Hurricanes on the ropes, but Aho found the gap in the final frame and suddenly we were walking out of the building empty-handed. Jeremy Swayman stood on his head all night to give us a fighting chance, but a goal-starved offense left us chasing shadows in the third. It is the kind of loss that makes me wanna punch a wall, but in this league, you do not get time to dwell.",
-    "Tonight we head into the Enterprise Center to face the Blues, and I am expecting a hell of a response from this group. We cannot afford to drop points in bunches if we want to keep pace in the Atlantic, and the boys know it. I have been watching the tape, and if we can get Pasta and Zacha connecting early, we might just settle the nerves and get back in the win column. My neighbor Rick has already started his pre-game conspiracy theory about the officiating being funded by a secret cabal of whistle-happy referees, but I am just hoping for a clean sixty minutes and a win that lets me sleep without having to take a walk around the block.",
-    "Looking further ahead, the C's are back in action at the Garden on Friday night for an NBA Cup clash against the Bulls. It is a crowded weekend ahead for Boston sports fans, and I am ready for the roller coaster. First things first though, it is all eyes on the puck drop in St. Louis at eight tonight. Let us hope the B's have their legs under them and come out swinging like they actually want those two points."
+    "I watched the Bruins get pushed around in St. Louis on Thursday night and I've got to say, that performance was absolutely disgusting. Giving up four goals to the Blues while only managing to light the lamp once is not how we play hockey in Boston. Jeremy Swayman didn't have his usual magic, finishing with a save percentage under eight hundred, and the whole team looked like they were skating in mud the second the second period started.",
+    "It is a short turnaround for the boys now, with the Blackhawks coming into the Garden on Saturday afternoon for a matinee. We have no time to mope around after that loss in Missouri, not when we've got points to chase in the Atlantic. I need to see some real life from the top line and a lot more urgency on the defensive end. If we keep playing like we did on Thursday, my neighbor Rick is going to start writing his manifestos about the state of the franchise, and nobody needs that kind of negativity in their life.",
+    "Looking ahead to tonight, the C's are back at the Garden for an NBA Cup opener against the Bulls. It's a Friday night in the Hub and the Celtics have a chance to set the tone early in this tournament. I'll be glued to the screen expecting a dominant showing, because frankly, after the way the B's looked on the road, I need a win to remind me what a professional basketball team actually looks like."
   ],
   "trend_watch": [
     {
-      "category": "Heater",
+      "category": "Cold Snap",
       "player": "Jeremy Swayman",
-      "trend": "Stood tall against Carolina on Tuesday with twenty-eight saves in a losing effort.",
-      "dans_take": "The man is playing out of his mind and carrying this squad on his back like he is training for the Olympics."
+      "trend": "Stopped only fourteen of eighteen shots for a miserable seven hundred seventy-eight save percentage in Thursday's loss.",
+      "dans_take": "He's usually our safety net, but that performance was like trying to catch a puck with a screen door."
+    },
+    {
+      "category": "Heater",
+      "player": "James Hagens",
+      "trend": "Scored the lone Bruins goal early in the first period to briefly tie the game.",
+      "dans_take": "Hagens was the only guy who showed up to the rink with his skates sharpened, but one man can't carry this arson squad."
     }
   ],
   "news_digest": [
     {
-      "headline": "St. Louis and Boston meet for non-conference matchup",
-      "url": "http://www.espn.com/nhl/preview?gameId=401892604",
-      "dans_take": "Big test tonight on the road against a Blues team that is looking to find some consistency."
+      "headline": "Bruins try to extend home win streak, face the Blackhawks",
+      "url": "http://www.espn.com/nhl/preview?gameId=401892614",
+      "dans_take": "Saturday at home is the perfect time to burn the tape from that disaster in St. Louis and get back to business."
     },
     {
-      "headline": "Patriots' starting secondary will start vs. the Dolphins",
-      "url": "https://www.espn.com/video/clip/_/id/50311096/patriots-starting-secondary-start-vs-dolphins",
-      "dans_take": "Finally some good injury news as we gear up for Miami on Sunday."
+      "headline": "2026 NBA Cup: Schedule, format, groups, updates and more",
+      "url": "https://www.espn.com/nba/story/_/id/49577473/2026-nba-season-tournament-cup-format-highlights-updates",
+      "dans_take": "The C's in a tournament setting is exactly what I need to wash the taste of that hockey game out of my mouth."
     }
   ],
   "box_scores": {
@@ -32,19 +38,19 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-28",
+      "game_date": "2026-10-29",
       "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-10-28",
-      "played": false,
-      "season_type": "unknown"
+      "home_team": "Blues",
+      "away_team": "Boston Bruins",
+      "home_score": 4,
+      "away_score": 1,
+      "game_date": "2026-10-29",
+      "played": true,
+      "season_type": "regular"
     },
     "redsox": {
       "sport": "MLB",
@@ -52,7 +58,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-28",
+      "game_date": "2026-10-29",
       "played": false,
       "season_type": "playoff"
     },
@@ -62,18 +68,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-28",
+      "game_date": "2026-10-29",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-10-29",
-      "matchup": "Boston Bruins at St. Louis Blues",
-      "day_of_week": "Thursday",
-      "time_et": "8:00 PM ET"
-    },
     {
       "date": "2026-10-30",
       "matchup": "Chicago Bulls at Boston Celtics",
@@ -128,70 +128,37 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 17.16,
-      "prompt_tokens": 39716,
-      "output_tokens": 1196,
+      "seconds": 4.64,
+      "prompt_tokens": 40501,
+      "output_tokens": 1248,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 57.14,
-      "prompt_tokens": 17640,
-      "output_tokens": 1227,
+      "seconds": 4.1,
+      "prompt_tokens": 17687,
+      "output_tokens": 1280,
       "thinking_tokens": null
     }
   ],
   "_grounding": "quota_exhausted",
-  "generated_at": "2026-10-29T16:20:16.307193+00:00",
+  "generated_at": "2026-10-30T14:54:59.837488+00:00",
   "_quality_warning": true,
   "_quality_flags": [
     {
-      "rule": 12,
-      "detail": "The Bruins played the Hurricanes on 2026-10-27, and the morning_brew incorrectly claims this game happened on 'Tuesday night' (2026-10-28) and fails to provide a proper recap of the actual game played on the 27th."
+      "rule": 17,
+      "detail": "The output incorrectly identifies the Bruins game against the Blues as occurring on 'Thursday night' when the source data confirms it was played on 2026-10-29, which was a Wednesday."
+    },
+    {
+      "rule": 10,
+      "detail": "repetition: formulaic paragraph opener \"it is a ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     }
   ],
   "team_pulse": {
-    "as_of": "2026-10-29",
+    "as_of": "2026-10-30",
     "teams": [
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "9-3",
-        "last": {
-          "date": "2026-10-27",
-          "day_of_week": "Tuesday",
-          "opponent": "Hurricanes",
-          "home": false,
-          "boston_score": 1,
-          "opponent_score": 2,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-29",
-          "day_of_week": "Thursday",
-          "time_et": "8:00 PM ET",
-          "opponent": "St. Louis Blues",
-          "home": false,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      },
       {
         "team": "celtics",
         "label": "Celtics",
@@ -214,6 +181,43 @@
           "day_of_week": "Friday",
           "time_et": "7:30 PM ET",
           "opponent": "Chicago Bulls",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "9-4",
+        "last": {
+          "date": "2026-10-29",
+          "day_of_week": "Thursday",
+          "opponent": "Blues",
+          "home": false,
+          "boston_score": 1,
+          "opponent_score": 4,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-10-31",
+          "day_of_week": "Saturday",
+          "time_et": "1:00 PM ET",
+          "opponent": "Chicago Blackhawks",
           "home": true,
           "season_type": "regular",
           "is_today": false
@@ -248,5 +252,5 @@
       }
     ]
   },
-  "date": "2026-10-29"
+  "date": "2026-10-30"
 }
