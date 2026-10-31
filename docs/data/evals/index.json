@@ -100,29 +100,29 @@
   ],
   "summary_5day": {
     "fresh": 0,
-    "retry": 4,
-    "fallback": 1,
+    "retry": 5,
+    "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 17,
-        "count": 6,
+        "count": 7,
         "title": "Wrong day named for a result"
       },
       {
-        "rule": 12,
+        "rule": 15,
         "count": 5,
-        "title": "Game coverage gap"
+        "title": "Phantom scheduled game"
       },
       {
         "rule": 10,
-        "count": 4,
+        "count": 5,
         "title": "Voice repetition"
       }
     ],
     "rule15_agreement": {
       "deterministic": 1,
-      "llm": 0,
+      "llm": 1,
       "both": 0
     }
   }
