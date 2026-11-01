@@ -1,62 +1,62 @@
 {
-  "headline": "Pritchard goes ballistic as Celtics dismantle the Bulls at the Garden",
+  "headline": "Bruins steal an overtime thriller against Chicago while Pats head to Miami",
   "morning_brew": [
-    "I was at the Garden on Friday night and man, that was exactly the kind of kick in the pants we needed. Payton Pritchard was an absolute force, dropping thirty points and making the Bulls look like they were playing in skates. It wasn't just the buckets either, the whole vibe felt like a team that's finally shifting into gear. I haven't seen a guy hunt for his shot like that since cousin Jimmy tried to cut the line at the North End bakery on a Sunday morning.",
-    "It is wicked nice to see the bench depth actually showing up because we are gonna need everyone firing on all cylinders with the schedule getting tougher. Jayson Tatum added a solid twenty-six, but the way Pritchard snatched the spotlight in the backcourt was the story of the night. If the C's keep playing this kind of unselfish hoops and keep the defensive intensity this high, they are gonna be a total nightmare for anyone visiting our building.",
-    "Looking ahead to Saturday, we have the Bruins back on the ice for a matinee against the Blackhawks. I am expecting a massive bounce-back effort from the boys after that rough showing in St. Louis earlier in the week. Puck drop is at one, and I will be there hoping to see the B's dictate the pace and snag two points in front of the home crowd."
+    "I am still exhaling after that overtime win on Saturday. It was absolute madness at the Garden, with the B's digging out of a two-goal hole in the third period just to force the extra frame. Elias Lindholm finally put the dagger in the Blackhawks, and you could hear the relief from the Hub all the way to the North End. That comeback felt like the time my neighbor Rick tried to fix his own roof with duct tape and hope, but somehow, it actually worked. We have been looking for that kind of grit all season, and seeing the team rally when their backs were against the wall was exactly what I needed to see.",
+    "Now we shift focus to a massive Sunday in Miami. The Patriots are heading down there, and they have got their work cut out for them with a brutal all-time record against the Dolphins. It is a classic divisional test, and frankly, we need to see Drake Maye and the offense show some real consistency today if we are gonna keep pace. Kickoff is at four-twenty-five, and I will be pacing the living room like a caged animal until the clock hits zero.",
+    "The Celtics are also in action this afternoon down in Orlando. They are looking to keep this momentum going, and after watching Payton Pritchard tear it up in the Cup opener, I am feeling pretty good about how this team is playing. It is a busy sports Sunday for the Hub, and while I am still buzzing from that hockey comeback, my focus is entirely on these two road games."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Payton Pritchard",
-      "trend": "Pritchard exploded for 30 points on 9-for-17 shooting while adding three assists and two steals in 35 minutes of action.",
-      "dans_take": "Give this kid all the minutes he can handle and watch the scoreboard light up."
+      "player": "Elias Lindholm",
+      "trend": "Lindholm buried the game-winning goal in overtime to cap a wild comeback against Chicago.",
+      "dans_take": "That is the kind of finish that makes you forget the stress and keep the Duck Boat fund alive."
     },
     {
       "category": "Heater",
-      "player": "Jayson Tatum",
-      "trend": "Tatum chipped in with 26 points, seven rebounds, and seven assists to keep the offense moving against Chicago.",
-      "dans_take": "He did not have his best night from the field and still put up a triple-double threat."
+      "player": "Michael DiPietro",
+      "trend": "DiPietro stood tall in the crease and stopped thirty-seven shots to help keep the Bruins in the fight.",
+      "dans_take": "He deserves a steak dinner on me for standing on his head when the defense was taking a nap."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Neemias Queta",
-      "trend": "Queta provided a massive spark off the bench with 13 points, six rebounds, and a block in just 20 minutes.",
-      "dans_take": "He was cleaning the glass like he was getting paid by the rebound."
+      "player": "Mason Lohrei",
+      "trend": "Lohrei jumpstarted the late-game rally with a clutch goal late in the third period.",
+      "dans_take": "The young gun finally found the back of the net when we needed a miracle."
     }
   ],
   "news_digest": [
     {
-      "headline": "Pritchard nets 30, Celtics ease past turnover-prone Bulls 125-111 in NBA Cup action",
-      "url": "http://www.espn.com/nba/recap?gameId=401909278",
-      "dans_take": "That is how you start a tournament, total dominance from start to finish."
+      "headline": "Lindholm's overtime goal lifts the Bruins past the Blackhawks as Pastrnak moves past Bergeron",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892614",
+      "dans_take": "That rally was huge, but my heart is too old to be doing this three times a week."
     },
     {
-      "headline": "Patriots WR A.J. Brown (ankle, knee) listed as questionable",
-      "url": "https://www.espn.com/nfl/story/_/id/50329240/patriots-wr-aj-brown-ankle-knee-listed-questionable",
-      "dans_take": "Not ideal heading into Miami, but we have to hope for a miracle before kickoff."
+      "headline": "The Patriots are 18-43 all time in Miami. Here are keys to a Week 8 victory",
+      "url": "https://www.espn.com/nfl/story/_/id/50336122/new-england-patriots-miami-dolphins-week-8-key-win",
+      "dans_take": "We have been getting cooked in Miami for years, so it is about damn time we start winning."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Boston Celtics",
-      "away_team": "Chicago Bulls",
-      "home_score": 125,
-      "away_score": 111,
-      "game_date": "2026-10-30",
-      "played": true,
-      "season_type": "regular"
-    },
-    "bruins": {
-      "sport": "NHL",
       "home_team": null,
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-30",
+      "game_date": "2026-10-31",
       "played": false,
-      "season_type": "unknown"
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Boston Bruins",
+      "away_team": "Blackhawks",
+      "home_score": 5,
+      "away_score": 4,
+      "game_date": "2026-10-31",
+      "played": true,
+      "season_type": "regular"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,7 +64,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-30",
+      "game_date": "2026-10-31",
       "played": false,
       "season_type": "playoff"
     },
@@ -74,18 +74,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-30",
+      "game_date": "2026-10-31",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-10-31",
-      "matchup": "Chicago Blackhawks at Boston Bruins",
-      "day_of_week": "Saturday",
-      "time_et": "1:00 PM ET"
-    },
     {
       "date": "2026-11-01",
       "matchup": "Boston Celtics at Orlando Magic",
@@ -127,6 +121,18 @@
       "matchup": "Boston Celtics at Charlotte Hornets",
       "day_of_week": "Friday",
       "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Florida Panthers at Boston Bruins",
+      "day_of_week": "Sunday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Green Bay Packers at New England Patriots",
+      "day_of_week": "Sunday",
+      "time_et": "4:25 PM ET"
     }
   ],
   "_timings": [
@@ -134,78 +140,33 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 5.42,
-      "prompt_tokens": 41715,
-      "output_tokens": 1340,
+      "seconds": 4.31,
+      "prompt_tokens": 41104,
+      "output_tokens": 1343,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 3.72,
-      "prompt_tokens": 17798,
-      "output_tokens": 1336,
+      "seconds": 3.53,
+      "prompt_tokens": 17812,
+      "output_tokens": 1374,
       "thinking_tokens": null
     }
   ],
   "_grounding": "quota_exhausted",
-  "generated_at": "2026-10-31T15:25:44.861744+00:00",
+  "generated_at": "2026-11-01T14:50:43.526912+00:00",
   "_quality_warning": true,
   "_quality_flags": [
     {
-      "rule": 15,
-      "detail": "The output claims the Bruins game is 'Saturday' when the TODAY date is 2026-10-31 (a Friday) and the schedule lists the game for 2026-10-31."
-    },
-    {
       "rule": 17,
-      "detail": "The output incorrectly identifies the Celtics game as occurring on 'Friday night' when the source data confirms it was played on 2026-10-30, which was a Thursday."
-    },
-    {
-      "rule": 10,
-      "detail": "repetition: formulaic paragraph opener \"looking ahead to ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "detail": "The output incorrectly identifies the Bruins game as occurring on 'Saturday' when the source data confirms it was played on 2026-10-31, which was a Friday."
     }
   ],
   "team_pulse": {
-    "as_of": "2026-10-31",
+    "as_of": "2026-11-01",
     "teams": [
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "9-4",
-        "last": {
-          "date": "2026-10-29",
-          "day_of_week": "Thursday",
-          "opponent": "Blues",
-          "home": false,
-          "boston_score": 1,
-          "opponent_score": 4,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-10-31",
-          "day_of_week": "Saturday",
-          "time_et": "1:00 PM ET",
-          "opponent": "Chicago Blackhawks",
-          "home": true,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      },
       {
         "team": "celtics",
         "label": "Celtics",
@@ -230,7 +191,7 @@
           "opponent": "Orlando Magic",
           "home": false,
           "season_type": "regular",
-          "is_today": false
+          "is_today": true
         }
       },
       {
@@ -248,10 +209,48 @@
           "opponent": "Miami Dolphins",
           "home": false,
           "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "10-4",
+        "last": {
+          "date": "2026-10-31",
+          "day_of_week": "Saturday",
+          "opponent": "Blackhawks",
+          "home": true,
+          "boston_score": 5,
+          "opponent_score": 4,
+          "result": "W",
+          "season_type": "regular",
+          "note": "OT"
+        },
+        "next": {
+          "date": "2026-11-02",
+          "day_of_week": "Monday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Vegas Golden Knights",
+          "home": true,
+          "season_type": "regular",
           "is_today": false
         }
       }
     ]
   },
-  "date": "2026-10-31"
+  "date": "2026-11-01"
 }
