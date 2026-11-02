@@ -1,62 +1,62 @@
 {
-  "headline": "Bruins steal an overtime thriller against Chicago while Pats head to Miami",
+  "headline": "Tatum and George handle business in Orlando while Patriots survive Miami",
   "morning_brew": [
-    "I am still exhaling after that overtime win on Saturday. It was absolute madness at the Garden, with the B's digging out of a two-goal hole in the third period just to force the extra frame. Elias Lindholm finally put the dagger in the Blackhawks, and you could hear the relief from the Hub all the way to the North End. That comeback felt like the time my neighbor Rick tried to fix his own roof with duct tape and hope, but somehow, it actually worked. We have been looking for that kind of grit all season, and seeing the team rally when their backs were against the wall was exactly what I needed to see.",
-    "Now we shift focus to a massive Sunday in Miami. The Patriots are heading down there, and they have got their work cut out for them with a brutal all-time record against the Dolphins. It is a classic divisional test, and frankly, we need to see Drake Maye and the offense show some real consistency today if we are gonna keep pace. Kickoff is at four-twenty-five, and I will be pacing the living room like a caged animal until the clock hits zero.",
-    "The Celtics are also in action this afternoon down in Orlando. They are looking to keep this momentum going, and after watching Payton Pritchard tear it up in the Cup opener, I am feeling pretty good about how this team is playing. It is a busy sports Sunday for the Hub, and while I am still buzzing from that hockey comeback, my focus is entirely on these two road games."
+    "The C's are absolutely cookin', picking up a wicked nice road win over the Magic on Sunday. Jayson Tatum was a total machine, dropping thirty-two points with fifteen of those coming from the charity stripe, and Paul George chipped in with seventeen to help seal the 108-97 victory. It was their fifth straight win, and while the early season standings are a tight race, this group is starting to look like the contender we all expected. I'm not sayin' anything, I don't wanna jinx it, but this team is starting to put a real deposit in the Duck Boat fund.",
+    "Down in Miami, the Patriots actually got the job done on Sunday. Drake Maye looked sharp with two touchdowns, and the defense held firm in a 24-19 win that felt like a long time coming for this squad. We've had more than our fair share of nightmares playing the Dolphins on the road \u2014 I swear, watching us play down there is like watching my cousin Jimmy try to parallel park a bus \u2014 so snatching a victory like that is a massive confidence boost. It wasn't always pretty, but you take the win and keep moving forward.",
+    "Looking ahead, the Hub has a busy Monday night on tap. The B's are back at the Garden tonight for a tilt against Vegas, and you know I will be glued to the TV hoping for a strong showing on home ice. Meanwhile, the C's are out in Houston looking to extend their winning streak to six. It is a big night for Boston sports, so grab your Dunks and settle in, because the action starts early."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Elias Lindholm",
-      "trend": "Lindholm buried the game-winning goal in overtime to cap a wild comeback against Chicago.",
-      "dans_take": "That is the kind of finish that makes you forget the stress and keep the Duck Boat fund alive."
+      "player": "Jayson Tatum",
+      "trend": "Tatum dropped thirty-two points including fifteen made free throws in the win over Orlando.",
+      "dans_take": "When he's driving and drawing fouls like that, there's just no way to defend him without sending him to the line all night."
     },
     {
-      "category": "Heater",
-      "player": "Michael DiPietro",
-      "trend": "DiPietro stood tall in the crease and stopped thirty-seven shots to help keep the Bruins in the fight.",
-      "dans_take": "He deserves a steak dinner on me for standing on his head when the defense was taking a nap."
+      "category": "Streak",
+      "player": "Paul George",
+      "trend": "George added seventeen points and six rebounds to help the Celtics extend their winning streak to five.",
+      "dans_take": "He is finding his rhythm right when we need him most, and it's a beautiful thing to watch."
     },
     {
-      "category": "Bullpen Watch",
-      "player": "Mason Lohrei",
-      "trend": "Lohrei jumpstarted the late-game rally with a clutch goal late in the third period.",
-      "dans_take": "The young gun finally found the back of the net when we needed a miracle."
+      "category": "Trench Report",
+      "player": "Drake Maye",
+      "trend": "Maye completed sixteen of twenty passes for one hundred ninety-nine yards and two touchdowns in Sunday's win over Miami.",
+      "dans_take": "That is the kind of surgical efficiency I want to see from our quarterback every single week."
     }
   ],
   "news_digest": [
     {
-      "headline": "Lindholm's overtime goal lifts the Bruins past the Blackhawks as Pastrnak moves past Bergeron",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892614",
-      "dans_take": "That rally was huge, but my heart is too old to be doing this three times a week."
+      "headline": "Jayson Tatum's 32, Paul George's 10 4th-quarter points lead Boston Celtics to win at Orlando",
+      "url": "http://www.espn.com/nba/recap?gameId=401909903",
+      "dans_take": "Another night, another impressive team win for the boys that keeps the momentum rolling."
     },
     {
-      "headline": "The Patriots are 18-43 all time in Miami. Here are keys to a Week 8 victory",
-      "url": "https://www.espn.com/nfl/story/_/id/50336122/new-england-patriots-miami-dolphins-week-8-key-win",
-      "dans_take": "We have been getting cooked in Miami for years, so it is about damn time we start winning."
+      "headline": "Pitcher Garrett Whitlock's $8.25 million option exercised by Boston Red Sox",
+      "url": "https://www.espn.com/mlb/story/_/id/50354714/garrett-whitlock-825-million-option-exercised-red-sox",
+      "dans_take": "Absolute no-brainer move to lock him up, he was lights out last season."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-10-31",
-      "played": false,
+      "home_team": "Orlando Magic",
+      "away_team": "Boston Celtics",
+      "home_score": 97,
+      "away_score": 108,
+      "game_date": "2026-11-01",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Blackhawks",
-      "home_score": 5,
-      "away_score": 4,
-      "game_date": "2026-10-31",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-01",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,34 +64,22 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-10-31",
+      "game_date": "2026-11-01",
       "played": false,
       "season_type": "playoff"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-10-31",
-      "played": false,
+      "home_team": "Miami Dolphins",
+      "away_team": "New England Patriots",
+      "home_score": 19,
+      "away_score": 24,
+      "game_date": "2026-11-01",
+      "played": true,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-01",
-      "matchup": "Boston Celtics at Orlando Magic",
-      "day_of_week": "Sunday",
-      "time_et": "3:30 PM ET"
-    },
-    {
-      "date": "2026-11-01",
-      "matchup": "New England Patriots at Miami Dolphins",
-      "day_of_week": "Sunday",
-      "time_et": "4:25 PM ET"
-    },
     {
       "date": "2026-11-02",
       "matchup": "Vegas Golden Knights at Boston Bruins",
@@ -133,6 +121,12 @@
       "matchup": "Green Bay Packers at New England Patriots",
       "day_of_week": "Sunday",
       "time_et": "4:25 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Boston Celtics at Milwaukee Bucks",
+      "day_of_week": "Sunday",
+      "time_et": "8:00 PM ET"
     }
   ],
   "_timings": [
@@ -140,32 +134,25 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.31,
-      "prompt_tokens": 41104,
-      "output_tokens": 1343,
+      "seconds": 4.77,
+      "prompt_tokens": 42066,
+      "output_tokens": 1346,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 3.53,
-      "prompt_tokens": 17812,
-      "output_tokens": 1374,
+      "seconds": 5.18,
+      "prompt_tokens": 17785,
+      "output_tokens": 1415,
       "thinking_tokens": null
     }
   ],
   "_grounding": "quota_exhausted",
-  "generated_at": "2026-11-01T14:50:43.526912+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    {
-      "rule": 17,
-      "detail": "The output incorrectly identifies the Bruins game as occurring on 'Saturday' when the source data confirms it was played on 2026-10-31, which was a Friday."
-    }
-  ],
+  "generated_at": "2026-11-02T17:57:42.716181+00:00",
   "team_pulse": {
-    "as_of": "2026-11-01",
+    "as_of": "2026-11-02",
     "teams": [
       {
         "team": "celtics",
@@ -173,54 +160,26 @@
         "sport": "NBA",
         "phase": "regular",
         "opener": false,
-        "record": "4-1",
+        "record": "5-1",
         "last": {
-          "date": "2026-10-30",
-          "day_of_week": "Friday",
-          "opponent": "Chicago Bulls",
-          "home": true,
-          "boston_score": 125,
-          "opponent_score": 111,
+          "date": "2026-11-01",
+          "day_of_week": "Sunday",
+          "opponent": "Orlando Magic",
+          "home": false,
+          "boston_score": 108,
+          "opponent_score": 97,
           "result": "W",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-11-01",
-          "day_of_week": "Sunday",
-          "time_et": "3:30 PM ET",
-          "opponent": "Orlando Magic",
+          "date": "2026-11-02",
+          "day_of_week": "Monday",
+          "time_et": "8:30 PM ET",
+          "opponent": "Houston Rockets",
           "home": false,
           "season_type": "regular",
           "is_today": true
         }
-      },
-      {
-        "team": "patriots",
-        "label": "Patriots",
-        "sport": "NFL",
-        "phase": "regular",
-        "opener": false,
-        "record": "4-3",
-        "last": null,
-        "next": {
-          "date": "2026-11-01",
-          "day_of_week": "Sunday",
-          "time_et": "4:25 PM ET",
-          "opponent": "Miami Dolphins",
-          "home": false,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
       },
       {
         "team": "bruins",
@@ -247,10 +206,47 @@
           "opponent": "Vegas Golden Knights",
           "home": true,
           "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-3",
+        "last": {
+          "date": "2026-11-01",
+          "day_of_week": "Sunday",
+          "opponent": "Miami Dolphins",
+          "home": false,
+          "boston_score": 24,
+          "opponent_score": 19,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "time_et": "4:25 PM ET",
+          "opponent": "Green Bay Packers",
+          "home": true,
+          "season_type": "regular",
           "is_today": false
         }
       }
     ]
   },
-  "date": "2026-11-01"
+  "date": "2026-11-02"
 }
