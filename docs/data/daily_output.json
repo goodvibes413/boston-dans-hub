@@ -157,19 +157,13 @@
       "detail": "coverage window: the bruins played Golden Knights on 2026-11-02 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
     }
   ],
+  "date": "2026-11-04",
+  "_stale": true,
+  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+  "_stale_age_hours": 24.0,
   "team_pulse": {
-    "as_of": "2026-11-03",
+    "as_of": "2026-11-04",
     "teams": [
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      },
       {
         "team": "celtics",
         "label": "Celtics",
@@ -194,8 +188,18 @@
           "opponent": "Milwaukee Bucks",
           "home": true,
           "season_type": "regular",
-          "is_today": false
+          "is_today": true
         }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
       },
       {
         "team": "bruins",
@@ -253,6 +257,5 @@
         }
       }
     ]
-  },
-  "date": "2026-11-03"
+  }
 }
