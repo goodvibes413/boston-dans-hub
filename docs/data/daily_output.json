@@ -1,67 +1,43 @@
 {
-  "headline": "Bruins battle to shootout win while Celtics fall hard in Houston",
+  "headline": "Celtics look to keep Garden momentum alive against visiting Milwaukee Bucks",
   "morning_brew": [
-    "What a wild night at the Garden. Our B's needed that win something fierce against the Golden Knights, and the shootout victory was exactly the kind of gritty performance we've been hunting for. Jeremy Swayman was a brick wall between the pipes, and seeing David Pastrnak pull off that cold-blooded move in the skills competition to seal the deal was just pure class. It felt like the kind of night where the team finally remembered they have a job to do, and honestly, I am just happy to deposit those two points in the Duck Boat fund and call it a night.",
-    "The C's had a rough one on the road, getting absolutely handled by the Rockets in a game that was a total horror show from start to finish. We looked sluggish, sloppy with the rock, and couldn't buy a bucket if the hoop were the size of the Big Dig. You can't come out flat against a team like Houston and expect to walk away with a win, especially when the turnover count is stacking up higher than my neighbor Rick's stack of conspiracy pamphlets. My mother watched a quarter of that mess and just clicked the remote to the Weather Channel, and for once, I really couldn't blame her for cutting her losses before things got even uglier.",
-    "Looking ahead, we have a little break before the schedule picks back up. The B's are hitting the road later this week, and the Celtics have a chance to get right back in the win column at the Garden soon. I am gonna use the time off to scrub the memory of that third quarter out of my brain with a few extra large Dunks. Hang in there, because the season is a long road and we have got plenty of ground left to cover before we start talking championships."
+    "No baseball or football last night, so I spent the evening staring at the wall and wondering if the C's are ready for this tilt against Milwaukee. We are back at the Garden tonight, and after that absolute disaster in Houston, this team needs a statement performance to prove they actually belong near the top of the conference. The Bucks are struggling, but you can never sleep on them, and I'll be expecting Jayson Tatum and Derrick White to stop messin' around and set the tone from the opening tip.",
+    "Looking at the rest of the schedule, it is a busy week for Boston sports fans. The Bruins are shipping up to Pittsburgh tomorrow to keep their momentum rolling, and the Patriots have a massive matchup with Green Bay waiting on Sunday. It feels like the season is finally finding its rhythm, and while my blood pressure takes a hit every time we play a nail-biter, I am already dreaming of the Pats getting back to Gillette to defend our home turf.",
+    "Tonight's game is gonna be the perfect test to see if our perimeter defense can actually hold up against a team that needs a win as bad as I need to forget that last road trip. I have my lucky jersey ready and a fresh coffee in hand, so I am hoping for a clean, dominant showing. If the C's can protect the parquet and keep the ball moving, we will be in good shape, but either way, I am just happy to have a game on the tube tonight."
   ],
-  "trend_watch": [
-    {
-      "category": "Heater",
-      "player": "David Pastrnak",
-      "trend": "Slipped the lone shootout goal past the netminder to clinch the win for Boston.",
-      "dans_take": "The man has ice water in his veins and no nerves whatsoever."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Jeremy Swayman",
-      "trend": "Turned away twenty-one of twenty-three shots faced throughout the night and overtime.",
-      "dans_take": "He was the only reason we were even standing at the end of that one."
-    },
-    {
-      "category": "Slump",
-      "player": "Jayson Tatum",
-      "trend": "Shot five of sixteen from the floor and coughed up five turnovers in the loss.",
-      "dans_take": "If he plays like that, we aren't beating anybody, let alone a team in the West."
-    }
-  ],
+  "trend_watch": [],
   "news_digest": [
     {
-      "headline": "Pastrnak scores lone shootout goal to give Bruins 3-2 win over Golden Knights",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892629",
-      "dans_take": "A massive sigh of relief to finally get the ship pointed in the right direction."
+      "headline": "Boston faces Milwaukee, looks for 5th straight home win",
+      "url": "http://www.espn.com/nba/preview?gameId=401909924",
+      "dans_take": "Five straight at home would be a nice way to wash the bitter taste of that Houston game out of my mouth."
     },
     {
-      "headline": "Alperen Sengun leads Rockets past Celtics 109-93 as Houston moves into first in West",
-      "url": "http://www.espn.com/nba/recap?gameId=401909916",
-      "dans_take": "That was an absolute embarrassment of an effort that I need to forget immediately."
-    },
-    {
-      "headline": "Pitcher Garrett Whitlock's $8.25 million option exercised by Boston Red Sox",
-      "url": "https://www.espn.com/mlb/story/_/id/50354714/garrett-whitlock-825-million-option-exercised-red-sox",
-      "dans_take": "About damn time they locked in an arm that actually knows where the strike zone is."
+      "headline": "2026 NFL trade deadline: Players to watch, buzz and goals for all 32 teams",
+      "url": "https://www.espn.com/nfl/story/_/id/50370030/trade-deadline-team-preview-goals-buzz-players-deals-2026",
+      "dans_take": "The trade deadline is always a stress test for the front office, so I am waiting to see if we actually make a move or just stand there like cousin Jimmy at a buffet."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Houston Rockets",
-      "away_team": "Boston Celtics",
-      "home_score": 109,
-      "away_score": 93,
-      "game_date": "2026-11-02",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-03",
+      "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Golden Knights",
-      "home_score": 3,
-      "away_score": 2,
-      "game_date": "2026-11-02",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-03",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -69,7 +45,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-02",
+      "game_date": "2026-11-03",
       "played": false,
       "season_type": "playoff"
     },
@@ -79,18 +55,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-02",
+      "game_date": "2026-11-03",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-02",
-      "matchup": "Boston Celtics at Houston Rockets",
-      "day_of_week": "Monday",
-      "time_et": "8:30 PM ET"
-    },
     {
       "date": "2026-11-04",
       "matchup": "Milwaukee Bucks at Boston Celtics",
@@ -126,6 +96,12 @@
       "matchup": "Boston Celtics at Milwaukee Bucks",
       "day_of_week": "Sunday",
       "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-10",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
     }
   ],
   "_timings": [
@@ -133,34 +109,23 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 58.05,
-      "prompt_tokens": 43303,
-      "output_tokens": 1419,
+      "seconds": 4.05,
+      "prompt_tokens": 39701,
+      "output_tokens": 1108,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.14,
-      "prompt_tokens": 17858,
-      "output_tokens": 1470,
+      "seconds": 2.96,
+      "prompt_tokens": 17547,
+      "output_tokens": 1116,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "off",
-  "generated_at": "2026-11-03T16:00:04.219916+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    {
-      "rule": 12,
-      "detail": "coverage window: the bruins played Golden Knights on 2026-11-02 and the morning_brew never mentions that game. Recap THAT game. Do not write up a game played today, even if you know the result."
-    }
-  ],
-  "date": "2026-11-04",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 24.0,
+  "_grounding": "quota_exhausted",
+  "generated_at": "2026-11-04T17:22:51.448068+00:00",
   "team_pulse": {
     "as_of": "2026-11-04",
     "teams": [
@@ -257,5 +222,6 @@
         }
       }
     ]
-  }
+  },
+  "date": "2026-11-04"
 }

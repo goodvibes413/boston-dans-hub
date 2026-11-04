@@ -1,17 +1,25 @@
 {
   "date": "2026-11-04",
-  "generated_at": "2026-11-04T16:00:56.165100+00:00",
-  "outcome": "fallback",
-  "winning_attempt": null,
-  "total_attempts": 0,
-  "generation_seconds": 0.0,
+  "generated_at": "2026-11-04T17:22:49.360777+00:00",
+  "outcome": "fresh",
+  "winning_attempt": 1,
+  "total_attempts": 1,
+  "generation_seconds": 2.1,
   "pre_pass": {
-    "repetition_check": "unknown",
-    "schedule_check": "unknown",
-    "gameday_check": "unknown",
-    "weekday_check": "unknown",
-    "venue_check": "unknown",
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
     "flagged_phrases": []
   },
-  "attempts": []
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 2.1
+    }
+  ]
 }
