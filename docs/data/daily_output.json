@@ -1,32 +1,51 @@
 {
-  "headline": "Celtics look to keep Garden momentum alive against visiting Milwaukee Bucks",
+  "headline": "George and White lead Celtics past Milwaukee in Garden bounce-back victory",
   "morning_brew": [
-    "No baseball or football last night, so I spent the evening staring at the wall and wondering if the C's are ready for this tilt against Milwaukee. We are back at the Garden tonight, and after that absolute disaster in Houston, this team needs a statement performance to prove they actually belong near the top of the conference. The Bucks are struggling, but you can never sleep on them, and I'll be expecting Jayson Tatum and Derrick White to stop messin' around and set the tone from the opening tip.",
-    "Looking at the rest of the schedule, it is a busy week for Boston sports fans. The Bruins are shipping up to Pittsburgh tomorrow to keep their momentum rolling, and the Patriots have a massive matchup with Green Bay waiting on Sunday. It feels like the season is finally finding its rhythm, and while my blood pressure takes a hit every time we play a nail-biter, I am already dreaming of the Pats getting back to Gillette to defend our home turf.",
-    "Tonight's game is gonna be the perfect test to see if our perimeter defense can actually hold up against a team that needs a win as bad as I need to forget that last road trip. I have my lucky jersey ready and a fresh coffee in hand, so I am hoping for a clean, dominant showing. If the C's can protect the parquet and keep the ball moving, we will be in good shape, but either way, I am just happy to have a game on the tube tonight."
+    "Wednesday night at the Garden was exactly what the doctor ordered. After stumbling around for a minute, the C's finally woke up and took down a tough Milwaukee squad. Seeing the offense actually click with that kind of fire was a massive relief, especially after the headache-inducing stretch we have navigated lately. That win was the shot in the arm we needed, proving this group has the grit to hold the parquet against a team that makes you earn every damn inch.",
+    "Paul George was electric from deep, and Derrick White played like he had a massive point to prove. When those two are finding the range, this team is a nightmare for anybody in the East. It wasn't perfect, and we had a few moments that made me want to throw my Dunks at the TV, but a seven-point win against a rival like the Bucks is nothing to sneeze at. I will take that kind of effort every single time we hit the floor, and frankly, it's about damn time.",
+    "Looking ahead, the Bruins are lacing up for a scrap against Pittsburgh tonight. It is a heavy schedule, but that is how we like it in the Hub. I am keeping an eye on the schedule because it feels like we are finally finding our stride, and I would love to see the B's keep their momentum rolling while we prepare for a Friday trip to Charlotte. Let's hope the intensity from Wednesday carries over into the rest of this stretch."
   ],
-  "trend_watch": [],
-  "news_digest": [
+  "trend_watch": [
     {
-      "headline": "Boston faces Milwaukee, looks for 5th straight home win",
-      "url": "http://www.espn.com/nba/preview?gameId=401909924",
-      "dans_take": "Five straight at home would be a nice way to wash the bitter taste of that Houston game out of my mouth."
+      "category": "Heater",
+      "player": "Paul George",
+      "trend": "Paul George dropped twenty-five points including five shots from deep to ignite the offense.",
+      "dans_take": "That is the kind of veteran swagger we brought him in for."
     },
     {
-      "headline": "2026 NFL trade deadline: Players to watch, buzz and goals for all 32 teams",
-      "url": "https://www.espn.com/nfl/story/_/id/50370030/trade-deadline-team-preview-goals-buzz-players-deals-2026",
-      "dans_take": "The trade deadline is always a stress test for the front office, so I am waiting to see if we actually make a move or just stand there like cousin Jimmy at a buffet."
+      "category": "Heater",
+      "player": "Derrick White",
+      "trend": "Derrick White commanded the floor with twenty-four points and seven assists in the win.",
+      "dans_take": "He continues to be the only thing keeping the engine from stalling out."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Neemias Queta",
+      "trend": "Neemias Queta dominated the glass by grabbing twelve rebounds and swatting two shots inside.",
+      "dans_take": "We needed that presence down low unless we wanted to watch Milwaukee grab every single second-chance bucket."
+    }
+  ],
+  "news_digest": [
+    {
+      "headline": "Hornets and Celtics meet Friday in NBA Cup group stage",
+      "url": "http://www.espn.com/nba/preview?gameId=401909288",
+      "dans_take": "Another group stage game means we have to stay locked in and avoid a total letdown."
+    },
+    {
+      "headline": "Robert Kraft recovering from back surgery, will miss Rob Gronkowski ceremony",
+      "url": "https://www.espn.com/nfl/story/_/id/50388263/patriots-owner-robert-kraft-recovering-back-surgery",
+      "dans_take": "Wishing him a smooth recovery, though it is a damn shame he has to miss Gronk's big night."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-03",
-      "played": false,
+      "home_team": "Boston Celtics",
+      "away_team": "Milwaukee Bucks",
+      "home_score": 109,
+      "away_score": 102,
+      "game_date": "2026-11-04",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
@@ -35,7 +54,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-03",
+      "game_date": "2026-11-04",
       "played": false,
       "season_type": "unknown"
     },
@@ -45,7 +64,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-03",
+      "game_date": "2026-11-04",
       "played": false,
       "season_type": "playoff"
     },
@@ -55,7 +74,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-03",
+      "game_date": "2026-11-04",
       "played": false,
       "season_type": "regular"
     }
@@ -102,6 +121,18 @@
       "matchup": "Boston Celtics at Philadelphia 76ers",
       "day_of_week": "Tuesday",
       "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-11",
+      "matchup": "Boston Celtics at Toronto Raptors",
+      "day_of_week": "Wednesday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-12",
+      "matchup": "Montr\u00e9al Canadiens at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
     }
   ],
   "_timings": [
@@ -109,63 +140,33 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.05,
-      "prompt_tokens": 39701,
-      "output_tokens": 1108,
+      "seconds": 4.26,
+      "prompt_tokens": 42082,
+      "output_tokens": 1298,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 2.96,
-      "prompt_tokens": 17547,
-      "output_tokens": 1116,
+      "seconds": 3.5,
+      "prompt_tokens": 17737,
+      "output_tokens": 1317,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "quota_exhausted",
-  "generated_at": "2026-11-04T17:22:51.448068+00:00",
+  "_grounding": "off",
+  "generated_at": "2026-11-05T16:18:46.511094+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
+    {
+      "rule": 18,
+      "detail": "wrong game place: the celtics game against Milwaukee Bucks on 2026-11-04 was a HOME game (boxscore \"home\": true), and the post describes travel. Copy venue_note from rolling_7day. Sentence: That was the shot in the arm we needed after watching them struggle on the road."
+    }
+  ],
   "team_pulse": {
-    "as_of": "2026-11-04",
+    "as_of": "2026-11-05",
     "teams": [
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "5-2",
-        "last": {
-          "date": "2026-11-02",
-          "day_of_week": "Monday",
-          "opponent": "Houston Rockets",
-          "home": false,
-          "boston_score": 93,
-          "opponent_score": 109,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-04",
-          "day_of_week": "Wednesday",
-          "time_et": "7:30 PM ET",
-          "opponent": "Milwaukee Bucks",
-          "home": true,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      },
       {
         "team": "bruins",
         "label": "Bruins",
@@ -189,6 +190,43 @@
           "day_of_week": "Thursday",
           "time_et": "7:00 PM ET",
           "opponent": "Pittsburgh Penguins",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "6-2",
+        "last": {
+          "date": "2026-11-04",
+          "day_of_week": "Wednesday",
+          "opponent": "Milwaukee Bucks",
+          "home": true,
+          "boston_score": 109,
+          "opponent_score": 102,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-06",
+          "day_of_week": "Friday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Charlotte Hornets",
           "home": false,
           "season_type": "regular",
           "is_today": false
@@ -223,5 +261,5 @@
       }
     ]
   },
-  "date": "2026-11-04"
+  "date": "2026-11-05"
 }

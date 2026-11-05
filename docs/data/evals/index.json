@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-10-31",
     "2026-11-01",
     "2026-11-02",
     "2026-11-03",
-    "2026-11-04"
+    "2026-11-04",
+    "2026-11-05"
   ],
   "rules": [
     {
@@ -106,18 +106,18 @@
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 4,
+        "count": 3,
         "title": "Voice repetition"
-      },
-      {
-        "rule": 17,
-        "count": 4,
-        "title": "Wrong day named for a result"
       },
       {
         "rule": 12,
         "count": 3,
         "title": "Game coverage gap"
+      },
+      {
+        "rule": 17,
+        "count": 3,
+        "title": "Wrong day named for a result"
       }
     ],
     "rule15_agreement": {

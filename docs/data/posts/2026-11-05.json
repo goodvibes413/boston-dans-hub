@@ -1,0 +1,240 @@
+{
+  "date": "2026-11-05",
+  "generated_at": "2026-11-05T16:18:46.511094+00:00",
+  "headline": "George and White lead Celtics past Milwaukee in Garden bounce-back victory",
+  "morning_brew": [
+    "Wednesday night at the Garden was exactly what the doctor ordered. After stumbling around for a minute, the C's finally woke up and took down a tough Milwaukee squad. Seeing the offense actually click with that kind of fire was a massive relief, especially after the headache-inducing stretch we have navigated lately. That win was the shot in the arm we needed, proving this group has the grit to hold the parquet against a team that makes you earn every damn inch.",
+    "Paul George was electric from deep, and Derrick White played like he had a massive point to prove. When those two are finding the range, this team is a nightmare for anybody in the East. It wasn't perfect, and we had a few moments that made me want to throw my Dunks at the TV, but a seven-point win against a rival like the Bucks is nothing to sneeze at. I will take that kind of effort every single time we hit the floor, and frankly, it's about damn time.",
+    "Looking ahead, the Bruins are lacing up for a scrap against Pittsburgh tonight. It is a heavy schedule, but that is how we like it in the Hub. I am keeping an eye on the schedule because it feels like we are finally finding our stride, and I would love to see the B's keep their momentum rolling while we prepare for a Friday trip to Charlotte. Let's hope the intensity from Wednesday carries over into the rest of this stretch."
+  ],
+  "news_digest": [
+    {
+      "headline": "Hornets and Celtics meet Friday in NBA Cup group stage",
+      "url": "http://www.espn.com/nba/preview?gameId=401909288",
+      "dans_take": "Another group stage game means we have to stay locked in and avoid a total letdown."
+    },
+    {
+      "headline": "Robert Kraft recovering from back surgery, will miss Rob Gronkowski ceremony",
+      "url": "https://www.espn.com/nfl/story/_/id/50388263/patriots-owner-robert-kraft-recovering-back-surgery",
+      "dans_take": "Wishing him a smooth recovery, though it is a damn shame he has to miss Gronk's big night."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Paul George",
+      "trend": "Paul George dropped twenty-five points including five shots from deep to ignite the offense.",
+      "dans_take": "That is the kind of veteran swagger we brought him in for."
+    },
+    {
+      "category": "Heater",
+      "player": "Derrick White",
+      "trend": "Derrick White commanded the floor with twenty-four points and seven assists in the win.",
+      "dans_take": "He continues to be the only thing keeping the engine from stalling out."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Neemias Queta",
+      "trend": "Neemias Queta dominated the glass by grabbing twelve rebounds and swatting two shots inside.",
+      "dans_take": "We needed that presence down low unless we wanted to watch Milwaukee grab every single second-chance bucket."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Boston Celtics",
+      "away_team": "Milwaukee Bucks",
+      "home_score": 109,
+      "away_score": 102,
+      "game_date": "2026-11-04",
+      "played": true,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-04",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-04",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-04",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-11-04",
+      "matchup": "Milwaukee Bucks at Boston Celtics",
+      "day_of_week": "Wednesday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-11-05",
+      "matchup": "Boston Bruins at Pittsburgh Penguins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-06",
+      "matchup": "Boston Celtics at Charlotte Hornets",
+      "day_of_week": "Friday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Florida Panthers at Boston Bruins",
+      "day_of_week": "Sunday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Green Bay Packers at New England Patriots",
+      "day_of_week": "Sunday",
+      "time_et": "4:25 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Boston Celtics at Milwaukee Bucks",
+      "day_of_week": "Sunday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-10",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-11",
+      "matchup": "Boston Celtics at Toronto Raptors",
+      "day_of_week": "Wednesday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-12",
+      "matchup": "Montr\u00e9al Canadiens at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-11-05",
+    "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "11-4",
+        "last": {
+          "date": "2026-11-02",
+          "day_of_week": "Monday",
+          "opponent": "Golden Knights",
+          "home": true,
+          "boston_score": 3,
+          "opponent_score": 2,
+          "result": "W",
+          "season_type": "regular",
+          "note": "SO"
+        },
+        "next": {
+          "date": "2026-11-05",
+          "day_of_week": "Thursday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Pittsburgh Penguins",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "6-2",
+        "last": {
+          "date": "2026-11-04",
+          "day_of_week": "Wednesday",
+          "opponent": "Milwaukee Bucks",
+          "home": true,
+          "boston_score": 109,
+          "opponent_score": 102,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-06",
+          "day_of_week": "Friday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Charlotte Hornets",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-3",
+        "last": {
+          "date": "2026-11-01",
+          "day_of_week": "Sunday",
+          "opponent": "Miami Dolphins",
+          "home": false,
+          "boston_score": 24,
+          "opponent_score": 19,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "time_et": "4:25 PM ET",
+          "opponent": "Green Bay Packers",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}
