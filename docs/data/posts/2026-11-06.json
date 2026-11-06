@@ -1,0 +1,227 @@
+{
+  "date": "2026-11-06",
+  "generated_at": "2026-11-06T15:46:32.688285+00:00",
+  "headline": "Bruins crush Penguins in road blowout as Zacha leads offensive explosion",
+  "morning_brew": [
+    "Thursday night was a straight-up party on the road. The B's went into Pittsburgh and absolutely dismantled the Penguins, walking away with a 6-2 win that had me grinning from ear to ear. When the boys play with that kind of pace and commitment, it's a hell of a thing to watch, especially seeing the puck movement clicking like it did all night long. This was a statement game that reminds everyone exactly why we\u2019re feeling so good about the state of this roster right now.",
+    "Pavel Zacha was the star of the show, but the whole squad was firing on all cylinders. Michael DiPietro stood tall in net and kept things steady while the offense kept the pressure on, and honestly, after that shaky start to the season, watching this kind of dominant, physical performance is exactly what the doctor ordered. I\u2019m not saying anything and I don't wanna jinx it, but this team is cooking right now and that\u2019s three straight wins for the good guys.",
+    "Now we look ahead to Sunday afternoon when we return to the Garden to host Florida. It\u2019s a massive test against a team that\u2019s been a thorn in our side, and I\u2019ll be sitting in my chair at one o'clock sharp hoping for another display like we saw against Pittsburgh. In the meantime, the C's are heading down to Charlotte tonight for a Friday matchup, so we\u2019ve got plenty of action to keep us busy in the Hub."
+  ],
+  "news_digest": [
+    {
+      "headline": "Zacha scores twice to lead the Bruins to a 6-2 victory over the struggling Penguins",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892654",
+      "dans_take": "That wasn't just a win, that was a statement that the B's have arrived."
+    },
+    {
+      "headline": "Hornets and Celtics meet Friday in NBA Cup group stage",
+      "url": "http://www.espn.com/nba/preview?gameId=401909288",
+      "dans_take": "Time to keep the C's rolling and stack another W in the Cup."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Pavel Zacha",
+      "trend": "Pavel Zacha scored two goals and added an assist to lead the Bruins to a 6-2 victory.",
+      "dans_take": "The man was a one-man wrecking crew, absolute clinic from Zacha."
+    },
+    {
+      "category": "Trench Report",
+      "player": "Morgan Geekie",
+      "trend": "Morgan Geekie added a goal and an assist in sixty minutes of high-intensity play.",
+      "dans_take": "Geekie is playing like he's got something to prove, and I love every second of it."
+    },
+    {
+      "category": "Streak",
+      "player": "Michael DiPietro",
+      "trend": "Michael DiPietro turned away sixteen of eighteen shots to secure his first win of the season.",
+      "dans_take": "He shook off the nerves and played like he owned the blue paint."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-05",
+      "played": false,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Penguins",
+      "away_team": "Boston Bruins",
+      "home_score": 2,
+      "away_score": 6,
+      "game_date": "2026-11-05",
+      "played": true,
+      "season_type": "regular"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-05",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-05",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-11-06",
+      "matchup": "Boston Celtics at Charlotte Hornets",
+      "day_of_week": "Friday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Florida Panthers at Boston Bruins",
+      "day_of_week": "Sunday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Green Bay Packers at New England Patriots",
+      "day_of_week": "Sunday",
+      "time_et": "4:25 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Boston Celtics at Milwaukee Bucks",
+      "day_of_week": "Sunday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-10",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-11",
+      "matchup": "Boston Celtics at Toronto Raptors",
+      "day_of_week": "Wednesday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-12",
+      "matchup": "Montr\u00e9al Canadiens at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-11-06",
+    "teams": [
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "6-2",
+        "last": {
+          "date": "2026-11-04",
+          "day_of_week": "Wednesday",
+          "opponent": "Milwaukee Bucks",
+          "home": true,
+          "boston_score": 109,
+          "opponent_score": 102,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-06",
+          "day_of_week": "Friday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Charlotte Hornets",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "12-4",
+        "last": {
+          "date": "2026-11-05",
+          "day_of_week": "Thursday",
+          "opponent": "Penguins",
+          "home": false,
+          "boston_score": 6,
+          "opponent_score": 2,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "time_et": "1:00 PM ET",
+          "opponent": "Florida Panthers",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-3",
+        "last": {
+          "date": "2026-11-01",
+          "day_of_week": "Sunday",
+          "opponent": "Miami Dolphins",
+          "home": false,
+          "boston_score": 24,
+          "opponent_score": 19,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "time_et": "4:25 PM ET",
+          "opponent": "Green Bay Packers",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}

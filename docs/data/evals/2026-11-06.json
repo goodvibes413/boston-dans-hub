@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-06",
+  "generated_at": "2026-11-06T15:45:28.376361+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 64.3,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 17,
+          "detail": "The content incorrectly identifies the Bruins game against the Penguins as occurring on 'Thursday night', when the game date in the rolling_7day data is 2026-11-05, which was a Wednesday."
+        }
+      ],
+      "duration_seconds": 1.6
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content asserts the Celtics play the Hornets 'this evening' (2026-11-06), but the UPCOMING_SCHEDULE lists the game for Friday, 2026-11-06, and the prompt date is Thursday, 2026-11-06, making the 'this evening' claim a phantom game error."
+        }
+      ],
+      "duration_seconds": 1.6
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content claims the Celtics are hitting the floor in Charlotte 'tonight' (Friday, 2026-11-06), but the UPCOMING_SCHEDULE lists the game for Friday, 2026-11-06, and the prompt date is 2026-11-06; however, the content incorrectly frames the game as 'tonight' while the schedule confirms it is indeed today, but the content also incorrectly implies the Celtics game is 'tonight' while the schedule lists it for Friday, 2026-11-06, which is today."
+        }
+      ],
+      "duration_seconds": 43.3
+    }
+  ]
+}
