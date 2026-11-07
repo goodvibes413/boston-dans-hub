@@ -1,0 +1,238 @@
+{
+  "date": "2026-11-07",
+  "generated_at": "2026-11-07T15:47:24.325818+00:00",
+  "headline": "Tatum explodes for thirty-four as Celtics crush Hornets in Cup play",
+  "morning_brew": [
+    "Friday night was an absolute clinic down in Charlotte, and honestly, the C's made it look like a glorified scrimmage. We demolished the Hornets 119-80, and when we play defense with that kind of nasty intensity, it is pretty clear why we are sitting at 7-2 on the season. Jayson Tatum was the man of the hour with 34 points and nine assists, but the whole team looked locked in and ready to make a serious statement in NBA Cup play.",
+    "Watching this squad move the ball like that is a total blast, especially when guys like Derrick White and Sam Hauser are knocking down shots from deep with that kind of sick consistency. It feels like the rhythm we were chasing earlier in the year is finally here, and I am loving the way we are putting teams away in the second half. My ma watched the first half and said they looked like they were having fun for the first time all year, and I have to agree with her, even if she usually just complains about the volume of the broadcast.",
+    "We have a quick turnaround with a game against Milwaukee on Sunday night, and that is gonna be a much tougher test than what we saw on Friday. The Bucks are struggling, but you can never take them lightly in their own building. I will be glued to the TV for that one, knocking on wood, hoping we keep this momentum rolling and put some more distance between us and the rest of the pack in the East."
+  ],
+  "news_digest": [
+    {
+      "headline": "Jayson Tatum scores 34 as Celtics demolish the Hornets 119-80 in NBA Cup play",
+      "url": "http://www.espn.com/nba/recap?gameId=401909288",
+      "dans_take": "Demolishing an opponent on the road is exactly what we needed to see."
+    },
+    {
+      "headline": "Hunter Henry hopeful to play after limited practice Friday",
+      "url": "https://www.espn.com/video/clip/_/id/50402678/hunter-henry-hopeful-play-limited-practice-friday",
+      "dans_take": "We need him out there against the Packers if we want to keep this winning streak alive."
+    },
+    {
+      "headline": "Patriots' TreVeyon Henderson affected by neurological symptoms",
+      "url": "https://www.espn.com/nfl/story/_/id/50400016/patriots-treveyon-henderson-affected-neurological-symptoms",
+      "dans_take": "This is scary stuff, and I really hope he gets the answers he needs for his own sake."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Jayson Tatum",
+      "trend": "Jayson Tatum scorched the nets for 34 points on 9-for-16 shooting while adding nine assists and eight rebounds in the win.",
+      "dans_take": "That is the kind of performance that puts the entire league on notice."
+    },
+    {
+      "category": "Heater",
+      "player": "Derrick White",
+      "trend": "Derrick White provided a huge spark with 18 points on 6-for-10 shooting, including four makes from beyond the arc.",
+      "dans_take": "He continues to be the glue that keeps this entire machine running smoothly."
+    },
+    {
+      "category": "Heater",
+      "player": "Sam Hauser",
+      "trend": "Sam Hauser came off the bench and drilled three of his five attempts from downtown to finish with nine points.",
+      "dans_take": "When he is feeling it, the spacing for this team becomes impossible to defend."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Charlotte Hornets",
+      "away_team": "Boston Celtics",
+      "home_score": 80,
+      "away_score": 119,
+      "game_date": "2026-11-06",
+      "played": true,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-06",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-06",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-06",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-11-06",
+      "matchup": "Boston Celtics at Charlotte Hornets",
+      "day_of_week": "Friday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Florida Panthers at Boston Bruins",
+      "day_of_week": "Sunday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Green Bay Packers at New England Patriots",
+      "day_of_week": "Sunday",
+      "time_et": "4:25 PM ET"
+    },
+    {
+      "date": "2026-11-08",
+      "matchup": "Boston Celtics at Milwaukee Bucks",
+      "day_of_week": "Sunday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-10",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-11",
+      "matchup": "Boston Celtics at Toronto Raptors",
+      "day_of_week": "Wednesday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-12",
+      "matchup": "Montr\u00e9al Canadiens at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-14",
+      "matchup": "Minnesota Wild at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-11-07",
+    "teams": [
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "7-2",
+        "last": {
+          "date": "2026-11-06",
+          "day_of_week": "Friday",
+          "opponent": "Charlotte Hornets",
+          "home": false,
+          "boston_score": 119,
+          "opponent_score": 80,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Milwaukee Bucks",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "12-4",
+        "last": {
+          "date": "2026-11-05",
+          "day_of_week": "Thursday",
+          "opponent": "Penguins",
+          "home": false,
+          "boston_score": 6,
+          "opponent_score": 2,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "time_et": "1:00 PM ET",
+          "opponent": "Florida Panthers",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-3",
+        "last": {
+          "date": "2026-11-01",
+          "day_of_week": "Sunday",
+          "opponent": "Miami Dolphins",
+          "home": false,
+          "boston_score": 24,
+          "opponent_score": 19,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "time_et": "4:25 PM ET",
+          "opponent": "Green Bay Packers",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}

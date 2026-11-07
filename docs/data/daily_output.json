@@ -1,62 +1,67 @@
 {
-  "headline": "Bruins crush Penguins in road blowout as Zacha leads offensive explosion",
+  "headline": "Tatum explodes for thirty-four as Celtics crush Hornets in Cup play",
   "morning_brew": [
-    "Thursday night was a straight-up party on the road. The B's went into Pittsburgh and absolutely dismantled the Penguins, walking away with a 6-2 win that had me grinning from ear to ear. When the boys play with that kind of pace and commitment, it's a hell of a thing to watch, especially seeing the puck movement clicking like it did all night long. This was a statement game that reminds everyone exactly why we\u2019re feeling so good about the state of this roster right now.",
-    "Pavel Zacha was the star of the show, but the whole squad was firing on all cylinders. Michael DiPietro stood tall in net and kept things steady while the offense kept the pressure on, and honestly, after that shaky start to the season, watching this kind of dominant, physical performance is exactly what the doctor ordered. I\u2019m not saying anything and I don't wanna jinx it, but this team is cooking right now and that\u2019s three straight wins for the good guys.",
-    "Now we look ahead to Sunday afternoon when we return to the Garden to host Florida. It\u2019s a massive test against a team that\u2019s been a thorn in our side, and I\u2019ll be sitting in my chair at one o'clock sharp hoping for another display like we saw against Pittsburgh. In the meantime, the C's are heading down to Charlotte tonight for a Friday matchup, so we\u2019ve got plenty of action to keep us busy in the Hub."
+    "Friday night was an absolute clinic down in Charlotte, and honestly, the C's made it look like a glorified scrimmage. We demolished the Hornets 119-80, and when we play defense with that kind of nasty intensity, it is pretty clear why we are sitting at 7-2 on the season. Jayson Tatum was the man of the hour with 34 points and nine assists, but the whole team looked locked in and ready to make a serious statement in NBA Cup play.",
+    "Watching this squad move the ball like that is a total blast, especially when guys like Derrick White and Sam Hauser are knocking down shots from deep with that kind of sick consistency. It feels like the rhythm we were chasing earlier in the year is finally here, and I am loving the way we are putting teams away in the second half. My ma watched the first half and said they looked like they were having fun for the first time all year, and I have to agree with her, even if she usually just complains about the volume of the broadcast.",
+    "We have a quick turnaround with a game against Milwaukee on Sunday night, and that is gonna be a much tougher test than what we saw on Friday. The Bucks are struggling, but you can never take them lightly in their own building. I will be glued to the TV for that one, knocking on wood, hoping we keep this momentum rolling and put some more distance between us and the rest of the pack in the East."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Pavel Zacha",
-      "trend": "Pavel Zacha scored two goals and added an assist to lead the Bruins to a 6-2 victory.",
-      "dans_take": "The man was a one-man wrecking crew, absolute clinic from Zacha."
+      "player": "Jayson Tatum",
+      "trend": "Jayson Tatum scorched the nets for 34 points on 9-for-16 shooting while adding nine assists and eight rebounds in the win.",
+      "dans_take": "That is the kind of performance that puts the entire league on notice."
     },
     {
-      "category": "Trench Report",
-      "player": "Morgan Geekie",
-      "trend": "Morgan Geekie added a goal and an assist in sixty minutes of high-intensity play.",
-      "dans_take": "Geekie is playing like he's got something to prove, and I love every second of it."
+      "category": "Heater",
+      "player": "Derrick White",
+      "trend": "Derrick White provided a huge spark with 18 points on 6-for-10 shooting, including four makes from beyond the arc.",
+      "dans_take": "He continues to be the glue that keeps this entire machine running smoothly."
     },
     {
-      "category": "Streak",
-      "player": "Michael DiPietro",
-      "trend": "Michael DiPietro turned away sixteen of eighteen shots to secure his first win of the season.",
-      "dans_take": "He shook off the nerves and played like he owned the blue paint."
+      "category": "Heater",
+      "player": "Sam Hauser",
+      "trend": "Sam Hauser came off the bench and drilled three of his five attempts from downtown to finish with nine points.",
+      "dans_take": "When he is feeling it, the spacing for this team becomes impossible to defend."
     }
   ],
   "news_digest": [
     {
-      "headline": "Zacha scores twice to lead the Bruins to a 6-2 victory over the struggling Penguins",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892654",
-      "dans_take": "That wasn't just a win, that was a statement that the B's have arrived."
+      "headline": "Jayson Tatum scores 34 as Celtics demolish the Hornets 119-80 in NBA Cup play",
+      "url": "http://www.espn.com/nba/recap?gameId=401909288",
+      "dans_take": "Demolishing an opponent on the road is exactly what we needed to see."
     },
     {
-      "headline": "Hornets and Celtics meet Friday in NBA Cup group stage",
-      "url": "http://www.espn.com/nba/preview?gameId=401909288",
-      "dans_take": "Time to keep the C's rolling and stack another W in the Cup."
+      "headline": "Hunter Henry hopeful to play after limited practice Friday",
+      "url": "https://www.espn.com/video/clip/_/id/50402678/hunter-henry-hopeful-play-limited-practice-friday",
+      "dans_take": "We need him out there against the Packers if we want to keep this winning streak alive."
+    },
+    {
+      "headline": "Patriots' TreVeyon Henderson affected by neurological symptoms",
+      "url": "https://www.espn.com/nfl/story/_/id/50400016/patriots-treveyon-henderson-affected-neurological-symptoms",
+      "dans_take": "This is scary stuff, and I really hope he gets the answers he needs for his own sake."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-05",
-      "played": false,
+      "home_team": "Charlotte Hornets",
+      "away_team": "Boston Celtics",
+      "home_score": 80,
+      "away_score": 119,
+      "game_date": "2026-11-06",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Penguins",
-      "away_team": "Boston Bruins",
-      "home_score": 2,
-      "away_score": 6,
-      "game_date": "2026-11-05",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-06",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,7 +69,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-05",
+      "game_date": "2026-11-06",
       "played": false,
       "season_type": "playoff"
     },
@@ -74,7 +79,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-05",
+      "game_date": "2026-11-06",
       "played": false,
       "season_type": "regular"
     }
@@ -121,6 +126,12 @@
       "matchup": "Montr\u00e9al Canadiens at Boston Bruins",
       "day_of_week": "Thursday",
       "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-14",
+      "matchup": "Minnesota Wild at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
     }
   ],
   "_timings": [
@@ -128,60 +139,26 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.64,
-      "prompt_tokens": 40795,
-      "output_tokens": 1310,
+      "seconds": 4.14,
+      "prompt_tokens": 41708,
+      "output_tokens": 1424,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 3.45,
-      "prompt_tokens": 17784,
-      "output_tokens": 1328,
+      "seconds": 3.47,
+      "prompt_tokens": 17863,
+      "output_tokens": 1445,
       "thinking_tokens": null
     }
   ],
   "_grounding": "quota_exhausted",
-  "generated_at": "2026-11-06T15:46:32.688285+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    {
-      "rule": 17,
-      "detail": "The content incorrectly identifies the Bruins game against the Penguins as occurring on 'Thursday night', when the game date in the rolling_7day data is 2026-11-05, which was a Wednesday."
-    }
-  ],
+  "generated_at": "2026-11-07T15:47:24.325818+00:00",
   "team_pulse": {
-    "as_of": "2026-11-06",
+    "as_of": "2026-11-07",
     "teams": [
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "6-2",
-        "last": {
-          "date": "2026-11-04",
-          "day_of_week": "Wednesday",
-          "opponent": "Milwaukee Bucks",
-          "home": true,
-          "boston_score": 109,
-          "opponent_score": 102,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-06",
-          "day_of_week": "Friday",
-          "time_et": "7:00 PM ET",
-          "opponent": "Charlotte Hornets",
-          "home": false,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -191,6 +168,33 @@
         "record": null,
         "last": null,
         "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "7-2",
+        "last": {
+          "date": "2026-11-06",
+          "day_of_week": "Friday",
+          "opponent": "Charlotte Hornets",
+          "home": false,
+          "boston_score": 119,
+          "opponent_score": 80,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Milwaukee Bucks",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
       },
       {
         "team": "bruins",
@@ -248,5 +252,5 @@
       }
     ]
   },
-  "date": "2026-11-06"
+  "date": "2026-11-07"
 }
