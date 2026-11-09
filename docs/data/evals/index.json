@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-11-04",
     "2026-11-05",
     "2026-11-06",
     "2026-11-07",
-    "2026-11-08"
+    "2026-11-08",
+    "2026-11-09"
   ],
   "rules": [
     {
@@ -99,29 +99,29 @@
     }
   ],
   "summary_5day": {
-    "fresh": 2,
-    "retry": 3,
+    "fresh": 1,
+    "retry": 4,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 15,
-        "count": 3,
+        "count": 4,
         "title": "Phantom scheduled game"
       },
       {
         "rule": 10,
-        "count": 2,
+        "count": 3,
         "title": "Voice repetition"
       },
       {
-        "rule": 8,
-        "count": 1,
-        "title": "Fabricated historical events"
+        "rule": 12,
+        "count": 2,
+        "title": "Game coverage gap"
       }
     ],
     "rule15_agreement": {
-      "deterministic": 0,
+      "deterministic": 1,
       "llm": 2,
       "both": 0
     }

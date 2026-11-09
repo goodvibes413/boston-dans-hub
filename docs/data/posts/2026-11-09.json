@@ -1,0 +1,227 @@
+{
+  "date": "2026-11-09",
+  "generated_at": "2026-11-09T19:57:07.445660+00:00",
+  "headline": "Bruins dominate Florida as Patriots fall in brutal Sunday blowout",
+  "morning_brew": [
+    "Sunday was a total rollercoaster of emotions for every one of us in the Hub. The Bruins finally gave us something to cheer about at the Garden, putting on a clinic against the Panthers with a 4-1 win that actually felt like hockey. It was a testy affair from the opening puck drop, but the boys responded with three goals in the first period to set the tone. Elias Lindholm, Michael Eyssimont, and Morgan Geekie all found the back of the net early, and Jeremy Swayman was a brick wall in the crease, turning aside forty of forty-one shots to keep Florida at bay all afternoon. I sat there watching the second and third periods thinking that for once, nobody was trying to give me an ulcer.",
+    "Over at Gillette Stadium, the mood was a whole lot darker after the Patriots dropped a 45-27 heartbreaker to the Packers. It was a tough one to stomach, especially watching the defense look like a bunch of traffic cones while the offense fought uphill for most of the day. Drake Maye put up three scores through the air, but three costly interceptions made it nearly impossible to climb back into contention. My neighbor Rick is already deep into his umpire dossier, and today he shifted his focus to the officiating in Foxborough, swearing on his life that the league has a massive vendetta against our secondary. I don't know about a vendetta, but I do know the defense couldn't stop a nosebleed out there.",
+    "Looking ahead, the C's are heading to Philadelphia on Tuesday to keep their win streak alive. They are coming off a solid 117-97 road win against Milwaukee, where the ball movement looked like the vintage team basketball we've come to expect. It's gonna be a big test against a 76ers team that's been sitting right at the top of the East, but if we play with the kind of defensive intensity we showed Sunday, I like our chances. We've got a busy week of hoops ahead, and I'll be glued to the screen for every second of it, assuming my heart can take it after this weekend."
+  ],
+  "news_digest": [
+    {
+      "headline": "Elias Lindholm scores 1st of Boston's 3 goals in 1st period, carrying Bruins past Panthers, 4-1",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892674",
+      "dans_take": "Seeing the B's jump out to a lead like that was exactly the medicine I needed after a rough Sunday morning."
+    },
+    {
+      "headline": "Boston plays Philadelphia on 3-game win streak",
+      "url": "http://www.espn.com/nba/preview?gameId=401909961",
+      "dans_take": "We're heading into a massive matchup and I'm ready to see if the boys can keep this momentum rolling."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Jeremy Swayman",
+      "trend": "Turned aside forty shots to earn the victory and finish with a save percentage of point nine seven six.",
+      "dans_take": "That's the kind of performance that reminds me why I sleep better knowing he's our guy in the crease."
+    },
+    {
+      "category": "Heater",
+      "player": "DeMario Douglas",
+      "trend": "Hauled in five catches for a total of one hundred and two yards against the Green Bay secondary.",
+      "dans_take": "At least someone was actually finding space out there when the game fell off the rails."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Drake Maye",
+      "trend": "Finished his afternoon with twenty-one completions on thirty-eight attempts while throwing three interceptions.",
+      "dans_take": "The kid had a rough day at the office, and those three picks were a straight-up backbreaker."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Milwaukee Bucks",
+      "away_team": "Boston Celtics",
+      "home_score": 97,
+      "away_score": 117,
+      "game_date": "2026-11-08",
+      "played": true,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Boston Bruins",
+      "away_team": "Panthers",
+      "home_score": 4,
+      "away_score": 1,
+      "game_date": "2026-11-08",
+      "played": true,
+      "season_type": "regular"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-08",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": "New England Patriots",
+      "away_team": "Green Bay Packers",
+      "home_score": 27,
+      "away_score": 45,
+      "game_date": "2026-11-08",
+      "played": true,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-11-08",
+      "matchup": "Boston Celtics at Milwaukee Bucks",
+      "day_of_week": "Sunday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-10",
+      "matchup": "Boston Celtics at Philadelphia 76ers",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-11",
+      "matchup": "Boston Celtics at Toronto Raptors",
+      "day_of_week": "Wednesday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-12",
+      "matchup": "Montr\u00e9al Canadiens at Boston Bruins",
+      "day_of_week": "Thursday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-14",
+      "matchup": "Minnesota Wild at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-15",
+      "matchup": "New England Patriots at Detroit Lions",
+      "day_of_week": "Sunday",
+      "time_et": "9:30 AM ET"
+    },
+    {
+      "date": "2026-11-15",
+      "matchup": "Dallas Mavericks at Boston Celtics",
+      "day_of_week": "Sunday",
+      "time_et": "6:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-11-09",
+    "teams": [
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "8-2",
+        "last": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "opponent": "Milwaukee Bucks",
+          "home": false,
+          "boston_score": 117,
+          "opponent_score": 97,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-10",
+          "day_of_week": "Tuesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Philadelphia 76ers",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "13-4",
+        "last": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "opponent": "Panthers",
+          "home": true,
+          "boston_score": 4,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-12",
+          "day_of_week": "Thursday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Montr\u00e9al Canadiens",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-4",
+        "last": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "opponent": "Green Bay Packers",
+          "home": true,
+          "boston_score": 27,
+          "opponent_score": 45,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-15",
+          "day_of_week": "Sunday",
+          "time_et": "9:30 AM ET",
+          "opponent": "Detroit Lions",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}

@@ -1,51 +1,62 @@
 {
-  "headline": "Bruins host Panthers and Pats face Packers on a busy Sunday",
+  "headline": "Bruins dominate Florida as Patriots fall in brutal Sunday blowout",
   "morning_brew": [
-    "It is a massive Sunday in the Hub with two of our squads taking the field at home. The B's are back at the Garden this afternoon to host Florida, a team that has been a real thorn in our side for way too long. We have been playing some disciplined hockey, and I need the boys to bring that intensity from the opening puck drop. Getting two points against a divisional rival in our own barn would go a long way in settling some old scores, and my neighbor Rick has been pacing around the driveway since sunrise clutching an umpire dossier that is already four inches thick, swearing today is the day we finally show them who is boss.",
-    "After the hockey wraps up, we switch gears to Gillette Stadium for a late-afternoon kickoff against Green Bay. The Patriots are looking to build on the momentum they have been finding lately, and I will be watching to see how our guys match up against a team that always brings a physical fight. It is never an easy day in the NFL, but after all the noise during the week about the trade deadline, I am just ready to see our guys execute and play clean football for sixty minutes. My pops always said that games like this are won in the trenches, and if we can control the line of scrimmage, we have every chance to walk away happy.",
-    "To wrap it all up, the C's are heading out to Milwaukee tonight for a road date against the Bucks. They have been firing on all cylinders lately, playing the kind of team basketball that makes you forget all about the stress of the early season schedule. Seeing them move the ball with such confidence is a treat, and I am hopeful that they can keep that streak of high-level play moving forward in front of a hostile crowd. It is a long day of sports ahead, so grab a large iced from Dunks and buckle up, because this is exactly the kind of weekend that makes living here worth the headache."
+    "Sunday was a total rollercoaster of emotions for every one of us in the Hub. The Bruins finally gave us something to cheer about at the Garden, putting on a clinic against the Panthers with a 4-1 win that actually felt like hockey. It was a testy affair from the opening puck drop, but the boys responded with three goals in the first period to set the tone. Elias Lindholm, Michael Eyssimont, and Morgan Geekie all found the back of the net early, and Jeremy Swayman was a brick wall in the crease, turning aside forty of forty-one shots to keep Florida at bay all afternoon. I sat there watching the second and third periods thinking that for once, nobody was trying to give me an ulcer.",
+    "Over at Gillette Stadium, the mood was a whole lot darker after the Patriots dropped a 45-27 heartbreaker to the Packers. It was a tough one to stomach, especially watching the defense look like a bunch of traffic cones while the offense fought uphill for most of the day. Drake Maye put up three scores through the air, but three costly interceptions made it nearly impossible to climb back into contention. My neighbor Rick is already deep into his umpire dossier, and today he shifted his focus to the officiating in Foxborough, swearing on his life that the league has a massive vendetta against our secondary. I don't know about a vendetta, but I do know the defense couldn't stop a nosebleed out there.",
+    "Looking ahead, the C's are heading to Philadelphia on Tuesday to keep their win streak alive. They are coming off a solid 117-97 road win against Milwaukee, where the ball movement looked like the vintage team basketball we've come to expect. It's gonna be a big test against a 76ers team that's been sitting right at the top of the East, but if we play with the kind of defensive intensity we showed Sunday, I like our chances. We've got a busy week of hoops ahead, and I'll be glued to the screen for every second of it, assuming my heart can take it after this weekend."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Jayson Tatum",
-      "trend": "Jayson Tatum dominated the Hornets with thirty-four points, nine assists, and eight rebounds during the recent cup victory.",
-      "dans_take": "That is the kind of performance that puts the entire league on notice, provided they were actually watching."
+      "player": "Jeremy Swayman",
+      "trend": "Turned aside forty shots to earn the victory and finish with a save percentage of point nine seven six.",
+      "dans_take": "That's the kind of performance that reminds me why I sleep better knowing he's our guy in the crease."
     },
     {
-      "category": "Streak",
-      "player": "Boston Bruins",
-      "trend": "The Bruins enter today's matchup riding a wave of three consecutive victories.",
-      "dans_take": "I am not saying a word and I am certainly not touching the trophy, but the rhythm they have found lately is beautiful to watch."
+      "category": "Heater",
+      "player": "DeMario Douglas",
+      "trend": "Hauled in five catches for a total of one hundred and two yards against the Green Bay secondary.",
+      "dans_take": "At least someone was actually finding space out there when the game fell off the rails."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Drake Maye",
+      "trend": "Finished his afternoon with twenty-one completions on thirty-eight attempts while throwing three interceptions.",
+      "dans_take": "The kid had a rough day at the office, and those three picks were a straight-up backbreaker."
     }
   ],
   "news_digest": [
     {
-      "headline": "Weekly Patriots notes: What New England could do at the trade deadline, intel",
-      "url": "https://www.espn.com/nfl/story/_/id/50401769/new-england-patriots-notebook-week-9-trade-deadline-plans",
-      "dans_take": "The deadline chatter is heating up, and we will see if the front office actually pulls the trigger on something useful."
+      "headline": "Elias Lindholm scores 1st of Boston's 3 goals in 1st period, carrying Bruins past Panthers, 4-1",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892674",
+      "dans_take": "Seeing the B's jump out to a lead like that was exactly the medicine I needed after a rough Sunday morning."
+    },
+    {
+      "headline": "Boston plays Philadelphia on 3-game win streak",
+      "url": "http://www.espn.com/nba/preview?gameId=401909961",
+      "dans_take": "We're heading into a massive matchup and I'm ready to see if the boys can keep this momentum rolling."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-07",
-      "played": false,
+      "home_team": "Milwaukee Bucks",
+      "away_team": "Boston Celtics",
+      "home_score": 97,
+      "away_score": 117,
+      "game_date": "2026-11-08",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-07",
-      "played": false,
-      "season_type": "unknown"
+      "home_team": "Boston Bruins",
+      "away_team": "Panthers",
+      "home_score": 4,
+      "away_score": 1,
+      "game_date": "2026-11-08",
+      "played": true,
+      "season_type": "regular"
     },
     "redsox": {
       "sport": "MLB",
@@ -53,34 +64,22 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-07",
+      "game_date": "2026-11-08",
       "played": false,
       "season_type": "playoff"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-07",
-      "played": false,
+      "home_team": "New England Patriots",
+      "away_team": "Green Bay Packers",
+      "home_score": 27,
+      "away_score": 45,
+      "game_date": "2026-11-08",
+      "played": true,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-08",
-      "matchup": "Florida Panthers at Boston Bruins",
-      "day_of_week": "Sunday",
-      "time_et": "1:00 PM ET"
-    },
-    {
-      "date": "2026-11-08",
-      "matchup": "Green Bay Packers at New England Patriots",
-      "day_of_week": "Sunday",
-      "time_et": "4:25 PM ET"
-    },
     {
       "date": "2026-11-08",
       "matchup": "Boston Celtics at Milwaukee Bucks",
@@ -129,118 +128,37 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 8.77,
-      "prompt_tokens": 40678,
-      "output_tokens": 1218,
+      "seconds": 4.09,
+      "prompt_tokens": 43295,
+      "output_tokens": 1411,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 3.83,
-      "prompt_tokens": 17657,
-      "output_tokens": 1244,
+      "seconds": 4.27,
+      "prompt_tokens": 17907,
+      "output_tokens": 1498,
       "thinking_tokens": null
     }
   ],
   "_grounding": "off",
-  "generated_at": "2026-11-08T14:51:54.235627+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    {
-      "rule": 8,
-      "detail": "The content references a game in Pittsburgh for the Bruins ('After the grit they showed in Pittsburgh') which is a fabricated historical event not present in the source data."
-    },
+  "generated_at": "2026-11-09T19:57:07.445660+00:00",
+  "_quality_warning": true,
+  "_quality_flags": [
     {
       "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"to keep this winning streak alive\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "detail": "repetition: number-masked sentence skeleton \"I'll be glued to the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    },
+    {
+      "rule": 15,
+      "detail": "phantom game: output claims patriots has a game today (2026-11-09); upcoming_schedule lists none (next game 2026-11-15). Sentence: My neighbor Rick is already deep into his umpire dossier, and today he shifted his focus to the officiating in Foxborough, swearing on his life that the league "
     }
   ],
   "team_pulse": {
-    "as_of": "2026-11-08",
+    "as_of": "2026-11-09",
     "teams": [
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "7-2",
-        "last": {
-          "date": "2026-11-06",
-          "day_of_week": "Friday",
-          "opponent": "Charlotte Hornets",
-          "home": false,
-          "boston_score": 119,
-          "opponent_score": 80,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-08",
-          "day_of_week": "Sunday",
-          "time_et": "8:00 PM ET",
-          "opponent": "Milwaukee Bucks",
-          "home": false,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "12-4",
-        "last": {
-          "date": "2026-11-05",
-          "day_of_week": "Thursday",
-          "opponent": "Penguins",
-          "home": false,
-          "boston_score": 6,
-          "opponent_score": 2,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-08",
-          "day_of_week": "Sunday",
-          "time_et": "1:00 PM ET",
-          "opponent": "Florida Panthers",
-          "home": true,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "patriots",
-        "label": "Patriots",
-        "sport": "NFL",
-        "phase": "regular",
-        "opener": false,
-        "record": "5-3",
-        "last": {
-          "date": "2026-11-01",
-          "day_of_week": "Sunday",
-          "opponent": "Miami Dolphins",
-          "home": false,
-          "boston_score": 24,
-          "opponent_score": 19,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-08",
-          "day_of_week": "Sunday",
-          "time_et": "4:25 PM ET",
-          "opponent": "Green Bay Packers",
-          "home": true,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -250,8 +168,89 @@
         "record": null,
         "last": null,
         "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "8-2",
+        "last": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "opponent": "Milwaukee Bucks",
+          "home": false,
+          "boston_score": 117,
+          "opponent_score": 97,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-10",
+          "day_of_week": "Tuesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Philadelphia 76ers",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "13-4",
+        "last": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "opponent": "Panthers",
+          "home": true,
+          "boston_score": 4,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-12",
+          "day_of_week": "Thursday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Montr\u00e9al Canadiens",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-4",
+        "last": {
+          "date": "2026-11-08",
+          "day_of_week": "Sunday",
+          "opponent": "Green Bay Packers",
+          "home": true,
+          "boston_score": 27,
+          "opponent_score": 45,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-15",
+          "day_of_week": "Sunday",
+          "time_et": "9:30 AM ET",
+          "opponent": "Detroit Lions",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
       }
     ]
   },
-  "date": "2026-11-08"
+  "date": "2026-11-09"
 }
