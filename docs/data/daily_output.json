@@ -1,62 +1,56 @@
 {
-  "headline": "Bruins dominate Florida as Patriots fall in brutal Sunday blowout",
+  "headline": "Celtics hit Philly as Patriots suffer gut-wrenching Rhamondre Stevenson injury",
   "morning_brew": [
-    "Sunday was a total rollercoaster of emotions for every one of us in the Hub. The Bruins finally gave us something to cheer about at the Garden, putting on a clinic against the Panthers with a 4-1 win that actually felt like hockey. It was a testy affair from the opening puck drop, but the boys responded with three goals in the first period to set the tone. Elias Lindholm, Michael Eyssimont, and Morgan Geekie all found the back of the net early, and Jeremy Swayman was a brick wall in the crease, turning aside forty of forty-one shots to keep Florida at bay all afternoon. I sat there watching the second and third periods thinking that for once, nobody was trying to give me an ulcer.",
-    "Over at Gillette Stadium, the mood was a whole lot darker after the Patriots dropped a 45-27 heartbreaker to the Packers. It was a tough one to stomach, especially watching the defense look like a bunch of traffic cones while the offense fought uphill for most of the day. Drake Maye put up three scores through the air, but three costly interceptions made it nearly impossible to climb back into contention. My neighbor Rick is already deep into his umpire dossier, and today he shifted his focus to the officiating in Foxborough, swearing on his life that the league has a massive vendetta against our secondary. I don't know about a vendetta, but I do know the defense couldn't stop a nosebleed out there.",
-    "Looking ahead, the C's are heading to Philadelphia on Tuesday to keep their win streak alive. They are coming off a solid 117-97 road win against Milwaukee, where the ball movement looked like the vintage team basketball we've come to expect. It's gonna be a big test against a 76ers team that's been sitting right at the top of the East, but if we play with the kind of defensive intensity we showed Sunday, I like our chances. We've got a busy week of hoops ahead, and I'll be glued to the screen for every second of it, assuming my heart can take it after this weekend."
+    "The C's are rolling into Philadelphia for a massive Tuesday night showdown against the 76ers. We're riding a three-game win streak, but going into the Xfinity Mobile Arena to face a team that sits right ahead of us in the standings is gonna be the real test of where this group is at. It's the first time Jaylen Brown is gonna suit up against the boys in green since the move, and you can bet the atmosphere in Philly is gonna be electric. I've been watching the ball movement all week, and if Jayson Tatum keeps finding his spots like he has during this run, we've got more than enough firepower to go in there and steal a win on the road.",
+    "The news out of Foxborough this morning is a total gut punch. Rhamondre Stevenson is expected to miss time with a knee tendon issue, which is the last thing this offense needed while we're trying to find some consistency in the back half of the season. He's been the engine for us on the ground, and seeing him go down is a massive blow to the game plan. The front office is gonna have to lean on the depth in the room, but let's be honest, replacing a back of his caliber is easier said than done. It feels like one step forward and two steps back every damn week with this squad.",
+    "It is a tough look for the Patriots, especially with the draft projections starting to pop up all over the place, but we've got a lot of football left to play. I will be watching the Celtics tonight through my fingers because these Philly matchups never fail to spike my blood pressure. No matter what happens on the court or the gridiron, it's never a dull moment being a fan in this town. Grab your Dunks and stay tuned, because this week is shaping up to be a real ride."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Jeremy Swayman",
-      "trend": "Turned aside forty shots to earn the victory and finish with a save percentage of point nine seven six.",
-      "dans_take": "That's the kind of performance that reminds me why I sleep better knowing he's our guy in the crease."
-    },
-    {
-      "category": "Heater",
-      "player": "DeMario Douglas",
-      "trend": "Hauled in five catches for a total of one hundred and two yards against the Green Bay secondary.",
-      "dans_take": "At least someone was actually finding space out there when the game fell off the rails."
+      "player": "Jayson Tatum",
+      "trend": "Tatum has been a force during the current three-game win streak, consistently driving the offense and creating quality looks for his teammates.",
+      "dans_take": "The man is playing at an MVP level, and we are gonna need that focus to survive Philly."
     },
     {
       "category": "Cold Snap",
-      "player": "Drake Maye",
-      "trend": "Finished his afternoon with twenty-one completions on thirty-eight attempts while throwing three interceptions.",
-      "dans_take": "The kid had a rough day at the office, and those three picks were a straight-up backbreaker."
+      "player": "Rhamondre Stevenson",
+      "trend": "Stevenson is expected to be sidelined for a short period of time after being diagnosed with a knee tendon issue.",
+      "dans_take": "Losing him hurts more than a cold morning without a Dunks run, and I just pray for a quick recovery."
     }
   ],
   "news_digest": [
     {
-      "headline": "Elias Lindholm scores 1st of Boston's 3 goals in 1st period, carrying Bruins past Panthers, 4-1",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892674",
-      "dans_take": "Seeing the B's jump out to a lead like that was exactly the medicine I needed after a rough Sunday morning."
+      "headline": "Source: Pats' Rhamondre Stevenson expected to miss time with knee tendon issue",
+      "url": "https://www.espn.com/nfl/story/_/id/50438482/patriots-rhamondre-stevenson-dealing-knee-tendon-issue",
+      "dans_take": "Just our friggin' luck to lose the best back on the roster when the season is on the line."
     },
     {
-      "headline": "Boston plays Philadelphia on 3-game win streak",
-      "url": "http://www.espn.com/nba/preview?gameId=401909961",
-      "dans_take": "We're heading into a massive matchup and I'm ready to see if the boys can keep this momentum rolling."
+      "headline": "As Jaylen Brown faces the Celtics for the first time, familiar questions linger",
+      "url": "https://www.espn.com/nba/story/_/id/50401325/jaylen-brown-faces-boston-celtics-jayson-tatum-sixers",
+      "dans_take": "Seeing Brown in a Sixers jersey is gonna feel like a bad dream, but that is the business I suppose."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Milwaukee Bucks",
-      "away_team": "Boston Celtics",
-      "home_score": 97,
-      "away_score": 117,
-      "game_date": "2026-11-08",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-09",
+      "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Panthers",
-      "home_score": 4,
-      "away_score": 1,
-      "game_date": "2026-11-08",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-09",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,28 +58,22 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-08",
+      "game_date": "2026-11-09",
       "played": false,
       "season_type": "playoff"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "New England Patriots",
-      "away_team": "Green Bay Packers",
-      "home_score": 27,
-      "away_score": 45,
-      "game_date": "2026-11-08",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-09",
+      "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-08",
-      "matchup": "Boston Celtics at Milwaukee Bucks",
-      "day_of_week": "Sunday",
-      "time_et": "8:00 PM ET"
-    },
     {
       "date": "2026-11-10",
       "matchup": "Boston Celtics at Philadelphia 76ers",
@@ -121,6 +109,18 @@
       "matchup": "Dallas Mavericks at Boston Celtics",
       "day_of_week": "Sunday",
       "time_et": "6:00 PM ET"
+    },
+    {
+      "date": "2026-11-16",
+      "matchup": "Orlando Magic at Boston Celtics",
+      "day_of_week": "Monday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-17",
+      "matchup": "Los Angeles Kings at Boston Bruins",
+      "day_of_week": "Tuesday",
+      "time_et": "7:00 PM ET"
     }
   ],
   "_timings": [
@@ -128,47 +128,33 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.09,
-      "prompt_tokens": 43295,
-      "output_tokens": 1411,
+      "seconds": 8.14,
+      "prompt_tokens": 40084,
+      "output_tokens": 1416,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.27,
-      "prompt_tokens": 17907,
-      "output_tokens": 1498,
+      "seconds": 4.45,
+      "prompt_tokens": 17860,
+      "output_tokens": 1419,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "off",
-  "generated_at": "2026-11-09T19:57:07.445660+00:00",
+  "_grounding": "quota_exhausted",
+  "generated_at": "2026-11-10T16:13:21.731763+00:00",
   "_quality_warning": true,
   "_quality_flags": [
     {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"I'll be glued to the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    },
-    {
-      "rule": 15,
-      "detail": "phantom game: output claims patriots has a game today (2026-11-09); upcoming_schedule lists none (next game 2026-11-15). Sentence: My neighbor Rick is already deep into his umpire dossier, and today he shifted his focus to the officiating in Foxborough, swearing on his life that the league "
+      "rule": 12,
+      "detail": "The Bruins played the Florida Panthers on 2026-11-08 (per rolling_7day), but the morning_brew fails to mention this game at all."
     }
   ],
   "team_pulse": {
-    "as_of": "2026-11-09",
+    "as_of": "2026-11-10",
     "teams": [
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      },
       {
         "team": "celtics",
         "label": "Celtics",
@@ -193,8 +179,18 @@
           "opponent": "Philadelphia 76ers",
           "home": false,
           "season_type": "regular",
-          "is_today": false
+          "is_today": true
         }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
       },
       {
         "team": "bruins",
@@ -252,5 +248,5 @@
       }
     ]
   },
-  "date": "2026-11-09"
+  "date": "2026-11-10"
 }

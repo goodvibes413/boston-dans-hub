@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-11-05",
     "2026-11-06",
     "2026-11-07",
     "2026-11-08",
-    "2026-11-09"
+    "2026-11-09",
+    "2026-11-10"
   ],
   "rules": [
     {
@@ -106,17 +106,17 @@
     "most_flagged_rules": [
       {
         "rule": 15,
-        "count": 4,
+        "count": 5,
         "title": "Phantom scheduled game"
       },
       {
         "rule": 10,
-        "count": 3,
+        "count": 5,
         "title": "Voice repetition"
       },
       {
         "rule": 12,
-        "count": 2,
+        "count": 3,
         "title": "Game coverage gap"
       }
     ],
