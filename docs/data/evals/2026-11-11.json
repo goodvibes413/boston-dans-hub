@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-11",
+  "generated_at": "2026-11-11T15:55:52.163806+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 21.4,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content claims the Celtics play 'Tonight' (2026-11-11) in Toronto, but the UPCOMING_SCHEDULE lists the game as Wednesday, 2026-11-11, and the content incorrectly identifies today as Wednesday."
+        }
+      ],
+      "duration_seconds": 9.2
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 1.8
+    }
+  ]
+}
