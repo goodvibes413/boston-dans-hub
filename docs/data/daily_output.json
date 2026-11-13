@@ -1,62 +1,56 @@
 {
-  "headline": "Celtics claw back from the dead while I brace for Montreal",
+  "headline": "Bruins get steamrolled by Montreal as winning streak hits a dead end",
   "morning_brew": [
-    "That comeback against Toronto was a cardiac event that took five years off my life, and I am not kiddin'. Falling behind by twenty-two points had me pacing the living room like neighbor Rick when he hears a helicopter overhead, but these guys just refuse to quit. Neemias Queta was an absolute monster in the paint, playing like he was clearing a path for the T during rush hour, and Jayson Tatum stepping up to drain those free throws with the clock dying was pure ice. It is hard not to feel like a genius for sitting through that disaster, but my blood pressure is officially begging for a blowout win next time.",
-    "Grinding out road wins like that proves this squad has the championship maturity we were dying for last year. It was not always pretty, and the turnovers were enough to make me want to throw my remote through the wall, but they found a way when the lights were bright. Baylor Scheierman and Derrick White were hitting shots when the rim looked like a thimble, keeping us within striking distance until the final push. It is a hell of a brand of basketball, and as long as they keep moving the rock and playing with this much heart, I am happy to keep making small deposits into the Duck Boat fund.",
-    "Now we switch gears to the ice because there is nothing like a rivalry night against the Canadiens at the Garden. I expect the atmosphere to be electric from the drop of the puck, and after the way the team has been playing, I am feeling dangerous. It is always a war when Montreal comes to town, and I will be sitting in my usual spot with a fresh Dunks, hoping we can keep the momentum rolling and remind the Habs why the Garden is the absolute worst place in the league to play a road game."
+    "I am not gonna sugarcoat it, that was a damn disaster at the Garden last night. The Canadiens walked in and took it to us, snapping our seven-game home winning streak like it was a cheap pencil. Losing to Montreal is always a kick in the teeth, but watching them score five on us and leapfrog us in the standings makes it sting that much more. It was a pissah of a night, and I spent the third period staring at the ceiling, wondering how a team that was rolling so hard could look that completely lost in their own building.",
+    "Jeremy Swayman didn't have his usual stuff, getting chased after giving up four goals, and the defense looked like they were skating through wet concrete for most of the first forty minutes. We finally showed a pulse with Casey Mittelstadt netting a pair, but by then the hole was already deep enough to bury my cousin Jimmy's hopes and dreams. You can't start a rivalry game against the Habs that flat and expect to come away with two points, especially when the other team is playing with that kind of urgency. It was a brutal wake-up call for a team that looked invincible on home ice until the puck dropped.",
+    "Now we have to regroup with Minnesota coming into town on Saturday night. I expect a much better effort from the boys because losing two in a row to a team like that is not an option we can afford. I will be back in my usual spot, hoping the defensive breakdowns stay in the past and we start playing the kind of hockey that actually keeps the Duck Boat fund moving in the right direction. It is a long season, but nights like this remind you that nothing in this league comes easy."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Neemias Queta",
-      "trend": "Dominated the paint with thirteen rebounds and three blocks while anchoring the defensive effort throughout the comeback.",
-      "dans_take": "The man was a vacuum on the glass and gave us the kind of backbone that kept us in the game."
+      "player": "Casey Mittelstadt",
+      "trend": "Casey Mittelstadt provided the only bright spot by netting two goals during the second and third periods.",
+      "dans_take": "At least someone decided to show up and shoot the puck instead of just admiring the scenery."
     },
     {
-      "category": "Bullpen Watch",
-      "player": "Derrick White",
-      "trend": "Provided steady production with seven assists and four blocks to help tighten things up on the defensive end.",
-      "dans_take": "He did the dirty work when the game was on the line and that is why we keep him around."
-    },
-    {
-      "category": "Streak",
-      "player": "Baylor Scheierman",
-      "trend": "Knocked down three triples in a high-energy performance off the bench to swing the momentum back our way.",
-      "dans_take": "He brought the spark we were missing and proved he can handle the heat when the pressure spikes."
+      "category": "Cold Snap",
+      "player": "Jeremy Swayman",
+      "trend": "Jeremy Swayman struggled between the pipes, allowing four goals on seventeen shots before being pulled.",
+      "dans_take": "Usually the rock, but last night he just didn't have the magic and got left out to dry."
     }
   ],
   "news_digest": [
     {
-      "headline": "Celtics win 5th straight, overcoming 22-point deficit to beat Raptors 98-93",
-      "url": "http://www.espn.com/nba/recap?gameId=401909968",
-      "dans_take": "Five in a row feels damn good, even if the road there nearly killed me."
+      "headline": "Canadiens snap Bruins' seven-game winning streak on home ice with 5-2 win",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892696",
+      "dans_take": "Getting beat by Montreal is bad enough, but blowing a seven-game streak to them is just insulting to my blood pressure."
     },
     {
-      "headline": "Bruins take win streak into game against the Canadiens",
-      "url": "http://www.espn.com/nhl/preview?gameId=401892696",
-      "dans_take": "Nothing gets the blood pumping like a tilt against Montreal under the lights at home."
+      "headline": "NHL Power Rankings: Updated poll, plus each team's points vs. preseason projections",
+      "url": "https://www.espn.com/nhl/story/_/id/50464480/nhl-2026-27-power-rankings-top-teams-players-stats-projections-standings",
+      "dans_take": "They can rank us wherever they want, but that performance doesn't even deserve a spot on a local high school bulletin board."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Toronto Raptors",
-      "away_team": "Boston Celtics",
-      "home_score": 93,
-      "away_score": 98,
-      "game_date": "2026-11-11",
-      "played": true,
-      "season_type": "regular"
-    },
-    "bruins": {
-      "sport": "NHL",
       "home_team": null,
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-11",
+      "game_date": "2026-11-12",
       "played": false,
-      "season_type": "unknown"
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Boston Bruins",
+      "away_team": "Canadiens",
+      "home_score": 2,
+      "away_score": 5,
+      "game_date": "2026-11-12",
+      "played": true,
+      "season_type": "regular"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,7 +58,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-11",
+      "game_date": "2026-11-12",
       "played": false,
       "season_type": "playoff"
     },
@@ -74,24 +68,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-11",
+      "game_date": "2026-11-12",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-11",
-      "matchup": "Boston Celtics at Toronto Raptors",
-      "day_of_week": "Wednesday",
-      "time_et": "7:00 PM ET"
-    },
-    {
-      "date": "2026-11-12",
-      "matchup": "Montr\u00e9al Canadiens at Boston Bruins",
-      "day_of_week": "Thursday",
-      "time_et": "7:00 PM ET"
-    },
     {
       "date": "2026-11-14",
       "matchup": "Minnesota Wild at Boston Bruins",
@@ -140,51 +122,26 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.16,
-      "prompt_tokens": 42168,
-      "output_tokens": 1344,
+      "seconds": 11.1,
+      "prompt_tokens": 40523,
+      "output_tokens": 1312,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.23,
-      "prompt_tokens": 17825,
-      "output_tokens": 1357,
+      "seconds": 18.53,
+      "prompt_tokens": 17751,
+      "output_tokens": 1341,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "off",
-  "generated_at": "2026-11-12T16:39:53.583232+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"feel like a genius for sitting through\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    }
-  ],
+  "_grounding": "quota_exhausted",
+  "generated_at": "2026-11-13T15:58:52.814548+00:00",
   "team_pulse": {
-    "as_of": "2026-11-12",
+    "as_of": "2026-11-13",
     "teams": [
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "13-4",
-        "last": null,
-        "next": {
-          "date": "2026-11-12",
-          "day_of_week": "Thursday",
-          "time_et": "7:00 PM ET",
-          "opponent": "Montr\u00e9al Canadiens",
-          "home": true,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -194,6 +151,33 @@
         "record": null,
         "last": null,
         "next": null
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "13-5",
+        "last": {
+          "date": "2026-11-12",
+          "day_of_week": "Thursday",
+          "opponent": "Canadiens",
+          "home": true,
+          "boston_score": 2,
+          "opponent_score": 5,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-14",
+          "day_of_week": "Saturday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Minnesota Wild",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
       },
       {
         "team": "celtics",
@@ -251,5 +235,5 @@
       }
     ]
   },
-  "date": "2026-11-12"
+  "date": "2026-11-13"
 }
