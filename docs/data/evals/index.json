@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-11-09",
     "2026-11-10",
     "2026-11-11",
     "2026-11-12",
-    "2026-11-13"
+    "2026-11-13",
+    "2026-11-14"
   ],
   "rules": [
     {
@@ -116,13 +116,13 @@
       },
       {
         "rule": 12,
-        "count": 3,
+        "count": 1,
         "title": "Game coverage gap"
       }
     ],
     "rule15_agreement": {
-      "deterministic": 1,
-      "llm": 3,
+      "deterministic": 0,
+      "llm": 4,
       "both": 0
     }
   }
