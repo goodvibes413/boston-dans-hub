@@ -1,28 +1,40 @@
 {
-  "headline": "Bruins looking to rebound against Minnesota after that Montreal catastrophe",
+  "headline": "Bruins get shellacked by Minnesota while Patriots prep for Germany",
   "morning_brew": [
-    "It has been a miserable couple of days in the Hub since that absolute gut punch against the Canadiens. Losing to Montreal is never something you just wash down with a medium regular from Dunks, especially when it snaps a home winning streak like that. I have spent the last forty-eight hours staring at the wall wondering what the hell went sideways on the ice, and the defensive effort was a total disastah. We let them dictate the pace for way too long, and you simply cannot hand points to a rival like that and hope to survive the week.",
-    "Saturday night offers us a chance to get things back on track when the Wild roll into the Garden. Minnesota is a tough, gritty team that plays a heavy style of hockey, so we are going to need a full sixty minutes from the opening drop of the puck. It is time for the boys to shove that last performance into the incinerator, tighten up the coverage in our own zone, and get back to the kind of shutdown hockey that makes our barn such a nightmare for visitors.",
-    "I am looking for a real bounce-back effort from the leadership group. We have the talent to run with anyone in the league, but talent doesn't mean a damn thing if you don't show up with the right mindset (and I swear, if Uncle Carmine falls asleep on the couch during the first period again, I am locking him in the guest room). I will be in my seat early, and if the boys play with the desperation this team is capable of, I am confident we can get back to our winning ways. It is a big night to regain our footing, and I am ready to see us remind everyone why this squad is a force to be reckoned with."
+    "I am not gonna sugarcoat the absolute train wreck at the Garden last night. The Wild walked in and took us behind the woodshed, beating the Bruins by a four-goal margin and leaving me feeling like I just watched a horror movie. Watching our goalie struggle while the defense handed out open lanes like they were samples at a grocery store is not how I wanted to spend my Friday, especially since this makes it two straight losses. This team has been a tough watch over these last couple of nights, and if we don't start tightening up the gaps and finding some pride, the rest of the month is going to be a long climb that I am not looking forward to.",
+    "Switching gears to the gridiron, the Patriots have a massive kickoff ahead of them over in Germany against the Lions. It is a wicked weird feeling waking up to football before the coffee has even hit, but this squad needs a win to get things trending in the right direction. I am curious to see if the offensive line can finally hold up and whether Drake Maye can command the field against a gritty Detroit defense. My stomach is already in knots just thinking about the kickoff, and I really hope the boys bring their A-game across the pond because I don't think I can handle another morning of frustration.",
+    "Finally, the C's are back at the Garden later today for a matchup with Dallas. We have been on a roll lately, and it would be a hell of a statement to keep that momentum going against a tough Western Conference opponent. I plan on being planted in front of the television, hoping to see the defense lock down and the shots falling through the twine. It is a busy Sunday for all of us, and I am crossing my fingers that Boston finishes the day with a much better vibe than we started with, because Uncle Carmine is already grumpy enough about the state of the local hockey scene."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Casey Mittelstadt",
-      "trend": "Netted a pair of goals against the Canadiens in the last home outing.",
-      "dans_take": "He was the only guy on the ice who looked like he knew what a hockey game was."
+      "player": "David Pastrnak",
+      "trend": "David Pastrnak found the back of the net and added an assist during the home loss to Minnesota.",
+      "dans_take": "Pasta is doing his part to drag this team along, but he can't carry the whole roster on his back every single night."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Jeremy Swayman",
+      "trend": "Jeremy Swayman struggled between the pipes, stopping nineteen of the twenty-four shots he faced.",
+      "dans_take": "That was a rough night at the office, but I have seen enough heart from him to know he can bounce back."
+    },
+    {
+      "category": "Heater",
+      "player": "Fraser Minten",
+      "trend": "Fraser Minten netted a power play goal to provide some life for the offense.",
+      "dans_take": "It was nice to see him capitalize on the man advantage, even if the rest of the night was a total dud."
     }
   ],
   "news_digest": [
     {
-      "headline": "Canadiens snap Bruins' seven-game winning streak on home ice with 5-2 win",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892696",
-      "dans_take": "I watched that third period through my fingers like a horror movie, but we move."
+      "headline": "Wild beat Bruins behind two goals from Ryan Hartman",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892709",
+      "dans_take": "Watching the road winning streak extend at our expense was a bitter pill that I am still trying to wash down."
     },
     {
-      "headline": "NHL Power Rankings: Updated poll, plus each team's points vs. preseason projections",
-      "url": "https://www.espn.com/nhl/story/_/id/50464480/nhl-2026-27-power-rankings-top-teams-players-stats-projections-standings",
-      "dans_take": "Rankings are just paper until we actually show up and defend our home ice."
+      "headline": "Week 10 betting preview: Analysis and predictions for Sunday",
+      "url": "https://www.espn.com/espn/betting/story/_/id/50463729/week-10-nfl-odds-touchdown-props-best-bets-sunday-games",
+      "dans_take": "The experts can talk all they want, but the only thing that matters is whether we show up on that international field."
     }
   ],
   "box_scores": {
@@ -32,19 +44,19 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-13",
+      "game_date": "2026-11-14",
       "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-13",
-      "played": false,
-      "season_type": "unknown"
+      "home_team": "Boston Bruins",
+      "away_team": "Wild",
+      "home_score": 2,
+      "away_score": 6,
+      "game_date": "2026-11-14",
+      "played": true,
+      "season_type": "regular"
     },
     "redsox": {
       "sport": "MLB",
@@ -52,7 +64,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-13",
+      "game_date": "2026-11-14",
       "played": false,
       "season_type": "playoff"
     },
@@ -62,18 +74,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-13",
+      "game_date": "2026-11-14",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-14",
-      "matchup": "Minnesota Wild at Boston Bruins",
-      "day_of_week": "Saturday",
-      "time_et": "7:00 PM ET"
-    },
     {
       "date": "2026-11-15",
       "matchup": "New England Patriots at Detroit Lions",
@@ -108,13 +114,19 @@
       "date": "2026-11-18",
       "matchup": "Boston Celtics at Denver Nuggets",
       "day_of_week": "Wednesday",
-      "time_et": "9:00 PM ET"
+      "time_et": "9:30 PM ET"
     },
     {
       "date": "2026-11-21",
       "matchup": "Washington Capitals at Boston Bruins",
       "day_of_week": "Saturday",
       "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-21",
+      "matchup": "Boston Celtics at Sacramento Kings",
+      "day_of_week": "Saturday",
+      "time_et": "10:00 PM ET"
     }
   ],
   "_timings": [
@@ -122,74 +134,37 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 6.18,
-      "prompt_tokens": 40342,
-      "output_tokens": 1197,
+      "seconds": 4.51,
+      "prompt_tokens": 41571,
+      "output_tokens": 1374,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 13.14,
-      "prompt_tokens": 17636,
-      "output_tokens": 1229,
+      "seconds": 18.13,
+      "prompt_tokens": 17813,
+      "output_tokens": 1451,
       "thinking_tokens": null
     }
   ],
   "_grounding": "off",
-  "generated_at": "2026-11-14T14:54:03.090778+00:00",
+  "generated_at": "2026-11-15T15:30:06.179203+00:00",
   "_regenerated": true,
   "_regeneration_reason": [
     {
       "rule": 15,
-      "detail": "The content claims the Bruins game is 'tonight' (Saturday, 2026-11-14), but the UPCOMING_SCHEDULE lists the game as Saturday, 2026-11-14, and the content incorrectly identifies today as Thursday in the morning_brew."
+      "detail": "The content claims the Celtics are playing 'tonight' (Sunday, 2026-11-15), but the UPCOMING_SCHEDULE lists the game as Sunday, 2026-11-15, and the content incorrectly identifies today as Sunday in the morning_brew."
     },
     {
       "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"i will be back in my usual spot\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "detail": "repetition: number-masked sentence skeleton \"i will be in my seat\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     }
   ],
   "team_pulse": {
-    "as_of": "2026-11-14",
+    "as_of": "2026-11-15",
     "teams": [
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "13-5",
-        "last": {
-          "date": "2026-11-12",
-          "day_of_week": "Thursday",
-          "opponent": "Canadiens",
-          "home": true,
-          "boston_score": 2,
-          "opponent_score": 5,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-14",
-          "day_of_week": "Saturday",
-          "time_et": "7:00 PM ET",
-          "opponent": "Minnesota Wild",
-          "home": true,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      },
       {
         "team": "celtics",
         "label": "Celtics",
@@ -197,16 +172,7 @@
         "phase": "regular",
         "opener": false,
         "record": "10-2",
-        "last": {
-          "date": "2026-11-11",
-          "day_of_week": "Wednesday",
-          "opponent": "Toronto Raptors",
-          "home": false,
-          "boston_score": 98,
-          "opponent_score": 93,
-          "result": "W",
-          "season_type": "regular"
-        },
+        "last": null,
         "next": {
           "date": "2026-11-15",
           "day_of_week": "Sunday",
@@ -214,7 +180,7 @@
           "opponent": "Dallas Mavericks",
           "home": true,
           "season_type": "regular",
-          "is_today": false
+          "is_today": true
         }
       },
       {
@@ -241,10 +207,47 @@
           "opponent": "Detroit Lions",
           "home": false,
           "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "13-6",
+        "last": {
+          "date": "2026-11-14",
+          "day_of_week": "Saturday",
+          "opponent": "Wild",
+          "home": true,
+          "boston_score": 2,
+          "opponent_score": 6,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-17",
+          "day_of_week": "Tuesday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Los Angeles Kings",
+          "home": true,
+          "season_type": "regular",
           "is_today": false
         }
       }
     ]
   },
-  "date": "2026-11-14"
+  "date": "2026-11-15"
 }

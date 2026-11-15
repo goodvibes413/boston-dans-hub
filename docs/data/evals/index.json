@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-11-10",
     "2026-11-11",
     "2026-11-12",
     "2026-11-13",
-    "2026-11-14"
+    "2026-11-14",
+    "2026-11-15"
   ],
   "rules": [
     {
@@ -106,18 +106,18 @@
     "most_flagged_rules": [
       {
         "rule": 15,
-        "count": 6,
+        "count": 5,
         "title": "Phantom scheduled game"
       },
       {
         "rule": 10,
-        "count": 4,
+        "count": 3,
         "title": "Voice repetition"
       },
       {
-        "rule": 12,
+        "rule": 16,
         "count": 1,
-        "title": "Game coverage gap"
+        "title": "Game-day omission"
       }
     ],
     "rule15_agreement": {

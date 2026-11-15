@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-15",
+  "generated_at": "2026-11-15T15:27:37.618170+00:00",
+  "outcome": "retry",
+  "winning_attempt": 3,
+  "total_attempts": 3,
+  "generation_seconds": 148.6,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 16,
+          "detail": "game-day omission: the celtics play today (2026-11-15) \u2014 Dallas Mavericks at Boston Celtics, 6:00 PM ET \u2014 and the post never mentions the team. Give it its own beat in morning_brew as a look forward, with NO result: the game has not been played yet."
+        }
+      ],
+      "duration_seconds": 48.9
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content claims the Celtics are playing 'tonight' (Sunday, 2026-11-15), but the UPCOMING_SCHEDULE lists the game as Sunday, 2026-11-15, and the content incorrectly identifies today as Sunday in the morning_brew."
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"i will be in my seat\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 36.0
+    },
+    {
+      "attempt": 3,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 31.0
+    }
+  ]
+}
