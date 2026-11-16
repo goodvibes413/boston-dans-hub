@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-16",
+  "generated_at": "2026-11-16T18:03:44.391768+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 60.4,
+  "pre_pass": {
+    "repetition_check": "fail",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": [
+      {
+        "rule": 10,
+        "detail": "repetition: number-masked sentence skeleton \"and i am crossing my fingers that\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content claims the Celtics are playing 'tonight' (Monday, 2026-11-16), but the UPCOMING_SCHEDULE lists the game as Monday, 2026-11-16, and the content incorrectly identifies today as Sunday in the morning_brew."
+        }
+      ],
+      "duration_seconds": 4.2
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content claims the Celtics are playing 'tonight' (Sunday, 2026-11-16), but the UPCOMING_SCHEDULE lists the game as Monday, 2026-11-16."
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"the cs are back at the garden\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 13.5
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content claims the Celtics game is 'tonight' (Monday, 2026-11-16), but the morning_brew incorrectly identifies today as Monday while the schedule confirms the game is indeed today, however, the content refers to the day as 'Monday' in the first paragraph while the prompt date is 2026-11-16 (Sunday)."
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"and i am crossing my fingers that\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 4.2
+    }
+  ]
+}
