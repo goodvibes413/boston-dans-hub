@@ -1,0 +1,219 @@
+{
+  "date": "2026-11-17",
+  "generated_at": "2026-11-17T17:29:24.940139+00:00",
+  "headline": "Celtics lay an egg against Orlando while the Garden stays quiet",
+  "morning_brew": [
+    "Monday night at the Garden was an absolute disaster. We ran into a Magic team that suddenly decided to play like the '96 Bulls in the fourth quarter, and watching that rally turn into a double-digit loss had me feeling like I\u2019d just chewed on tinfoil. Jayson Tatum fought for his twelve rebounds and twenty-four points, but giving up five turnovers made it feel like we were playing in quicksand all night long. It is wicked frustrating to drop one on our own floor, especially when we handed them the keys to the kingdom and watched them drive off with the win.",
+    "This team is still sitting pretty at eleven and three, but last night was a cold slap in the face. Sam Hauser gave us a nice boost from deep, hitting four of his six attempts, yet the bench contribution was about as useful as an umbrella in a hurricane when we needed a stop. It\u2019s like watching cousin Jimmy try to parallel park a bus in the North End, just a series of painful mistakes that leave you wanting to look away. We have a quick turnaround to get back on track, and the focus shifts now to Denver for Wednesday night. Time to wake up and play like we actually mean it.",
+    "Looking ahead, the focus tonight shifts to the ice as the Kings come to Boston. After the garbage fire we watched yesterday, the Garden needs a massive jolt of energy to get things moving back in the right direction. I'll be in my seat expecting a much tighter defensive effort and for the top lines to finally dictate the tempo against a Los Angeles team that has been struggling recently. It\u2019s a long winter and we need to start building some consistency here in November, starting with a clean performance tonight because I don't think I can handle another night of defensive lapses."
+  ],
+  "news_digest": [
+    {
+      "headline": "Bane scores 24, Magic rally in 4th quarter to beat Celtics 115-105",
+      "url": "http://www.espn.com/nba/recap?gameId=401909994",
+      "dans_take": "We let them hang around until they got confident, and that is a recipe for a heartbreak."
+    },
+    {
+      "headline": "Kings bring 4-game losing streak into matchup with the Bruins",
+      "url": "http://www.espn.com/nhl/preview?gameId=401892728",
+      "dans_take": "Los Angeles is struggling, which means we are either going to crush them or they'll wake up tonight."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Cold Snap",
+      "player": "Jayson Tatum",
+      "trend": "Finished with twenty-four points but struggled with efficiency while committing five turnovers in the loss.",
+      "dans_take": "He tries to do everything, but those turnovers were like watching a car crash in slow motion."
+    },
+    {
+      "category": "Heater",
+      "player": "Sam Hauser",
+      "trend": "Knocked down four of six attempts from beyond the arc to provide a much-needed spark off the pine.",
+      "dans_take": "When he is hitting, the floor finally opens up, but we needed the rest of the guys to show up."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Payton Pritchard",
+      "trend": "Paced the reserves with twenty-one points and five assists while shooting over forty percent from the field.",
+      "dans_take": "He was the only one playing with his hair on fire, but one guy can't carry the whole show."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Boston Celtics",
+      "away_team": "Orlando Magic",
+      "home_score": 105,
+      "away_score": 115,
+      "game_date": "2026-11-16",
+      "played": true,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-16",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-16",
+      "played": false,
+      "season_type": "playoff"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-16",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-11-16",
+      "matchup": "Orlando Magic at Boston Celtics",
+      "day_of_week": "Monday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-17",
+      "matchup": "Los Angeles Kings at Boston Bruins",
+      "day_of_week": "Tuesday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-18",
+      "matchup": "Boston Bruins at Detroit Red Wings",
+      "day_of_week": "Wednesday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-11-18",
+      "matchup": "Boston Celtics at Denver Nuggets",
+      "day_of_week": "Wednesday",
+      "time_et": "9:30 PM ET"
+    },
+    {
+      "date": "2026-11-21",
+      "matchup": "Washington Capitals at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-21",
+      "matchup": "Boston Celtics at Sacramento Kings",
+      "day_of_week": "Saturday",
+      "time_et": "10:00 PM ET"
+    },
+    {
+      "date": "2026-11-22",
+      "matchup": "Boston Celtics at Golden State Warriors",
+      "day_of_week": "Sunday",
+      "time_et": "8:30 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-11-17",
+    "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "13-6",
+        "last": {
+          "date": "2026-11-14",
+          "day_of_week": "Saturday",
+          "opponent": "Wild",
+          "home": true,
+          "boston_score": 2,
+          "opponent_score": 6,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-17",
+          "day_of_week": "Tuesday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Los Angeles Kings",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "11-3",
+        "last": {
+          "date": "2026-11-16",
+          "day_of_week": "Monday",
+          "opponent": "Orlando Magic",
+          "home": true,
+          "boston_score": 105,
+          "opponent_score": 115,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-18",
+          "day_of_week": "Wednesday",
+          "time_et": "9:30 PM ET",
+          "opponent": "Denver Nuggets",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-5",
+        "last": {
+          "date": "2026-11-15",
+          "day_of_week": "Sunday",
+          "opponent": "Detroit Lions",
+          "home": false,
+          "boston_score": 10,
+          "opponent_score": 35,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": null
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}

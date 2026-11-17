@@ -1,50 +1,50 @@
 {
-  "headline": "Drake Maye injury news hits like a sledgehammer after brutal Lions loss",
+  "headline": "Celtics lay an egg against Orlando while the Garden stays quiet",
   "morning_brew": [
-    "I am still trying to process the absolute catastrophe that unfolded in Detroit yesterday. Watching the Patriots get dismantled 35-10 is bad enough on its own, but the news that Drake Maye is likely looking at a season-ending ankle injury is a total gut punch that I honestly do not know how we recover from. The defense couldn't stop a nosebleed for most of the afternoon, and losing our franchise quarterback on top of a blowout defeat just feels like the cruelest way to spend a Sunday. I watched the second half through my fingers like a horror movie, and it was clear that whatever momentum we had is effectively gone.",
-    "Looking at the bigger picture, this season is teetering on the edge of a collapse that is starting to feel real. When you are sitting at 5-5 and your most important player goes down, you have to wonder if the front office is already looking toward next year. The offensive line struggled all day to give Tommy DeVito any time, and when your starters cannot protect the pocket or move the chains, you are going to get buried by a team like the Lions every single time. It is a dark day in New England, and the talk radio lines are going to be absolute bedlam all week.",
-    "On a much brighter note, the C's put on a clinic at the Garden last night, hanging 131 points on Dallas and setting a franchise record for an opening-period lead. Jayson Tatum was locked in for 32 points in just 30 minutes, and the whole squad looked like they were playing on a different planet. We are back at TD Garden tonight for a matchup with Orlando, and after seeing that level of dominance, I expect the boys to keep the foot on the gas. It is a quick turnaround, but watching this team play right now is the only thing keeping my blood pressure from hitting the ceiling."
+    "Monday night at the Garden was an absolute disaster. We ran into a Magic team that suddenly decided to play like the '96 Bulls in the fourth quarter, and watching that rally turn into a double-digit loss had me feeling like I\u2019d just chewed on tinfoil. Jayson Tatum fought for his twelve rebounds and twenty-four points, but giving up five turnovers made it feel like we were playing in quicksand all night long. It is wicked frustrating to drop one on our own floor, especially when we handed them the keys to the kingdom and watched them drive off with the win.",
+    "This team is still sitting pretty at eleven and three, but last night was a cold slap in the face. Sam Hauser gave us a nice boost from deep, hitting four of his six attempts, yet the bench contribution was about as useful as an umbrella in a hurricane when we needed a stop. It\u2019s like watching cousin Jimmy try to parallel park a bus in the North End, just a series of painful mistakes that leave you wanting to look away. We have a quick turnaround to get back on track, and the focus shifts now to Denver for Wednesday night. Time to wake up and play like we actually mean it.",
+    "Looking ahead, the focus tonight shifts to the ice as the Kings come to Boston. After the garbage fire we watched yesterday, the Garden needs a massive jolt of energy to get things moving back in the right direction. I'll be in my seat expecting a much tighter defensive effort and for the top lines to finally dictate the tempo against a Los Angeles team that has been struggling recently. It\u2019s a long winter and we need to start building some consistency here in November, starting with a clean performance tonight because I don't think I can handle another night of defensive lapses."
   ],
   "trend_watch": [
     {
-      "category": "Heater",
-      "player": "Jayson Tatum",
-      "trend": "Tatum dropped 32 points on 11-of-18 shooting and added six assists in only 30 minutes of action.",
-      "dans_take": "He was absolutely clinical last night and made that Dallas defense look like they were lost in the North End."
-    },
-    {
-      "category": "Trench Report",
-      "player": "Patriots offensive line",
-      "trend": "The unit allowed multiple pressures all afternoon and struggled to open any lanes for the rushing attack.",
-      "dans_take": "If they don't tighten up and start winning the line of scrimmage, we might as well just pack it in for the year."
-    },
-    {
       "category": "Cold Snap",
-      "player": "Tommy DeVito",
-      "trend": "DeVito finished with 81 yards on 12-of-24 passing with one touchdown and an interception in the loss.",
-      "dans_take": "It is a tough spot for anyone to step into, but the lack of rhythm was absolute torture to witness."
+      "player": "Jayson Tatum",
+      "trend": "Finished with twenty-four points but struggled with efficiency while committing five turnovers in the loss.",
+      "dans_take": "He tries to do everything, but those turnovers were like watching a car crash in slow motion."
+    },
+    {
+      "category": "Heater",
+      "player": "Sam Hauser",
+      "trend": "Knocked down four of six attempts from beyond the arc to provide a much-needed spark off the pine.",
+      "dans_take": "When he is hitting, the floor finally opens up, but we needed the rest of the guys to show up."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Payton Pritchard",
+      "trend": "Paced the reserves with twenty-one points and five assists while shooting over forty percent from the field.",
+      "dans_take": "He was the only one playing with his hair on fire, but one guy can't carry the whole show."
     }
   ],
   "news_digest": [
     {
-      "headline": "Sources: Patriots fear Drake Maye has broken ankle",
-      "url": "https://www.espn.com/nfl/story/_/id/50500352/patriots-qb-drake-maye-leg-miss-extended-sources-say",
-      "dans_take": "If this is season-ending, it basically pulls the rug out from under everything we were building toward."
+      "headline": "Bane scores 24, Magic rally in 4th quarter to beat Celtics 115-105",
+      "url": "http://www.espn.com/nba/recap?gameId=401909994",
+      "dans_take": "We let them hang around until they got confident, and that is a recipe for a heartbreak."
     },
     {
-      "headline": "Celtics set franchise record for largest lead at end of a first period",
-      "url": "https://www.espn.com/video/clip/_/id/50497306/celtics-set-franchise-record-largest-lead-end-first-period-vs-mavs",
-      "dans_take": "That first quarter was pure basketball nirvana and the exact kind of statement we needed."
+      "headline": "Kings bring 4-game losing streak into matchup with the Bruins",
+      "url": "http://www.espn.com/nhl/preview?gameId=401892728",
+      "dans_take": "Los Angeles is struggling, which means we are either going to crush them or they'll wake up tonight."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
       "home_team": "Boston Celtics",
-      "away_team": "Dallas Mavericks",
-      "home_score": 131,
-      "away_score": 94,
-      "game_date": "2026-11-15",
+      "away_team": "Orlando Magic",
+      "home_score": 105,
+      "away_score": 115,
+      "game_date": "2026-11-16",
       "played": true,
       "season_type": "regular"
     },
@@ -54,7 +54,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-15",
+      "game_date": "2026-11-16",
       "played": false,
       "season_type": "unknown"
     },
@@ -64,18 +64,18 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-15",
+      "game_date": "2026-11-16",
       "played": false,
       "season_type": "playoff"
     },
     "patriots": {
       "sport": "NFL",
-      "home_team": "Detroit Lions",
-      "away_team": "New England Patriots",
-      "home_score": 35,
-      "away_score": 10,
-      "game_date": "2026-11-15",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-16",
+      "played": false,
       "season_type": "regular"
     }
   },
@@ -128,89 +128,37 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 10.47,
-      "prompt_tokens": 42479,
-      "output_tokens": 1489,
+      "seconds": 9.68,
+      "prompt_tokens": 41940,
+      "output_tokens": 1363,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 6.86,
-      "prompt_tokens": 17928,
-      "output_tokens": 1488,
+      "seconds": 12.1,
+      "prompt_tokens": 17812,
+      "output_tokens": 1407,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "quota_exhausted",
-  "generated_at": "2026-11-16T18:04:44.824589+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
+  "_grounding": "off",
+  "generated_at": "2026-11-17T17:29:24.940139+00:00",
+  "_regenerated": true,
+  "_regeneration_reason": [
     {
-      "rule": 15,
-      "detail": "The content claims the Celtics are playing 'tonight' (Monday, 2026-11-16), but the UPCOMING_SCHEDULE lists the game as Monday, 2026-11-16, and the content incorrectly identifies today as Sunday in the morning_brew."
+      "rule": 10,
+      "detail": "repetition: formulaic paragraph opener \"i am still ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    },
+    {
+      "rule": 10,
+      "detail": "repetition: formulaic paragraph opener \"looking at the ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     }
   ],
   "team_pulse": {
-    "as_of": "2026-11-16",
+    "as_of": "2026-11-17",
     "teams": [
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "11-2",
-        "last": {
-          "date": "2026-11-15",
-          "day_of_week": "Sunday",
-          "opponent": "Dallas Mavericks",
-          "home": true,
-          "boston_score": 131,
-          "opponent_score": 94,
-          "result": "W",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-16",
-          "day_of_week": "Monday",
-          "time_et": "7:00 PM ET",
-          "opponent": "Orlando Magic",
-          "home": true,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      },
-      {
-        "team": "patriots",
-        "label": "Patriots",
-        "sport": "NFL",
-        "phase": "regular",
-        "opener": false,
-        "record": "5-5",
-        "last": {
-          "date": "2026-11-15",
-          "day_of_week": "Sunday",
-          "opponent": "Detroit Lions",
-          "home": false,
-          "boston_score": 10,
-          "opponent_score": 35,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": null
-      },
       {
         "team": "bruins",
         "label": "Bruins",
@@ -235,10 +183,66 @@
           "opponent": "Los Angeles Kings",
           "home": true,
           "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "postseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "11-3",
+        "last": {
+          "date": "2026-11-16",
+          "day_of_week": "Monday",
+          "opponent": "Orlando Magic",
+          "home": true,
+          "boston_score": 105,
+          "opponent_score": 115,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-18",
+          "day_of_week": "Wednesday",
+          "time_et": "9:30 PM ET",
+          "opponent": "Denver Nuggets",
+          "home": false,
+          "season_type": "regular",
           "is_today": false
         }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-5",
+        "last": {
+          "date": "2026-11-15",
+          "day_of_week": "Sunday",
+          "opponent": "Detroit Lions",
+          "home": false,
+          "boston_score": 10,
+          "opponent_score": 35,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": null
       }
     ]
   },
-  "date": "2026-11-16"
+  "date": "2026-11-17"
 }
