@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-11-13",
     "2026-11-14",
     "2026-11-15",
     "2026-11-16",
-    "2026-11-17"
+    "2026-11-17",
+    "2026-11-18"
   ],
   "rules": [
     {
@@ -99,30 +99,30 @@
     }
   ],
   "summary_5day": {
-    "fresh": 1,
-    "retry": 4,
+    "fresh": 0,
+    "retry": 5,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 7,
+        "count": 9,
         "title": "Voice repetition"
       },
       {
         "rule": 15,
-        "count": 6,
+        "count": 7,
         "title": "Phantom scheduled game"
       },
       {
         "rule": 16,
-        "count": 1,
+        "count": 2,
         "title": "Game-day omission"
       }
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 4,
+      "llm": 5,
       "both": 0
     }
   }
