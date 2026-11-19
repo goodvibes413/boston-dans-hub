@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-11-14",
     "2026-11-15",
     "2026-11-16",
     "2026-11-17",
-    "2026-11-18"
+    "2026-11-18",
+    "2026-11-19"
   ],
   "rules": [
     {
@@ -106,12 +106,12 @@
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 9,
+        "count": 8,
         "title": "Voice repetition"
       },
       {
         "rule": 15,
-        "count": 7,
+        "count": 6,
         "title": "Phantom scheduled game"
       },
       {
@@ -122,7 +122,7 @@
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 5,
+      "llm": 4,
       "both": 0
     }
   }

@@ -1,54 +1,60 @@
 {
-  "headline": "Bruins get embarrassed in a lifeless shutout against the Kings",
+  "headline": "Pastrnak ruins Detroit's party while Celtics choke away a lead",
   "morning_brew": [
-    "Tuesday night at the Garden was an absolute disaster. I watched the Bruins drop a 3-0 decision to the Kings, and honestly, the only thing more lifeless than the offense was my own mood by the final horn. We couldn't buy a goal to save our lives, and getting blanked at home while the Kings snap a four-game skid is exactly the kind of result that makes you want to throw your remote through the screen. It is a tough look for a team that is supposed to be contending, and right now, the consistency is nonexistent.",
-    "This team is officially in a rut with a three-game losing streak that feels like it has been going on for a month. We have to find a way to generate some actual offense instead of just skating around and praying for a miracle. My neighbor Rick is already four days into his deep-dive dossier on trade demands and locker room chemistry, and while I usually ignore his wild theories, it is hard to argue that something isn't fundamentally broken when you get shut out by an opponent that was begging to lose. We need to wake up before this whole month slips away into the gutter.",
-    "Looking ahead to tonight, we have a quick turnaround with a trip to Detroit to face the Red Wings. The schedule doesn't care about our feelings, and we have to get back on the ice at Little Caesars Arena and prove that Tuesday was just a one-off performance from a team that forgot how to play hockey. It is time for the top lines to actually dictate the pace and get some pucks past their goalie, because another performance like the one we just witnessed would be plain unacceptable. I'll be tuned in at seven-thirty, nursing a Dunks and hoping for a bounce-back effort that finally gives us something to cheer about."
+    "Wednesday was a total rollercoaster that left me needing a second Dunks just to process it. The Bruins marched into Detroit and took care of business with a 4-1 win to absolutely trash their centennial celebration, which is exactly the kind of middle-finger-to-the-opposition hockey we needed after that pathetic home disaster earlier in the week. Jeremy Swayman was a brick wall with twenty-one saves, and watching David Pastrnak finally light the lamp along with Pavel Zacha and Casey Mittelstadt felt like the B's finally remembered how to play. The boys showed some real heart on the road, and I am praying this is the spark they need to actually show up when they return to the Garden this weekend.",
+    "Over on Causeway Street, it was a brutal night as the C's let a seventeen-point lead evaporate into a 105-101 loss to the Nuggets. We were playing with fire and eventually got scorched by Nikola Jokic and Jamal Murray, and frankly, it was a disaster. Jayson Tatum fought for his twenty-four points, but those six turnovers were back-breakers that made me want to throw my remote through the wall, and Neemias Queta's seventeen points were about the only bright spot in an otherwise dark night. Watching a lead like that vanish against a team like Denver is enough to drive a man to drink his coffee black, and I am honestly just ready for the weekend slate to get us back into the win column.",
+    "The Red Sox front office is already playing chess this winter, dragging in catcher Nick Fortes from the Rays to add some much-needed depth. It is a quiet time of year for baseball, but getting a guy behind the plate is a smart start to the offseason, unlike the Patriots, who have me looking at mock drafts and developing an early-season ulcer. We have a few days of calm before the B's and C's get back to action, so I am gonna use the time to let my blood pressure settle before I give myself a stroke."
   ],
   "trend_watch": [
     {
-      "category": "Cold Snap",
-      "player": "Michael DiPietro",
-      "trend": "Stopped nineteen of twenty-one shots in Tuesday night's loss to the Kings.",
-      "dans_take": "He kept us in it, but when the skaters in front of him take a collective night off, he's fighting a losing battle every single shift."
+      "category": "Heater",
+      "player": "David Pastrnak",
+      "trend": "David Pastrnak dominated the ice with a goal and an assist in the four to one victory over the Red Wings.",
+      "dans_take": "That is the kind of elite, game-changing performance I expect from him every single night."
     },
     {
-      "category": "Streak",
-      "player": "Boston Bruins",
-      "trend": "Dropped three straight games while failing to find any offensive rhythm.",
-      "dans_take": "It is a friggin' nightmare watching us struggle this hard to put the puck in the net, and my patience is wearing thinner than the ice."
+      "category": "Bullpen Watch",
+      "player": "Jeremy Swayman",
+      "trend": "Jeremy Swayman shut the door on Detroit by stopping twenty-one of twenty-two shots for a stellar ninety-five percent save rate.",
+      "dans_take": "He stood on his head when the defense let him down, and that is why we pay the man."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Jayson Tatum",
+      "trend": "Jayson Tatum struggled to protect the rock and finished the night with six turnovers in the narrow loss to Denver.",
+      "dans_take": "You cannot throw the ball into the third row six times against a team like the Nuggets and expect a W."
     }
   ],
   "news_digest": [
     {
-      "headline": "Darcy Kuemper stops 29 shots for 40th career shutout in Kings' 3-0 win over Bruins",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892728",
-      "dans_take": "Getting shut out by a team that was riding a four-game losing streak is a new low, even for us."
+      "headline": "Red Sox acquire catcher Nick Fortes in trade with Rays",
+      "url": "https://www.espn.com/mlb/story/_/id/50523687/red-sox-acquire-catcher-nick-fortes-trade-rays",
+      "dans_take": "A smart little move to patch a hole while the rest of the league is still napping."
     },
     {
-      "headline": "Bruins bring 3-game losing streak into matchup with the Red Wings",
-      "url": "http://www.espn.com/nhl/preview?gameId=401892739",
-      "dans_take": "We need to treat Detroit like a must-win game or this losing skid is going to get even uglier, and I really don't want to hear Rick talk about it."
+      "headline": "Bruins beat Red Wings 4-1, spoil Detroit's Centennial celebration game",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892739",
+      "dans_take": "Nothing tastes better than a road win that ruins somebody else's big party."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-17",
-      "played": false,
+      "home_team": "Denver Nuggets",
+      "away_team": "Boston Celtics",
+      "home_score": 105,
+      "away_score": 101,
+      "game_date": "2026-11-18",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Kings",
-      "home_score": 0,
-      "away_score": 3,
-      "game_date": "2026-11-17",
+      "home_team": "Red Wings",
+      "away_team": "Boston Bruins",
+      "home_score": 1,
+      "away_score": 4,
+      "game_date": "2026-11-18",
       "played": true,
       "season_type": "regular"
     },
@@ -58,7 +64,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-17",
+      "game_date": "2026-11-18",
       "played": false,
       "season_type": "playoff"
     },
@@ -68,18 +74,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-17",
+      "game_date": "2026-11-18",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-18",
-      "matchup": "Boston Bruins at Detroit Red Wings",
-      "day_of_week": "Wednesday",
-      "time_et": "7:30 PM ET"
-    },
     {
       "date": "2026-11-18",
       "matchup": "Boston Celtics at Denver Nuggets",
@@ -122,99 +122,33 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 7.26,
-      "prompt_tokens": 40787,
-      "output_tokens": 1296,
+      "seconds": 6.35,
+      "prompt_tokens": 42315,
+      "output_tokens": 1443,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 9.88,
-      "prompt_tokens": 17735,
-      "output_tokens": 1348,
+      "seconds": 6.45,
+      "prompt_tokens": 17882,
+      "output_tokens": 1483,
       "thinking_tokens": null
     }
   ],
   "_grounding": "quota_exhausted",
-  "generated_at": "2026-11-18T17:01:39.475752+00:00",
+  "generated_at": "2026-11-19T17:14:39.717479+00:00",
   "_quality_warning": true,
   "_quality_flags": [
     {
-      "rule": 15,
-      "detail": "The content claims the Bruins are playing 'tonight' (Tuesday, 2026-11-18) and refers to a 'trip to Detroit' for a game tonight, but the UPCOMING_SCHEDULE lists the Bruins-Red Wings game for Wednesday, 2026-11-18."
-    },
-    {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"night at the garden was an absolute disaster\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    },
-    {
-      "rule": 10,
-      "detail": "repetition: formulaic paragraph opener \"this team is ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    },
-    {
-      "rule": 16,
-      "detail": "game-day omission: the celtics play today (2026-11-18) \u2014 Boston Celtics at Denver Nuggets, 9:30 PM ET \u2014 and the post never mentions the team. Give it its own beat in morning_brew as a look forward, with NO result: the game has not been played yet."
+      "rule": 17,
+      "detail": "The content incorrectly identifies the game date as 'Wednesday' for the games played on 2026-11-18, which was a Tuesday."
     }
   ],
   "team_pulse": {
-    "as_of": "2026-11-18",
+    "as_of": "2026-11-19",
     "teams": [
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "11-3",
-        "last": {
-          "date": "2026-11-16",
-          "day_of_week": "Monday",
-          "opponent": "Orlando Magic",
-          "home": true,
-          "boston_score": 105,
-          "opponent_score": 115,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-18",
-          "day_of_week": "Wednesday",
-          "time_et": "9:30 PM ET",
-          "opponent": "Denver Nuggets",
-          "home": false,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "13-7",
-        "last": {
-          "date": "2026-11-17",
-          "day_of_week": "Tuesday",
-          "opponent": "Kings",
-          "home": true,
-          "boston_score": 0,
-          "opponent_score": 3,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-18",
-          "day_of_week": "Wednesday",
-          "time_et": "7:30 PM ET",
-          "opponent": "Detroit Red Wings",
-          "home": false,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
       {
         "team": "redsox",
         "label": "Red Sox",
@@ -224,6 +158,60 @@
         "record": null,
         "last": null,
         "next": null
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "11-4",
+        "last": {
+          "date": "2026-11-18",
+          "day_of_week": "Wednesday",
+          "opponent": "Denver Nuggets",
+          "home": false,
+          "boston_score": 101,
+          "opponent_score": 105,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-21",
+          "day_of_week": "Saturday",
+          "time_et": "10:00 PM ET",
+          "opponent": "Sacramento Kings",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "14-7",
+        "last": {
+          "date": "2026-11-18",
+          "day_of_week": "Wednesday",
+          "opponent": "Red Wings",
+          "home": false,
+          "boston_score": 4,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-21",
+          "day_of_week": "Saturday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Washington Capitals",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
       },
       {
         "team": "patriots",
@@ -246,5 +234,5 @@
       }
     ]
   },
-  "date": "2026-11-18"
+  "date": "2026-11-19"
 }
