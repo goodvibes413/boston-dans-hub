@@ -1333,6 +1333,39 @@ class TestSeasonMemoryHonoursAsOfDate(unittest.TestCase):
             "offseason")
 
 
+class TestMlbOffseasonAfterTheWorldSeries(unittest.TestCase):
+    """The 2026-11-17 board showed the Red Sox as "Postseason": November was
+    all "in_playoffs" for MLB, and baseball skipped the schedule check that
+    catches an eliminated team."""
+
+    def setUp(self):
+        import tempfile
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        orig = fetch_season_memory.SCHEDULE_PATH
+        self.addCleanup(setattr, fetch_season_memory, "SCHEDULE_PATH", orig)
+        fetch_season_memory.SCHEDULE_PATH = Path(self._tmp.name) / "s.json"
+
+    def _schedule(self, games):
+        fetch_season_memory.SCHEDULE_PATH.write_text(json.dumps({"games": games}))
+
+    def _status(self, day):
+        return fetch_season_memory.classify_status(
+            "baseball", datetime.strptime(day, "%Y-%m-%d").replace(tzinfo=timezone.utc),
+            "redsox")
+
+    def test_mid_november_is_offseason_even_without_a_schedule(self):
+        self.assertEqual(self._status("2026-11-17"), "offseason")
+
+    def test_eliminated_team_in_october_is_offseason(self):
+        self._schedule([{"team": "celtics", "date": "2026-10-20"}])
+        self.assertEqual(self._status("2026-10-15"), "offseason")
+
+    def test_team_still_playing_in_october_is_in_playoffs(self):
+        self._schedule([{"team": "redsox", "date": "2026-10-16"}])
+        self.assertEqual(self._status("2026-10-15"), "in_playoffs")
+
+
 class TestOpponentTokensDoNotMatchFragments(unittest.TestCase):
     """
     The city token was parts[0], which truncates a two-word city to a fragment.

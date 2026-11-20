@@ -5,6 +5,22 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-11-17 — Red Sox offseason, not "Postseason"
+
+The 11/17 Scoreboard put a Postseason chip on the Red Sox, weeks after the Brewers
+won the World Series. `classify_status()` in `fetch_season_memory.py` called all of
+October and November `in_playoffs` for MLB, and only NBA/NHL got the schedule check
+that catches an eliminated team, so `build_team_pulse()` read `in_playoffs` and
+printed Postseason with no game in sight.
+
+- MLB's calendar window now ends November 7 (`MLB_POSTSEASON_LAST_NOV_DAY`).
+- The "does this team still have games?" check now runs for every sport. A team with
+  no game left on a valid `upcoming_schedule.json` is `offseason`, so a Wild Card
+  loser is offseason in October too. A missing or empty schedule still falls back to
+  the calendar.
+
+---
+
 ## 2026-09-30 — Grounding quota fails fast; an unreachable judge is not a PASS
 
 Issues #62 and #64. Morning Brew runs 36731147371, 36740883472 and 36745541891 all

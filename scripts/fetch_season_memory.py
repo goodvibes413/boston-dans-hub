@@ -43,6 +43,10 @@ DATA_DIR          = PROJECT_ROOT / "data"
 OUTPUT_PATH       = DATA_DIR / "season_current.json"
 SCHEDULE_PATH     = DATA_DIR / "upcoming_schedule.json"
 
+# Last November day the MLB calendar window still allows "in_playoffs". The
+# schedule check below narrows it further to teams that still have games.
+MLB_POSTSEASON_LAST_NOV_DAY = 7
+
 # ESPN team endpoints return current-season record and standing summary.
 TEAM_ENDPOINTS = {
     "celtics":  ("basketball", "nba", "2"),
@@ -168,9 +172,12 @@ def classify_status(sport: str, now: datetime, team_key: str = "") -> str:
         else:
             return "regular_season"
     elif sport == "baseball":  # MLB
-        if month in (10, 11):
+        # The World Series has never run past the first days of November.
+        # Calling all of November "in_playoffs" put a Postseason chip on the
+        # 2026-11-17 board, weeks after the Brewers had won it.
+        if month == 10 or (month == 11 and now.day <= MLB_POSTSEASON_LAST_NOV_DAY):
             calendar_status = "in_playoffs"
-        elif month in (12, 1, 2, 3):
+        elif month in (11, 12, 1, 2, 3):
             return "offseason"
         else:
             return "regular_season"
@@ -189,10 +196,11 @@ def classify_status(sport: str, now: datetime, team_key: str = "") -> str:
         return "regular_season"
 
     # calendar_status is "in_playoffs" — verify the team actually has games.
-    # Only basketball and hockey have mid-season elimination; MLB/NFL playoffs
-    # are short enough that date-based is reliable. For NHL and NBA we do the
-    # extra check because teams can be eliminated weeks before the postseason ends.
-    if sport in ("hockey", "basketball") and team_key:
+    # Every league eliminates teams mid-postseason, and in MLB and the NFL a
+    # team that misses the playoffs or loses in the first round is done weeks
+    # before the calendar window closes. A Boston team with no game left on a
+    # valid schedule is in the offseason, whatever the month.
+    if team_key:
         today_str = now.strftime("%Y-%m-%d")
         has_games = team_has_upcoming_games(team_key, today_str)
         if has_games is False:
