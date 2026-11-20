@@ -1,62 +1,62 @@
 {
-  "headline": "Pastrnak ruins Detroit's party while Celtics choke away a lead",
+  "headline": "Quiet days in the Hub let my blood pressure finally settle",
   "morning_brew": [
-    "Wednesday was a total rollercoaster that left me needing a second Dunks just to process it. The Bruins marched into Detroit and took care of business with a 4-1 win to absolutely trash their centennial celebration, which is exactly the kind of middle-finger-to-the-opposition hockey we needed after that pathetic home disaster earlier in the week. Jeremy Swayman was a brick wall with twenty-one saves, and watching David Pastrnak finally light the lamp along with Pavel Zacha and Casey Mittelstadt felt like the B's finally remembered how to play. The boys showed some real heart on the road, and I am praying this is the spark they need to actually show up when they return to the Garden this weekend.",
-    "Over on Causeway Street, it was a brutal night as the C's let a seventeen-point lead evaporate into a 105-101 loss to the Nuggets. We were playing with fire and eventually got scorched by Nikola Jokic and Jamal Murray, and frankly, it was a disaster. Jayson Tatum fought for his twenty-four points, but those six turnovers were back-breakers that made me want to throw my remote through the wall, and Neemias Queta's seventeen points were about the only bright spot in an otherwise dark night. Watching a lead like that vanish against a team like Denver is enough to drive a man to drink his coffee black, and I am honestly just ready for the weekend slate to get us back into the win column.",
-    "The Red Sox front office is already playing chess this winter, dragging in catcher Nick Fortes from the Rays to add some much-needed depth. It is a quiet time of year for baseball, but getting a guy behind the plate is a smart start to the offseason, unlike the Patriots, who have me looking at mock drafts and developing an early-season ulcer. We have a few days of calm before the B's and C's get back to action, so I am gonna use the time to let my blood pressure settle before I give myself a stroke."
+    "Not much happening on the field today, so let me tell you about the time I watched the Bruins clinch the Cup back in 2011. I was over at Uncle Carmine's place in Revere, and the air in that living room was thicker than the clam chowdah at the local diner. Carmine had his feet up and was snoring like a chainsaw through the entire second period, swearing up and down he was just resting his eyes to see the final horn. I did not wake him until Tim Thomas made that final stop and the boys hoisted the hardware, and to this day, he insists he saw every single save.",
+    "Carmine's living room smelled like the cigars he keeps hidden from my aunt, and the couch was covered in that plastic wrap that sticks to your legs if you sit for more than five minutes. My aunt had a tray of ziti sitting on the counter that nobody dared touch until the final whistle blew, because you do not mess with superstition when the B's are playing for the Cup. It was one of those nights where time just stands still, and even though Carmine missed the middle, he still talks like he was coaching the squad from his recliner.",
+    "We have a few days of calm before the B's get back to the ice at TD Garden on Saturday to face the Capitals, which gives me plenty of time to stop obsessing over the power rankings. The C's are also heading out west for a Saturday night tilt against the Kings, and hopefully, both squads use this little break to find their focus. I am gonna use the quiet to let my blood pressure recover before the weekend slate kicks off, because we all know the stress is coming back the second the puck drops."
   ],
   "trend_watch": [
     {
       "category": "Heater",
       "player": "David Pastrnak",
-      "trend": "David Pastrnak dominated the ice with a goal and an assist in the four to one victory over the Red Wings.",
-      "dans_take": "That is the kind of elite, game-changing performance I expect from him every single night."
+      "trend": "Potted a goal and added an assist in the win against Detroit on Wednesday night.",
+      "dans_take": "Pasta is cooking, and I am here for every single bite of it."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Jeremy Swayman",
-      "trend": "Jeremy Swayman shut the door on Detroit by stopping twenty-one of twenty-two shots for a stellar ninety-five percent save rate.",
-      "dans_take": "He stood on his head when the defense let him down, and that is why we pay the man."
+      "player": "Nick Fortes",
+      "trend": "The front office brought him in to bolster the catching depth after he started seventy-eight games last season.",
+      "dans_take": "A sneaky smart move to patch a hole while the rest of the league is still sleeping on us."
     },
     {
       "category": "Cold Snap",
       "player": "Jayson Tatum",
-      "trend": "Jayson Tatum struggled to protect the rock and finished the night with six turnovers in the narrow loss to Denver.",
-      "dans_take": "You cannot throw the ball into the third row six times against a team like the Nuggets and expect a W."
+      "trend": "Committed six turnovers and struggled to hold the lead in Wednesday's loss to Denver.",
+      "dans_take": "Watching those turnovers was a total nightmare, and I nearly put my remote through the drywall."
     }
   ],
   "news_digest": [
     {
-      "headline": "Red Sox acquire catcher Nick Fortes in trade with Rays",
-      "url": "https://www.espn.com/mlb/story/_/id/50523687/red-sox-acquire-catcher-nick-fortes-trade-rays",
-      "dans_take": "A smart little move to patch a hole while the rest of the league is still napping."
+      "headline": "NHL Power Rankings: Updated poll, plus fantasy hockey add/drops for all 32 teams",
+      "url": "https://www.espn.com/nhl/story/_/id/50532384/nhl-2026-27-power-rankings-top-teams-players-stats-projections-standings-fantasy-hockey",
+      "dans_take": "Rankings are just glorified opinions until you actually win the games that matter."
     },
     {
-      "headline": "Bruins beat Red Wings 4-1, spoil Detroit's Centennial celebration game",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892739",
-      "dans_take": "Nothing tastes better than a road win that ruins somebody else's big party."
+      "headline": "2026-27 MLB free agency, trade grades: Offseason analysis",
+      "url": "https://www.espn.com/mlb/story/_/id/50473334/2026-27-offseason-free-agency-trade-grades",
+      "dans_take": "It is a quiet time of year, but I am watching the front office like a hawk to see if they make a real move."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Denver Nuggets",
-      "away_team": "Boston Celtics",
-      "home_score": 105,
-      "away_score": 101,
-      "game_date": "2026-11-18",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-19",
+      "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Red Wings",
-      "away_team": "Boston Bruins",
-      "home_score": 1,
-      "away_score": 4,
-      "game_date": "2026-11-18",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-19",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,9 +64,9 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-18",
+      "game_date": "2026-11-19",
       "played": false,
-      "season_type": "playoff"
+      "season_type": "offseason"
     },
     "patriots": {
       "sport": "NFL",
@@ -74,18 +74,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-18",
+      "game_date": "2026-11-19",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-18",
-      "matchup": "Boston Celtics at Denver Nuggets",
-      "day_of_week": "Wednesday",
-      "time_et": "9:30 PM ET"
-    },
     {
       "date": "2026-11-21",
       "matchup": "Washington Capitals at Boston Bruins",
@@ -115,6 +109,12 @@
       "matchup": "Winnipeg Jets at Boston Bruins",
       "day_of_week": "Wednesday",
       "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-27",
+      "matchup": "Toronto Maple Leafs at Boston Bruins",
+      "day_of_week": "Friday",
+      "time_et": "1:00 PM ET"
     }
   ],
   "_timings": [
@@ -122,43 +122,37 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 6.35,
-      "prompt_tokens": 42315,
-      "output_tokens": 1443,
+      "seconds": 19.05,
+      "prompt_tokens": 40019,
+      "output_tokens": 1432,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 6.45,
-      "prompt_tokens": 17882,
-      "output_tokens": 1483,
+      "seconds": 10.66,
+      "prompt_tokens": 17870,
+      "output_tokens": 1433,
       "thinking_tokens": null
     }
   ],
   "_grounding": "quota_exhausted",
-  "generated_at": "2026-11-19T17:14:39.717479+00:00",
+  "generated_at": "2026-11-20T16:48:04.026520+00:00",
   "_quality_warning": true,
   "_quality_flags": [
     {
-      "rule": 17,
-      "detail": "The content incorrectly identifies the game date as 'Wednesday' for the games played on 2026-11-18, which was a Tuesday."
+      "rule": 10,
+      "detail": "repetition: number-masked sentence skeleton \"we have a few days of calm before the bs\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    },
+    {
+      "rule": 10,
+      "detail": "repetition: number-masked sentence skeleton \"it is a quiet time of year\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     }
   ],
   "team_pulse": {
-    "as_of": "2026-11-19",
+    "as_of": "2026-11-20",
     "teams": [
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "postseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
-      },
       {
         "team": "celtics",
         "label": "Celtics",
@@ -214,6 +208,16 @@
         }
       },
       {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "offseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
         "team": "patriots",
         "label": "Patriots",
         "sport": "NFL",
@@ -234,5 +238,5 @@
       }
     ]
   },
-  "date": "2026-11-19"
+  "date": "2026-11-20"
 }

@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-20",
+  "generated_at": "2026-11-20T16:47:20.983304+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 43.0,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "fail",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": [
+      {
+        "rule": 15,
+        "detail": "phantom game: output claims a Boston team has a game today (2026-11-20); upcoming_schedule lists none (next game 2026-11-21). Sentence: Not much happening on the field today, which reminds me of a night back in June of thirteen when the Garden was absolutely electric during the Cup Final."
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"we have a few days of calm before the bs\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"it is a quiet time of year\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 1.7
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The headline claims 'Quiet Friday' and the text asserts 'no game on the schedule today', but the TODAY date is 2026-11-20 (Thursday), not Friday."
+        }
+      ],
+      "duration_seconds": 2.1
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The headline claims it is 'Friday' today, but the TODAY date is 2026-11-20, which is a Thursday."
+        },
+        {
+          "rule": 15,
+          "detail": "The content claims the Bruins host the Capitals on 'Saturday afternoon', but the UPCOMING_SCHEDULE lists the game for 7:00 PM ET, which is evening."
+        },
+        {
+          "rule": 15,
+          "detail": "phantom game: output claims a Boston team has a game today (2026-11-20); upcoming_schedule lists none (next game 2026-11-21). Sentence: Not much happening on the field today, which reminds me of a night back in June of thirteen when the Garden was absolutely electric during the Cup Final."
+        }
+      ],
+      "duration_seconds": 6.3
+    }
+  ]
+}
