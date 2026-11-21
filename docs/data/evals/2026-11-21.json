@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-21",
+  "generated_at": "2026-11-21T15:57:55.254946+00:00",
+  "outcome": "retry",
+  "winning_attempt": 1,
+  "total_attempts": 3,
+  "generation_seconds": 51.0,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content claims the Bruins host the Capitals 'tonight' (Friday, 2026-11-21), but the UPCOMING_SCHEDULE lists the game for Saturday, 2026-11-22."
+        }
+      ],
+      "duration_seconds": 23.6
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content asserts 'I will be glued to the TV for the next game' and 'at this stage of the schedule, there is absolutely zero margin for error' while implying a game is imminent, but the UPCOMING_SCHEDULE lists no Patriots game for today (2026-11-21)."
+        },
+        {
+          "rule": 16,
+          "detail": "game-day omission: the bruins play today (2026-11-21) \u2014 Washington Capitals at Boston Bruins, 7:00 PM ET \u2014 and the post never mentions the team. Give it its own beat in morning_brew as a look forward, with NO result: the game has not been played yet."
+        },
+        {
+          "rule": 16,
+          "detail": "game-day omission: the celtics play today (2026-11-21) \u2014 Boston Celtics at Sacramento Kings, 10:00 PM ET \u2014 and the post never mentions the team. Give it its own beat in morning_brew as a look forward, with NO result: the game has not been played yet."
+        }
+      ],
+      "duration_seconds": 2.1
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 15,
+          "detail": "The content claims 'Tonight is a massive test for the Bruins' and 'the Celtics have a late-night battle... tonight', but today is 2026-11-21 and the schedule lists these games for Saturday, 2026-11-22."
+        }
+      ],
+      "duration_seconds": 4.4
+    }
+  ]
+}

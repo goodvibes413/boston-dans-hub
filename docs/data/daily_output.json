@@ -1,40 +1,28 @@
 {
-  "headline": "Quiet days in the Hub let my blood pressure finally settle",
+  "headline": "Patriots season hanging by a thread after Drake Maye injury",
   "morning_brew": [
-    "Not much happening on the field today, so let me tell you about the time I watched the Bruins clinch the Cup back in 2011. I was over at Uncle Carmine's place in Revere, and the air in that living room was thicker than the clam chowdah at the local diner. Carmine had his feet up and was snoring like a chainsaw through the entire second period, swearing up and down he was just resting his eyes to see the final horn. I did not wake him until Tim Thomas made that final stop and the boys hoisted the hardware, and to this day, he insists he saw every single save.",
-    "Carmine's living room smelled like the cigars he keeps hidden from my aunt, and the couch was covered in that plastic wrap that sticks to your legs if you sit for more than five minutes. My aunt had a tray of ziti sitting on the counter that nobody dared touch until the final whistle blew, because you do not mess with superstition when the B's are playing for the Cup. It was one of those nights where time just stands still, and even though Carmine missed the middle, he still talks like he was coaching the squad from his recliner.",
-    "We have a few days of calm before the B's get back to the ice at TD Garden on Saturday to face the Capitals, which gives me plenty of time to stop obsessing over the power rankings. The C's are also heading out west for a Saturday night tilt against the Kings, and hopefully, both squads use this little break to find their focus. I am gonna use the quiet to let my blood pressure recover before the weekend slate kicks off, because we all know the stress is coming back the second the puck drops."
+    "I haven't felt this sick to my stomach since the T broke down on the Pike at rush hour. Drake Maye's ankle injury is just a total gut punch, and I spent half the night staring at the ceiling wondering if our season just went up in smoke. If Maye has to miss extended time, the offense is gonna look like a different animal with Tommy DeVito under center, and frankly, I do not have a great feeling about our chances against the rest of this schedule. It feels like we finally had a real direction with Maye at the helm, and now we are staring down the barrel of a complete rebuild of the game plan on the fly.",
+    "This is exactly the kind of disaster that feels way too familiar for a team that has been fighting to stay above .500 all year. We are sitting at 5-5 and right in the middle of a logjam in the AFC, and you cannot afford to lose your signal-caller when every single game is a must-win to keep our postseason hopes alive. My neighbor Rick is already spiraling about the offensive line and whether anyone can protect the pocket, and for once, I really cannot blame the guy for being concerned because his conspiracy board is starting to look like a documentary.",
+    "Looking ahead to the weekend, it is a busy Saturday in the Hub with two games on the docket. The Bruins are back at TD Garden tonight to face the Capitals at 7:00 PM ET, and I am praying for a clean, disciplined game that keeps the blood pressure manageable. Later on, the Celtics hit the road to take on the Kings at the Golden 1 Center at 10:00 PM ET, and I will be staying up to watch Jayson Tatum and the squad try to bounce back from that rough one against Denver."
   ],
   "trend_watch": [
     {
-      "category": "Heater",
-      "player": "David Pastrnak",
-      "trend": "Potted a goal and added an assist in the win against Detroit on Wednesday night.",
-      "dans_take": "Pasta is cooking, and I am here for every single bite of it."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Nick Fortes",
-      "trend": "The front office brought him in to bolster the catching depth after he started seventy-eight games last season.",
-      "dans_take": "A sneaky smart move to patch a hole while the rest of the league is still sleeping on us."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Jayson Tatum",
-      "trend": "Committed six turnovers and struggled to hold the lead in Wednesday's loss to Denver.",
-      "dans_take": "Watching those turnovers was a total nightmare, and I nearly put my remote through the drywall."
+      "category": "Trench Report",
+      "player": "Drake Maye",
+      "trend": "The young quarterback is dealing with a significant ankle injury that threatens his availability for the remainder of the season.",
+      "dans_take": "Without Maye, our offensive ceiling just crashed through the basement floor."
     }
   ],
   "news_digest": [
     {
-      "headline": "NHL Power Rankings: Updated poll, plus fantasy hockey add/drops for all 32 teams",
-      "url": "https://www.espn.com/nhl/story/_/id/50532384/nhl-2026-27-power-rankings-top-teams-players-stats-projections-standings-fantasy-hockey",
-      "dans_take": "Rankings are just glorified opinions until you actually win the games that matter."
+      "headline": "Drake Maye ankle injury: Is the Patriots' season over? Can Tommy DeVito step up?",
+      "url": "https://www.espn.com/nfl/story/_/id/50503981/drake-maye-ankle-injury-patriots-tommy-devito-stats",
+      "dans_take": "If Maye is down, we have to hope DeVito can manage the game and keep us from sliding into the abyss."
     },
     {
-      "headline": "2026-27 MLB free agency, trade grades: Offseason analysis",
-      "url": "https://www.espn.com/mlb/story/_/id/50473334/2026-27-offseason-free-agency-trade-grades",
-      "dans_take": "It is a quiet time of year, but I am watching the front office like a hawk to see if they make a real move."
+      "headline": "Red Sox acquire catcher Nick Fortes in trade with Rays",
+      "url": "https://www.espn.com/mlb/story/_/id/50523687/red-sox-acquire-catcher-nick-fortes-trade-rays",
+      "dans_take": "Getting a catcher with experience is a solid, quiet move that at least shows the front office has a pulse."
     }
   ],
   "box_scores": {
@@ -44,7 +32,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-19",
+      "game_date": "2026-11-20",
       "played": false,
       "season_type": "regular"
     },
@@ -54,7 +42,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-19",
+      "game_date": "2026-11-20",
       "played": false,
       "season_type": "unknown"
     },
@@ -64,7 +52,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-19",
+      "game_date": "2026-11-20",
       "played": false,
       "season_type": "offseason"
     },
@@ -74,7 +62,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-19",
+      "game_date": "2026-11-20",
       "played": false,
       "season_type": "regular"
     }
@@ -115,6 +103,12 @@
       "matchup": "Toronto Maple Leafs at Boston Bruins",
       "day_of_week": "Friday",
       "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-27",
+      "matchup": "Atlanta Hawks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "8:00 PM ET"
     }
   ],
   "_timings": [
@@ -122,36 +116,32 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 19.05,
-      "prompt_tokens": 40019,
-      "output_tokens": 1432,
+      "seconds": 29.4,
+      "prompt_tokens": 39853,
+      "output_tokens": 1218,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 10.66,
-      "prompt_tokens": 17870,
-      "output_tokens": 1433,
+      "seconds": 5.8,
+      "prompt_tokens": 17657,
+      "output_tokens": 1266,
       "thinking_tokens": null
     }
   ],
   "_grounding": "quota_exhausted",
-  "generated_at": "2026-11-20T16:48:04.026520+00:00",
+  "generated_at": "2026-11-21T15:58:46.257430+00:00",
   "_quality_warning": true,
   "_quality_flags": [
     {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"we have a few days of calm before the bs\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-    },
-    {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"it is a quiet time of year\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "rule": 15,
+      "detail": "The content claims the Bruins host the Capitals 'tonight' (Friday, 2026-11-21), but the UPCOMING_SCHEDULE lists the game for Saturday, 2026-11-22."
     }
   ],
   "team_pulse": {
-    "as_of": "2026-11-20",
+    "as_of": "2026-11-21",
     "teams": [
       {
         "team": "celtics",
@@ -177,7 +167,7 @@
           "opponent": "Sacramento Kings",
           "home": false,
           "season_type": "regular",
-          "is_today": false
+          "is_today": true
         }
       },
       {
@@ -204,7 +194,7 @@
           "opponent": "Washington Capitals",
           "home": true,
           "season_type": "regular",
-          "is_today": false
+          "is_today": true
         }
       },
       {
@@ -238,5 +228,5 @@
       }
     ]
   },
-  "date": "2026-11-20"
+  "date": "2026-11-21"
 }

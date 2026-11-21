@@ -1,0 +1,207 @@
+{
+  "date": "2026-11-21",
+  "generated_at": "2026-11-21T15:58:46.257430+00:00",
+  "headline": "Patriots season hanging by a thread after Drake Maye injury",
+  "morning_brew": [
+    "I haven't felt this sick to my stomach since the T broke down on the Pike at rush hour. Drake Maye's ankle injury is just a total gut punch, and I spent half the night staring at the ceiling wondering if our season just went up in smoke. If Maye has to miss extended time, the offense is gonna look like a different animal with Tommy DeVito under center, and frankly, I do not have a great feeling about our chances against the rest of this schedule. It feels like we finally had a real direction with Maye at the helm, and now we are staring down the barrel of a complete rebuild of the game plan on the fly.",
+    "This is exactly the kind of disaster that feels way too familiar for a team that has been fighting to stay above .500 all year. We are sitting at 5-5 and right in the middle of a logjam in the AFC, and you cannot afford to lose your signal-caller when every single game is a must-win to keep our postseason hopes alive. My neighbor Rick is already spiraling about the offensive line and whether anyone can protect the pocket, and for once, I really cannot blame the guy for being concerned because his conspiracy board is starting to look like a documentary.",
+    "Looking ahead to the weekend, it is a busy Saturday in the Hub with two games on the docket. The Bruins are back at TD Garden tonight to face the Capitals at 7:00 PM ET, and I am praying for a clean, disciplined game that keeps the blood pressure manageable. Later on, the Celtics hit the road to take on the Kings at the Golden 1 Center at 10:00 PM ET, and I will be staying up to watch Jayson Tatum and the squad try to bounce back from that rough one against Denver."
+  ],
+  "news_digest": [
+    {
+      "headline": "Drake Maye ankle injury: Is the Patriots' season over? Can Tommy DeVito step up?",
+      "url": "https://www.espn.com/nfl/story/_/id/50503981/drake-maye-ankle-injury-patriots-tommy-devito-stats",
+      "dans_take": "If Maye is down, we have to hope DeVito can manage the game and keep us from sliding into the abyss."
+    },
+    {
+      "headline": "Red Sox acquire catcher Nick Fortes in trade with Rays",
+      "url": "https://www.espn.com/mlb/story/_/id/50523687/red-sox-acquire-catcher-nick-fortes-trade-rays",
+      "dans_take": "Getting a catcher with experience is a solid, quiet move that at least shows the front office has a pulse."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Trench Report",
+      "player": "Drake Maye",
+      "trend": "The young quarterback is dealing with a significant ankle injury that threatens his availability for the remainder of the season.",
+      "dans_take": "Without Maye, our offensive ceiling just crashed through the basement floor."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-20",
+      "played": false,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-20",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-20",
+      "played": false,
+      "season_type": "offseason"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-20",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-11-21",
+      "matchup": "Washington Capitals at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-21",
+      "matchup": "Boston Celtics at Sacramento Kings",
+      "day_of_week": "Saturday",
+      "time_et": "10:00 PM ET"
+    },
+    {
+      "date": "2026-11-22",
+      "matchup": "Boston Celtics at Golden State Warriors",
+      "day_of_week": "Sunday",
+      "time_et": "8:30 PM ET"
+    },
+    {
+      "date": "2026-11-24",
+      "matchup": "Boston Celtics at Washington Wizards",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-25",
+      "matchup": "Winnipeg Jets at Boston Bruins",
+      "day_of_week": "Wednesday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-27",
+      "matchup": "Toronto Maple Leafs at Boston Bruins",
+      "day_of_week": "Friday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-27",
+      "matchup": "Atlanta Hawks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "8:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-11-21",
+    "teams": [
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "11-4",
+        "last": {
+          "date": "2026-11-18",
+          "day_of_week": "Wednesday",
+          "opponent": "Denver Nuggets",
+          "home": false,
+          "boston_score": 101,
+          "opponent_score": 105,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-21",
+          "day_of_week": "Saturday",
+          "time_et": "10:00 PM ET",
+          "opponent": "Sacramento Kings",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "14-7",
+        "last": {
+          "date": "2026-11-18",
+          "day_of_week": "Wednesday",
+          "opponent": "Red Wings",
+          "home": false,
+          "boston_score": 4,
+          "opponent_score": 1,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-21",
+          "day_of_week": "Saturday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Washington Capitals",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "offseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-5",
+        "last": {
+          "date": "2026-11-15",
+          "day_of_week": "Sunday",
+          "opponent": "Detroit Lions",
+          "home": false,
+          "boston_score": 10,
+          "opponent_score": 35,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": null
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}
