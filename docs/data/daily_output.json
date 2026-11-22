@@ -1,50 +1,62 @@
 {
-  "headline": "Patriots season hanging by a thread after Drake Maye injury",
+  "headline": "Elias Lindholm four goal masterpiece leads Bruins to thriller win",
   "morning_brew": [
-    "I haven't felt this sick to my stomach since the T broke down on the Pike at rush hour. Drake Maye's ankle injury is just a total gut punch, and I spent half the night staring at the ceiling wondering if our season just went up in smoke. If Maye has to miss extended time, the offense is gonna look like a different animal with Tommy DeVito under center, and frankly, I do not have a great feeling about our chances against the rest of this schedule. It feels like we finally had a real direction with Maye at the helm, and now we are staring down the barrel of a complete rebuild of the game plan on the fly.",
-    "This is exactly the kind of disaster that feels way too familiar for a team that has been fighting to stay above .500 all year. We are sitting at 5-5 and right in the middle of a logjam in the AFC, and you cannot afford to lose your signal-caller when every single game is a must-win to keep our postseason hopes alive. My neighbor Rick is already spiraling about the offensive line and whether anyone can protect the pocket, and for once, I really cannot blame the guy for being concerned because his conspiracy board is starting to look like a documentary.",
-    "Looking ahead to the weekend, it is a busy Saturday in the Hub with two games on the docket. The Bruins are back at TD Garden tonight to face the Capitals at 7:00 PM ET, and I am praying for a clean, disciplined game that keeps the blood pressure manageable. Later on, the Celtics hit the road to take on the Kings at the Golden 1 Center at 10:00 PM ET, and I will be staying up to watch Jayson Tatum and the squad try to bounce back from that rough one against Denver."
+    "I haven't seen a performance like Elias Lindholm put on last night since the glory days. Four goals in one night against the Capitals is absolutely wicked, and it's exactly the kind of offensive outburst we needed after a few inconsistent weeks. The squad looked energized from the opening puck drop, and even when we hit a snag in the second period, it felt like the boys were never gonna let this one slip away. It's a damn shame the C's couldn't match that energy out in Sacramento.",
+    "Watching the Celtics lose on a last-second putback is a special kind of misery that I really didn't need to experience on a Saturday night. We had our chances to put the Kings away, but the shooting just went cold when it mattered most, and that's a tough pill to swallow for a team trying to find its rhythm. I'll be staring at the ceiling tonight if they don't pick it up when they head to San Francisco to take on the Warriors at the Chase Center.",
+    "Things aren't getting any easier with the Pats still trying to navigate the schedule without Drake Maye. The offense has been a work in progress all year, and until we get some clarity on the injury situation, we're all just hoping for the best. It's a long road ahead for this roster, and honestly, I'm just looking for any sign that the game plan is moving in the right direction."
   ],
   "trend_watch": [
     {
-      "category": "Trench Report",
-      "player": "Drake Maye",
-      "trend": "The young quarterback is dealing with a significant ankle injury that threatens his availability for the remainder of the season.",
-      "dans_take": "Without Maye, our offensive ceiling just crashed through the basement floor."
+      "category": "Heater",
+      "player": "Elias Lindholm",
+      "trend": "Potted four goals and added an assist to carry the Bruins past the Capitals.",
+      "dans_take": "The man played like he had a cheat code, absolutely unreal."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Mike Conley",
+      "trend": "Sank all four of his three-point attempts and finished with nineteen points off the bench.",
+      "dans_take": "He was the only guy in green who could hit a bucket when the rest of the team was bricking shots like they were allergic to the hoop."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Payton Pritchard",
+      "trend": "Struggled from the field all night and went zero for eight from beyond the arc.",
+      "dans_take": "A performance so cold it could freeze over the Charles."
     }
   ],
   "news_digest": [
     {
-      "headline": "Drake Maye ankle injury: Is the Patriots' season over? Can Tommy DeVito step up?",
-      "url": "https://www.espn.com/nfl/story/_/id/50503981/drake-maye-ankle-injury-patriots-tommy-devito-stats",
-      "dans_take": "If Maye is down, we have to hope DeVito can manage the game and keep us from sliding into the abyss."
+      "headline": "Elias Lindholm authors first four-goal game of career in Bruins' 7-5 victory",
+      "url": "https://www.espn.com/nhl/story/_/id/50558265/elias-lindholm-four-goal-game-powers-bruins-capitals",
+      "dans_take": "That is how you take over a game and put the entire city on your back for one night."
     },
     {
-      "headline": "Red Sox acquire catcher Nick Fortes in trade with Rays",
-      "url": "https://www.espn.com/mlb/story/_/id/50523687/red-sox-acquire-catcher-nick-fortes-trade-rays",
-      "dans_take": "Getting a catcher with experience is a solid, quiet move that at least shows the front office has a pulse."
+      "headline": "Murray's putback with 5 seconds left lifts Kings to 97-96 win over Celtics",
+      "url": "http://www.espn.com/nba/recap?gameId=401910028",
+      "dans_take": "I watched that final possession through my fingers like a horror movie and it ended exactly how I feared."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-20",
-      "played": false,
+      "home_team": "Sacramento Kings",
+      "away_team": "Boston Celtics",
+      "home_score": 97,
+      "away_score": 96,
+      "game_date": "2026-11-21",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-20",
-      "played": false,
-      "season_type": "unknown"
+      "home_team": "Boston Bruins",
+      "away_team": "Capitals",
+      "home_score": 7,
+      "away_score": 5,
+      "game_date": "2026-11-21",
+      "played": true,
+      "season_type": "regular"
     },
     "redsox": {
       "sport": "MLB",
@@ -52,7 +64,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-20",
+      "game_date": "2026-11-21",
       "played": false,
       "season_type": "offseason"
     },
@@ -62,18 +74,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-20",
+      "game_date": "2026-11-21",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-21",
-      "matchup": "Washington Capitals at Boston Bruins",
-      "day_of_week": "Saturday",
-      "time_et": "7:00 PM ET"
-    },
     {
       "date": "2026-11-21",
       "matchup": "Boston Celtics at Sacramento Kings",
@@ -109,6 +115,24 @@
       "matchup": "Atlanta Hawks at Boston Celtics",
       "day_of_week": "Friday",
       "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "Boston Celtics at San Antonio Spurs",
+      "day_of_week": "Sunday",
+      "time_et": "4:00 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "New England Patriots at Los Angeles Chargers",
+      "day_of_week": "Sunday",
+      "time_et": "4:05 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "Vancouver Canucks at Boston Bruins",
+      "day_of_week": "Sunday",
+      "time_et": "5:00 PM ET"
     }
   ],
   "_timings": [
@@ -116,32 +140,25 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 29.4,
-      "prompt_tokens": 39853,
-      "output_tokens": 1218,
+      "seconds": 4.19,
+      "prompt_tokens": 43667,
+      "output_tokens": 1333,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 5.8,
-      "prompt_tokens": 17657,
-      "output_tokens": 1266,
+      "seconds": 3.3,
+      "prompt_tokens": 17772,
+      "output_tokens": 1347,
       "thinking_tokens": null
     }
   ],
   "_grounding": "quota_exhausted",
-  "generated_at": "2026-11-21T15:58:46.257430+00:00",
-  "_quality_warning": true,
-  "_quality_flags": [
-    {
-      "rule": 15,
-      "detail": "The content claims the Bruins host the Capitals 'tonight' (Friday, 2026-11-21), but the UPCOMING_SCHEDULE lists the game for Saturday, 2026-11-22."
-    }
-  ],
+  "generated_at": "2026-11-22T16:00:28.149046+00:00",
   "team_pulse": {
-    "as_of": "2026-11-21",
+    "as_of": "2026-11-22",
     "teams": [
       {
         "team": "celtics",
@@ -149,22 +166,22 @@
         "sport": "NBA",
         "phase": "regular",
         "opener": false,
-        "record": "11-4",
+        "record": "11-5",
         "last": {
-          "date": "2026-11-18",
-          "day_of_week": "Wednesday",
-          "opponent": "Denver Nuggets",
+          "date": "2026-11-21",
+          "day_of_week": "Saturday",
+          "opponent": "Sacramento Kings",
           "home": false,
-          "boston_score": 101,
-          "opponent_score": 105,
+          "boston_score": 96,
+          "opponent_score": 97,
           "result": "L",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-11-21",
-          "day_of_week": "Saturday",
-          "time_et": "10:00 PM ET",
-          "opponent": "Sacramento Kings",
+          "date": "2026-11-22",
+          "day_of_week": "Sunday",
+          "time_et": "8:30 PM ET",
+          "opponent": "Golden State Warriors",
           "home": false,
           "season_type": "regular",
           "is_today": true
@@ -176,36 +193,26 @@
         "sport": "NHL",
         "phase": "regular",
         "opener": false,
-        "record": "14-7",
+        "record": "15-7",
         "last": {
-          "date": "2026-11-18",
-          "day_of_week": "Wednesday",
-          "opponent": "Red Wings",
-          "home": false,
-          "boston_score": 4,
-          "opponent_score": 1,
+          "date": "2026-11-21",
+          "day_of_week": "Saturday",
+          "opponent": "Capitals",
+          "home": true,
+          "boston_score": 7,
+          "opponent_score": 5,
           "result": "W",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-11-21",
-          "day_of_week": "Saturday",
+          "date": "2026-11-25",
+          "day_of_week": "Wednesday",
           "time_et": "7:00 PM ET",
-          "opponent": "Washington Capitals",
+          "opponent": "Winnipeg Jets",
           "home": true,
           "season_type": "regular",
-          "is_today": true
+          "is_today": false
         }
-      },
-      {
-        "team": "redsox",
-        "label": "Red Sox",
-        "sport": "MLB",
-        "phase": "offseason",
-        "opener": false,
-        "record": null,
-        "last": null,
-        "next": null
       },
       {
         "team": "patriots",
@@ -224,9 +231,27 @@
           "result": "L",
           "season_type": "regular"
         },
+        "next": {
+          "date": "2026-11-29",
+          "day_of_week": "Sunday",
+          "time_et": "4:05 PM ET",
+          "opponent": "Los Angeles Chargers",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "offseason",
+        "opener": false,
+        "record": null,
+        "last": null,
         "next": null
       }
     ]
   },
-  "date": "2026-11-21"
+  "date": "2026-11-22"
 }
