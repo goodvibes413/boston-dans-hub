@@ -106,22 +106,22 @@
     "most_flagged_rules": [
       {
         "rule": 15,
-        "count": 7,
+        "count": 8,
         "title": "Phantom scheduled game"
+      },
+      {
+        "rule": 10,
+        "count": 6,
+        "title": "Voice repetition"
       },
       {
         "rule": 16,
         "count": 2,
         "title": "Game-day omission"
-      },
-      {
-        "rule": 10,
-        "count": 2,
-        "title": "Voice repetition"
       }
     ],
     "rule15_agreement": {
-      "deterministic": 1,
+      "deterministic": 2,
       "llm": 2,
       "both": 1
     }
