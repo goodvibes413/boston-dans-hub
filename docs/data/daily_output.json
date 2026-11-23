@@ -157,8 +157,12 @@
   ],
   "_grounding": "quota_exhausted",
   "generated_at": "2026-11-22T16:00:28.149046+00:00",
+  "date": "2026-11-23",
+  "_stale": true,
+  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+  "_stale_age_hours": 27.9,
   "team_pulse": {
-    "as_of": "2026-11-22",
+    "as_of": "2026-11-23",
     "teams": [
       {
         "team": "celtics",
@@ -166,25 +170,25 @@
         "sport": "NBA",
         "phase": "regular",
         "opener": false,
-        "record": "11-5",
+        "record": "11-6",
         "last": {
-          "date": "2026-11-21",
-          "day_of_week": "Saturday",
-          "opponent": "Sacramento Kings",
+          "date": "2026-11-22",
+          "day_of_week": "Sunday",
+          "opponent": "Golden State Warriors",
           "home": false,
-          "boston_score": 96,
-          "opponent_score": 97,
+          "boston_score": 87,
+          "opponent_score": 88,
           "result": "L",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-11-22",
-          "day_of_week": "Sunday",
-          "time_et": "8:30 PM ET",
-          "opponent": "Golden State Warriors",
+          "date": "2026-11-24",
+          "day_of_week": "Tuesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Washington Wizards",
           "home": false,
           "season_type": "regular",
-          "is_today": true
+          "is_today": false
         }
       },
       {
@@ -252,6 +256,5 @@
         "next": null
       }
     ]
-  },
-  "date": "2026-11-22"
+  }
 }
