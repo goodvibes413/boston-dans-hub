@@ -1,71 +1,17 @@
 {
   "date": "2026-11-23",
-  "generated_at": "2026-11-23T21:34:25.600051+00:00",
+  "generated_at": "2026-11-23T22:25:01.098459+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
-  "total_attempts": 1,
-  "generation_seconds": 46.6,
+  "total_attempts": 0,
+  "generation_seconds": 0.0,
   "pre_pass": {
-    "repetition_check": "fail",
-    "schedule_check": "fail",
-    "gameday_check": "pass",
-    "weekday_check": "pass",
-    "venue_check": "pass",
-    "flagged_phrases": [
-      {
-        "rule": 10,
-        "detail": "repetition: number-masked sentence skeleton \"through my fingers like a horror movie and it ended exactly how i feared\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      },
-      {
-        "rule": 10,
-        "detail": "repetition: number-masked sentence skeleton \"we had our chances to put the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      },
-      {
-        "rule": 10,
-        "detail": "repetition: number-masked sentence skeleton \"went cold when it mattered most and\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      },
-      {
-        "rule": 10,
-        "detail": "repetition: number-masked sentence skeleton \"is a special kind of misery\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      },
-      {
-        "rule": 15,
-        "detail": "phantom game: output claims patriots has a game today (2026-11-23); upcoming_schedule lists none (next game 2026-11-29). Sentence: Over in Foxborough, the Patriots front office made it official today that Tommy DeVito is the guy under center while Drake Maye recovers from his injury."
-      }
-    ]
+    "repetition_check": "unknown",
+    "schedule_check": "unknown",
+    "gameday_check": "unknown",
+    "weekday_check": "unknown",
+    "venue_check": "unknown",
+    "flagged_phrases": []
   },
-  "attempts": [
-    {
-      "attempt": 1,
-      "verdict": "UNAVAILABLE",
-      "severity": null,
-      "flags": [
-        {
-          "rule": 10,
-          "detail": "repetition: number-masked sentence skeleton \"through my fingers like a horror movie and it ended exactly how i feared\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-        },
-        {
-          "rule": 10,
-          "detail": "repetition: number-masked sentence skeleton \"we had our chances to put the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-        },
-        {
-          "rule": 10,
-          "detail": "repetition: number-masked sentence skeleton \"went cold when it mattered most and\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-        },
-        {
-          "rule": 10,
-          "detail": "repetition: number-masked sentence skeleton \"is a special kind of misery\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-        },
-        {
-          "rule": 15,
-          "detail": "phantom game: output claims patriots has a game today (2026-11-23); upcoming_schedule lists none (next game 2026-11-29). Sentence: Over in Foxborough, the Patriots front office made it official today that Tommy DeVito is the guy under center while Drake Maye recovers from his injury."
-        },
-        {
-          "rule": 0,
-          "detail": "judge unavailable \u2014 API error: ServerError: code=503 | status=UNAVAILABLE | msg=This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
-        }
-      ],
-      "duration_seconds": 46.6
-    }
-  ]
+  "attempts": []
 }
