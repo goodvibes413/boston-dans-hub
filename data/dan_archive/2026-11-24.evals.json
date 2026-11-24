@@ -1,59 +1,66 @@
 {
   "date": "2026-11-24",
-  "generated_at": "2026-11-24T01:56:52.788284+00:00",
+  "generated_at": "2026-11-24T19:24:20.182786+00:00",
   "outcome": "retry",
-  "winning_attempt": 3,
+  "winning_attempt": 1,
   "total_attempts": 3,
-  "generation_seconds": 55.7,
+  "generation_seconds": 89.8,
   "pre_pass": {
-    "repetition_check": "fail",
+    "repetition_check": "pass",
     "schedule_check": "pass",
     "gameday_check": "pass",
     "weekday_check": "pass",
     "venue_check": "pass",
-    "flagged_phrases": [
-      {
-        "rule": 10,
-        "detail": "repetition: formulaic paragraph opener \"i havent seen ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
-      }
-    ]
+    "flagged_phrases": []
   },
   "attempts": [
     {
       "attempt": 1,
       "verdict": "FAIL",
-      "severity": "medium",
-      "flags": [
-        {
-          "rule": 14,
-          "detail": "The news_digest mentions the Red Sox acquiring Nick Fortes, but this milestone is not covered in the morning_brew prose."
-        }
-      ],
-      "duration_seconds": 10.0
-    },
-    {
-      "attempt": 2,
-      "verdict": "FAIL",
-      "severity": "medium",
-      "flags": [
-        {
-          "rule": 12,
-          "detail": "The morning_brew fails to mention the Celtics game against the Warriors that occurred on 2026-11-23, which is required coverage for a game played yesterday."
-        }
-      ],
-      "duration_seconds": 1.5
-    },
-    {
-      "attempt": 3,
-      "verdict": "FAIL",
       "severity": "low",
       "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: formulaic paragraph opener \"I haven't seen ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"i watched that final minute through my fingers like it was a cheap horror movie\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"i havent seen the cs struggle like this in # years and\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        },
         {
           "rule": 10,
           "detail": "repetition: formulaic paragraph opener \"i havent seen ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
         }
       ],
-      "duration_seconds": 27.0
+      "duration_seconds": 3.5
+    },
+    {
+      "attempt": 2,
+      "verdict": "FAIL",
+      "severity": "low",
+      "flags": [
+        {
+          "rule": 10,
+          "detail": "repetition: number-masked sentence skeleton \"and i am just hoping the\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+        }
+      ],
+      "duration_seconds": 3.4
+    },
+    {
+      "attempt": 3,
+      "verdict": "FAIL",
+      "severity": "medium",
+      "flags": [
+        {
+          "rule": 16,
+          "detail": "The Patriots play the Chargers on 2026-11-29, but the morning_brew fails to provide any forward-looking coverage of this upcoming game."
+        }
+      ],
+      "duration_seconds": 59.0
     }
   ]
 }

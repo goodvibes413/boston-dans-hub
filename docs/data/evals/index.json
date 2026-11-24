@@ -105,19 +105,19 @@
     "stale": 0,
     "most_flagged_rules": [
       {
+        "rule": 10,
+        "count": 10,
+        "title": "Voice repetition"
+      },
+      {
         "rule": 15,
         "count": 7,
         "title": "Phantom scheduled game"
       },
       {
-        "rule": 10,
-        "count": 6,
-        "title": "Voice repetition"
-      },
-      {
-        "rule": 14,
-        "count": 2,
-        "title": "Milestone omission"
+        "rule": 16,
+        "count": 3,
+        "title": "Game-day omission"
       }
     ],
     "rule15_agreement": {
