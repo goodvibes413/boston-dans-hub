@@ -16,13 +16,27 @@ Two functions, one env var:
 day earlier. Deriving the game day from the run day rather than carrying two env
 vars keeps the rolling-store key and the box-score date from drifting apart.
 
+"Today" is the Boston calendar day, not the UTC one. GitHub's scheduler can run a
+slot hours late; on 2026-11-23 the 15:00 UTC safety net fired at 01:56 UTC on the
+24th — 8:56 PM Monday in Boston — and a UTC "today" filed a Tuesday brew that
+recapped Monday night's games before they had finished. Every cron slot (08:00–
+15:00 UTC) falls on the same calendar day in both zones, so ET only changes the
+answer for exactly those late runs.
+
 Stdlib only, per the project's dependency rule.
 """
 
 import os
 from datetime import date, datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 AS_OF_ENV = "AS_OF_DATE"
+ET = ZoneInfo("America/New_York")
+
+
+def today_et(now: datetime | None = None) -> date:
+    """The current calendar day in Boston."""
+    return (now or datetime.now(timezone.utc)).astimezone(ET).date()
 
 
 def _parse(raw: str | None) -> date | None:
@@ -36,13 +50,13 @@ def _parse(raw: str | None) -> date | None:
     try:
         return date.fromisoformat(raw.strip())
     except ValueError:
-        print(f"  warn: {AS_OF_ENV}={raw!r} is not YYYY-MM-DD — falling back to UTC today")
+        print(f"  warn: {AS_OF_ENV}={raw!r} is not YYYY-MM-DD — falling back to today (ET)")
         return None
 
 
 def as_of_date() -> date:
-    """The run's "today" — the AS_OF_DATE override, else the current UTC date."""
-    return _parse(os.environ.get(AS_OF_ENV)) or datetime.now(timezone.utc).date()
+    """The run's "today" — the AS_OF_DATE override, else the current ET date."""
+    return _parse(os.environ.get(AS_OF_ENV)) or today_et()
 
 
 def target_game_date() -> date:

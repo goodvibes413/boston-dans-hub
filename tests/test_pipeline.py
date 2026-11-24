@@ -863,21 +863,34 @@ class TestPipelineDates(unittest.TestCase):
         os.environ["AS_OF_DATE"] = "2026-01-01"
         self.assertEqual(pipeline_dates.target_game_iso(), "2025-12-31")
 
-    def test_unset_falls_back_to_utc_today(self):
+    def test_unset_falls_back_to_et_today(self):
         os.environ.pop("AS_OF_DATE", None)
         self.assertEqual(pipeline_dates.as_of_iso(),
-                         datetime.now(timezone.utc).date().isoformat())
+                         pipeline_dates.today_et().isoformat())
+
+    def test_late_evening_et_is_still_that_day(self):
+        """2026-11-24 01:56 UTC is 8:56 PM Monday in Boston — a delayed cron
+        slot there must not file Tuesday's brew."""
+        now = datetime(2026, 11, 24, 1, 56, tzinfo=timezone.utc)
+        self.assertEqual(pipeline_dates.today_et(now).isoformat(), "2026-11-23")
+
+    def test_cron_slots_land_on_the_same_day_in_both_zones(self):
+        for hour in (8, 9, 11, 13, 15):
+            for month in (1, 7):  # EST and EDT
+                now = datetime(2026, month, 15, hour, 0, tzinfo=timezone.utc)
+                with self.subTest(hour=hour, month=month):
+                    self.assertEqual(pipeline_dates.today_et(now), now.date())
 
     def test_malformed_override_does_not_silently_shift_the_day(self):
         os.environ["AS_OF_DATE"] = "yesterday please"
         self.assertEqual(pipeline_dates.as_of_iso(),
-                         datetime.now(timezone.utc).date().isoformat())
+                         pipeline_dates.today_et().isoformat())
 
     def test_empty_override_is_treated_as_unset(self):
         # The workflow passes '' when the dispatch input is left blank.
         os.environ["AS_OF_DATE"] = ""
         self.assertEqual(pipeline_dates.as_of_iso(),
-                         datetime.now(timezone.utc).date().isoformat())
+                         pipeline_dates.today_et().isoformat())
 
 
 class TestBoxScoreDateVerification(unittest.TestCase):
@@ -1979,12 +1992,10 @@ class TestScheduleWindowAnchoredToRunDay(unittest.TestCase):
                 self.assertNotIn("from_dt      = now_utc.replace", src)
                 self.assertIn("as_of_date()", src)
 
-    def test_blank_as_of_date_still_means_utc_today(self):
-        """Production leaves AS_OF_DATE unset; behaviour there must not change."""
-        from datetime import datetime, timezone
+    def test_blank_as_of_date_means_et_today(self):
+        """Production leaves AS_OF_DATE unset; that is the Boston calendar day."""
         os.environ.pop(pipeline_dates.AS_OF_ENV, None)
-        self.assertEqual(pipeline_dates.as_of_date(),
-                         datetime.now(timezone.utc).date())
+        self.assertEqual(pipeline_dates.as_of_date(), pipeline_dates.today_et())
 
 
 class TestArchiveKeyedOnRunDay(unittest.TestCase):
@@ -2458,8 +2469,51 @@ class TestFreshnessGateReadsTheRunDay(unittest.TestCase):
         """Without this an AS_OF_DATE replay is compared to the wall clock, which
         is the same conflation one level up."""
         self.assertIn('as_of = os.environ.get("AS_OF_DATE", "").strip()', self.gate)
-        self.assertIn("today_utc = as_of or datetime.now(timezone.utc).date().isoformat()",
-                      self.gate)
+        self.assertIn("run_day = as_of or today_et().isoformat()", self.gate)
+
+    def _run_gate(self, payload):
+        """Execute the gate's heredoc against a payload; True means it skipped."""
+        import shutil, subprocess, tempfile
+        body = self.gate.split("<<'PY'\n", 1)[1].rsplit("\n          PY", 1)[0]
+        body = "\n".join(line[10:] for line in body.splitlines())
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            (tmp / "scripts").mkdir()
+            shutil.copy(REPO / "scripts" / "pipeline_dates.py", tmp / "scripts")
+            (tmp / "docs" / "data").mkdir(parents=True)
+            (tmp / "docs" / "data" / "daily_output.json").write_text(json.dumps(payload))
+            out = tmp / "gh_output"
+            out.write_text("")
+            env = {k: v for k, v in os.environ.items() if k not in ("AS_OF_DATE", "FORCE")}
+            env["GITHUB_OUTPUT"] = str(out)
+            subprocess.run([sys.executable, "-c", body], cwd=tmp, env=env, check=True,
+                           capture_output=True)
+            return "skip=true" in out.read_text()
+
+    def test_a_real_publish_for_today_still_skips(self):
+        from datetime import datetime, timezone
+        today = pipeline_dates.today_et().isoformat()
+        self.assertTrue(self._run_gate({
+            "date": today, "generated_at": datetime.now(timezone.utc).isoformat()}))
+
+    def test_a_post_filed_before_its_day_began_in_boston_does_not_block_it(self):
+        """2026-11-23: a delayed slot at 01:56 UTC (8:56 PM ET Monday) filed
+        "2026-11-24" while Monday's games were still on. That post must not
+        make Tuesday's real 03:00 ET run skip."""
+        from datetime import datetime, time, timedelta
+        today = pipeline_dates.today_et()
+        evening_before = datetime.combine(today - timedelta(days=1), time(20, 56),
+                                          tzinfo=pipeline_dates.ET)
+        self.assertFalse(self._run_gate({
+            "date": today.isoformat(), "generated_at": evening_before.isoformat()}))
+
+    def test_an_unpinned_run_never_rolls_the_site_back_a_day(self):
+        """Between a premature post and its day starting in ET, a late slot must
+        not re-run the previous day over it."""
+        from datetime import timedelta
+        tomorrow = (pipeline_dates.today_et() + timedelta(days=1)).isoformat()
+        self.assertTrue(self._run_gate({"date": tomorrow,
+                                        "generated_at": "2026-01-01T00:00:00+00:00"}))
 
     def test_the_day_the_gate_compares_is_the_day_publish_stamps(self):
         """One key across the gate, the payload and the archive picker."""
