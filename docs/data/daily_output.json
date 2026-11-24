@@ -1,40 +1,56 @@
 {
-  "headline": "Four straight losses after a nail-biting collapse in the Bay",
+  "headline": "Celtics hit four game skid while Bruins offense keeps rolling along",
   "morning_brew": [
-    "I haven't seen a four-game skid like this from the C's in a long time, and watching them cough it up against the Warriors on Sunday night was a punch to the gut. We had our chances to steal that one, but an 88-87 loss is the kind of result that makes you wanna hurl your extra-large Dunks right out the window. It is agonizing to watch a roster with this much talent look so out of sync, but my neighbor Rick is already deep into his umpire-and-official dossier, and he's convinced the league is running a sting operation on us. I'm not ready to put on the tinfoil hat just yet, but if we don't fix this mess soon, I might be the one writing the next chapter of Rick's conspiracy manifesto.",
-    "Switching gears to the gridiron, it is officially the Mike Vrabel and Tommy DeVito era for the Patriots. Hearing that the team isn't looking for outside help while we navigate the next few weeks without Drake Maye is a bold move by the front office, and honestly, we are all just holding our breath to see if DeVito can keep the ship from hitting an iceberg. It is a massive ask for any signal-caller to step in mid-season, but at this point, we have to hope the coaching staff has a plan to simplify the scheme, lean on the run, and pray the defense turns into the '85 Bears overnight.",
-    "It is a quiet stretch for the rest of the Hub sports scene while the front office stays busy with offseason moves. I saw the news about the Red Sox bringing in Nick Fortes to bolster the catching situation, which is a quiet bit of business that I can get behind as we try to build out a deeper roster for next year. It is not exactly a blockbuster, but in this market, you take the steady upgrades where you can find them and hope they pay off when the snow finally melts and we're back at Fenway."
+    "I haven't seen the C's struggle like this in five years, and losing a heartbreaker by one point to the Warriors on Sunday night is just the cherry on top of a brutal stretch. We had chances to put it away, but when the shots don't fall, you are just begging for trouble. Getting sent home with an 87-88 final score when you are fighting to find your rhythm is enough to make a guy walk the long way home from the Garden, maybe stopping at Dunks just to scream into a medium roast. It is time for the coaching staff to look in the mirror before this four-game slide turns into something even uglier.",
+    "On the flip side, the Bruins are absolutely electric right now, especially with Elias Lindholm putting on a show for the ages. Scoring four goals in a single night to carry us past the Capitals in a 7-5 victory is exactly the kind of performance that reminds you why we love this game. When a guy like Lindholm takes over like that, it lifts the whole room, and I am just hoping the boys can keep that momentum going when they return to the ice later this week. That level of offensive production is wicked, and it is a massive breath of fresh air for a team that desperately needed a spark.",
+    "Over in the NFL, the Patriots are in a tough spot after the news that Mike Vrabel is sticking with Tommy DeVito as the starter while Drake Maye heals from his fractured fibula. It is a massive blow to the offense, and frankly, we are all just hoping DeVito can keep us competitive in these next few weeks. I am looking for any sign that the game plan is moving in the right direction, but until we see it on the field, I will be sitting here waiting for some good news out of the facility while neighbor Rick tries to convince me it's all part of a deeper government conspiracy."
   ],
   "trend_watch": [
     {
       "category": "Cold Snap",
-      "player": "Jayson Tatum",
-      "trend": "Tatum and the rest of the starters couldn't buy a bucket in the final minutes against the Warriors.",
-      "dans_take": "If we keep shrinking when the clock hits two minutes, this season is gonna be shorter than a line at the Registry."
+      "player": "Derrick White",
+      "trend": "Shot six for twenty-one from the field and struggled from behind the arc during Sunday's loss.",
+      "dans_take": "The rim must have been covered in plastic wrap because nothing was falling for him."
     },
     {
-      "category": "Trench Report",
-      "player": "Tommy DeVito",
-      "trend": "DeVito is officially the starter while the team manages the injury situation under center.",
-      "dans_take": "The kid has a hell of a challenge, but I am rooting for him to make the skeptics choke on their words."
+      "category": "Heater",
+      "player": "Elias Lindholm",
+      "trend": "Authored a four-goal masterpiece to carry the Bruins to a high-scoring win against Washington.",
+      "dans_take": "Four goals in one night, I have seen less scoring at a high school dance."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Jayson Tatum",
+      "trend": "Logged thirty-eight minutes while scoring twenty-seven points and pulling down ten rebounds on Sunday.",
+      "dans_take": "He was out there doing heavy lifting all by his lonesome, which is never a recipe for a W."
     }
   ],
   "news_digest": [
     {
+      "headline": "Brandin Podziemski scores 18 points as Warriors hold off Celtics 88-87",
+      "url": "http://www.espn.com/nba/recap?gameId=401910035",
+      "dans_take": "I watched that final minute through my fingers like it was a cheap horror movie."
+    },
+    {
+      "headline": "Elias Lindholm authors first four-goal game of career in Bruins' 7-5 victory",
+      "url": "https://www.espn.com/nhl/story/_/id/50558265/elias-lindholm-four-goal-game-powers-bruins-capitals",
+      "dans_take": "The man played like he had a jetpack on his skates and honestly, he saved my whole weekend."
+    },
+    {
       "headline": "Vrabel: Patriots sticking with DeVito as QB1, not looking for outside help",
       "url": "https://www.espn.com/nfl/story/_/id/50575341/mike-vrabel-patriots-sticking-tommy-devito-qb1",
-      "dans_take": "Sticking with our own is a hell of a gamble, but I respect the loyalty to the locker room over panic-buying a veteran."
+      "dans_take": "Losing Maye for weeks is a total gut punch that has me questioning my entire Sunday routine."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-23",
-      "played": false,
+      "home_team": "Golden State Warriors",
+      "away_team": "Boston Celtics",
+      "home_score": 88,
+      "away_score": 87,
+      "game_date": "2026-11-22",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
@@ -43,7 +59,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-23",
+      "game_date": "2026-11-22",
       "played": false,
       "season_type": "unknown"
     },
@@ -53,7 +69,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-23",
+      "game_date": "2026-11-22",
       "played": false,
       "season_type": "offseason"
     },
@@ -63,12 +79,18 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-23",
+      "game_date": "2026-11-22",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
+    {
+      "date": "2026-11-22",
+      "matchup": "Boston Celtics at Golden State Warriors",
+      "day_of_week": "Sunday",
+      "time_et": "8:30 PM ET"
+    },
     {
       "date": "2026-11-24",
       "matchup": "Boston Celtics at Washington Wizards",
@@ -110,18 +132,6 @@
       "matchup": "Vancouver Canucks at Boston Bruins",
       "day_of_week": "Sunday",
       "time_et": "5:00 PM ET"
-    },
-    {
-      "date": "2026-11-30",
-      "matchup": "Boston Celtics at Dallas Mavericks",
-      "day_of_week": "Monday",
-      "time_et": "8:00 PM ET"
-    },
-    {
-      "date": "2026-12-01",
-      "matchup": "Colorado Avalanche at Boston Bruins",
-      "day_of_week": "Tuesday",
-      "time_et": "8:00 PM ET"
     }
   ],
   "_timings": [
@@ -129,32 +139,36 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.43,
-      "prompt_tokens": 40363,
-      "output_tokens": 1244,
+      "seconds": 9.99,
+      "prompt_tokens": 41828,
+      "output_tokens": 1500,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 3.66,
-      "prompt_tokens": 17683,
-      "output_tokens": 1281,
+      "seconds": 7.8,
+      "prompt_tokens": 17949,
+      "output_tokens": 1540,
       "thinking_tokens": null
     }
   ],
   "_grounding": "off",
-  "generated_at": "2026-11-24T01:57:48.532957+00:00",
+  "generated_at": "2026-11-24T02:36:42.139517+00:00",
   "_quality_warning": true,
   "_quality_flags": [
+    {
+      "rule": 10,
+      "detail": "repetition: formulaic paragraph opener \"i haven't seen ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    },
     {
       "rule": 10,
       "detail": "repetition: formulaic paragraph opener \"i havent seen ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
     }
   ],
   "team_pulse": {
-    "as_of": "2026-11-24",
+    "as_of": "2026-11-23",
     "teams": [
       {
         "team": "celtics",
@@ -180,7 +194,7 @@
           "opponent": "Washington Wizards",
           "home": false,
           "season_type": "regular",
-          "is_today": true
+          "is_today": false
         }
       },
       {
@@ -240,5 +254,5 @@
       }
     ]
   },
-  "date": "2026-11-24"
+  "date": "2026-11-23"
 }

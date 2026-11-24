@@ -1,64 +1,69 @@
 {
   "date": "2026-11-23",
-  "generated_at": "2026-11-22T16:00:28.149046+00:00",
-  "headline": "Elias Lindholm four goal masterpiece leads Bruins to thriller win",
+  "generated_at": "2026-11-24T02:36:42.139517+00:00",
+  "headline": "Celtics hit four game skid while Bruins offense keeps rolling along",
   "morning_brew": [
-    "I haven't seen a performance like Elias Lindholm put on last night since the glory days. Four goals in one night against the Capitals is absolutely wicked, and it's exactly the kind of offensive outburst we needed after a few inconsistent weeks. The squad looked energized from the opening puck drop, and even when we hit a snag in the second period, it felt like the boys were never gonna let this one slip away. It's a damn shame the C's couldn't match that energy out in Sacramento.",
-    "Watching the Celtics lose on a last-second putback is a special kind of misery that I really didn't need to experience on a Saturday night. We had our chances to put the Kings away, but the shooting just went cold when it mattered most, and that's a tough pill to swallow for a team trying to find its rhythm. I'll be staring at the ceiling tonight if they don't pick it up when they head to San Francisco to take on the Warriors at the Chase Center.",
-    "Things aren't getting any easier with the Pats still trying to navigate the schedule without Drake Maye. The offense has been a work in progress all year, and until we get some clarity on the injury situation, we're all just hoping for the best. It's a long road ahead for this roster, and honestly, I'm just looking for any sign that the game plan is moving in the right direction."
+    "I haven't seen the C's struggle like this in five years, and losing a heartbreaker by one point to the Warriors on Sunday night is just the cherry on top of a brutal stretch. We had chances to put it away, but when the shots don't fall, you are just begging for trouble. Getting sent home with an 87-88 final score when you are fighting to find your rhythm is enough to make a guy walk the long way home from the Garden, maybe stopping at Dunks just to scream into a medium roast. It is time for the coaching staff to look in the mirror before this four-game slide turns into something even uglier.",
+    "On the flip side, the Bruins are absolutely electric right now, especially with Elias Lindholm putting on a show for the ages. Scoring four goals in a single night to carry us past the Capitals in a 7-5 victory is exactly the kind of performance that reminds you why we love this game. When a guy like Lindholm takes over like that, it lifts the whole room, and I am just hoping the boys can keep that momentum going when they return to the ice later this week. That level of offensive production is wicked, and it is a massive breath of fresh air for a team that desperately needed a spark.",
+    "Over in the NFL, the Patriots are in a tough spot after the news that Mike Vrabel is sticking with Tommy DeVito as the starter while Drake Maye heals from his fractured fibula. It is a massive blow to the offense, and frankly, we are all just hoping DeVito can keep us competitive in these next few weeks. I am looking for any sign that the game plan is moving in the right direction, but until we see it on the field, I will be sitting here waiting for some good news out of the facility while neighbor Rick tries to convince me it's all part of a deeper government conspiracy."
   ],
   "news_digest": [
     {
-      "headline": "Elias Lindholm authors first four-goal game of career in Bruins' 7-5 victory",
-      "url": "https://www.espn.com/nhl/story/_/id/50558265/elias-lindholm-four-goal-game-powers-bruins-capitals",
-      "dans_take": "That is how you take over a game and put the entire city on your back for one night."
+      "headline": "Brandin Podziemski scores 18 points as Warriors hold off Celtics 88-87",
+      "url": "http://www.espn.com/nba/recap?gameId=401910035",
+      "dans_take": "I watched that final minute through my fingers like it was a cheap horror movie."
     },
     {
-      "headline": "Murray's putback with 5 seconds left lifts Kings to 97-96 win over Celtics",
-      "url": "http://www.espn.com/nba/recap?gameId=401910028",
-      "dans_take": "I watched that final possession through my fingers like a horror movie and it ended exactly how I feared."
+      "headline": "Elias Lindholm authors first four-goal game of career in Bruins' 7-5 victory",
+      "url": "https://www.espn.com/nhl/story/_/id/50558265/elias-lindholm-four-goal-game-powers-bruins-capitals",
+      "dans_take": "The man played like he had a jetpack on his skates and honestly, he saved my whole weekend."
+    },
+    {
+      "headline": "Vrabel: Patriots sticking with DeVito as QB1, not looking for outside help",
+      "url": "https://www.espn.com/nfl/story/_/id/50575341/mike-vrabel-patriots-sticking-tommy-devito-qb1",
+      "dans_take": "Losing Maye for weeks is a total gut punch that has me questioning my entire Sunday routine."
     }
   ],
   "trend_watch": [
     {
+      "category": "Cold Snap",
+      "player": "Derrick White",
+      "trend": "Shot six for twenty-one from the field and struggled from behind the arc during Sunday's loss.",
+      "dans_take": "The rim must have been covered in plastic wrap because nothing was falling for him."
+    },
+    {
       "category": "Heater",
       "player": "Elias Lindholm",
-      "trend": "Potted four goals and added an assist to carry the Bruins past the Capitals.",
-      "dans_take": "The man played like he had a cheat code, absolutely unreal."
+      "trend": "Authored a four-goal masterpiece to carry the Bruins to a high-scoring win against Washington.",
+      "dans_take": "Four goals in one night, I have seen less scoring at a high school dance."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Mike Conley",
-      "trend": "Sank all four of his three-point attempts and finished with nineteen points off the bench.",
-      "dans_take": "He was the only guy in green who could hit a bucket when the rest of the team was bricking shots like they were allergic to the hoop."
-    },
-    {
-      "category": "Cold Snap",
-      "player": "Payton Pritchard",
-      "trend": "Struggled from the field all night and went zero for eight from beyond the arc.",
-      "dans_take": "A performance so cold it could freeze over the Charles."
+      "player": "Jayson Tatum",
+      "trend": "Logged thirty-eight minutes while scoring twenty-seven points and pulling down ten rebounds on Sunday.",
+      "dans_take": "He was out there doing heavy lifting all by his lonesome, which is never a recipe for a W."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Sacramento Kings",
+      "home_team": "Golden State Warriors",
       "away_team": "Boston Celtics",
-      "home_score": 97,
-      "away_score": 96,
-      "game_date": "2026-11-21",
+      "home_score": 88,
+      "away_score": 87,
+      "game_date": "2026-11-22",
       "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Capitals",
-      "home_score": 7,
-      "away_score": 5,
-      "game_date": "2026-11-21",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-22",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -66,7 +71,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-21",
+      "game_date": "2026-11-22",
       "played": false,
       "season_type": "offseason"
     },
@@ -76,18 +81,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-21",
+      "game_date": "2026-11-22",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-21",
-      "matchup": "Boston Celtics at Sacramento Kings",
-      "day_of_week": "Saturday",
-      "time_et": "10:00 PM ET"
-    },
     {
       "date": "2026-11-22",
       "matchup": "Boston Celtics at Golden State Warriors",
@@ -202,16 +201,7 @@
         "phase": "regular",
         "opener": false,
         "record": "5-5",
-        "last": {
-          "date": "2026-11-15",
-          "day_of_week": "Sunday",
-          "opponent": "Detroit Lions",
-          "home": false,
-          "boston_score": 10,
-          "opponent_score": 35,
-          "result": "L",
-          "season_type": "regular"
-        },
+        "last": null,
         "next": {
           "date": "2026-11-29",
           "day_of_week": "Sunday",
@@ -234,6 +224,6 @@
       }
     ]
   },
-  "_stale": true,
+  "_stale": null,
   "_fallback": null
 }
