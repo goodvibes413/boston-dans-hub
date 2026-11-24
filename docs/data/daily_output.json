@@ -1,62 +1,51 @@
 {
-  "headline": "Elias Lindholm four goal masterpiece leads Bruins to thriller win",
+  "headline": "Four straight losses after a nail-biting collapse in the Bay",
   "morning_brew": [
-    "I haven't seen a performance like Elias Lindholm put on last night since the glory days. Four goals in one night against the Capitals is absolutely wicked, and it's exactly the kind of offensive outburst we needed after a few inconsistent weeks. The squad looked energized from the opening puck drop, and even when we hit a snag in the second period, it felt like the boys were never gonna let this one slip away. It's a damn shame the C's couldn't match that energy out in Sacramento.",
-    "Watching the Celtics lose on a last-second putback is a special kind of misery that I really didn't need to experience on a Saturday night. We had our chances to put the Kings away, but the shooting just went cold when it mattered most, and that's a tough pill to swallow for a team trying to find its rhythm. I'll be staring at the ceiling tonight if they don't pick it up when they head to San Francisco to take on the Warriors at the Chase Center.",
-    "Things aren't getting any easier with the Pats still trying to navigate the schedule without Drake Maye. The offense has been a work in progress all year, and until we get some clarity on the injury situation, we're all just hoping for the best. It's a long road ahead for this roster, and honestly, I'm just looking for any sign that the game plan is moving in the right direction."
+    "I haven't seen a four-game skid like this from the C's in a long time, and watching them cough it up against the Warriors on Sunday night was a punch to the gut. We had our chances to steal that one, but an 88-87 loss is the kind of result that makes you wanna hurl your extra-large Dunks right out the window. It is agonizing to watch a roster with this much talent look so out of sync, but my neighbor Rick is already deep into his umpire-and-official dossier, and he's convinced the league is running a sting operation on us. I'm not ready to put on the tinfoil hat just yet, but if we don't fix this mess soon, I might be the one writing the next chapter of Rick's conspiracy manifesto.",
+    "Switching gears to the gridiron, it is officially the Mike Vrabel and Tommy DeVito era for the Patriots. Hearing that the team isn't looking for outside help while we navigate the next few weeks without Drake Maye is a bold move by the front office, and honestly, we are all just holding our breath to see if DeVito can keep the ship from hitting an iceberg. It is a massive ask for any signal-caller to step in mid-season, but at this point, we have to hope the coaching staff has a plan to simplify the scheme, lean on the run, and pray the defense turns into the '85 Bears overnight.",
+    "It is a quiet stretch for the rest of the Hub sports scene while the front office stays busy with offseason moves. I saw the news about the Red Sox bringing in Nick Fortes to bolster the catching situation, which is a quiet bit of business that I can get behind as we try to build out a deeper roster for next year. It is not exactly a blockbuster, but in this market, you take the steady upgrades where you can find them and hope they pay off when the snow finally melts and we're back at Fenway."
   ],
   "trend_watch": [
     {
-      "category": "Heater",
-      "player": "Elias Lindholm",
-      "trend": "Potted four goals and added an assist to carry the Bruins past the Capitals.",
-      "dans_take": "The man played like he had a cheat code, absolutely unreal."
-    },
-    {
-      "category": "Bullpen Watch",
-      "player": "Mike Conley",
-      "trend": "Sank all four of his three-point attempts and finished with nineteen points off the bench.",
-      "dans_take": "He was the only guy in green who could hit a bucket when the rest of the team was bricking shots like they were allergic to the hoop."
-    },
-    {
       "category": "Cold Snap",
-      "player": "Payton Pritchard",
-      "trend": "Struggled from the field all night and went zero for eight from beyond the arc.",
-      "dans_take": "A performance so cold it could freeze over the Charles."
+      "player": "Jayson Tatum",
+      "trend": "Tatum and the rest of the starters couldn't buy a bucket in the final minutes against the Warriors.",
+      "dans_take": "If we keep shrinking when the clock hits two minutes, this season is gonna be shorter than a line at the Registry."
+    },
+    {
+      "category": "Trench Report",
+      "player": "Tommy DeVito",
+      "trend": "DeVito is officially the starter while the team manages the injury situation under center.",
+      "dans_take": "The kid has a hell of a challenge, but I am rooting for him to make the skeptics choke on their words."
     }
   ],
   "news_digest": [
     {
-      "headline": "Elias Lindholm authors first four-goal game of career in Bruins' 7-5 victory",
-      "url": "https://www.espn.com/nhl/story/_/id/50558265/elias-lindholm-four-goal-game-powers-bruins-capitals",
-      "dans_take": "That is how you take over a game and put the entire city on your back for one night."
-    },
-    {
-      "headline": "Murray's putback with 5 seconds left lifts Kings to 97-96 win over Celtics",
-      "url": "http://www.espn.com/nba/recap?gameId=401910028",
-      "dans_take": "I watched that final possession through my fingers like a horror movie and it ended exactly how I feared."
+      "headline": "Vrabel: Patriots sticking with DeVito as QB1, not looking for outside help",
+      "url": "https://www.espn.com/nfl/story/_/id/50575341/mike-vrabel-patriots-sticking-tommy-devito-qb1",
+      "dans_take": "Sticking with our own is a hell of a gamble, but I respect the loyalty to the locker room over panic-buying a veteran."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": "Sacramento Kings",
-      "away_team": "Boston Celtics",
-      "home_score": 97,
-      "away_score": 96,
-      "game_date": "2026-11-21",
-      "played": true,
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-23",
+      "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Capitals",
-      "home_score": 7,
-      "away_score": 5,
-      "game_date": "2026-11-21",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-23",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,7 +53,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-21",
+      "game_date": "2026-11-23",
       "played": false,
       "season_type": "offseason"
     },
@@ -74,24 +63,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-21",
+      "game_date": "2026-11-23",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-21",
-      "matchup": "Boston Celtics at Sacramento Kings",
-      "day_of_week": "Saturday",
-      "time_et": "10:00 PM ET"
-    },
-    {
-      "date": "2026-11-22",
-      "matchup": "Boston Celtics at Golden State Warriors",
-      "day_of_week": "Sunday",
-      "time_et": "8:30 PM ET"
-    },
     {
       "date": "2026-11-24",
       "matchup": "Boston Celtics at Washington Wizards",
@@ -133,6 +110,18 @@
       "matchup": "Vancouver Canucks at Boston Bruins",
       "day_of_week": "Sunday",
       "time_et": "5:00 PM ET"
+    },
+    {
+      "date": "2026-11-30",
+      "matchup": "Boston Celtics at Dallas Mavericks",
+      "day_of_week": "Monday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-12-01",
+      "matchup": "Colorado Avalanche at Boston Bruins",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
     }
   ],
   "_timings": [
@@ -140,29 +129,32 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.19,
-      "prompt_tokens": 43667,
-      "output_tokens": 1333,
+      "seconds": 4.43,
+      "prompt_tokens": 40363,
+      "output_tokens": 1244,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 3.3,
-      "prompt_tokens": 17772,
-      "output_tokens": 1347,
+      "seconds": 3.66,
+      "prompt_tokens": 17683,
+      "output_tokens": 1281,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "quota_exhausted",
-  "generated_at": "2026-11-22T16:00:28.149046+00:00",
-  "date": "2026-11-23",
-  "_stale": true,
-  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
-  "_stale_age_hours": 30.4,
+  "_grounding": "off",
+  "generated_at": "2026-11-24T01:57:48.532957+00:00",
+  "_quality_warning": true,
+  "_quality_flags": [
+    {
+      "rule": 10,
+      "detail": "repetition: formulaic paragraph opener \"i havent seen ...\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+    }
+  ],
   "team_pulse": {
-    "as_of": "2026-11-23",
+    "as_of": "2026-11-24",
     "teams": [
       {
         "team": "celtics",
@@ -188,7 +180,7 @@
           "opponent": "Washington Wizards",
           "home": false,
           "season_type": "regular",
-          "is_today": false
+          "is_today": true
         }
       },
       {
@@ -225,16 +217,7 @@
         "phase": "regular",
         "opener": false,
         "record": "5-5",
-        "last": {
-          "date": "2026-11-15",
-          "day_of_week": "Sunday",
-          "opponent": "Detroit Lions",
-          "home": false,
-          "boston_score": 10,
-          "opponent_score": 35,
-          "result": "L",
-          "season_type": "regular"
-        },
+        "last": null,
         "next": {
           "date": "2026-11-29",
           "day_of_week": "Sunday",
@@ -256,5 +239,6 @@
         "next": null
       }
     ]
-  }
+  },
+  "date": "2026-11-24"
 }

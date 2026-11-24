@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-11-19",
     "2026-11-20",
     "2026-11-21",
     "2026-11-22",
-    "2026-11-23"
+    "2026-11-23",
+    "2026-11-24"
   ],
   "rules": [
     {
@@ -110,14 +110,14 @@
         "title": "Phantom scheduled game"
       },
       {
+        "rule": 10,
+        "count": 3,
+        "title": "Voice repetition"
+      },
+      {
         "rule": 16,
         "count": 2,
         "title": "Game-day omission"
-      },
-      {
-        "rule": 10,
-        "count": 2,
-        "title": "Voice repetition"
       }
     ],
     "rule15_agreement": {
