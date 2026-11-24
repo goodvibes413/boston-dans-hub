@@ -25,7 +25,7 @@ on:
       as_of_date:
         description: >-
           Pin the run to a specific day (YYYY-MM-DD). Every fetcher recaps the day
-          BEFORE this one. Leave blank for the current UTC date. Set it when
+          BEFORE this one. Leave blank for the current Boston (ET) date. Set it when
           re-running a past day: without it each stage re-derives "today" from the
           wall clock, so an afternoon re-run can pick up a game that finished after
           the original run.
@@ -51,7 +51,7 @@ jobs:
       issues: write
 
     env:
-      # Blank means "use the current UTC date" — pipeline_dates.as_of_date()
+      # Blank means "use the current ET date" — pipeline_dates.as_of_date()
       # ignores an empty value. Set via workflow_dispatch to replay a past day.
       AS_OF_DATE: ${{ inputs.as_of_date }}
 
@@ -108,10 +108,38 @@ jobs:
               print(f"no date stamp (payload predates it) — falling back to generated_at: {published_day}")
 
           # The day this run is FOR, so a pinned replay is judged against the day it
-          # replays rather than against the wall clock.
+          # replays rather than against the wall clock. Unpinned, that is the Boston
+          # calendar day (pipeline_dates.today_et), not the UTC one.
+          sys.path.insert(0, "scripts")
+          from pipeline_dates import ET, today_et
           as_of = os.environ.get("AS_OF_DATE", "").strip()
-          today_utc = as_of or datetime.now(timezone.utc).date().isoformat()
-          if published_day == today_utc and not data.get("_stale") and not data.get("_fallback"):
+          run_day = as_of or today_et().isoformat()
+
+          # A post filed for a day before that day had begun in Boston is premature:
+          # it recapped a slate that was still being played. On 2026-11-23 a
+          # 15:00 UTC slot delayed to 01:56 UTC filed "2026-11-24" at 8:56 PM ET
+          # Monday, mid-Bruins/Celtics. Matching on `date` alone would have let it
+          # block every real Tuesday run, so treat it as not-yet-published.
+          premature = False
+          gen_at = data.get("generated_at")
+          if gen_at and not as_of:
+              try:
+                  gdt = datetime.fromisoformat(gen_at)
+                  if gdt.tzinfo is None:
+                      gdt = gdt.replace(tzinfo=timezone.utc)
+                  premature = gdt.astimezone(ET).date().isoformat() < published_day
+              except Exception:
+                  pass
+
+          # A post for a LATER day than this run's (only an unpinned run can meet
+          # one: a premature post, before its day starts in ET) must not be
+          # overwritten by a re-run of the day before it.
+          ahead = published_day > run_day and not as_of
+          if ahead:
+              print(f"existing output is for {published_day}, ahead of this run's {run_day} — not re-running an earlier day")
+
+          if ahead or (published_day == run_day and not premature
+                       and not data.get("_stale") and not data.get("_fallback")):
               # Already have a real publish for today. Signal downstream steps to skip.
               # Must be an explicit close/flush: the previous `.open("a").write(...)`
               # left the handle to interpreter-shutdown GC, so a dropped write made
@@ -121,9 +149,12 @@ jobs:
                   fh.write("skip=true\n")
                   fh.flush()
                   os.fsync(fh.fileno())
-              print(f"{today_utc} already published — skipping")
+              if not ahead:
+                  print(f"{run_day} already published — skipping")
+          elif premature and published_day == run_day:
+              print(f"existing {published_day} post was generated {gen_at}, before that day began in ET — regenerating")
           else:
-              print(f"existing output is for {published_day} (this run is for {today_utc}) — proceeding")
+              print(f"existing output is for {published_day} (this run is for {run_day}) — proceeding")
           PY
 
       - name: Set up Python 3.14

@@ -5,6 +5,28 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-11-24 — "Today" is the Boston day, not the UTC one
+
+At 8:56 PM ET on Monday 11/23, the site showed a Tuesday 11/24 brew. GitHub ran
+the 15:00 UTC safety-net slot almost 11 hours late, at 01:56 UTC on the 24th.
+`pipeline_dates.as_of_date()` defaulted to the UTC date, so the run was filed as
+Tuesday's. It recapped Monday's slate while the Bruins and Celtics were still playing.
+
+The freshness gate then read `date == 2026-11-24` as "already published". Without a
+fix, every real Tuesday run would have skipped, and the premature post would have
+stayed up all day.
+
+- `as_of_date()` now defaults to the America/New_York date (`today_et()`). All five
+  cron slots (08:00–15:00 UTC) fall on the same day in both zones. ET only changes
+  the answer for late runs after 8 PM ET, which is exactly this bug.
+- The gate treats a post as premature, and therefore not published, when it was
+  generated before its `date` began in ET. The 11/24 post was written on 11/23 ET,
+  so the 03:00 ET run regenerates it.
+- An unpinned run never overwrites a post for a later day. A late slot that fires
+  that evening can't roll the site back to Monday.
+
+---
+
 ## 2026-11-17 — Red Sox offseason, not "Postseason"
 
 The 11/17 Scoreboard put a Postseason chip on the Red Sox, weeks after the Brewers
