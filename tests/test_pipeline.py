@@ -2445,6 +2445,23 @@ class TestArchivePickerAlwaysHasTodaysPill(unittest.TestCase):
         self.assertLess(fn.index("data.date"), fn.index("data.generated_at"))
 
 
+class TestRecentMemoryExcludesLaterDays(unittest.TestCase):
+    """A replay of 2026-11-23 must not read the 2026-11-24 archive as memory."""
+
+    def test_only_days_before_the_run_day_are_loaded(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            for d in ("2026-11-22", "2026-11-23", "2026-11-24"):
+                (tmp / f"{d}.json").write_text(json.dumps({"headline": d}))
+            os.environ[pipeline_dates.AS_OF_ENV] = "2026-11-23"
+            try:
+                got = generate_rant.load_recent_dan_output(tmp)
+            finally:
+                os.environ.pop(pipeline_dates.AS_OF_ENV, None)
+        self.assertEqual([e["date"] for e in got], ["2026-11-22"])
+
+
 class TestFreshnessGateReadsTheRunDay(unittest.TestCase):
     """The gate that decides whether a scheduled run does any work keyed on
     generated_at, and that cost the whole of 2026-09-11: run #615 replayed 09-10

@@ -631,8 +631,8 @@ def load_recent_dan_output(archive_dir: Path, days: int = DEFAULT_MEMORY_DAYS) -
     Load the last N days of Dan's published output for continuity memory.
 
     Reads `data/dan_archive/YYYY-MM-DD.json` files (written by publish.py),
-    returns the most recent `days` entries newest-first, skipping today's
-    UTC date if it exists (avoids self-reference on re-runs).
+    returns the most recent `days` entries newest-first from days BEFORE the
+    run day (avoids self-reference on re-runs, and future days on replays).
 
     Each archived entry is a slim copy: {date, headline, morning_brew,
     news_digest, generated_at}. Box scores, schedule, trend_watch are
@@ -648,7 +648,10 @@ def load_recent_dan_output(archive_dir: Path, days: int = DEFAULT_MEMORY_DAYS) -
 
     try:
         archive_files = sorted(
-            (p for p in archive_dir.glob("*.json") if p.stem != today_iso),
+            # Strictly earlier days only. `!= today` let a replay read a LATER
+            # day's archive as "recent" — replaying 2026-11-23 would have fed Dan
+            # the premature 2026-11-24 post as if he had already written it.
+            (p for p in archive_dir.glob("*.json") if p.stem[:10] < today_iso),
             key=lambda p: p.stem,
             reverse=True,
         )
