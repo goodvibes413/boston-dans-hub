@@ -2,5 +2,5 @@
 certifi>=2026.10.19
 urllib3>=2.8.0,<3
 anyio>=4.14.2,<5
-pyasn1>=0.6.4
+pyasn1>=0.6.5
 cryptography>=50.0.0
