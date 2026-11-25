@@ -1,41 +1,58 @@
 {
   "date": "2026-11-25",
-  "generated_at": "2026-11-24T19:25:49.975032+00:00",
-  "headline": "Celtics look to snap four game skid tonight against Washington",
+  "generated_at": "2026-11-25T20:26:07.745782+00:00",
+  "headline": "Tatum explodes for forty one as Celtics finally snap losing streak",
   "morning_brew": [
-    "I haven't seen the C's struggle like this in five years, and after dropping four straight it feels like the whole season is teetering on a knife edge. We head down to Washington tonight to take on the Wizards at Capital One Arena, and if the boys don't start hitting their shots, I am gonna lose my mind. Getting sent home with that one point loss to the Warriors on Sunday was a gut punch that took three years off my life, and the only way to stop the bleeding is to put together a full forty eight minutes of basketball. I need to see some urgency, or I'm gonna start thinking my neighbor Rick is right about his bizarre theory that the rims are rigged.",
-    "The Pats are still in the headlines for all the wrong reasons, specifically the ongoing chatter about the draft order and potential contract extensions as we stare down another lost Sunday. Everyone is talking about where we might land in the 2027 NFL draft, but for a team sitting at five and five, it is just painful to hear about top five picks while we are still technically in the mix. Mike Vrabel has his work cut out for him, and frankly, I am tired of reading projections when I want to see a cohesive offensive game plan that can actually move the chains instead of punting into the parking lot.",
-    "It is a quiet night for the rest of the Hub as the Bruins and Red Sox are off, giving us all a chance to take a breath after a hell of a week. The Sox are buried in offseason trade grades and free agency talk, which is about as exciting as watching paint dry, while the B's are prepping to host the Jets on Wednesday. Tonight is all about the parquet floor, and I will be glued to the TV hoping for a win that finally kicks this losing streak to the curb before I start questioning every life choice I've made since the preseason."
+    "Finally, a little bit of breathing room for the C's. After dropping four straight, Jayson Tatum took the wheel on Tuesday night and carried us to a 131-116 win over the Wizards, scoring twenty eight of his forty one points in the first half alone. It wasn't the prettiest basketball, but when you are trying to kill a four-game skid, you don't ask how, you just take the W and pray the losing bug stays dead. Neemias Queta was an absolute monster inside, giving us the kind of interior presence I've been screaming for, and seeing the team get back in the win column feels like a massive weight off my chest. I haven't felt this relieved since cousin Jimmy finally stopped talking about his fantasy football lineup last month.",
+    "The Pats are still the main event in town this week, and the chatter around the facility ahead of this Sunday's tilt with the Chargers is getting louder than the T at rush hour. We are sitting at five and five and every single snap feels like it has the weight of the season behind it, regardless of what the talking heads on TV are barking about. I am still trying to wrap my head around our offensive consistency, or lack thereof, but Mike Vrabel needs to find a way to get this team to play a full sixty minutes if we want to stay in the hunt for a wild card spot. My neighbor Rick is already deep into his third conspiracy theory about the play-calling, so let's hope the coaching staff has it figured out before Sunday.",
+    "It is a busy Wednesday in the Hub because the Bruins are back at TD Garden tonight to host the Winnipeg Jets, and they are going to need every bit of that home ice advantage to stay upright. I am hoping for a clean game from the jump, because we can't afford to get off to a slow start against a squad like Winnipeg. After that, we have the Maple Leafs rolling into town on Friday for a classic matchup that always brings the heat and a headache. No baseball talk today, just pure hardwood and ice as we try to keep this momentum rolling right through the weekend."
   ],
   "news_digest": [
     {
-      "headline": "Brandin Podziemski scores 18 points as Warriors hold off Celtics 88-87",
-      "url": "http://www.espn.com/nba/recap?gameId=401910035",
-      "dans_take": "I watched that final minute through my fingers like it was a cheap horror movie, only with less popcorn and more swearing."
+      "headline": "Tatum scores 41 to help Celtics snap 4-game skid with a 131-116 win over Wizards",
+      "url": "http://www.espn.com/nba/recap?gameId=401909315",
+      "dans_take": "It was about damn time the boys put together a full night of basketball."
     },
     {
-      "headline": "NFL Power Rankings: Stacking all 32 teams for Week 12, plus extension candidates",
-      "url": "https://www.espn.com/nfl/story/_/id/50574413/nfl-power-rankings-week-12-offseason-contract-extension-candidates",
-      "dans_take": "Seeing us stacked in the middle of the pack just reminds me that we are currently the sports equivalent of room temperature tap water."
+      "headline": "NHL Thanksgiving Panic Index: Which teams should be most worried?",
+      "url": "https://www.espn.com/nhl/story/_/id/50587368/nhl-2026-27-playoffs-standings-all-32-thanksgiving-panic-index-rankings-tiers",
+      "dans_take": "I don't need a panic index to tell me how I feel about the Bruins, I just need more wins."
+    },
+    {
+      "headline": "NFL Week 12 latest intel, buzz questions, news, fantasy tips: What we're hearing",
+      "url": "https://www.espn.com/nfl/story/_/id/50582929/week-12-buzz-fantasy-predictions-graziano-fowler-2026",
+      "dans_take": "All this noise about coaching seats and MVP races is just background static until the clock hits zero on Sunday."
     }
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Elias Lindholm",
-      "trend": "Elias Lindholm lit up the Capitals with a massive four goal performance to lead the Bruins to a 7-5 win on Saturday.",
-      "dans_take": "The man played like he had a jetpack on his skates and honestly, he saved my whole weekend from total disaster."
+      "player": "Jayson Tatum",
+      "trend": "Poured in forty one points on thirteen of twenty five shooting while adding eight assists in Tuesday's win.",
+      "dans_take": "That is the superstar level we need every single night if we want to make noise in the East."
+    },
+    {
+      "category": "Heater",
+      "player": "Paul George",
+      "trend": "Knocked down six of nine three-pointers and finished with twenty eight points in his thirty three minutes of action.",
+      "dans_take": "When he is feeling it from deep like that, this offense is basically impossible to defend."
+    },
+    {
+      "category": "Trench Report",
+      "player": "Neemias Queta",
+      "trend": "Dominated the paint with twenty one points on nine of eleven shooting and grabbed five boards.",
+      "dans_take": "Queta played with such a chip on his shoulder, and frankly, he looked like the only guy who woke up ready to hit someone."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-23",
-      "played": false,
+      "home_team": "Washington Wizards",
+      "away_team": "Boston Celtics",
+      "home_score": 116,
+      "away_score": 131,
+      "game_date": "2026-11-24",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
@@ -44,7 +61,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-23",
+      "game_date": "2026-11-24",
       "played": false,
       "season_type": "unknown"
     },
@@ -54,7 +71,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-23",
+      "game_date": "2026-11-24",
       "played": false,
       "season_type": "offseason"
     },
@@ -64,7 +81,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-23",
+      "game_date": "2026-11-24",
       "played": false,
       "season_type": "regular"
     }
@@ -204,6 +221,6 @@
       }
     ]
   },
-  "_stale": true,
+  "_stale": null,
   "_fallback": null
 }
