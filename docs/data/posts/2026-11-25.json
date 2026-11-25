@@ -1,0 +1,218 @@
+{
+  "date": "2026-11-25",
+  "generated_at": "2026-11-24T19:25:49.975032+00:00",
+  "headline": "Celtics look to snap four game skid tonight against Washington",
+  "morning_brew": [
+    "I haven't seen the C's struggle like this in five years, and after dropping four straight it feels like the whole season is teetering on a knife edge. We head down to Washington tonight to take on the Wizards at Capital One Arena, and if the boys don't start hitting their shots, I am gonna lose my mind. Getting sent home with that one point loss to the Warriors on Sunday was a gut punch that took three years off my life, and the only way to stop the bleeding is to put together a full forty eight minutes of basketball. I need to see some urgency, or I'm gonna start thinking my neighbor Rick is right about his bizarre theory that the rims are rigged.",
+    "The Pats are still in the headlines for all the wrong reasons, specifically the ongoing chatter about the draft order and potential contract extensions as we stare down another lost Sunday. Everyone is talking about where we might land in the 2027 NFL draft, but for a team sitting at five and five, it is just painful to hear about top five picks while we are still technically in the mix. Mike Vrabel has his work cut out for him, and frankly, I am tired of reading projections when I want to see a cohesive offensive game plan that can actually move the chains instead of punting into the parking lot.",
+    "It is a quiet night for the rest of the Hub as the Bruins and Red Sox are off, giving us all a chance to take a breath after a hell of a week. The Sox are buried in offseason trade grades and free agency talk, which is about as exciting as watching paint dry, while the B's are prepping to host the Jets on Wednesday. Tonight is all about the parquet floor, and I will be glued to the TV hoping for a win that finally kicks this losing streak to the curb before I start questioning every life choice I've made since the preseason."
+  ],
+  "news_digest": [
+    {
+      "headline": "Brandin Podziemski scores 18 points as Warriors hold off Celtics 88-87",
+      "url": "http://www.espn.com/nba/recap?gameId=401910035",
+      "dans_take": "I watched that final minute through my fingers like it was a cheap horror movie, only with less popcorn and more swearing."
+    },
+    {
+      "headline": "NFL Power Rankings: Stacking all 32 teams for Week 12, plus extension candidates",
+      "url": "https://www.espn.com/nfl/story/_/id/50574413/nfl-power-rankings-week-12-offseason-contract-extension-candidates",
+      "dans_take": "Seeing us stacked in the middle of the pack just reminds me that we are currently the sports equivalent of room temperature tap water."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Elias Lindholm",
+      "trend": "Elias Lindholm lit up the Capitals with a massive four goal performance to lead the Bruins to a 7-5 win on Saturday.",
+      "dans_take": "The man played like he had a jetpack on his skates and honestly, he saved my whole weekend from total disaster."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-23",
+      "played": false,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-23",
+      "played": false,
+      "season_type": "unknown"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-23",
+      "played": false,
+      "season_type": "offseason"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-23",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-11-24",
+      "matchup": "Boston Celtics at Washington Wizards",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-25",
+      "matchup": "Winnipeg Jets at Boston Bruins",
+      "day_of_week": "Wednesday",
+      "time_et": "7:00 PM ET"
+    },
+    {
+      "date": "2026-11-27",
+      "matchup": "Toronto Maple Leafs at Boston Bruins",
+      "day_of_week": "Friday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-27",
+      "matchup": "Atlanta Hawks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "Boston Celtics at San Antonio Spurs",
+      "day_of_week": "Sunday",
+      "time_et": "4:00 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "New England Patriots at Los Angeles Chargers",
+      "day_of_week": "Sunday",
+      "time_et": "4:05 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "Vancouver Canucks at Boston Bruins",
+      "day_of_week": "Sunday",
+      "time_et": "5:00 PM ET"
+    },
+    {
+      "date": "2026-11-30",
+      "matchup": "Boston Celtics at Dallas Mavericks",
+      "day_of_week": "Monday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-12-01",
+      "matchup": "Colorado Avalanche at Boston Bruins",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-11-24",
+    "teams": [
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "11-6",
+        "last": {
+          "date": "2026-11-22",
+          "day_of_week": "Sunday",
+          "opponent": "Golden State Warriors",
+          "home": false,
+          "boston_score": 87,
+          "opponent_score": 88,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-24",
+          "day_of_week": "Tuesday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Washington Wizards",
+          "home": false,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "15-7",
+        "last": {
+          "date": "2026-11-21",
+          "day_of_week": "Saturday",
+          "opponent": "Capitals",
+          "home": true,
+          "boston_score": 7,
+          "opponent_score": 5,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-25",
+          "day_of_week": "Wednesday",
+          "time_et": "7:00 PM ET",
+          "opponent": "Winnipeg Jets",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-5",
+        "last": null,
+        "next": {
+          "date": "2026-11-29",
+          "day_of_week": "Sunday",
+          "time_et": "4:05 PM ET",
+          "opponent": "Los Angeles Chargers",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "offseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}
