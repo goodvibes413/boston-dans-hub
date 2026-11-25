@@ -97,6 +97,7 @@ RULE_TITLES = {
     16: "Game-day omission",
     17: "Wrong day named for a result",
     18: "Wrong place named for a game",
+    19: "Season-phase framing",
 }
 
 # Flags are {"rule": int, "detail": str}. They used to be free prose in which the
@@ -132,6 +133,7 @@ JUDGE_RESPONSE_SCHEMA = {
 # Wordings the deterministic pre-passes and publish.py's coverage check use.
 # Only consulted for legacy string flags that carry no explicit "rule N".
 _LEGACY_FLAG_RULES = (
+    ("season-phase", 19),
     ("wrong game place", 18),
     ("wrong game day", 17),
     ("game-day omission", 16),
@@ -364,7 +366,7 @@ Review the following sports commentary and return ONLY a JSON object with keys:
   verdict   ("PASS" or "FAIL")
   severity  ("low", "medium" or "high")
   flags     (list of objects — empty list if PASS. Each object is
-             {"rule": <the NUMBER of the rule below that this violates, 1-18>,
+             {"rule": <the NUMBER of the rule below that this violates, 1-19>,
               "detail": "<one sentence naming what in the output violates it,
                           quoting the offending phrase>"})
 
@@ -571,6 +573,27 @@ FAIL if ANY of these are present:
       is fine ("we head to the Bronx on Tuesday" when UPCOMING_SCHEDULE says so).
     - Naming a team's CITY as part of its name ("the Chicago Cubs", "Tampa Bay") is not a
       place claim about the game. Only a statement about where the game happened is.
+
+19. Season-phase framing — an OFFSEASON team written about as if it were an
+    in-season team on an off night. Flag as LOW severity.
+    - A team is in the offseason when source_data.season_memory.current_season gives
+      it status "offseason", or source_data.season_overrides lists it as eliminated
+      with an "expires" date after TODAY.
+    - On 2026-11-24 the brew said "It is a quiet night for the rest of the Hub as the
+      Bruins and Red Sox are off". The Bruins really were off that night. The Red Sox
+      were three weeks past the World Series. Folding them into "are off" turns a
+      winter-long offseason into a single night, and every reader notices. The next
+      sentence even said "The Sox are buried in offseason trade grades", so the facts
+      were known; the framing was wrong.
+    - Flag: an offseason team described as "off tonight", "taking the night off",
+      "resting", "a quiet night", "a night off", "dark tonight", or grouped with an
+      in-season team's off day ("the Bruins and Red Sox are off").
+    - Fine: offseason framing for an offseason team ("the Sox are deep in hot-stove
+      season", "nothing from Fenway until pitchers and catchers report", "the Sox
+      are off until spring"). An in-season team's real off night is rule 15's
+      business, and correct.
+    - If current_season has no status for a team and no override covers it, skip
+      that team — an unknown phase is not proof of an offseason.
 
 DOUBLEHEADER INTERPRETATION (applies to rules 7, 8, and 12):
 Two games between the same teams on the same game_date in rolling_7day — a "games"
@@ -1523,6 +1546,115 @@ def detect_venue_contradiction(today: dict, rolling, today_iso: str | None = Non
     return flags
 
 
+# Season-phase framing — an offseason team written up as having a night off.
+#
+# 2026-11-24: "It is a quiet night for the rest of the Hub as the Bruins and Red
+# Sox are off, giving us all a chance to take a breath after a hell of a week."
+# The Bruins were off that night. The Red Sox had been in the offseason since
+# the World Series ended. The judge passed it with no flags: every schedule rule
+# (15, 16) asks whether a game exists, and "no game tonight" is TRUE for an
+# offseason team, so the sentence agreed with every check while still reading
+# wrong. What was wrong was the phase, not the schedule.
+#
+# Off-night wording. Deliberately the subset of PHANTOM_NO_GAME_MARKERS that
+# describes a single night, plus "are off"/"is off", which is how the published
+# sentence said it. "off to a slow start" and "off the ice" are not off-nights.
+SEASON_PHASE_OFF_NIGHT_MARKERS = [
+    r"\b(?:are|is) off\b(?!\s+(?:to|the|of|on|and|into|until|till|for the (?:winter|season|summer|year)))",
+    r"\b(?:night|day|evening) off\b",
+    r"\b(?:mon|tues|wednes|thurs|fri|satur|sun)day off\b",
+    r"\boff (?:tonight|today|day|night)\b",
+    r"\bquiet (?:night|day|evening)\b",
+    r"\bdark (?:tonight|today)\b",
+    r"\bno games? (?:tonight|today)\b",
+    r"\bnot? (?:playing|scheduled) (?:tonight|today)\b",
+    r"\b(?:resting|rest up) (?:tonight|today)\b",
+]
+
+# A sentence that names the phase itself is correct framing, whatever else it
+# says: "the Sox are off until pitchers and catchers report" is exactly right.
+SEASON_PHASE_VETO = [
+    r"\boff[-\s]?season\b", r"\bwinter\b", r"\bhot[-\s]stove\b",
+    r"\bspring training\b", r"\bpitchers and catchers\b", r"\btraining camp\b",
+    r"\bfree agency\b", r"\bsummer\b", r"\buntil (?:next )?(?:season|spring|year)\b",
+    r"\bseason (?:is )?over\b", r"\beliminated\b",
+]
+
+
+def offseason_teams(season_current, season_overrides, today_iso: str | None = None) -> set:
+    """Team keys known to be out of season on `today_iso`.
+
+    Two sources, either is enough:
+    - season_current.json's per-team "status" == "offseason". A missing or empty
+      entry means the fetch failed, NOT that the team is out of season.
+    - an unexpired elimination in season_overrides.json. Expired entries are
+      ignored, the same way generate_rant.py ignores them.
+    """
+    if today_iso is None:
+        today_iso = as_of_iso()
+    out = set()
+    if isinstance(season_current, dict):
+        for team_key in PHANTOM_TEAM_ALIASES:
+            entry = season_current.get(team_key)
+            if isinstance(entry, dict) and entry.get("status") == "offseason":
+                out.add(team_key)
+    elims = (season_overrides or {}).get("eliminations", {}) if isinstance(season_overrides, dict) else {}
+    if isinstance(elims, dict):
+        for team_key, entry in elims.items():
+            if team_key not in PHANTOM_TEAM_ALIASES or not isinstance(entry, dict):
+                continue
+            expires = str(entry.get("expires") or "")
+            if expires and expires <= today_iso:
+                continue
+            out.add(team_key)
+    return out
+
+
+def detect_offseason_off_night(today: dict, season_current, season_overrides=None,
+                               today_iso: str | None = None) -> list[str]:
+    """
+    Deterministic pre-pass: flag a sentence that names an OFFSEASON team together
+    with single-night "off" wording — the 2026-11-24 "the Bruins and Red Sox are
+    off" bug. See SEASON_PHASE_OFF_NIGHT_MARKERS for why nothing caught it.
+
+    Conservative by construction:
+    - The team must be named in the sentence itself. "We" in an offseason
+      paragraph is not enough to say whose night is being described.
+    - The team's phase must be KNOWN to be offseason (offseason_teams()). An
+      empty season_current entry is a fetch failure, not a phase.
+    - A sentence that names the phase ("offseason", "winter", "spring training",
+      "until next season") is correct framing and is never flagged.
+
+    Returns LOW-severity flag strings, one per (team, sentence).
+    """
+    off_teams = offseason_teams(season_current, season_overrides, today_iso)
+    if not off_teams:
+        return []
+    marker_rx = [re.compile(p, re.IGNORECASE) for p in SEASON_PHASE_OFF_NIGHT_MARKERS]
+    veto_rx = [re.compile(p, re.IGNORECASE) for p in SEASON_PHASE_VETO]
+
+    flags: list[str] = []
+    for paragraph in _paragraph_segments(today):
+        for sentence in _split_sentences(paragraph):
+            named = _teams_named(sentence) & off_teams
+            if not named:
+                continue
+            if any(rx.search(sentence) for rx in veto_rx):
+                continue
+            hit = next((rx for rx in marker_rx if rx.search(sentence)), None)
+            if not hit:
+                continue
+            for team_key in sorted(named):
+                flags.append(
+                    f"season-phase framing: the {team_key} are in the OFFSEASON, and "
+                    f"the post describes them as having a night off "
+                    f"(\"{hit.search(sentence).group(0)}\"). An offseason team is not "
+                    f"\"off tonight\" — give it offseason framing or leave it out of "
+                    f"the off-night sentence. Sentence: {sentence[:160]}"
+                )
+    return flags
+
+
 # Ascending badness. A pre-pass flag can raise a verdict's severity to its floor
 # but never lower it — a HIGH from the LLM judge always wins.
 _SEVERITY_ORDER = ["low", "medium", "high"]
@@ -1541,7 +1673,8 @@ def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
                     all_flags: list | None = None, phantom_flags: list | None = None,
                     gameday_flags: list | None = None,
                     weekday_flags: list | None = None,
-                    venue_flags: list | None = None) -> None:
+                    venue_flags: list | None = None,
+                    season_phase_flags: list | None = None) -> None:
     """
     Write an enriched verdict to JUDGE_RESULT_PATH (if set).
     Safe to call at any exit point — failure is logged but never propagated.
@@ -1559,7 +1692,8 @@ def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
     gameday = list(gameday_flags or [])
     weekday = list(weekday_flags or [])
     venue = list(venue_flags or [])
-    schedule_related = phantom + gameday + weekday + venue
+    season_phase = list(season_phase_flags or [])
+    schedule_related = phantom + gameday + weekday + venue + season_phase
     enriched = {
         "verdict": verdict.get("verdict"),
         "severity": verdict.get("severity"),
@@ -1570,6 +1704,7 @@ def _write_enriched(verdict: dict, pre_pass_flags: list, llm_flags: list,
         "gameday_omission_flags": gameday,
         "wrong_weekday_flags": weekday,
         "wrong_venue_flags": venue,
+        "season_phase_flags": season_phase,
         "llm_flags": list(llm_flags),
         "rule_titles": {str(k): v for k, v in RULE_TITLES.items()},
     }
@@ -1706,6 +1841,16 @@ def main():
         print(f"  pre-pass: {len(venue_flags)} wrong-game-place flag(s) detected", file=sys.stderr)
     pre_pass_flags += venue_flags
 
+    # Season-phase pre-pass — LOW, unlike the four above: nothing a reader could
+    # check is false ("no game tonight" is true of an offseason team), the
+    # framing is. LOW still fails the verdict and buys one regeneration.
+    season_phase_flags = [make_flag(19, f) for f in detect_offseason_off_night(
+        today_obj, source_data["season_memory"]["current_season"],
+        source_data.get("season_overrides"), today_iso)]
+    if season_phase_flags:
+        print(f"  pre-pass: {len(season_phase_flags)} season-phase flag(s) detected", file=sys.stderr)
+    pre_pass_flags += season_phase_flags
+
     full_prompt = (
         f"TODAY: {today_iso}\n\n"
         + JUDGE_PROMPT
@@ -1762,7 +1907,7 @@ def main():
         v = {"verdict": JUDGE_UNAVAILABLE, "severity": None,
              "flags": pre_pass_flags + [api_note], "judge_unavailable": True}
         _write_enriched(v, pre_pass_flags, [], v["flags"], phantom_flags, gameday_flags,
-                        weekday_flags, venue_flags)
+                        weekday_flags, venue_flags, season_phase_flags)
         print(json.dumps(v))
         sys.exit(JUDGE_UNAVAILABLE_EXIT)
 
@@ -1795,7 +1940,7 @@ def main():
     # This does NOT affect stdout or exit code — publish.py's existing parsing is unaffected.
     _write_enriched(verdict, pre_pass_flags, llm_flags, phantom_flags=phantom_flags,
                     gameday_flags=gameday_flags, weekday_flags=weekday_flags,
-                    venue_flags=venue_flags)
+                    venue_flags=venue_flags, season_phase_flags=season_phase_flags)
 
     for f in verdict.get("flags", []):
         print(f"  flag: {flag_line(f)}", file=sys.stderr)

@@ -3355,8 +3355,6 @@ class TestRollingVenueAnnotation(unittest.TestCase):
         self.assertEqual(game["venue"], "not in the data")
 
 
-if __name__ == "__main__":
-    unittest.main()
 
 
 # ---------------------------------------------------------------------------
@@ -3848,3 +3846,87 @@ class TestTeamPulseCarriesForwardAcrossCleanRunners(unittest.TestCase):
     def test_attach_reads_the_published_board(self):
         fn = (REPO / "scripts" / "publish.py").read_text().split("def attach_team_pulse(")[1]
         self.assertIn("carry_forward_last(pulse", fn.split("\ndef ")[0])
+
+
+class TestSeasonPhaseFraming(unittest.TestCase):
+    """The 2026-11-24 bug: "It is a quiet night for the rest of the Hub as the
+    Bruins and Red Sox are off". The Bruins were off that night; the Red Sox were
+    three weeks past the World Series. Every schedule rule passed it, because "no
+    game tonight" is true of an offseason team. The phase was wrong, not the
+    schedule."""
+
+    TODAY = "2026-11-24"
+    SEASON_CURRENT = {
+        "redsox": {"status": "offseason"},
+        "bruins": {"status": "regular_season"},
+        "celtics": {"status": "regular_season"},
+        "patriots": {"status": "regular_season"},
+    }
+    PUBLISHED = (
+        "It is a quiet night for the rest of the Hub as the Bruins and Red Sox are "
+        "off, giving us all a chance to take a breath after a hell of a week. The Sox "
+        "are buried in offseason trade grades and free agency talk, which is about as "
+        "exciting as watching paint dry, while the B's are prepping to host the Jets "
+        "on Wednesday."
+    )
+
+    def _detect(self, *paragraphs, season_current=None, overrides=None):
+        post = {"headline": "Celtics need a win", "morning_brew": list(paragraphs)}
+        return safety_judge.detect_offseason_off_night(
+            post, self.SEASON_CURRENT if season_current is None else season_current,
+            overrides or {}, self.TODAY)
+
+    def test_the_published_2026_11_24_sentence_is_flagged(self):
+        flags = self._detect(self.PUBLISHED)
+        self.assertEqual(len(flags), 1)
+        self.assertIn("redsox", flags[0])
+        self.assertEqual(safety_judge.flag_rule(flags[0]), 19)
+
+    def test_in_season_team_off_night_is_not_flagged(self):
+        self.assertEqual(self._detect("The Bruins are off tonight, back Wednesday."), [])
+
+    def test_offseason_framing_is_not_flagged(self):
+        for sentence in (
+            "The Sox are off until pitchers and catchers report.",
+            "The Red Sox are off for the winter and I already miss them.",
+            "The Sox are deep in hot-stove season, which is a quiet night every night.",
+            "The Sox are off to a slow start in free agency.",
+            "No baseball talk today, just pure hardwood and ice.",
+        ):
+            with self.subTest(sentence=sentence):
+                self.assertEqual(self._detect(sentence), [])
+
+    def test_other_off_night_wording_is_flagged(self):
+        for sentence in ("A rare night off for the Sox.",
+                         "The Red Sox are dark tonight, so it's all Celtics."):
+            with self.subTest(sentence=sentence):
+                self.assertEqual(len(self._detect(sentence)), 1)
+
+    def test_unknown_phase_is_skipped(self):
+        # An empty entry is a fetch failure, not an offseason.
+        self.assertEqual(self._detect(self.PUBLISHED, season_current={"redsox": {}}), [])
+
+    def test_unexpired_elimination_counts_as_offseason(self):
+        overrides = {"eliminations": {"bruins": {"expires": "2026-12-01"}}}
+        flags = self._detect("The Bruins are off tonight.",
+                             season_current={}, overrides=overrides)
+        self.assertEqual(len(flags), 1)
+
+    def test_expired_elimination_is_ignored(self):
+        overrides = {"eliminations": {"bruins": {"expires": "2026-09-15"}}}
+        self.assertEqual(self._detect("The Bruins are off tonight.",
+                                      season_current={}, overrides=overrides), [])
+
+    def test_rule_19_is_wired_everywhere(self):
+        self.assertEqual(safety_judge.RULE_TITLES[19], "Season-phase framing")
+        self.assertIn("\n19. Season-phase framing", safety_judge.JUDGE_PROMPT)
+        self.assertIn("1-19", safety_judge.JUDGE_PROMPT)
+        html = (REPO / "docs" / "index.html").read_text()
+        self.assertIn("season_phase_check === 'fail') status[19]", html)
+        self.assertIn('"season_phase_check"', (REPO / "scripts" / "publish.py").read_text())
+        prompt = (REPO / "prompts" / "boston_dan_system.txt").read_text()
+        self.assertIn("OFF DAYS ARE FOR IN-SEASON TEAMS ONLY", prompt)
+
+
+if __name__ == "__main__":
+    unittest.main()

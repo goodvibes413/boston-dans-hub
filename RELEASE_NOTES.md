@@ -5,6 +5,38 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-11-25 — An offseason team doesn't get a "night off" (rule 19)
+
+The 11/24 brew said "It is a quiet night for the rest of the Hub as the Bruins and
+Red Sox are off." The Bruins were off that night. The Red Sox were three weeks past
+the World Series. The judge passed the post with no flags. Every schedule rule
+(15, 16) asks whether a game exists, and "no game tonight" is true of an offseason
+team, so the sentence passed every check while still being wrong. The model knew
+the facts: the next sentence said "The Sox are buried in offseason trade grades".
+The framing was the problem.
+
+We considered a general "read the whole post and check the logic" stage and
+decided against it. An open-ended prompt to flash-lite would be noisy against
+Dan's hyperbolic voice. It would give `publish.py` no rule number or severity to
+act on, and it would cost an extra call on every run. Every other rule here is a
+specific failure with a date, and this one follows that pattern.
+
+- **Judge rule 19, Season-phase framing (LOW).** An offseason or eliminated team
+  described as off tonight, resting, on a quiet night, or grouped with an in-season
+  team's off day.
+- **`detect_offseason_off_night()` code check.** Flags a sentence that names a team
+  whose `season_current` status is `offseason` (or that has an unexpired
+  elimination override) together with off-night wording. A sentence that names the
+  phase itself ("offseason", "winter", "spring training", "until next season") is
+  never flagged. An empty `season_current` entry is treated as a fetch failure,
+  not an offseason. Run with every team marked offseason across all 208 published
+  posts, it fires only on the 11/24 sentence.
+- **Persona Off Days rule:** off days are for in-season teams only. Offseason teams
+  get offseason framing.
+- The evals dashboard shows the code check as `season_phase_check` → rule 19.
+
+---
+
 ## 2026-11-24 — "Today" is the Boston day, not the UTC one
 
 At 8:56 PM ET on Monday 11/23, the site showed a Tuesday 11/24 brew. GitHub ran
