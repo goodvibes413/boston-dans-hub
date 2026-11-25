@@ -1674,7 +1674,7 @@
        replaces: it mislabelled every flag the judge worded unexpectedly, and it
        also mapped *any* medium severity to rule 11 regardless of cause. */
     var LEGACY_FLAG_RULES = [
-      ['phantom game', 15], ['off-roster', 11], ['coverage window', 12],
+      ['season-phase', 19], ['phantom game', 15], ['off-roster', 11], ['coverage window', 12],
       ['coverage gap', 12], ['repetition', 10]
     ];
 
@@ -1706,6 +1706,7 @@
       if (evalsData.pre_pass && evalsData.pre_pass.gameday_check === 'fail') status[16] = 'flag';
       if (evalsData.pre_pass && evalsData.pre_pass.weekday_check === 'fail') status[17] = 'flag';
       if (evalsData.pre_pass && evalsData.pre_pass.venue_check === 'fail') status[18] = 'flag';
+      if (evalsData.pre_pass && evalsData.pre_pass.season_phase_check === 'fail') status[19] = 'flag';
       (evalsData.attempts || []).forEach(a => {
         if (a.verdict === 'PASS') return;
         (a.flags || []).forEach(flag => { const n = flagRule(flag); if (n) status[n] = 'flag'; });
