@@ -166,8 +166,8 @@
   ],
   "date": "2026-11-25",
   "_stale": true,
-  "_stale_reason": "judge unavailable: API error: ServerError: code=500 | status=INTERNAL | msg=Internal error encountered.",
-  "_stale_age_hours": 23.2,
+  "_stale_reason": "generation failed: ServerError: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}",
+  "_stale_age_hours": 24.1,
   "team_pulse": {
     "as_of": "2026-11-25",
     "teams": [

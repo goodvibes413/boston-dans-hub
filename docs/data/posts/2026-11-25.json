@@ -127,35 +127,8 @@
   ],
   "playoff_race": null,
   "team_pulse": {
-    "as_of": "2026-11-24",
+    "as_of": "2026-11-25",
     "teams": [
-      {
-        "team": "celtics",
-        "label": "Celtics",
-        "sport": "NBA",
-        "phase": "regular",
-        "opener": false,
-        "record": "11-6",
-        "last": {
-          "date": "2026-11-22",
-          "day_of_week": "Sunday",
-          "opponent": "Golden State Warriors",
-          "home": false,
-          "boston_score": 87,
-          "opponent_score": 88,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-24",
-          "day_of_week": "Tuesday",
-          "time_et": "8:00 PM ET",
-          "opponent": "Washington Wizards",
-          "home": false,
-          "season_type": "regular",
-          "is_today": true
-        }
-      },
       {
         "team": "bruins",
         "label": "Bruins",
@@ -163,21 +136,39 @@
         "phase": "regular",
         "opener": false,
         "record": "15-7",
-        "last": {
-          "date": "2026-11-21",
-          "day_of_week": "Saturday",
-          "opponent": "Capitals",
-          "home": true,
-          "boston_score": 7,
-          "opponent_score": 5,
-          "result": "W",
-          "season_type": "regular"
-        },
+        "last": null,
         "next": {
           "date": "2026-11-25",
           "day_of_week": "Wednesday",
           "time_et": "7:00 PM ET",
           "opponent": "Winnipeg Jets",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
+        }
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "12-6",
+        "last": {
+          "date": "2026-11-24",
+          "day_of_week": "Tuesday",
+          "opponent": "Washington Wizards",
+          "home": false,
+          "boston_score": 131,
+          "opponent_score": 116,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-27",
+          "day_of_week": "Friday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Atlanta Hawks",
           "home": true,
           "season_type": "regular",
           "is_today": false
@@ -213,6 +204,6 @@
       }
     ]
   },
-  "_stale": null,
+  "_stale": true,
   "_fallback": null
 }

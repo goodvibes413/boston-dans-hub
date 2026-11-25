@@ -1,30 +1,17 @@
 {
   "date": "2026-11-25",
-  "generated_at": "2026-11-25T18:32:50.426110+00:00",
+  "generated_at": "2026-11-25T19:29:15.418604+00:00",
   "outcome": "fallback",
   "winning_attempt": null,
-  "total_attempts": 1,
-  "generation_seconds": 137.8,
+  "total_attempts": 0,
+  "generation_seconds": 0.0,
   "pre_pass": {
-    "repetition_check": "pass",
-    "schedule_check": "pass",
-    "gameday_check": "pass",
-    "weekday_check": "pass",
-    "venue_check": "pass",
+    "repetition_check": "unknown",
+    "schedule_check": "unknown",
+    "gameday_check": "unknown",
+    "weekday_check": "unknown",
+    "venue_check": "unknown",
     "flagged_phrases": []
   },
-  "attempts": [
-    {
-      "attempt": 1,
-      "verdict": "UNAVAILABLE",
-      "severity": null,
-      "flags": [
-        {
-          "rule": 0,
-          "detail": "judge unavailable \u2014 API error: ServerError: code=500 | status=INTERNAL | msg=Internal error encountered."
-        }
-      ],
-      "duration_seconds": 137.8
-    }
-  ]
+  "attempts": []
 }
