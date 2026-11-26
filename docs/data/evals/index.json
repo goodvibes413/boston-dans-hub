@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-11-21",
     "2026-11-22",
     "2026-11-23",
     "2026-11-24",
-    "2026-11-25"
+    "2026-11-25",
+    "2026-11-26"
   ],
   "rules": [
     {
@@ -96,6 +96,11 @@
       "number": 18,
       "title": "Wrong place named for a game",
       "summary": "Puts a game somewhere it was not played"
+    },
+    {
+      "number": 19,
+      "title": "Season-phase framing",
+      "summary": "Calls an offseason team's day a night off"
     }
   ],
   "summary_5day": {
@@ -106,23 +111,23 @@
     "most_flagged_rules": [
       {
         "rule": 10,
-        "count": 11,
+        "count": 13,
         "title": "Voice repetition"
       },
       {
         "rule": 15,
-        "count": 4,
+        "count": 1,
         "title": "Phantom scheduled game"
       },
       {
         "rule": 16,
-        "count": 3,
+        "count": 1,
         "title": "Game-day omission"
       }
     ],
     "rule15_agreement": {
       "deterministic": 0,
-      "llm": 2,
+      "llm": 1,
       "both": 0
     }
   }

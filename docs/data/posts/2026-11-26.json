@@ -1,0 +1,229 @@
+{
+  "date": "2026-11-26",
+  "generated_at": "2026-11-26T17:02:17.129851+00:00",
+  "headline": "Bruins drop a tough one to Winnipeg as the Garden goes silent",
+  "morning_brew": [
+    "Wednesday night was an absolute disastah at the Garden. Watching the Bruins take a four to two loss to the Winnipeg Jets left me staring at the wall, just wondering how a game that started with that much energy ended up slipping through our fingers like a greased pig. Tanner Jeannot and Tyrel Bauer decided to turn the first period into a boxing match with that lengthy fight, and while I love the grit, it didn't do enough to spark the boys against a Jets team that kept finding the back of the net whenever we finally started to wake up.",
+    "Morgan Geekie and Fraser Minten managed to put points on the board, but we just couldn't sustain the pressure. Jeremy Swayman faced seventeen shots and came up short, and it's clear the defensive end needs to sharpen up before we host Toronto on Friday. I have been watching this team long enough to know when they are out of sync, and last night was a classic example of letting a winnable game turn into a frustrating two points for the visitors. Winnipeg just seemed to have an answer for every move we made, and watching that empty net goal in the final minutes was the final twist of the knife that ruined my damn night.",
+    "Looking ahead, the schedule doesn't get any easier with the Maple Leafs coming into town. We need a complete effort from the opening faceoff, or it's gonna be another long night for the faithful. I am hoping for a better showing because we've seen this group perform when they're locked in, and a Friday afternoon tilt is the perfect stage to wash the bad taste of this loss out of our mouths. I'll be in my seat, hoping the boys show the intensity we know they have, but honestly, I'm watching the next one through my fingers."
+  ],
+  "news_digest": [
+    {
+      "headline": "Barron scores go-ahead goal as Jets keep rolling with 4-2 victory over Bruins",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892781",
+      "dans_take": "The Jets were clinical and we simply let the game drift away late."
+    },
+    {
+      "headline": "Bruins' Tanner Jeannot, Jets' Tyrel Bauer square off in lengthy fight",
+      "url": "https://www.espn.com/nhl/story/_/id/50601479/bruins-tanner-jeannot-jets-tyrel-bauer-lengthy-fight",
+      "dans_take": "It was a wild scrap that showcased the physicality of the matchup, even if it didn't save us from the loss."
+    },
+    {
+      "headline": "Maple Leafs take on the Bruins in Atlantic Division action",
+      "url": "http://www.espn.com/nhl/preview?gameId=401892795",
+      "dans_take": "The next one is a massive test against our oldest rivals, and I'm already nervous."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Cold Snap",
+      "player": "Jeremy Swayman",
+      "trend": "Finished the night with fourteen saves on seventeen shots against Winnipeg.",
+      "dans_take": "He didn't have his best stuff and when he isn't sharp, the whole team looks lost."
+    },
+    {
+      "category": "Heater",
+      "player": "Fraser Minten",
+      "trend": "Scored the lone even strength goal for the Bruins during the second period.",
+      "dans_take": "Nice to see the kid find the net, but we need more than just one guy chipping in while the rest of the lineup takes a nap."
+    },
+    {
+      "category": "Bullpen Watch",
+      "player": "Morgan Geekie",
+      "trend": "Connected on a power play goal early in the opening frame.",
+      "dans_take": "He provided a spark on the man advantage that we failed to replicate the rest of the night, which is just typical."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-25",
+      "played": false,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Boston Bruins",
+      "away_team": "Jets",
+      "home_score": 2,
+      "away_score": 4,
+      "game_date": "2026-11-25",
+      "played": true,
+      "season_type": "regular"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-25",
+      "played": false,
+      "season_type": "offseason"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-25",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-11-27",
+      "matchup": "Toronto Maple Leafs at Boston Bruins",
+      "day_of_week": "Friday",
+      "time_et": "1:00 PM ET"
+    },
+    {
+      "date": "2026-11-27",
+      "matchup": "Atlanta Hawks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "Boston Celtics at San Antonio Spurs",
+      "day_of_week": "Sunday",
+      "time_et": "4:00 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "New England Patriots at Los Angeles Chargers",
+      "day_of_week": "Sunday",
+      "time_et": "4:05 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "Vancouver Canucks at Boston Bruins",
+      "day_of_week": "Sunday",
+      "time_et": "5:00 PM ET"
+    },
+    {
+      "date": "2026-11-30",
+      "matchup": "Boston Celtics at Dallas Mavericks",
+      "day_of_week": "Monday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-12-01",
+      "matchup": "Colorado Avalanche at Boston Bruins",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-12-02",
+      "matchup": "Charlotte Hornets at Boston Celtics",
+      "day_of_week": "Wednesday",
+      "time_et": "7:30 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-11-26",
+    "teams": [
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "15-8",
+        "last": {
+          "date": "2026-11-25",
+          "day_of_week": "Wednesday",
+          "opponent": "Jets",
+          "home": true,
+          "boston_score": 2,
+          "opponent_score": 4,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-27",
+          "day_of_week": "Friday",
+          "time_et": "1:00 PM ET",
+          "opponent": "Toronto Maple Leafs",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "12-6",
+        "last": {
+          "date": "2026-11-24",
+          "day_of_week": "Tuesday",
+          "opponent": "Washington Wizards",
+          "home": false,
+          "boston_score": 131,
+          "opponent_score": 116,
+          "result": "W",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-27",
+          "day_of_week": "Friday",
+          "time_et": "8:00 PM ET",
+          "opponent": "Atlanta Hawks",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-5",
+        "last": null,
+        "next": {
+          "date": "2026-11-29",
+          "day_of_week": "Sunday",
+          "time_et": "4:05 PM ET",
+          "opponent": "Los Angeles Chargers",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "offseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}
