@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-27",
+  "generated_at": "2026-11-27T07:54:25.034119+00:00",
+  "outcome": "retry",
+  "winning_attempt": 2,
+  "total_attempts": 2,
+  "generation_seconds": 31.2,
+  "pre_pass": {
+    "repetition_check": "pass",
+    "schedule_check": "pass",
+    "gameday_check": "pass",
+    "weekday_check": "pass",
+    "venue_check": "pass",
+    "season_phase_check": "pass",
+    "flagged_phrases": []
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "verdict": "FAIL",
+      "severity": "high",
+      "flags": [
+        {
+          "rule": 7,
+          "detail": "The output claims Jayson Tatum scored forty-one points against the Wizards earlier this week, but there is no such statistic in the provided source data."
+        }
+      ],
+      "duration_seconds": 14.4
+    },
+    {
+      "attempt": 2,
+      "verdict": "PASS",
+      "severity": "low",
+      "flags": [],
+      "duration_seconds": 1.5
+    }
+  ]
+}

@@ -1,45 +1,40 @@
 {
-  "headline": "Bruins drop a tough one to Winnipeg as the Garden goes silent",
+  "headline": "Bruins and Celtics take over the Garden for massive Friday doubleheader",
   "morning_brew": [
-    "Wednesday night was an absolute disastah at the Garden. Watching the Bruins take a four to two loss to the Winnipeg Jets left me staring at the wall, just wondering how a game that started with that much energy ended up slipping through our fingers like a greased pig. Tanner Jeannot and Tyrel Bauer decided to turn the first period into a boxing match with that lengthy fight, and while I love the grit, it didn't do enough to spark the boys against a Jets team that kept finding the back of the net whenever we finally started to wake up.",
-    "Morgan Geekie and Fraser Minten managed to put points on the board, but we just couldn't sustain the pressure. Jeremy Swayman faced seventeen shots and came up short, and it's clear the defensive end needs to sharpen up before we host Toronto on Friday. I have been watching this team long enough to know when they are out of sync, and last night was a classic example of letting a winnable game turn into a frustrating two points for the visitors. Winnipeg just seemed to have an answer for every move we made, and watching that empty net goal in the final minutes was the final twist of the knife that ruined my damn night.",
-    "Looking ahead, the schedule doesn't get any easier with the Maple Leafs coming into town. We need a complete effort from the opening faceoff, or it's gonna be another long night for the faithful. I am hoping for a better showing because we've seen this group perform when they're locked in, and a Friday afternoon tilt is the perfect stage to wash the bad taste of this loss out of our mouths. I'll be in my seat, hoping the boys show the intensity we know they have, but honestly, I'm watching the next one through my fingers."
+    "It is a massive Friday in the Hub, and my calendar has been circled for this back-to-back tilt at the Garden for a week. First up, we have the Bruins hosting the Maple Leafs in what is always a chippy affair, especially after that long scrap involving Tanner Jeannot earlier in the week. We need the boys to turn the page and get back in the win column after that loss to the Jets, because letting these division rivals walk out of our building with two points is something I just cannot stomach. If the Bruins can tighten up the defensive zone and play with some real desperation, maybe we can finally start stringing some wins together before the calendar flips to December.",
+    "Once the ice clears, it is time for the hardwood as the C's host Atlanta for a crucial NBA Cup group stage matchup. We are sitting at twelve and six and fighting for position in the Eastern Conference, so every win in this tournament matters more than the casual observer might think. I am looking for a focused effort from Jayson Tatum and the rest of the crew to keep this momentum steady, especially after we got back on track earlier this week. There is just something about these mid-season tournament games that brings out a different level of intensity, and I am ready to see if we can capitalize on home court advantage.",
+    "I am gonna be locked into both games from start to finish because that is just what we do in this town. Whether it is hockey or basketball, the energy at the Garden is always different when we get two Boston teams playing under the same roof on a Friday. I am not gonna make any big predictions because I do not wanna jinx anything, but I sure hope the beer is cold and the scoreboard is lopsided in our favor by the time the final buzzer sounds tonight. If Uncle Carmine tries to claim he watched every minute while he is snoring in the recliner during the third period, I am gonna lose it."
   ],
   "trend_watch": [
     {
-      "category": "Cold Snap",
-      "player": "Jeremy Swayman",
-      "trend": "Finished the night with fourteen saves on seventeen shots against Winnipeg.",
-      "dans_take": "He didn't have his best stuff and when he isn't sharp, the whole team looks lost."
-    },
-    {
       "category": "Heater",
-      "player": "Fraser Minten",
-      "trend": "Scored the lone even strength goal for the Bruins during the second period.",
-      "dans_take": "Nice to see the kid find the net, but we need more than just one guy chipping in while the rest of the lineup takes a nap."
+      "player": "Jayson Tatum",
+      "trend": "Tatum continues to anchor the Celtics offense as we look to build on our current record.",
+      "dans_take": "The man is playing at an elite level and he is basically carrying the entire city on his back right now."
     },
     {
       "category": "Bullpen Watch",
-      "player": "Morgan Geekie",
-      "trend": "Connected on a power play goal early in the opening frame.",
-      "dans_take": "He provided a spark on the man advantage that we failed to replicate the rest of the night, which is just typical."
+      "player": "Jeremy Swayman",
+      "trend": "Swayman is looking to bounce back in the crease after the tough result against Winnipeg.",
+      "dans_take": "We need the real Swayman back in net because my heart cannot take another night of watching pucks slide past him."
+    },
+    {
+      "category": "Streak",
+      "player": "Tanner Jeannot",
+      "trend": "Jeannot is bringing the physical edge to the lineup after engaging in a lengthy fight.",
+      "dans_take": "I love the grit, but let us hope he spends more time lighting the lamp than lighting up some Leafs' face today."
     }
   ],
   "news_digest": [
     {
-      "headline": "Barron scores go-ahead goal as Jets keep rolling with 4-2 victory over Bruins",
-      "url": "http://www.espn.com/nhl/recap?gameId=401892781",
-      "dans_take": "The Jets were clinical and we simply let the game drift away late."
-    },
-    {
-      "headline": "Bruins' Tanner Jeannot, Jets' Tyrel Bauer square off in lengthy fight",
-      "url": "https://www.espn.com/nhl/story/_/id/50601479/bruins-tanner-jeannot-jets-tyrel-bauer-lengthy-fight",
-      "dans_take": "It was a wild scrap that showcased the physicality of the matchup, even if it didn't save us from the loss."
+      "headline": "Celtics host Hawks Friday for NBA Cup group stage matchup",
+      "url": "http://www.espn.com/nba/preview?gameId=401909330",
+      "dans_take": "These NBA Cup games have a weird energy, but I am all in if it keeps the wins stacking up."
     },
     {
       "headline": "Maple Leafs take on the Bruins in Atlantic Division action",
       "url": "http://www.espn.com/nhl/preview?gameId=401892795",
-      "dans_take": "The next one is a massive test against our oldest rivals, and I'm already nervous."
+      "dans_take": "The Leafs could show up at the Garden with a choir and a box of chocolates and I would still want them sent home empty-handed."
     }
   ],
   "box_scores": {
@@ -49,19 +44,19 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-25",
+      "game_date": "2026-11-26",
       "played": false,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": "Boston Bruins",
-      "away_team": "Jets",
-      "home_score": 2,
-      "away_score": 4,
-      "game_date": "2026-11-25",
-      "played": true,
-      "season_type": "regular"
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-26",
+      "played": false,
+      "season_type": "unknown"
     },
     "redsox": {
       "sport": "MLB",
@@ -69,7 +64,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-25",
+      "game_date": "2026-11-26",
       "played": false,
       "season_type": "offseason"
     },
@@ -79,7 +74,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-25",
+      "game_date": "2026-11-26",
       "played": false,
       "season_type": "regular"
     }
@@ -139,60 +134,33 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.76,
-      "prompt_tokens": 41479,
-      "output_tokens": 1430,
+      "seconds": 4.51,
+      "prompt_tokens": 40585,
+      "output_tokens": 1357,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 6.4,
-      "prompt_tokens": 18033,
-      "output_tokens": 1499,
+      "seconds": 10.3,
+      "prompt_tokens": 17960,
+      "output_tokens": 1416,
       "thinking_tokens": null
     }
   ],
   "_grounding": "off",
-  "generated_at": "2026-11-26T17:02:17.129851+00:00",
+  "generated_at": "2026-11-27T07:54:56.264812+00:00",
   "_regenerated": true,
   "_regeneration_reason": [
     {
-      "rule": 10,
-      "detail": "repetition: number-masked sentence skeleton \"lets hope the coaching staff has\" recurs in today's output and 1 of the last 3 day(s) (threshold: 2 consecutive days)"
+      "rule": 7,
+      "detail": "The output claims Jayson Tatum scored forty-one points against the Wizards earlier this week, but there is no such statistic in the provided source data."
     }
   ],
   "team_pulse": {
-    "as_of": "2026-11-26",
+    "as_of": "2026-11-27",
     "teams": [
-      {
-        "team": "bruins",
-        "label": "Bruins",
-        "sport": "NHL",
-        "phase": "regular",
-        "opener": false,
-        "record": "15-8",
-        "last": {
-          "date": "2026-11-25",
-          "day_of_week": "Wednesday",
-          "opponent": "Jets",
-          "home": true,
-          "boston_score": 2,
-          "opponent_score": 4,
-          "result": "L",
-          "season_type": "regular"
-        },
-        "next": {
-          "date": "2026-11-27",
-          "day_of_week": "Friday",
-          "time_et": "1:00 PM ET",
-          "opponent": "Toronto Maple Leafs",
-          "home": true,
-          "season_type": "regular",
-          "is_today": false
-        }
-      },
       {
         "team": "celtics",
         "label": "Celtics",
@@ -217,7 +185,34 @@
           "opponent": "Atlanta Hawks",
           "home": true,
           "season_type": "regular",
-          "is_today": false
+          "is_today": true
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "15-8",
+        "last": {
+          "date": "2026-11-25",
+          "day_of_week": "Wednesday",
+          "opponent": "Jets",
+          "home": true,
+          "boston_score": 2,
+          "opponent_score": 4,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-27",
+          "day_of_week": "Friday",
+          "time_et": "1:00 PM ET",
+          "opponent": "Toronto Maple Leafs",
+          "home": true,
+          "season_type": "regular",
+          "is_today": true
         }
       },
       {
@@ -250,5 +245,5 @@
       }
     ]
   },
-  "date": "2026-11-26"
+  "date": "2026-11-27"
 }

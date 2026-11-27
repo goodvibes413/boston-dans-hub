@@ -1,10 +1,10 @@
 {
   "available_dates": [
-    "2026-11-22",
     "2026-11-23",
     "2026-11-24",
     "2026-11-25",
-    "2026-11-26"
+    "2026-11-26",
+    "2026-11-27"
   ],
   "rules": [
     {
@@ -104,8 +104,8 @@
     }
   ],
   "summary_5day": {
-    "fresh": 1,
-    "retry": 4,
+    "fresh": 0,
+    "retry": 5,
     "fallback": 0,
     "stale": 0,
     "most_flagged_rules": [
@@ -115,14 +115,14 @@
         "title": "Voice repetition"
       },
       {
+        "rule": 7,
+        "count": 1,
+        "title": "Fabricated statistics"
+      },
+      {
         "rule": 15,
         "count": 1,
         "title": "Phantom scheduled game"
-      },
-      {
-        "rule": 16,
-        "count": 1,
-        "title": "Game-day omission"
       }
     ],
     "rule15_agreement": {
