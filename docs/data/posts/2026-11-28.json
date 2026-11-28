@@ -1,0 +1,229 @@
+{
+  "date": "2026-11-28",
+  "generated_at": "2026-11-28T07:54:40.042199+00:00",
+  "headline": "Patriots face massive test in Los Angeles while the Hub recovers from Friday heartbreak",
+  "morning_brew": [
+    "I am still trying to scrub the taste of Friday night out of my mouth, and honestly, it is a miracle my blood pressure didn't just snap the thermometer. The Bruins dropped a three to one decision to Toronto, and the result is only half the misery. Losing David Pastrnak to an injury on top of that performance is a total gut punch that keeps you staring at the ceiling at three in the morning, and I am praying for some decent news on his status because this team is a different animal without him. It was a chippy, nasty game, but we lost our legs after the first period and just let the Leafs dictate the pace in our own building.",
+    "The C's didn't give me any reason to smile either, falling in a heart-stopping nail-biter to Atlanta by a single point. It was a dogfight all night, but coming up short in the NBA Cup group stage really stings. Jayson Tatum and the guys were grinding, but we just couldn't seal the deal when the lights were brightest. Neemias Queta had a monster night on the glass with twenty-two rebounds, but it is a bitter pill to swallow when you drop a winnable game like that at the Garden. We have a long road ahead, but I am gonna lose my mind if this turns into a habit.",
+    "Now all my nervous energy is aimed at the Patriots as they prep for a Sunday showdown at SoFi Stadium against the Chargers. It is a huge game with playoff positioning on the line, and the word that DJ Uiagalelei is getting the start while Justin Herbert is stuck in concussion protocol has shifted the whole narrative. We need Tommy DeVito and the offense to stay sharp and not get caught sleeping on this Chargers squad. I am already pacing a hole in my living room floor thinking about kickoff, and you can bet neighbor Rick is already deep into his dossier, calling this game a trap for the ages."
+  ],
+  "news_digest": [
+    {
+      "headline": "Morgan Rielly scores twice as Maple Leafs defeat Bruins, who lose David Pastrnak to injury",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892795",
+      "dans_take": "Losing Pasta is a total disaster and we better hope it isn't a long-term issue or the season is in trouble."
+    },
+    {
+      "headline": "Johnson helps Hawks close out NBA Cup group stage with 87-86 win over Celtics",
+      "url": "http://www.espn.com/nba/recap?gameId=401909330",
+      "dans_take": "That final buzzer was the most depressing sound I have heard in Boston all year."
+    },
+    {
+      "headline": "DJ Uiagalelei to start for Chargers with Justin Herbert in concussion protocol",
+      "url": "https://www.espn.com/nfl/story/_/id/50615818/qb-dj-uiagalelei-start-chargers-justin-herbert-concussion-protocol",
+      "dans_take": "Herbert being out is a lucky break for us, but this team still has to show up and execute."
+    }
+  ],
+  "trend_watch": [
+    {
+      "category": "Heater",
+      "player": "Neemias Queta",
+      "trend": "Pulled down a massive twenty-two rebounds and added eleven points during Friday's tight loss.",
+      "dans_take": "The man was a human vacuum on the glass, just a damn shame the rest of the squad couldn't convert that effort into a W."
+    },
+    {
+      "category": "Cold Snap",
+      "player": "Jeremy Swayman",
+      "trend": "Faced eighteen shots and stopped fifteen for a save percentage of eight hundred thirty-three in the loss.",
+      "dans_take": "He is usually our rock, but it was just one of those nights where the puck found a way through his armor."
+    },
+    {
+      "category": "Trench Report",
+      "player": "Patriots offensive line",
+      "trend": "The unit faces a critical challenge this week as they look to protect Tommy DeVito and establish the run against a tough defense.",
+      "dans_take": "If we want to walk out of SoFi with the points, the big guys up front better be ready to win the war in the trenches."
+    }
+  ],
+  "box_scores": {
+    "celtics": {
+      "sport": "NBA",
+      "home_team": "Boston Celtics",
+      "away_team": "Atlanta Hawks",
+      "home_score": 86,
+      "away_score": 87,
+      "game_date": "2026-11-27",
+      "played": true,
+      "season_type": "regular"
+    },
+    "bruins": {
+      "sport": "NHL",
+      "home_team": "Boston Bruins",
+      "away_team": "Maple Leafs",
+      "home_score": 1,
+      "away_score": 3,
+      "game_date": "2026-11-27",
+      "played": true,
+      "season_type": "regular"
+    },
+    "redsox": {
+      "sport": "MLB",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-27",
+      "played": false,
+      "season_type": "offseason"
+    },
+    "patriots": {
+      "sport": "NFL",
+      "home_team": null,
+      "away_team": null,
+      "home_score": null,
+      "away_score": null,
+      "game_date": "2026-11-27",
+      "played": false,
+      "season_type": "regular"
+    }
+  },
+  "schedule": [
+    {
+      "date": "2026-11-27",
+      "matchup": "Atlanta Hawks at Boston Celtics",
+      "day_of_week": "Friday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "Boston Celtics at San Antonio Spurs",
+      "day_of_week": "Sunday",
+      "time_et": "4:00 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "New England Patriots at Los Angeles Chargers",
+      "day_of_week": "Sunday",
+      "time_et": "4:05 PM ET"
+    },
+    {
+      "date": "2026-11-29",
+      "matchup": "Vancouver Canucks at Boston Bruins",
+      "day_of_week": "Sunday",
+      "time_et": "5:00 PM ET"
+    },
+    {
+      "date": "2026-11-30",
+      "matchup": "Boston Celtics at Dallas Mavericks",
+      "day_of_week": "Monday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-12-01",
+      "matchup": "Colorado Avalanche at Boston Bruins",
+      "day_of_week": "Tuesday",
+      "time_et": "8:00 PM ET"
+    },
+    {
+      "date": "2026-12-02",
+      "matchup": "Charlotte Hornets at Boston Celtics",
+      "day_of_week": "Wednesday",
+      "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-12-05",
+      "matchup": "Detroit Red Wings at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "1:00 PM ET"
+    }
+  ],
+  "playoff_race": null,
+  "team_pulse": {
+    "as_of": "2026-11-28",
+    "teams": [
+      {
+        "team": "celtics",
+        "label": "Celtics",
+        "sport": "NBA",
+        "phase": "regular",
+        "opener": false,
+        "record": "12-7",
+        "last": {
+          "date": "2026-11-27",
+          "day_of_week": "Friday",
+          "opponent": "Atlanta Hawks",
+          "home": true,
+          "boston_score": 86,
+          "opponent_score": 87,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-29",
+          "day_of_week": "Sunday",
+          "time_et": "4:00 PM ET",
+          "opponent": "San Antonio Spurs",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "bruins",
+        "label": "Bruins",
+        "sport": "NHL",
+        "phase": "regular",
+        "opener": false,
+        "record": "15-9",
+        "last": {
+          "date": "2026-11-27",
+          "day_of_week": "Friday",
+          "opponent": "Maple Leafs",
+          "home": true,
+          "boston_score": 1,
+          "opponent_score": 3,
+          "result": "L",
+          "season_type": "regular"
+        },
+        "next": {
+          "date": "2026-11-29",
+          "day_of_week": "Sunday",
+          "time_et": "5:00 PM ET",
+          "opponent": "Vancouver Canucks",
+          "home": true,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "patriots",
+        "label": "Patriots",
+        "sport": "NFL",
+        "phase": "regular",
+        "opener": false,
+        "record": "5-5",
+        "last": null,
+        "next": {
+          "date": "2026-11-29",
+          "day_of_week": "Sunday",
+          "time_et": "4:05 PM ET",
+          "opponent": "Los Angeles Chargers",
+          "home": false,
+          "season_type": "regular",
+          "is_today": false
+        }
+      },
+      {
+        "team": "redsox",
+        "label": "Red Sox",
+        "sport": "MLB",
+        "phase": "offseason",
+        "opener": false,
+        "record": null,
+        "last": null,
+        "next": null
+      }
+    ]
+  },
+  "_stale": null,
+  "_fallback": null
+}

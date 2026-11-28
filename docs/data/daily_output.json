@@ -1,62 +1,67 @@
 {
-  "headline": "Bruins and Celtics take over the Garden for massive Friday doubleheader",
+  "headline": "Patriots face massive test in Los Angeles while the Hub recovers from Friday heartbreak",
   "morning_brew": [
-    "It is a massive Friday in the Hub, and my calendar has been circled for this back-to-back tilt at the Garden for a week. First up, we have the Bruins hosting the Maple Leafs in what is always a chippy affair, especially after that long scrap involving Tanner Jeannot earlier in the week. We need the boys to turn the page and get back in the win column after that loss to the Jets, because letting these division rivals walk out of our building with two points is something I just cannot stomach. If the Bruins can tighten up the defensive zone and play with some real desperation, maybe we can finally start stringing some wins together before the calendar flips to December.",
-    "Once the ice clears, it is time for the hardwood as the C's host Atlanta for a crucial NBA Cup group stage matchup. We are sitting at twelve and six and fighting for position in the Eastern Conference, so every win in this tournament matters more than the casual observer might think. I am looking for a focused effort from Jayson Tatum and the rest of the crew to keep this momentum steady, especially after we got back on track earlier this week. There is just something about these mid-season tournament games that brings out a different level of intensity, and I am ready to see if we can capitalize on home court advantage.",
-    "I am gonna be locked into both games from start to finish because that is just what we do in this town. Whether it is hockey or basketball, the energy at the Garden is always different when we get two Boston teams playing under the same roof on a Friday. I am not gonna make any big predictions because I do not wanna jinx anything, but I sure hope the beer is cold and the scoreboard is lopsided in our favor by the time the final buzzer sounds tonight. If Uncle Carmine tries to claim he watched every minute while he is snoring in the recliner during the third period, I am gonna lose it."
+    "I am still trying to scrub the taste of Friday night out of my mouth, and honestly, it is a miracle my blood pressure didn't just snap the thermometer. The Bruins dropped a three to one decision to Toronto, and the result is only half the misery. Losing David Pastrnak to an injury on top of that performance is a total gut punch that keeps you staring at the ceiling at three in the morning, and I am praying for some decent news on his status because this team is a different animal without him. It was a chippy, nasty game, but we lost our legs after the first period and just let the Leafs dictate the pace in our own building.",
+    "The C's didn't give me any reason to smile either, falling in a heart-stopping nail-biter to Atlanta by a single point. It was a dogfight all night, but coming up short in the NBA Cup group stage really stings. Jayson Tatum and the guys were grinding, but we just couldn't seal the deal when the lights were brightest. Neemias Queta had a monster night on the glass with twenty-two rebounds, but it is a bitter pill to swallow when you drop a winnable game like that at the Garden. We have a long road ahead, but I am gonna lose my mind if this turns into a habit.",
+    "Now all my nervous energy is aimed at the Patriots as they prep for a Sunday showdown at SoFi Stadium against the Chargers. It is a huge game with playoff positioning on the line, and the word that DJ Uiagalelei is getting the start while Justin Herbert is stuck in concussion protocol has shifted the whole narrative. We need Tommy DeVito and the offense to stay sharp and not get caught sleeping on this Chargers squad. I am already pacing a hole in my living room floor thinking about kickoff, and you can bet neighbor Rick is already deep into his dossier, calling this game a trap for the ages."
   ],
   "trend_watch": [
     {
       "category": "Heater",
-      "player": "Jayson Tatum",
-      "trend": "Tatum continues to anchor the Celtics offense as we look to build on our current record.",
-      "dans_take": "The man is playing at an elite level and he is basically carrying the entire city on his back right now."
+      "player": "Neemias Queta",
+      "trend": "Pulled down a massive twenty-two rebounds and added eleven points during Friday's tight loss.",
+      "dans_take": "The man was a human vacuum on the glass, just a damn shame the rest of the squad couldn't convert that effort into a W."
     },
     {
-      "category": "Bullpen Watch",
+      "category": "Cold Snap",
       "player": "Jeremy Swayman",
-      "trend": "Swayman is looking to bounce back in the crease after the tough result against Winnipeg.",
-      "dans_take": "We need the real Swayman back in net because my heart cannot take another night of watching pucks slide past him."
+      "trend": "Faced eighteen shots and stopped fifteen for a save percentage of eight hundred thirty-three in the loss.",
+      "dans_take": "He is usually our rock, but it was just one of those nights where the puck found a way through his armor."
     },
     {
-      "category": "Streak",
-      "player": "Tanner Jeannot",
-      "trend": "Jeannot is bringing the physical edge to the lineup after engaging in a lengthy fight.",
-      "dans_take": "I love the grit, but let us hope he spends more time lighting the lamp than lighting up some Leafs' face today."
+      "category": "Trench Report",
+      "player": "Patriots offensive line",
+      "trend": "The unit faces a critical challenge this week as they look to protect Tommy DeVito and establish the run against a tough defense.",
+      "dans_take": "If we want to walk out of SoFi with the points, the big guys up front better be ready to win the war in the trenches."
     }
   ],
   "news_digest": [
     {
-      "headline": "Celtics host Hawks Friday for NBA Cup group stage matchup",
-      "url": "http://www.espn.com/nba/preview?gameId=401909330",
-      "dans_take": "These NBA Cup games have a weird energy, but I am all in if it keeps the wins stacking up."
+      "headline": "Morgan Rielly scores twice as Maple Leafs defeat Bruins, who lose David Pastrnak to injury",
+      "url": "http://www.espn.com/nhl/recap?gameId=401892795",
+      "dans_take": "Losing Pasta is a total disaster and we better hope it isn't a long-term issue or the season is in trouble."
     },
     {
-      "headline": "Maple Leafs take on the Bruins in Atlantic Division action",
-      "url": "http://www.espn.com/nhl/preview?gameId=401892795",
-      "dans_take": "The Leafs could show up at the Garden with a choir and a box of chocolates and I would still want them sent home empty-handed."
+      "headline": "Johnson helps Hawks close out NBA Cup group stage with 87-86 win over Celtics",
+      "url": "http://www.espn.com/nba/recap?gameId=401909330",
+      "dans_take": "That final buzzer was the most depressing sound I have heard in Boston all year."
+    },
+    {
+      "headline": "DJ Uiagalelei to start for Chargers with Justin Herbert in concussion protocol",
+      "url": "https://www.espn.com/nfl/story/_/id/50615818/qb-dj-uiagalelei-start-chargers-justin-herbert-concussion-protocol",
+      "dans_take": "Herbert being out is a lucky break for us, but this team still has to show up and execute."
     }
   ],
   "box_scores": {
     "celtics": {
       "sport": "NBA",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-26",
-      "played": false,
+      "home_team": "Boston Celtics",
+      "away_team": "Atlanta Hawks",
+      "home_score": 86,
+      "away_score": 87,
+      "game_date": "2026-11-27",
+      "played": true,
       "season_type": "regular"
     },
     "bruins": {
       "sport": "NHL",
-      "home_team": null,
-      "away_team": null,
-      "home_score": null,
-      "away_score": null,
-      "game_date": "2026-11-26",
-      "played": false,
-      "season_type": "unknown"
+      "home_team": "Boston Bruins",
+      "away_team": "Maple Leafs",
+      "home_score": 1,
+      "away_score": 3,
+      "game_date": "2026-11-27",
+      "played": true,
+      "season_type": "regular"
     },
     "redsox": {
       "sport": "MLB",
@@ -64,7 +69,7 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-26",
+      "game_date": "2026-11-27",
       "played": false,
       "season_type": "offseason"
     },
@@ -74,18 +79,12 @@
       "away_team": null,
       "home_score": null,
       "away_score": null,
-      "game_date": "2026-11-26",
+      "game_date": "2026-11-27",
       "played": false,
       "season_type": "regular"
     }
   },
   "schedule": [
-    {
-      "date": "2026-11-27",
-      "matchup": "Toronto Maple Leafs at Boston Bruins",
-      "day_of_week": "Friday",
-      "time_et": "1:00 PM ET"
-    },
     {
       "date": "2026-11-27",
       "matchup": "Atlanta Hawks at Boston Celtics",
@@ -127,6 +126,12 @@
       "matchup": "Charlotte Hornets at Boston Celtics",
       "day_of_week": "Wednesday",
       "time_et": "7:30 PM ET"
+    },
+    {
+      "date": "2026-12-05",
+      "matchup": "Detroit Red Wings at Boston Bruins",
+      "day_of_week": "Saturday",
+      "time_et": "1:00 PM ET"
     }
   ],
   "_timings": [
@@ -134,32 +139,25 @@
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 4.51,
-      "prompt_tokens": 40585,
-      "output_tokens": 1357,
+      "seconds": 4.53,
+      "prompt_tokens": 43798,
+      "output_tokens": 1568,
       "thinking_tokens": null
     },
     {
       "label": "generate[nogrounding]",
       "model": "gemini-3.1-flash-lite",
       "thinking_level": "minimal",
-      "seconds": 10.3,
-      "prompt_tokens": 17960,
-      "output_tokens": 1416,
+      "seconds": 3.75,
+      "prompt_tokens": 18892,
+      "output_tokens": 1585,
       "thinking_tokens": null
     }
   ],
-  "_grounding": "off",
-  "generated_at": "2026-11-27T07:54:56.264812+00:00",
-  "_regenerated": true,
-  "_regeneration_reason": [
-    {
-      "rule": 7,
-      "detail": "The output claims Jayson Tatum scored forty-one points against the Wizards earlier this week, but there is no such statistic in the provided source data."
-    }
-  ],
+  "_grounding": "quota_exhausted",
+  "generated_at": "2026-11-28T07:54:40.042199+00:00",
   "team_pulse": {
-    "as_of": "2026-11-27",
+    "as_of": "2026-11-28",
     "teams": [
       {
         "team": "celtics",
@@ -167,25 +165,25 @@
         "sport": "NBA",
         "phase": "regular",
         "opener": false,
-        "record": "12-6",
+        "record": "12-7",
         "last": {
-          "date": "2026-11-24",
-          "day_of_week": "Tuesday",
-          "opponent": "Washington Wizards",
-          "home": false,
-          "boston_score": 131,
-          "opponent_score": 116,
-          "result": "W",
+          "date": "2026-11-27",
+          "day_of_week": "Friday",
+          "opponent": "Atlanta Hawks",
+          "home": true,
+          "boston_score": 86,
+          "opponent_score": 87,
+          "result": "L",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-11-27",
-          "day_of_week": "Friday",
-          "time_et": "8:00 PM ET",
-          "opponent": "Atlanta Hawks",
-          "home": true,
+          "date": "2026-11-29",
+          "day_of_week": "Sunday",
+          "time_et": "4:00 PM ET",
+          "opponent": "San Antonio Spurs",
+          "home": false,
           "season_type": "regular",
-          "is_today": true
+          "is_today": false
         }
       },
       {
@@ -194,25 +192,25 @@
         "sport": "NHL",
         "phase": "regular",
         "opener": false,
-        "record": "15-8",
+        "record": "15-9",
         "last": {
-          "date": "2026-11-25",
-          "day_of_week": "Wednesday",
-          "opponent": "Jets",
+          "date": "2026-11-27",
+          "day_of_week": "Friday",
+          "opponent": "Maple Leafs",
           "home": true,
-          "boston_score": 2,
-          "opponent_score": 4,
+          "boston_score": 1,
+          "opponent_score": 3,
           "result": "L",
           "season_type": "regular"
         },
         "next": {
-          "date": "2026-11-27",
-          "day_of_week": "Friday",
-          "time_et": "1:00 PM ET",
-          "opponent": "Toronto Maple Leafs",
+          "date": "2026-11-29",
+          "day_of_week": "Sunday",
+          "time_et": "5:00 PM ET",
+          "opponent": "Vancouver Canucks",
           "home": true,
           "season_type": "regular",
-          "is_today": true
+          "is_today": false
         }
       },
       {
@@ -245,5 +243,5 @@
       }
     ]
   },
-  "date": "2026-11-27"
+  "date": "2026-11-28"
 }
