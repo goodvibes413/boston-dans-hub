@@ -1,0 +1,108 @@
+{
+  "updated": "2026-11-28",
+  "_note": "Per-holiday flavor for the HOLIDAY block (scripts/us_holidays.py). dan_traditions are FICTIONAL, like dan_stories.json: Dan's family and friends, never a sports fact. boston_color is real local custom kept qualitative (no dates, scores or player names). A real game belongs in historical_facts.json holiday_games, never here. Keys match us_holidays.py. Holidays with a 'respectful' tone deliberately carry no dan_traditions: no jokes or fictional bits on those days.",
+  "thanksgiving": {
+    "dan_traditions": [
+      "Uncle Carmine carves the turkey like he's breaking down game film and narrates every cut",
+      "Dan's ma makes Dan say grace, and every year it turns into a prayer for the bullpen or the power play",
+      "Cousin Jimmy is banned from the kids' table touch football game after the 'incident'",
+      "Sully shows up uninvited with a store-bought pie and a hot take nobody asked for",
+      "Pops falls asleep in the recliner by the second quarter of the late game, every single year"
+    ],
+    "boston_color": [
+      "Thanksgiving morning high school football rivalry games all over Massachusetts",
+      "The leftover turkey sandwich at halftime of the late game",
+      "Black Friday traffic on Route 1"
+    ],
+    "angle": "Gratitude with a Boston edge: what Dan is thankful for this season (and the one thing he is NOT thankful for). Family-table chaos as the comparison for the team's state."
+  },
+  "christmas_eve": {
+    "dan_traditions": [
+      "Dan's ma's Feast of the Seven Fishes, and Uncle Carmine arguing about which fish counts",
+      "Dan still hasn't wrapped anything and is writing this from the CVS parking lot"
+    ],
+    "boston_color": ["Last-minute shopping on Newbury Street", "The lights on the Common"],
+    "angle": "What Dan is asking Santa for, team by team."
+  },
+  "christmas": {
+    "dan_traditions": [
+      "Pops gets the same Bruins sweater every year and acts surprised every year",
+      "Cousin Jimmy re-gifts something Dan gave him two Christmases ago",
+      "The family argues over whether the NBA Christmas games count as a holiday tradition yet"
+    ],
+    "boston_color": ["Snow on the Common if we're lucky, slush on Boylston if we're not"],
+    "angle": "Gifts and coal: who on the roster got what. Keep it warm, Dan loves these teams even when they ruin his holidays."
+  },
+  "new_years_eve": {
+    "dan_traditions": [
+      "Sully's annual New Year's party where he predicts a title for every team, every year",
+      "Dan's resolution is always 'yell at the TV less' and it lasts about four minutes"
+    ],
+    "boston_color": ["Fireworks over the harbor"],
+    "angle": "Year-end awards and resolutions for each team."
+  },
+  "new_years_day": {
+    "dan_traditions": [
+      "Dan nursing a hangover with a large Dunkin' and a recap",
+      "Cousin Jimmy did the L Street plunge on a dare and has regretted it since"
+    ],
+    "boston_color": ["The L Street Brownies New Year's Day plunge in Southie"],
+    "angle": "Fresh start, same old worries. Resolutions for each team."
+  },
+  "st_patricks_day": {
+    "dan_traditions": [
+      "Sully has been wearing the same green bowler hat to the parade since high school",
+      "Uncle Carmine insists he's Irish one day a year"
+    ],
+    "boston_color": ["The Southie parade", "Every bar on West Broadway at 9am"],
+    "angle": "The most Boston day of the year. Luck of the Irish (or lack of it) for each team."
+  },
+  "patriots_day": {
+    "dan_traditions": [
+      "Dan and pops have watched the runners come through Kenmore every year since Dan was a kid",
+      "Sully swears he'll run it next year. He has said this for twenty years."
+    ],
+    "boston_color": [
+      "The Boston Marathon",
+      "The Red Sox morning home game on Patriots' Day, with fans spilling out into Kenmore Square to cheer the runners",
+      "Massachusetts schools and state offices closed"
+    ],
+    "angle": "Boston's own holiday. Pride, grit, and the city at its best."
+  },
+  "mothers_day": {
+    "dan_traditions": ["Dan's ma pretends she doesn't care about the game, then texts him about the bullpen at the seventh-inning stretch"],
+    "boston_color": [],
+    "angle": "One-line nod to the moms who raised us to suffer for these teams."
+  },
+  "fathers_day": {
+    "dan_traditions": [
+      "Dan's pops taught him to keep score with a pencil at Fenway and still corrects Dan's scorecard",
+      "Pops's recliner, the one from the '86 Series"
+    ],
+    "boston_color": ["A Sunday afternoon at Fenway with your old man"],
+    "angle": "The dads who passed down the fandom, and the heartbreak."
+  },
+  "independence_day": {
+    "dan_traditions": [
+      "Neighbor Rick's backyard fireworks, which the fire department has opinions about",
+      "Uncle Carmine burns the burgers every year and calls it 'char'"
+    ],
+    "boston_color": ["The Pops and the fireworks on the Esplanade", "A Fourth of July doubleheader of cookouts"],
+    "angle": "Fireworks: which Boston team is bringing them and which one's a dud."
+  },
+  "labor_day": {
+    "dan_traditions": ["Dan's last cookout of the summer, and Sully's annual 'this is our year' Patriots speech"],
+    "boston_color": ["The end of summer traffic coming back from the Cape"],
+    "angle": "Summer's over; football's here; the Sox pennant race (or lack of one) gets real."
+  },
+  "halloween": {
+    "dan_traditions": ["Cousin Jimmy dresses as the same player every year, whether or not that guy is still on the team"],
+    "boston_color": ["Salem is a zoo"],
+    "angle": "Something on the team that's scarier than any costume. One quip, not a whole bit."
+  },
+  "presidents_day": {
+    "dan_traditions": [],
+    "boston_color": ["February vacation week for Massachusetts schools"],
+    "angle": "A passing nod at most."
+  }
+}

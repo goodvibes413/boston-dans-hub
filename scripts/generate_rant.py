@@ -26,6 +26,7 @@ import time
 from datetime import date, datetime, timedelta, timezone
 
 from pipeline_dates import as_of_iso
+from us_holidays import DEFAULT_TRADITIONS, compute_holiday_context, load_traditions
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -1364,7 +1365,7 @@ def _build_overrides_block(season_overrides: dict, today_iso: str | None = None)
     return "\n".join(lines).strip()
 
 
-def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None, games_today=None) -> str:
+def build_user_message(rolling, schedule, news, season_memory, draft_picks=None, historical_facts=None, recent_output=None, callers=None, grudges=None, roster=None, season_overrides=None, today_iso: str | None = None, emotional_context=None, coverage_allocation=None, slow_day=False, stories=None, story_seeds=None, games_today=None, holiday=None) -> str:
     if today_iso is None:
         today_iso = as_of_iso()
 
@@ -1393,6 +1394,16 @@ def build_user_message(rolling, schedule, news, season_memory, draft_picks=None,
             f"result happened, this is the day and this is its name.\n"
         )
     message += "\n"
+    # Holidays are computed, never left for the model to notice. On Thanksgiving
+    # 2026 TODAY said "2026-11-26 (Thursday)" and nothing else, and Dan wrote a
+    # straight Bruins recap. See scripts/us_holidays.py and Holiday Mode in the
+    # system prompt for what each tone allows.
+    if holiday:
+        message += (
+            "HOLIDAY (computed from the calendar — see Holiday Mode in the system "
+            "prompt; `tone` decides how much room the holiday gets):\n"
+            f"{json.dumps(holiday, indent=2)}\n\n"
+        )
     if slow_day:
         message += (
             "SLOW_DAY_MODE: TRUE\n"
@@ -1855,6 +1866,13 @@ def main():
     print(f"  coverage:       primary={coverage_allocation['primary']}, minimal={coverage_allocation['minimal']}")
     print(f"  games today:    {[g['team'] for g in games_today] or 'none'}")
     print(f"  slow_day:       {slow_day}")
+    holiday = compute_holiday_context(
+        today_iso, historical_facts=historical_facts,
+        traditions=load_traditions(Path(os.environ.get(
+            "HOLIDAY_TRADITIONS_PATH", DEFAULT_TRADITIONS))),
+    )
+    print(f"  holiday:        "
+          f"{ {k: v['key'] for k, v in holiday.items()} if holiday else 'none' }")
 
     user_message = build_user_message(
         rolling, schedule, news, season_memory,
@@ -1872,6 +1890,7 @@ def main():
         stories=todays_stories,
         story_seeds=todays_seeds,
         games_today=games_today,
+        holiday=holiday,
     )
 
     # DRY_RUN=1 prints the assembled prompt and exits before any LLM call.

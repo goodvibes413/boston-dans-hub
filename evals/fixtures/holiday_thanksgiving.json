@@ -1,0 +1,81 @@
+{
+  "_note": "Thanksgiving 2026 replay: the real post recapped a Bruins loss with no word about the holiday. Expect a short festive holiday opener (Dan's family table, optional Butt Fumble callback copied exactly from holiday_games), the full Bruins recap, and a Thanksgiving sign-off.",
+  "today": "2026-11-26",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-11-26",
+        "celtics": {
+          "boxscore": {
+            "game_date": "2026-11-25",
+            "played": false,
+            "season_type": "regular"
+          },
+          "news": {
+            "generated_at": "2026-11-26T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "bruins": {
+          "boxscore": {
+            "game_date": "2026-11-25",
+            "played": true,
+            "season_type": "regular",
+            "home_or_away": "home",
+            "result": "L 4-2",
+            "opponent": "Winnipeg Jets",
+            "scorers": [
+              {
+                "name": "Morgan Geekie",
+                "goals": 1,
+                "assists": 0
+              },
+              {
+                "name": "Fraser Minten",
+                "goals": 1,
+                "assists": 0
+              }
+            ]
+          },
+          "news": {
+            "generated_at": "2026-11-26T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-11-25",
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "generated_at": "2026-11-26T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "patriots": {
+          "boxscore": {
+            "game_date": "2026-11-25",
+            "played": false,
+            "season_type": "regular"
+          },
+          "news": {
+            "generated_at": "2026-11-26T08:00:00+00:00",
+            "headlines": []
+          }
+        }
+      }
+    ]
+  },
+  "upcoming_schedule": {
+    "games": [
+      {
+        "team": "bruins",
+        "date": "2026-11-27",
+        "day_of_week": "Friday",
+        "opponent": "Toronto Maple Leafs",
+        "home_or_away": "home"
+      }
+    ]
+  }
+}
