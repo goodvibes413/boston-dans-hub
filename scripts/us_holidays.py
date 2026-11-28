@@ -17,8 +17,9 @@ Stdlib only (AGENTS.md: no third-party packages).
 
 Each holiday carries a TONE, which the system prompt's Holiday Mode section
 turns into rules:
-  festive    — open morning_brew with a short, human holiday beat; a fictional
-               Dan-family anecdote is allowed even outside SLOW_DAY_MODE.
+  festive    — open morning_brew with a short, human holiday beat: plans and
+               anticipation on the morning of (phase "morning_of"), the
+               fictional Dan-family story on the morning after ("look_back").
   light      — a passing nod or one quip; no story.
   respectful — one sincere sentence; no jokes, no fictional anecdote, and never
                a sports loss framed against the day's meaning.
@@ -119,24 +120,29 @@ def compute_holiday_context(today_iso: str, historical_facts: dict | None = None
     if not (today_h or yest_h or tom_h):
         return None
 
+    # The post goes out at 3 AM, so on the holiday itself nothing has happened
+    # yet. The first live eval (2026-11-26) had Uncle Carmine "already snoring
+    # on the couch" in a pre-dawn Thanksgiving post. So the morning OF is
+    # anticipation, and the morning AFTER carries the dinner-table story.
+    def entry_for(h: dict, phase: str, with_flavor: bool) -> dict:
+        entry = dict(h)
+        entry["phase"] = phase
+        if with_flavor:
+            flavor = traditions.get(h["key"]) or {}
+            if flavor:
+                entry["traditions"] = flavor
+            games = _holiday_games(historical_facts, h["key"])
+            if games:
+                entry["holiday_games"] = games
+        return entry
+
     ctx: dict = {}
     if today_h:
-        entry = dict(today_h)
-        flavor = traditions.get(today_h["key"]) or {}
-        if flavor:
-            entry["traditions"] = flavor
-        games = _holiday_games(historical_facts, today_h["key"])
-        if games:
-            entry["holiday_games"] = games
-        ctx["today"] = entry
+        ctx["today"] = entry_for(today_h, "morning_of", True)
     if yest_h:
-        entry = dict(yest_h)
-        # Real games on that holiday are fair game for a "Thanksgiving night"
-        # recap reference too.
-        games = _holiday_games(historical_facts, yest_h["key"])
-        if games and not today_h:
-            entry["holiday_games"] = games
-        ctx["yesterday"] = entry
+        # When today is a holiday too (Christmas after Christmas Eve), today
+        # leads and yesterday gets a line, so it carries no flavor of its own.
+        ctx["yesterday"] = entry_for(yest_h, "look_back", not today_h)
     if tom_h:
         ctx["tomorrow"] = dict(tom_h)
     return ctx

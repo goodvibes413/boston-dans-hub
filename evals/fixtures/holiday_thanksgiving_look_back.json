@@ -1,0 +1,128 @@
+{
+  "_note": "Day after Thanksgiving 2026 (phase look_back). No Boston game on Thanksgiving; Bruins host Toronto today. Expect the dinner-table story in PAST tense as the opener (Dan's family, from dan_traditions), a forward look at the Leafs game, and a leftovers-style closer. Must not narrate Wednesday's Winnipeg loss as last night's game.",
+  "today": "2026-11-27",
+  "rolling_7day": {
+    "days": [
+      {
+        "date": "2026-11-26",
+        "celtics": {
+          "boxscore": {
+            "game_date": "2026-11-25",
+            "played": false,
+            "season_type": "regular"
+          },
+          "news": {
+            "generated_at": "2026-11-27T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "bruins": {
+          "boxscore": {
+            "game_date": "2026-11-25",
+            "played": true,
+            "season_type": "regular",
+            "home_or_away": "home",
+            "result": "L 4-2",
+            "opponent": "Winnipeg Jets",
+            "scorers": [
+              {
+                "name": "Morgan Geekie",
+                "goals": 1,
+                "assists": 0
+              },
+              {
+                "name": "Fraser Minten",
+                "goals": 1,
+                "assists": 0
+              }
+            ]
+          },
+          "news": {
+            "generated_at": "2026-11-27T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-11-25",
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "generated_at": "2026-11-27T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "patriots": {
+          "boxscore": {
+            "game_date": "2026-11-25",
+            "played": false,
+            "season_type": "regular"
+          },
+          "news": {
+            "generated_at": "2026-11-27T08:00:00+00:00",
+            "headlines": []
+          }
+        }
+      },
+      {
+        "date": "2026-11-27",
+        "celtics": {
+          "boxscore": {
+            "game_date": "2026-11-26",
+            "played": false,
+            "season_type": "regular"
+          },
+          "news": {
+            "generated_at": "2026-11-27T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "bruins": {
+          "boxscore": {
+            "game_date": "2026-11-26",
+            "played": false,
+            "season_type": "regular"
+          },
+          "news": {
+            "generated_at": "2026-11-27T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "redsox": {
+          "boxscore": {
+            "game_date": "2026-11-26",
+            "played": false,
+            "season_type": "offseason"
+          },
+          "news": {
+            "generated_at": "2026-11-27T08:00:00+00:00",
+            "headlines": []
+          }
+        },
+        "patriots": {
+          "boxscore": {
+            "game_date": "2026-11-26",
+            "played": false,
+            "season_type": "regular"
+          },
+          "news": {
+            "generated_at": "2026-11-27T08:00:00+00:00",
+            "headlines": []
+          }
+        }
+      }
+    ]
+  },
+  "upcoming_schedule": {
+    "games": [
+      {
+        "team": "bruins",
+        "date": "2026-11-27",
+        "day_of_week": "Friday",
+        "opponent": "Toronto Maple Leafs",
+        "home_or_away": "home"
+      }
+    ]
+  }
+}
