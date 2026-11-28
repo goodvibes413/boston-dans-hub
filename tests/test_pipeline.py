@@ -3998,10 +3998,38 @@ class TestUSHolidays(unittest.TestCase):
         plain = generate_rant.build_user_message({}, [], [], {}, today_iso="2026-11-18")
         self.assertNotIn("HOLIDAY", plain)
 
+    def test_morning_of_vs_look_back(self):
+        """The post goes out pre-dawn: the holiday morning is anticipation, the
+        dinner-table story belongs to the morning after."""
+        facts = json.loads((REPO / "data" / "historical_facts.json").read_text())
+        traditions = json.loads((REPO / "data" / "holiday_traditions.json").read_text())
+        day_of = us_holidays.compute_holiday_context("2026-11-26", facts, traditions)
+        self.assertEqual(day_of["today"]["phase"], "morning_of")
+        self.assertTrue(day_of["today"]["traditions"]["morning_of"])
+        after = us_holidays.compute_holiday_context("2026-11-27", facts, traditions)
+        self.assertEqual(after["yesterday"]["phase"], "look_back")
+        self.assertTrue(after["yesterday"]["traditions"]["dan_traditions"])
+        self.assertTrue(after["yesterday"]["holiday_games"])
+
+    def test_back_to_back_holidays_today_leads(self):
+        traditions = json.loads((REPO / "data" / "holiday_traditions.json").read_text())
+        ctx = us_holidays.compute_holiday_context("2026-12-25", None, traditions)
+        self.assertEqual(ctx["today"]["key"], "christmas")
+        self.assertEqual(ctx["yesterday"]["key"], "christmas_eve")
+        self.assertNotIn("traditions", ctx["yesterday"])
+
+    def test_festive_holidays_have_morning_of_lines(self):
+        traditions = json.loads((REPO / "data" / "holiday_traditions.json").read_text())
+        for key, _, tone, _, _ in us_holidays._RULES:
+            if tone == us_holidays.FESTIVE:
+                self.assertTrue((traditions.get(key) or {}).get("morning_of"), key)
+
     def test_prompts_know_about_holidays(self):
         system = (REPO / "prompts" / "boston_dan_system.txt").read_text()
         self.assertIn("Holiday Mode", system)
         self.assertIn('tone "respectful"', system)
+        self.assertIn('phase "morning_of"', system)
+        self.assertIn('phase "look_back"', system)
         self.assertIn("holiday_games", safety_judge.JUDGE_PROMPT)
 
 

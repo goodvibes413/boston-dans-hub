@@ -5,6 +5,28 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-11-28 (later) — Holiday Mode: anticipation on the day, the story the day after
+
+The first live eval of Holiday Mode (11/26 replay) got Thanksgiving into the
+opener, but it had Uncle Carmine "already snoring on the couch" in a post that
+goes out at 3 AM, before any dinner has happened. The holiday beat now
+depends on which morning it is:
+
+- **`phase: "morning_of"`** (HOLIDAY.today): anticipation, in present and future
+  tense. Ma's had the bird in since six, Dan's on dessert duty, plus a happy-holiday
+  sign-off. New `morning_of` lines in `holiday_traditions.json` for every festive
+  holiday.
+- **`phase: "look_back"`** (HOLIDAY.yesterday): the family-table story in past
+  tense, with games played on the holiday folded into it. The day-after entry
+  now carries the full traditions and holiday games. Before, it got only a nod.
+- When two holidays fall back to back (Christmas Eve then Christmas Day, NYE then
+  New Year's Day), today leads and yesterday gets one line.
+- A respectful holiday gets no look-back.
+- New fixture `holiday_thanksgiving_look_back.json` (11/27) pairs with the
+  morning-of one.
+
+---
+
 ## 2026-11-28 — Dan notices holidays (Holiday Mode)
 
 The Thanksgiving 2026 brew was a straight Bruins recap with no word about
