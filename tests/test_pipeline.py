@@ -33,6 +33,7 @@ import publish  # noqa: E402
 import fetch_news  # noqa: E402
 import fetch_schedule  # noqa: E402
 import safety_judge  # noqa: E402
+import us_holidays  # noqa: E402
 
 
 def make_rolling(date_str, team="redsox", played=True, games=None):
@@ -3926,6 +3927,82 @@ class TestSeasonPhaseFraming(unittest.TestCase):
         self.assertIn('"season_phase_check"', (REPO / "scripts" / "publish.py").read_text())
         prompt = (REPO / "prompts" / "boston_dan_system.txt").read_text()
         self.assertIn("OFF DAYS ARE FOR IN-SEASON TEAMS ONLY", prompt)
+
+
+class TestUSHolidays(unittest.TestCase):
+    """Thanksgiving 2026 shipped with no mention of Thanksgiving: nothing told
+    the model the date was a holiday. These pin the calendar and the block."""
+
+    def test_floating_holidays(self):
+        cases = {
+            "2026-11-26": "thanksgiving",   # 4th Thursday of November
+            "2027-11-25": "thanksgiving",
+            "2026-05-25": "memorial_day",   # last Monday of May
+            "2027-04-19": "patriots_day",   # 3rd Monday of April
+            "2026-01-19": "mlk_day",
+            "2026-09-07": "labor_day",
+            "2026-06-21": "fathers_day",
+        }
+        for iso, key in cases.items():
+            h = us_holidays.holiday_on(date.fromisoformat(iso))
+            self.assertIsNotNone(h, iso)
+            self.assertEqual(h["key"], key, iso)
+
+    def test_ordinary_day_has_no_block(self):
+        self.assertIsNone(us_holidays.compute_holiday_context("2026-11-18"))
+
+    def test_thanksgiving_block_carries_tone_and_verified_games(self):
+        facts = json.loads((REPO / "data" / "historical_facts.json").read_text())
+        traditions = json.loads((REPO / "data" / "holiday_traditions.json").read_text())
+        ctx = us_holidays.compute_holiday_context("2026-11-26", facts, traditions)
+        today = ctx["today"]
+        self.assertEqual(today["tone"], "festive")
+        self.assertTrue(today["traditions"]["dan_traditions"])
+        self.assertTrue(all(g["holiday"] == "thanksgiving" for g in today["holiday_games"]))
+        self.assertNotIn("yesterday", ctx)
+
+    def test_day_after_recaps_holiday_games(self):
+        ctx = us_holidays.compute_holiday_context("2026-12-26")
+        self.assertEqual(ctx["yesterday"]["key"], "christmas")
+        self.assertNotIn("today", ctx)
+
+    def test_eve_gets_tomorrow(self):
+        ctx = us_holidays.compute_holiday_context("2026-11-25")
+        self.assertEqual(ctx["tomorrow"]["key"], "thanksgiving")
+
+    def test_respectful_holidays_have_no_jokes_seeded(self):
+        traditions = json.loads((REPO / "data" / "holiday_traditions.json").read_text())
+        for key, _, tone, _, _ in us_holidays._RULES:
+            if tone == us_holidays.RESPECTFUL:
+                self.assertFalse((traditions.get(key) or {}).get("dan_traditions"), key)
+
+    def test_traditions_keys_match_calendar(self):
+        traditions = json.loads((REPO / "data" / "holiday_traditions.json").read_text())
+        known = {r[0] for r in us_holidays._RULES}
+        extra = {k for k in traditions if not k.startswith("_") and k != "updated"} - known
+        self.assertFalse(extra, f"traditions for unknown holidays: {extra}")
+
+    def test_holiday_games_reference_known_holidays(self):
+        facts = json.loads((REPO / "data" / "historical_facts.json").read_text())
+        known = {r[0] for r in us_holidays._RULES}
+        for g in facts["holiday_games"]:
+            self.assertIn(g["holiday"], known)
+            self.assertTrue(g.get("result") and g.get("date"))
+
+    def test_block_injected_into_user_message(self):
+        ctx = us_holidays.compute_holiday_context("2026-11-26")
+        msg = generate_rant.build_user_message(
+            {}, [], [], {}, today_iso="2026-11-26", holiday=ctx)
+        self.assertIn("HOLIDAY (computed from the calendar", msg)
+        self.assertIn('"thanksgiving"', msg)
+        plain = generate_rant.build_user_message({}, [], [], {}, today_iso="2026-11-18")
+        self.assertNotIn("HOLIDAY", plain)
+
+    def test_prompts_know_about_holidays(self):
+        system = (REPO / "prompts" / "boston_dan_system.txt").read_text()
+        self.assertIn("Holiday Mode", system)
+        self.assertIn('tone "respectful"', system)
+        self.assertIn("holiday_games", safety_judge.JUDGE_PROMPT)
 
 
 if __name__ == "__main__":

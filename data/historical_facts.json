@@ -173,5 +173,12 @@
       {"rival": "Ravens", "note": "Playoff heartbreaks, physical AFC matchup. Ray Lewis, Ed Reed, Suggs."},
       {"rival": "Giants", "note": "Two Super Bowl losses, two miracle catches. The one team that had Brady's number."}
     ]
-  }
+  },
+  "_holiday_games_note": "Verified 2026-11-28 against AP/NHL/NBA game reports. Add an entry ONLY with a source in hand: generate_rant.py feeds these to Dan on the matching holiday (via scripts/us_holidays.py) and the safety judge treats them as ground truth.",
+  "holiday_games": [
+    {"holiday": "thanksgiving", "team": "patriots", "date": "2012-11-22", "opponent": "New York Jets", "venue": "MetLife Stadium (road)", "result": "Patriots won 49-19", "moment": "The Butt Fumble: Mark Sanchez ran into his own lineman's backside and fumbled, returned for a touchdown. The Patriots scored three second-quarter touchdowns in 52 seconds of game time.", "humor_angle": "Best Thanksgiving gift Boston ever got from New Jersey"},
+    {"holiday": "christmas", "team": "celtics", "date": "2008-12-25", "opponent": "Los Angeles Lakers", "venue": "Staples Center (road)", "result": "Celtics lost 92-83", "moment": "The Lakers snapped the Celtics' franchise-record 19-game winning streak on Christmas Day. Boston came in 27-3.", "humor_angle": "The Lakers have been stealing Christmas from Boston for a long time"},
+    {"holiday": "new_years_day", "team": "bruins", "date": "2010-01-01", "opponent": "Philadelphia Flyers", "venue": "Fenway Park (Winter Classic)", "result": "Bruins won 2-1 in overtime", "moment": "Mark Recchi tied it late in the third and Marco Sturm won it in overtime; the Bruins became the first home team to win a Winter Classic.", "humor_angle": "Hockey at Fenway on New Year's Day, the hangover cure nobody has topped"},
+    {"holiday": "new_years_day", "team": "bruins", "date": "2023-01-02", "opponent": "Pittsburgh Penguins", "venue": "Fenway Park (Winter Classic, played Jan 2 because Jan 1 fell on a Sunday)", "result": "Bruins won 2-1", "moment": "Jake DeBrusk scored both Bruins goals in the third period.", "humor_angle": "DeBrusk's New Year's resolution was apparently to do everything himself"}
+  ]
 }

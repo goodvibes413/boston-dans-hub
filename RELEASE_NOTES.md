@@ -5,6 +5,40 @@ Running log of what shipped and why. Reverse-chronological. Updated after each s
 
 ---
 
+## 2026-11-28 — Dan notices holidays (Holiday Mode)
+
+The Thanksgiving 2026 brew was a straight Bruins recap with no word about
+Thanksgiving. It wasn't one bad generation. The pipeline set it up to happen:
+TODAY said "2026-11-26 (Thursday)" and nothing else, and the persona prompt said
+"WHEN NOT IN SLOW_DAY_MODE: Do NOT tell fictional personal stories". So the
+model had no signal that the day was special and no permission to be human about it.
+Historical holiday games had the same problem: the judge treats any moment not in
+`historical_facts.json` as fabricated (HIGH), and that file had none.
+
+- **`scripts/us_holidays.py`** (stdlib). Works out US federal holidays plus
+  Boston ones (Patriots' Day, St. Patrick's Day) and cultural ones (Christmas Eve,
+  NYE, Halloween, Mother's/Father's Day) for today, yesterday and tomorrow. The
+  model is never left to work out that the fourth Thursday of November is
+  Thanksgiving. Each holiday has a **tone**: `festive` (holiday opener and a
+  short family anecdote are allowed), `light` (one quip), or `respectful`
+  (Memorial Day, Veterans Day, MLK Day, Juneteenth, Indigenous Peoples' Day: one
+  sincere sentence, no jokes).
+- **HOLIDAY block** in the user message (only on or next to a holiday). It
+  carries tone, Dan's fictional traditions (`data/holiday_traditions.json`),
+  and any verified holiday games for that holiday.
+- **`historical_facts.json` → `holiday_games`**: four games checked against
+  game reports (2012 Butt Fumble Thanksgiving, 2008 Christmas Lakers game, 2010
+  and 2023 Fenway Winter Classics). The judge already reads this file. Add an
+  entry only when you have a source.
+- **Persona prompt: Holiday Mode section**, plus a festive-tone exception to the
+  no-stories rule. Yesterday's games still get a full recap; the holiday is the
+  opener and the seasoning.
+- **Judge note**: holiday-game scores from `historical_facts` count as sourced,
+  and Dan's fictional family at the holiday table is persona flavor.
+- Eval fixture `evals/fixtures/holiday_thanksgiving.json` replays the 11/26 post.
+
+---
+
 ## 2026-11-25 — An offseason team doesn't get a "night off" (rule 19)
 
 The 11/24 brew said "It is a quiet night for the rest of the Hub as the Bruins and

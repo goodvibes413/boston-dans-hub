@@ -202,6 +202,7 @@ On any fetch failure: write an empty-but-valid JSON so downstream scripts don't 
 | `scripts/fetch_news.py` | ✅ Done | `latest_news.json` (merged, most-recent-first) |
 | `scripts/fetch_season_memory.py` | ✅ Done | `season_current.json` (current records/seeds/status from ESPN, plus the stretch-run `playoff_race` block from MLB StatsAPI) |
 | `scripts/generate_rant.py` | ✅ Done | `raw_dan_output.json` (loads persona from `prompts/boston_dan_system.txt`) |
+| `scripts/us_holidays.py` | ✅ Done | Library, no output file. Computes the HOLIDAY block (today/yesterday/tomorrow, tone, `data/holiday_traditions.json` flavor, `historical_facts.holiday_games`) that `generate_rant.py` injects |
 | `scripts/eval_voice.py` | ✅ Done | `evals/runs/{label}_{N}.json` (manual eyeball harness) |
 | `scripts/safety_judge.py` | ✅ Done | PASS/FAIL + severity verdict (gemini-3.1-flash-lite) |
 | `scripts/publish.py` | ✅ Done | `docs/data/daily_output.json` (or safe fallback on judge failure) |

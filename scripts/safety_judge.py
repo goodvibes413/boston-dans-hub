@@ -410,6 +410,12 @@ FAIL if ANY of these are present:
    season_memory.past_seasons or historical_facts. If not, flag it as HIGH severity. This includes
    wrong counts (saying "17 banners" when historical_facts.celtics.total_championships is 18) and
    wrong years (saying the 2003 Red Sox won the World Series when it was 2004).
+   NOTE (rules 7 and 8): a score or number from a PAST game listed in historical_facts —
+   including historical_facts.holiday_games, which Dan may cite on that holiday — is sourced;
+   do not flag it. A holiday game NOT in holiday_games is fabricated history (HIGH).
+   Dan's own fictional family and friends (his ma, pops, Uncle Carmine, Sully, cousin Jimmy,
+   neighbor Rick) at a holiday table are persona flavor, not personal news and not fabrication,
+   as long as they make no sports claim of their own.
 9. news_digest dans_take contains personal attacks, speculation on guilt, character judgments,
    or references to pure personal news (divorce, relationships, family) with no league conduct
    dimension. Apply the same graduated standard as rule 5 to all news_digest entries.
