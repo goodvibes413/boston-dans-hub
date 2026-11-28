@@ -4030,6 +4030,7 @@ class TestUSHolidays(unittest.TestCase):
         self.assertIn('tone "respectful"', system)
         self.assertIn('phase "morning_of"', system)
         self.assertIn('phase "look_back"', system)
+        self.assertIn('never "Dan\'s ma"', system)
         self.assertIn("holiday_games", safety_judge.JUDGE_PROMPT)
 
 
